@@ -222,7 +222,7 @@ app.put('/api/users/:id', auth, adminOnly, (req, res) => {
 /* ---------- Material & Kosten ---------- */
 function materialView(m) {
   const monthly = (Number(m.monthlyQty) || 0) * (Number(m.price) || 0);
-  return { ...m, monthlyCost: round2(monthly), yearlyCost: round2(monthly * 12), low: m.stock !== '' && m.stock != null && Number(m.stock) <= Number(m.minStock || 0) };
+  return { ...m, monthlyCost: round2(monthly), yearlyCost: round2(monthly * 12), low: !!m.stockTracked && Number(m.stock) <= Number(m.minStock || 0) };
 }
 function round2(n) {
   return Math.round(n * 100) / 100;
@@ -248,7 +248,8 @@ app.post('/api/materials', auth, adminOnly, (req, res) => {
 app.put('/api/materials/:id', auth, adminOnly, (req, res) => {
   const i = db.materials.findIndex((m) => m.id === req.params.id);
   if (i < 0) return res.status(404).json({ error: 'Nicht gefunden.' });
-  db.materials[i] = { ...db.materials[i], ...sanitizeMaterial({ ...db.materials[i], ...req.body }) };
+  const tracked = db.materials[i].stockTracked || (req.body.stock !== undefined && String(req.body.stock) !== String(db.materials[i].stock));
+  db.materials[i] = { ...db.materials[i], ...sanitizeMaterial({ ...db.materials[i], ...req.body }), stockTracked: !!tracked };
   saveDb();
   res.json(materialView(db.materials[i]));
 });
@@ -293,6 +294,7 @@ app.post('/api/purchases', auth, adminOnly, (req, res) => {
   const p = { id: uid(), materialId, materialName: m.name, unit: m.unit, qty: q, total: round2(t), date: /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : today(), note: note || '' };
   db.purchases.push(p);
   m.stock = round2((Number(m.stock) || 0) + q);
+  m.stockTracked = true;
   saveDb();
   res.json(p);
 });
@@ -334,13 +336,26 @@ app.get('/api/reports', auth, (req, res) => {
 });
 
 app.post('/api/reports', auth, upload.array('photos', 4), async (req, res) => {
-  const { type, materialId, location, text, qty } = req.body || {};
-  const types = ['material', 'defekt', 'sonstiges'];
+  const { type, materialId, location, text, qty, urgent } = req.body || {};
+  const types = ['material', 'defekt', 'sonstiges', 'bestellung'];
   const m = db.materials.find((x) => x.id === materialId);
+  // Bestellung: Liste von Artikeln [{name, qty}]
+  let items = [];
+  try {
+    items = JSON.parse(req.body.items || '[]');
+  } catch {
+    items = [];
+  }
+  items = (Array.isArray(items) ? items : [])
+    .map((i) => ({ name: String(i.name || '').trim().slice(0, 80), qty: String(i.qty || '').trim().slice(0, 30) }))
+    .filter((i) => i.name)
+    .slice(0, 30);
   const r = {
     id: uid(),
     userId: req.user.id,
     type: types.includes(type) ? type : 'sonstiges',
+    items,
+    urgent: urgent === 'true' || urgent === true,
     materialId: m ? m.id : '',
     materialName: m ? m.name : '',
     qty: String(qty || '').slice(0, 40),
@@ -351,18 +366,20 @@ app.post('/api/reports', auth, upload.array('photos', 4), async (req, res) => {
     adminNote: '',
     createdAt: new Date().toISOString(),
   };
-  if (!r.text && !r.materialId && r.photos.length === 0) return res.status(400).json({ error: 'Bitte etwas beschreiben oder ein Foto machen.' });
+  if (r.type === 'bestellung' && !r.items.length) return res.status(400).json({ error: 'Bitte mindestens einen Artikel auswählen.' });
+  if (!r.text && !r.materialId && !r.items.length && r.photos.length === 0) return res.status(400).json({ error: 'Bitte etwas beschreiben oder ein Foto machen.' });
   db.reports.push(r);
   saveDb();
   res.json(reportView(r));
 
   // Chef per Mail informieren (falls eingerichtet)
   if (db.settings.notifyOnReport && db.settings.ownerEmail && smtpConfigured(db.settings.smtp)) {
-    const label = { material: 'Material fehlt', defekt: 'Etwas ist kaputt', sonstiges: 'Meldung' }[r.type];
+    const label = { material: 'Material fehlt', defekt: 'Etwas ist kaputt', sonstiges: 'Meldung', bestellung: 'Bestellung' }[r.type];
+    const itemText = r.items.map((i) => `- ${i.qty ? i.qty + ' × ' : ''}${i.name}`).join('\n');
     sendMail(db.settings.smtp, {
       to: db.settings.ownerEmail,
-      subject: `${label}: ${r.materialName || r.location || ''} – ${req.user.name}`,
-      text: `${label}\nVon: ${req.user.name}\nZeit: ${new Date(r.createdAt).toLocaleString('de-DE')}\n${r.materialName ? 'Material: ' + r.materialName + (r.qty ? ' (' + r.qty + ')' : '') + '\n' : ''}${r.location ? 'Objekt/Ort: ' + r.location + '\n' : ''}\n${r.text}`,
+      subject: `${r.urgent ? 'DRINGEND – ' : ''}${label}: ${r.items.length ? r.items.map((i) => i.name).join(', ').slice(0, 60) : r.materialName || r.location || ''} – ${req.user.name}`,
+      text: `${label}${r.urgent ? ' (DRINGEND)' : ''}\nVon: ${req.user.name}\nZeit: ${new Date(r.createdAt).toLocaleString('de-DE')}\n${itemText ? itemText + '\n' : ''}${r.materialName ? 'Material: ' + r.materialName + (r.qty ? ' (' + r.qty + ')' : '') + '\n' : ''}${r.location ? 'Objekt/Ort: ' + r.location + '\n' : ''}\n${r.text}`,
       attachments: r.photos.map((p) => ({ filename: p, path: path.join(UPLOAD_DIR, p) })),
     }).catch((e) => console.error('Mail-Fehler (Meldung):', e.message));
   }
@@ -436,6 +453,18 @@ app.get('/api/timesheet/:month', auth, (req, res) => {
   const user = targetUser(req);
   if (!user) return res.status(404).json({ error: 'Nicht gefunden.' });
   res.json(sheet(user, req.params.month));
+});
+
+// Archiv: alle Monate mit Einträgen (Mitarbeiter nur eigene)
+app.get('/api/timesheet-months', auth, (req, res) => {
+  const user = targetUser(req);
+  if (!user) return res.status(404).json({ error: 'Nicht gefunden.' });
+  const months = new Set(db.entries.filter((e) => e.userId === user.id).map((e) => e.date.slice(0, 7)));
+  db.signoffs.filter((s) => s.userId === user.id).forEach((s) => months.add(s.month));
+  res.json([...months].sort().reverse().map((m) => {
+    const s = sheet(user, m);
+    return { month: m, totalMinutes: s.totalMinutes, workDays: s.workDays, signedAt: s.signoff?.signedAt || '', sentAt: s.signoff?.sentAt || '', approvedAt: s.signoff?.approvedAt || '' };
+  }));
 });
 
 function isLocked(userId, month) {

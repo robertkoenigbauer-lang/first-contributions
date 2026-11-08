@@ -149,8 +149,9 @@ const TABS_ADMIN = [
 ];
 const TABS_MA = [
   ['stunden', '🕒', 'Stunden'],
-  ['melden', '📷', 'Melden'],
-  ['meldungen', '📋', 'Meine Meldungen'],
+  ['bestellen', '🛒', 'Bestellen'],
+  ['melden', '📷', 'Kaputt/Melden'],
+  ['meldungen', '📋', 'Verlauf'],
   ['konto', '👤', 'Konto'],
 ];
 function isAdmin() {
@@ -171,7 +172,7 @@ function go(tab) {
   $$('#nav button').forEach((b) => b.classList.toggle('active', b.dataset.tab === tab));
   window.scrollTo(0, 0);
   main.innerHTML = '<div class="loading">Lädt …</div>';
-  const views = { start: viewStart, material: viewMaterial, meldungen: viewReports, melden: viewReportForm, stunden: viewHours, mehr: viewMore, konto: viewAccount };
+  const views = { start: viewStart, material: viewMaterial, meldungen: viewReports, melden: viewReportForm, bestellen: viewOrder, stunden: viewHours, mehr: viewMore, konto: viewAccount };
   run(views[tab]);
 }
 async function updateBadge() {
@@ -217,6 +218,10 @@ function buildShoppingList(materials, openReports) {
     const reps = openReports.filter((r) => r.type === 'material' && r.materialId === m.id);
     if (reps.length) out.push({ name: m.name, pack: m.pack, why: `Gemeldet von ${[...new Set(reps.map((r) => r.userName))].join(', ')}` + (reps[0].qty ? ` (${reps[0].qty})` : '') });
     else if (m.low && m.minStock > 0) out.push({ name: m.name, pack: m.pack, why: `Bestand ${num(m.stock, 1)} ${m.unit} – Mindestbestand ${num(m.minStock, 1)}` });
+  }
+  // Bestellungen der Mitarbeiterinnen (noch nicht bestellt)
+  for (const r of openReports.filter((x) => x.type === 'bestellung' && x.status === 'offen')) {
+    for (const i of r.items || []) out.unshift({ name: (r.urgent ? '❗ ' : '') + i.name, pack: i.qty, why: `Bestellt von ${r.userName}, ${dt(r.createdAt)}${r.location ? ' · ' + r.location : ''}` });
   }
   return out;
 }
@@ -326,21 +331,25 @@ const TYPE = {
   material: ['🧴', 'Material fehlt', 'orange'],
   defekt: ['🔧', 'Kaputt', 'red'],
   sonstiges: ['💬', 'Sonstiges', 'gray'],
+  bestellung: ['🛒', 'Bestellung', 'orange'],
 };
 function reportCard(r) {
   const [ic, label, col] = TYPE[r.type] || TYPE.sonstiges;
-  const st = r.status === 'erledigt' ? '<span class="pill">✓ erledigt</span>' : r.status === 'in Arbeit' ? '<span class="pill orange">in Arbeit</span>' : '<span class="pill red">offen</span>';
+  const order = r.type === 'bestellung';
+  const L = order ? { done: 'geliefert', work: 'bestellt' } : { done: 'erledigt', work: 'in Arbeit' };
+  const st = r.status === 'erledigt' ? `<span class="pill">✓ ${L.done}</span>` : r.status === 'in Arbeit' ? `<span class="pill orange">${L.work}</span>` : '<span class="pill red">offen</span>';
   return `<div class="card" data-rep="${r.id}">
-    <div class="row"><span class="pill ${col}">${ic} ${label}</span>${st}<span class="muted small grow" style="text-align:right">${dt(r.createdAt)}</span></div>
+    <div class="row"><span class="pill ${col}">${ic} ${label}</span>${st}${r.urgent ? '<span class="pill red">❗ dringend</span>' : ''}<span class="muted small grow" style="text-align:right">${dt(r.createdAt)}</span></div>
     ${isAdmin() ? `<div class="small" style="margin-top:6px">von <b>${esc(r.userName)}</b></div>` : ''}
+    ${r.items?.length ? `<ul style="margin:8px 0 0;padding-left:20px">${r.items.map((i) => `<li><b>${i.qty ? esc(i.qty) + ' × ' : ''}</b>${esc(i.name)}</li>`).join('')}</ul>` : ''}
     ${r.materialName ? `<h3 style="margin-top:8px">${esc(r.materialName)}${r.qty ? ` <span class="muted small">(${esc(r.qty)})</span>` : ''}</h3>` : ''}
     ${r.location ? `<div class="small">📍 ${esc(r.location)}</div>` : ''}
     ${r.text ? `<div style="margin-top:6px;white-space:pre-wrap">${esc(r.text)}</div>` : ''}
     ${r.photos.length ? `<div class="photos">${r.photos.map((p) => `<img src="/api/photo/${encodeURIComponent(p)}" loading="lazy" data-photo="${esc(p)}" alt="Foto">`).join('')}</div>` : ''}
     ${r.adminNote ? `<div class="hint small">Chef: ${esc(r.adminNote)}</div>` : ''}
     ${isAdmin() ? `<div class="row" style="margin-top:10px">
-      ${r.status !== 'erledigt' ? `<button class="btn-sm" data-act="erledigt">✓ Erledigt</button>` : `<button class="btn-sm btn-light" data-act="offen">Wieder öffnen</button>`}
-      ${r.status === 'offen' ? `<button class="btn-sm btn-sec" data-act="in Arbeit">In Arbeit</button>` : ''}
+      ${r.status !== 'erledigt' ? `<button class="btn-sm" data-act="erledigt">✓ ${order ? 'Geliefert' : 'Erledigt'}</button>` : `<button class="btn-sm btn-light" data-act="offen">Wieder öffnen</button>`}
+      ${r.status === 'offen' ? `<button class="btn-sm btn-sec" data-act="in Arbeit">${order ? 'Bestellt' : 'In Arbeit'}</button>` : ''}
       <button class="btn-sm btn-light" data-act="note">Notiz</button>
       <button class="btn-sm btn-danger" data-act="del">Löschen</button></div>` : ''}
   </div>`;
@@ -372,11 +381,11 @@ async function viewReports() {
   const filter = viewReports.filter || 'offen';
   const shown = filter === 'alle' ? reps : reps.filter((r) => r.status !== 'erledigt');
   main.innerHTML = `
-    <h1>${isAdmin() ? 'Meldungen' : 'Meine Meldungen'}</h1>
+    <h1>${isAdmin() ? 'Meldungen & Bestellungen' : 'Meine Bestellungen & Meldungen'}</h1>
     <div class="row" style="margin-bottom:12px">
       <button class="btn-sm ${filter === 'offen' ? '' : 'btn-light'}" data-f="offen">Offen (${reps.filter((r) => r.status !== 'erledigt').length})</button>
       <button class="btn-sm ${filter === 'alle' ? '' : 'btn-light'}" data-f="alle">Alle (${reps.length})</button>
-      ${!isAdmin() ? `<button class="btn-sm btn-sec" style="margin-left:auto" onclick="go('melden')">＋ Neue Meldung</button>` : ''}
+      ${!isAdmin() ? `<button class="btn-sm btn-sec" style="margin-left:auto" onclick="go('bestellen')">＋ Bestellen</button>` : ''}
     </div>
     ${shown.length ? shown.map(reportCard).join('') : '<div class="card muted">Keine Meldungen.</div>'}`;
   $$('[data-f]').forEach((b) => (b.onclick = () => { viewReports.filter = b.dataset.f; viewReports(); }));
@@ -385,22 +394,15 @@ async function viewReports() {
 }
 
 async function viewReportForm() {
-  const mats = await api('/materials');
-  let type = 'material';
+  let type = 'defekt';
   const files = [];
   main.innerHTML = `
-    <h1>Melden</h1>
-    <p class="muted">Was fehlt oder was ist kaputt? Mach am besten gleich ein Foto – es wird automatisch dokumentiert.</p>
+    <h1>Kaputt / Melden</h1>
+    <p class="muted">Etwas ist kaputt oder nicht in Ordnung? Mach am besten gleich ein Foto – es wird automatisch mit Datum und Uhrzeit dokumentiert.<br>Material brauchst du? → <a href="#bestellen" onclick="go('bestellen');return false">Bestellen</a></p>
     <form id="rf" class="card">
-      <div class="choice">
-        <button type="button" data-t="material" class="on"><span class="ic">🧴</span>Material fehlt</button>
-        <button type="button" data-t="defekt"><span class="ic">🔧</span>Etwas kaputt</button>
+      <div class="choice" style="grid-template-columns:1fr 1fr">
+        <button type="button" data-t="defekt" class="on"><span class="ic">🔧</span>Etwas kaputt</button>
         <button type="button" data-t="sonstiges"><span class="ic">💬</span>Sonstiges</button>
-      </div>
-      <div id="matBox">
-        <label>Welches Material?</label>
-        <select name="materialId"><option value="">– bitte wählen –</option>${mats.map((m) => `<option value="${m.id}">${esc(m.name)}</option>`).join('')}<option value="">Anderes (unten beschreiben)</option></select>
-        <label>Wie viel wird ungefähr gebraucht? (optional)</label><input name="qty" placeholder="z. B. 2 Rollen">
       </div>
       <label>Objekt / Ort</label><input name="location" placeholder="z. B. Praxis Müller, 2. OG, Damen-WC">
       <label>Beschreibung</label><textarea name="text" placeholder="Was ist los?"></textarea>
@@ -412,7 +414,6 @@ async function viewReportForm() {
   $$('[data-t]').forEach((b) => (b.onclick = () => {
     type = b.dataset.t;
     $$('[data-t]').forEach((x) => x.classList.toggle('on', x === b));
-    $('#matBox').hidden = type !== 'material';
   }));
   $('#ph').onchange = async (e) => {
     for (const f of [...e.target.files].slice(0, 4 - files.length)) {
@@ -427,7 +428,6 @@ async function viewReportForm() {
     run(async () => {
       const fd = new FormData(e.target);
       fd.set('type', type);
-      if (type !== 'material') fd.delete('materialId');
       files.forEach((b, i) => fd.append('photos', b, `foto${i + 1}.jpg`));
       $('#send').disabled = true;
       try {
@@ -436,6 +436,72 @@ async function viewReportForm() {
         $('#send').disabled = false;
       }
       toast('Danke! Meldung ist beim Chef.');
+      go('meldungen');
+    });
+  };
+}
+
+/* ---------------- Bestellen (Mitarbeiterinnen) ---------------- */
+async function viewOrder() {
+  const mats = await api('/materials');
+  const qty = {}; // name -> Anzahl
+  const extra = []; // freie Artikel
+  main.innerHTML = `
+    <h1>Bestellen</h1>
+    <p class="muted">Etwas wird leer? Einfach antippen, Menge wählen und abschicken. Der Chef bekommt die Bestellung sofort.</p>
+    <div class="card">
+      ${mats.map((m, i) => `<div class="list-item row">
+        <div class="grow"><b>${esc(m.name)}</b></div>
+        <button type="button" class="btn-light btn-sm" data-minus="${i}">−</button>
+        <span id="q${i}" style="min-width:28px;text-align:center;font-weight:700">0</span>
+        <button type="button" class="btn-sm" data-plus="${i}">＋</button>
+      </div>`).join('')}
+    </div>
+    <div class="card">
+      <h3>Etwas anderes?</h3>
+      <div class="row"><input id="exName" class="grow" placeholder="z. B. Staubsaugerbeutel Typ XY" style="flex:3"><input id="exQty" placeholder="Menge" style="flex:1"><button type="button" class="btn-sec" id="exAdd">＋</button></div>
+      <div id="exList"></div>
+    </div>
+    <form id="of" class="card">
+      <label>Für welches Objekt? (optional)</label><input name="location" placeholder="z. B. Büro Schmidt">
+      <label>Bemerkung (optional)</label><textarea name="text" style="min-height:60px" placeholder="z. B. bis Freitag"></textarea>
+      <label class="check"><input type="checkbox" name="urgent" value="true"> ❗ Dringend – fehlt schon / wird heute leer</label>
+      <div class="hint small" id="sum">Noch nichts ausgewählt.</div>
+      <div class="actions" style="grid-template-columns:1fr"><button id="osend">Bestellung abschicken</button></div>
+    </form>`;
+  const items = () => [...mats.filter((m) => qty[m.name] > 0).map((m) => ({ name: m.name, qty: String(qty[m.name]) })), ...extra];
+  const refresh = () => {
+    mats.forEach((m, i) => ($('#q' + i).textContent = qty[m.name] || 0));
+    $('#exList').innerHTML = extra.map((x, i) => `<div class="list-item row"><div class="grow">${x.qty ? esc(x.qty) + ' × ' : ''}${esc(x.name)}</div><button type="button" class="btn-light btn-sm" data-exdel="${i}">✕</button></div>`).join('');
+    $$('[data-exdel]').forEach((b) => (b.onclick = () => { extra.splice(+b.dataset.exdel, 1); refresh(); }));
+    const it = items();
+    $('#sum').innerHTML = it.length ? '<b>Deine Bestellung:</b><br>' + it.map((x) => `${x.qty ? esc(x.qty) + ' × ' : ''}${esc(x.name)}`).join('<br>') : 'Noch nichts ausgewählt.';
+  };
+  $$('[data-plus]').forEach((b) => (b.onclick = () => { const n = mats[b.dataset.plus].name; qty[n] = (qty[n] || 0) + 1; refresh(); }));
+  $$('[data-minus]').forEach((b) => (b.onclick = () => { const n = mats[b.dataset.minus].name; qty[n] = Math.max(0, (qty[n] || 0) - 1); refresh(); }));
+  $('#exAdd').onclick = () => {
+    const name = $('#exName').value.trim();
+    if (!name) return toast('Bitte eintragen, was du brauchst.', true);
+    extra.push({ name, qty: $('#exQty').value.trim() });
+    $('#exName').value = $('#exQty').value = '';
+    refresh();
+  };
+  $('#of').onsubmit = (e) => {
+    e.preventDefault();
+    run(async () => {
+      if ($('#exName').value.trim()) $('#exAdd').click();
+      const it = items();
+      if (!it.length) throw new Error('Bitte mindestens einen Artikel auswählen.');
+      const fd = new FormData(e.target);
+      fd.set('type', 'bestellung');
+      fd.set('items', JSON.stringify(it));
+      $('#osend').disabled = true;
+      try {
+        await api('/reports', { method: 'POST', body: fd });
+      } finally {
+        $('#osend').disabled = false;
+      }
+      toast('Danke! Bestellung ist beim Chef. 🛒');
       go('meldungen');
     });
   };
@@ -494,7 +560,9 @@ async function viewHours() {
       <button class="btn-sec" id="pdf">🖨️ Ansehen / Drucken</button>
       <button class="${locked ? '' : 'btn-sec'}" id="mail">📧 An Chef senden</button>
     </div>
-    <p class="muted small">Deine Stunden sieht nur der Chef – keine Kollegin kann sie sehen.</p>`;
+    <p class="muted small">Deine Stunden sieht nur der Chef – keine Kollegin kann sie sehen.</p>
+    <h2>📁 Meine früheren Stundenzettel</h2>
+    <div class="card" id="archive">Lädt …</div>`;
   if (isAdmin()) html += `<h2>Stunden des Teams – ${esc(monthLabel(m))}</h2><div class="card" id="team">Lädt …</div>`;
   main.innerHTML = html;
 
@@ -504,6 +572,12 @@ async function viewHours() {
   if (!locked) $('#sign').onclick = () => signModal(m, sh);
   $('#pdf').onclick = () => window.open(`/api/timesheet/${m}/pdf`, '_blank');
   $('#mail').onclick = () => sendTimesheet(m, sh);
+  const arch = await api('/timesheet-months');
+  $('#archive').innerHTML = arch.length
+    ? arch.map((a) => `<div class="list-item row"><div class="grow" data-goto="${a.month}" style="cursor:pointer"><b>${esc(monthLabel(a.month))}</b>${a.month === m ? ' <span class="pill gray">angezeigt</span>' : ''}<div class="muted small">${hours(a.totalMinutes)} h · ${a.workDays} Tage · ${a.approvedAt ? '✓ gegengezeichnet' : a.signedAt ? '✍️ unterschrieben' : 'offen'}</div></div><button class="btn-sm btn-light" data-apdf="${a.month}">🖨️ PDF</button></div>`).join('')
+    : '<span class="muted">Noch keine Stundenzettel.</span>';
+  $$('[data-goto]').forEach((el) => (el.onclick = () => { S.month = el.dataset.goto; viewHours(); }));
+  $$('[data-apdf]').forEach((b) => (b.onclick = () => window.open(`/api/timesheet/${b.dataset.apdf}/pdf`, '_blank')));
   if (isAdmin()) {
     const ov = await api('/hours-overview/' + m);
     $('#team').innerHTML = hoursTable(ov, m);

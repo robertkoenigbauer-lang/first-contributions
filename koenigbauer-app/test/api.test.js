@@ -79,6 +79,23 @@ test('Ablauf und Datenschutz', async () => {
   assert.equal(send.sent, false); // kein SMTP im Test
   assert.equal((await chef('/timesheet/2026-11/approve?userId=' + annaId, { method: 'POST', body: { signature: sig } })).status, 200);
 
+  // Bestellung durch Mitarbeiterin
+  const od = new FormData();
+  od.set('type', 'bestellung'); od.set('urgent', 'true');
+  od.set('items', JSON.stringify([{ name: 'Staubsaugerbeutel', qty: '2' }, { name: 'Swiffer', qty: '1' }]));
+  const ord = (await berta('/reports', { method: 'POST', body: od })).data;
+  assert.equal(ord.items.length, 2);
+  assert.equal(ord.urgent, true);
+  assert.equal((await anna('/reports')).data.length, 1); // Anna sieht Bertas Bestellung nicht
+  assert.equal((await chef('/reports')).data.length, 2);
+
+  // Archiv: frühere Monate bleiben sichtbar, nur eigene
+  await anna('/entries', { method: 'POST', body: { date: '2026-08-10', start: '08:00', end: '12:00' } });
+  const arch = (await anna('/timesheet-months')).data;
+  assert.deepEqual(arch.map((a) => a.month), ['2026-11', '2026-08']);
+  assert.equal((await berta('/timesheet-months?userId=' + annaId)).data.length, 0);
+  assert.equal((await chef('/timesheet-months?userId=' + annaId)).data.length, 2);
+
   // Einkauf erhöht Bestand
   const m0 = mat.materials[0];
   await chef('/purchases', { method: 'POST', body: { materialId: m0.id, qty: 100, total: '18,00', date: '2026-11-02' } });

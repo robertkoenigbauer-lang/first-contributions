@@ -8,7 +8,9 @@ Handy-App (läuft im Browser und lässt sich auf den Startbildschirm legen) für
 - **Stundenzettel**: Tag antippen, „von – bis“, Pause und Objekt eintragen. Am Monatsende **mit dem Finger unterschreiben**.
 - **PDF ansehen und drucken**: fertiger Stundenzettel mit Unterschriftsfeldern für Mitarbeiterin und Arbeitgeber.
 - **„An Chef senden“**: Ein Knopfdruck schickt das PDF per E-Mail an den Chef. Ist kein Mailserver eingerichtet, öffnet sich die Mail-App des Handys mit dem PDF.
-- **Melden**: Material fehlt, etwas ist kaputt oder Sonstiges, **mit Foto**. Jede Meldung bleibt mit Datum, Uhrzeit, Ort und Foto gespeichert.
+- **Bestellen**: Artikel antippen, Menge mit + und − wählen, dazu freie Wünsche (z. B. „Staubsaugerbeutel Typ XY“). Mit „dringend“ markieren, wenn etwas schon fehlt. Den Stand (offen, bestellt, geliefert) sehen sie unter „Verlauf“.
+- **Frühere Stundenzettel**: Alle vergangenen Monate bleiben dauerhaft gespeichert. Die Mitarbeiterin kann sie jederzeit öffnen und als PDF drucken.
+- **Kaputt/Melden**: Etwas ist kaputt oder Sonstiges, etwas ist kaputt oder Sonstiges, **mit Foto**. Jede Meldung bleibt mit Datum, Uhrzeit, Ort und Foto gespeichert.
 - **Datenschutz**: Jede Mitarbeiterin sieht **nur ihre eigenen** Stunden und Meldungen. Sie sieht keine Kolleginnen, keine Namensliste und keine Preise. Der Server prüft das bei jeder Abfrage, nicht nur die Oberfläche (siehe `test/api.test.js`).
 
 **Für den Chef**

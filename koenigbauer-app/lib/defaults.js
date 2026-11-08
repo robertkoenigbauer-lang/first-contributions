@@ -14,6 +14,9 @@ const DEFAULT_MATERIALS = [
   { name: 'Allzweck-/Unterhaltsreiniger', unit: 'Liter', pack: 'Kanister 10 L', monthlyQty: 5, price: 3.0, stock: 0, minStock: 2, note: 'Konzentrat, optional' },
   { name: 'Mikrofasertücher', unit: 'Stück', pack: '10er-Pack', monthlyQty: 10, price: 1.2, stock: 0, minStock: 10, note: 'Ersatz für Verschleiß, optional' },
   { name: 'Einweghandschuhe Nitril', unit: 'Stück', pack: 'Box à 100', monthlyQty: 200, price: 0.06, stock: 0, minStock: 100, note: 'optional' },
+  { name: 'Swiffer Staubtücher (Nachfüll)', unit: 'Stück', pack: 'Großpack à 40', monthlyQty: 40, price: 0.25, stock: 0, minStock: 20, note: 'Staubwedel-/Bodentücher' },
+  { name: 'Staubsaugerbeutel', unit: 'Stück', pack: '10er-Pack', monthlyQty: 6, price: 1.5, stock: 0, minStock: 5, note: 'passend zum Gerät' },
+  { name: 'Wischmopp-Bezüge', unit: 'Stück', pack: 'einzeln', monthlyQty: 2, price: 4.0, stock: 0, minStock: 2, note: 'Ersatz für Verschleiß' },
   { name: 'Schwämme / Pads', unit: 'Stück', pack: '10er-Pack', monthlyQty: 20, price: 0.4, stock: 0, minStock: 10, note: 'optional' },
 ];
 module.exports = { DEFAULT_MATERIALS };
