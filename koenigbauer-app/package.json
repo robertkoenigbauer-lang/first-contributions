@@ -1,0 +1,22 @@
+{
+  "name": "koenigbauer-app",
+  "version": "1.0.0",
+  "description": "Betriebs-App der Königbauer Gebäudereinigung: Material & Kosten, Meldungen mit Foto, Stundenzettel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.22.3",
+    "multer": "^2.5.0",
+    "nodemailer": "^10.4.0",
+    "pdfkit": "^0.20.2"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
