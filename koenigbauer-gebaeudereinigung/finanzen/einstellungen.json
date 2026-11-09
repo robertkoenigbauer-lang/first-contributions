@@ -5,7 +5,7 @@
   "gewinnermittlung": "EÜR",
   "veranlagung": "zusammen",
   "_veranlagung_info": "verheiratet, Zusammenveranlagung (Splitting). Zu versteuerndes Einkommen der Ehefrau unten eintragen (0 = keine eigenen Einkünfte).",
-  "zve_partner_euro": 0,
+  "zve_partner_euro": 11000,
   "kirchensteuer": false,
   "kirchensteuer_satz": 0.08,
   "gewerbesteuer_hebesatz_prozent": 350,
@@ -31,5 +31,8 @@
     "bg_bau_jahresbeitrag_geschaetzt": 0,
     "_info": "Aus den letzten Beitragsbescheiden der HWK München und der BG BAU eintragen"
   },
-  "sicherheitszuschlag_ruecklage": 0.1
+  "sicherheitszuschlag_ruecklage": 0.1,
+  "_zve_partner_info": "Ehefrau ist im Betrieb angestellt (ca. 1.000 €+ brutto/Monat, sozialversicherungspflichtig). Grobe Schätzung: ca. 12.000–13.000 € brutto/Jahr minus 1.230 € Arbeitnehmer-Pauschbetrag. Genauen Bruttolohn eintragen. Ihr Lohn ist im Betrieb Betriebsausgabe (Kategorie Löhne) und hier als ihr Einkommen in der Zusammenveranlagung.",
+  "einbehaltene_lohnsteuer_partner_jahr": 0,
+  "_lohnsteuer_partner_info": "Lohnsteuer, die vom Lohn der Ehefrau einbehalten wird (Lohnabrechnung), wird auf die gemeinsame Einkommensteuer angerechnet."
 }

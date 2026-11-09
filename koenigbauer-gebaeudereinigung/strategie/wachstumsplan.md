@@ -1,7 +1,7 @@
 # Wachstumsplan Königbauer Gebäudereinigung – 90 Tage
 
 **Ziel:** Mit wenig Geld maximal sichtbar werden, systematisch Gewerbekunden gewinnen und die Büroarbeit durch Automatisierung klein halten.
-**Zielgruppen (Priorität):** 1. Firmen mit Büros und **Schlüsselobjekte** (Reinigung außerhalb der Geschäftszeiten), 2. Arztpraxen, Kanzleien, Versicherungsagenturen, 3. Hausverwaltungen/WEGs (Argument: ista Servicepartner). Weitere: Arztpraxen, Kanzleien, Versicherungsagenturen, Banken, Läden, Fitnessstudios, Hotels im Umkreis von 20 km um Neufahrn (Freising, Eching, Hallbergmoos, Unterschleißheim, Garching, Erding, Moosburg, Flughafen-Umfeld).
+**Zielgruppen (Priorität):** 1. Firmen mit Büros und Gewerbeobjekten (Daueraufträge), 2. Arztpraxen, Kanzleien, Versicherungsagenturen, 3. Hausverwaltungen/WEGs (Argument: ista Servicepartner). Weitere: Arztpraxen, Kanzleien, Versicherungsagenturen, Banken, Läden, Fitnessstudios, Hotels im Umkreis von 20 km um Neufahrn (Freising, Eching, Hallbergmoos, Unterschleißheim, Garching, Erding, Moosburg, Flughafen-Umfeld).
 
 ---
 
@@ -45,7 +45,7 @@ Jede Woche, ca. 1–2 Stunden deiner Zeit:
 3. **Nachfass-Anrufe** 7 Tage nach dem Brief mit Leitfaden aus der Anrufliste (oder eine Teilzeit-Kraft / Bürohilfe übernimmt – du hast ja Personal-Budget).
 4. **Status pflegen:** `python run.py status 12 termin` → Agent plant den nächsten Schritt automatisch.
 
-Reihenfolge nach Potenzial: **Firmenbüros und Gewerbeobjekte** zuerst (Schlüsselobjekte, Daueraufträge), dann Praxen, Kanzleien/Versicherungen, Hausverwaltungen (mit ista-Argument), Läden.
+Reihenfolge nach Potenzial: **Firmenbüros und Gewerbeobjekte** zuerst (Daueraufträge), dann Praxen, Kanzleien/Versicherungen, Hausverwaltungen (mit ista-Argument), Läden.
 
 **Rechnung:** 25 Briefe/Woche × 12 Wochen = 300 Firmen. Bei realistisch 2–4 % Abschluss = **6–12 neue Daueraufträge**. Kosten Porto/Druck ≈ 300–400 €.
 

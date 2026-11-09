@@ -13,10 +13,10 @@
     "lon": 11.665
   },
   "radius_km": 20,
-  "schwerpunkt": "Büroreinigung und Schlüsselobjekte (Reinigung außerhalb der Geschäftszeiten mit eigenem Schlüssel)",
+  "schwerpunkt": "Büroreinigung und Gewerbeobjekte (Daueraufträge)",
   "leistungen": [
     "Büroreinigung",
-    "Reinigung von Schlüsselobjekten",
+    "Teppich- und Bodenpflege",
     "Praxis- und Kanzleireinigung",
     "Treppenhausreinigung",
     "Glas- und Fensterreinigung",
@@ -25,11 +25,11 @@
   "usps": [
     "Inhabergeführt: Robert Königbauer ist persönlich Ansprechpartner",
     "Eingetragener Handwerksbetrieb seit 2011 (Handwerkskammer für München und Oberbayern)",
-    "Schlüsselservice: Reinigung außerhalb der Geschäftszeiten mit dokumentierter Schlüsselübergabe",
-    "Abgesichert: Betriebshaftpflichtversicherung inklusive Schlüsselverlust",
+    "Betriebshaftpflichtversichert",
     "Festpreis-Angebot innerhalb von 24 Stunden nach kostenloser Besichtigung",
     "Feste Reinigungskräfte pro Objekt",
-    "Regional aus Neufahrn, schnell vor Ort"
+    "Regional aus Neufahrn, schnell vor Ort",
+    "Profi-Technik: Teppich-Tiefenreinigung, Einscheibenmaschine, Arbeitsbühne für Glasflächen in großer Höhe"
   ],
   "besonderheiten": {
     "hausverwaltung": "ista Servicepartner – regelmäßig in Wohnanlagen im Landkreis unterwegs"
@@ -39,7 +39,8 @@
   "nicht_erwaehnen": [
     "Anzahl der Mitarbeiter",
     "Anzahl der Kunden",
-    "Namen von Bestandskunden"
+    "Namen von Bestandskunden",
+    "Schlüsselservice / Reinigung ohne Anwesenheit des Kunden (wird nicht angeboten)"
   ],
   "referenzen": []
 }

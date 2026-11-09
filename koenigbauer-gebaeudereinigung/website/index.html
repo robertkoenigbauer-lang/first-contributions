@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Büroreinigung &amp; Gebäudereinigung Neufahrn, Freising | Königbauer Gebäudereinigung</title>
-<meta name="description" content="Königbauer Gebäudereinigung aus Neufahrn bei Freising: Büroreinigung mit Schlüsselservice, Praxisreinigung, Treppenhausreinigung und Gewerbereinigung im Landkreis Freising und Münchner Norden. Inhabergeführt, Festpreis in 24 Stunden.">
+<meta name="description" content="Königbauer Gebäudereinigung aus Neufahrn bei Freising: Büroreinigung, Praxisreinigung, Treppenhausreinigung und Gewerbereinigung im Landkreis Freising und Münchner Norden. Inhabergeführt, Festpreis in 24 Stunden.">
 <link rel="canonical" href="https://www.koenigbauer-gebaeudereinigung.de/">
 <link rel="icon" href="img/logo-rk.png">
 <meta name="theme-color" content="#121214">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Königbauer Gebäudereinigung – Neufahrn &amp; Freising">
-<meta property="og:description" content="Büroreinigung mit Schlüsselservice. Ein fester Ansprechpartner. Festpreis in 24 Stunden.">
+<meta property="og:description" content="Büro- und Gewerbereinigung vom Inhaber. Ein fester Ansprechpartner. Festpreis in 24 Stunden.">
 <meta property="og:image" content="https://www.koenigbauer-gebaeudereinigung.de/img/robert-koenigbauer.jpg">
 <script type="application/ld+json">
 {
@@ -125,7 +125,7 @@ section{padding:110px 0}
 .leistung.top .icon{background:rgba(0,141,210,.2)}
 .leistung .tag{position:absolute;top:22px;right:22px;font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:var(--blau);color:#fff;padding:5px 10px;border-radius:999px}
 
-/* Schlüsselservice */
+/* Qualität */
 .split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
 .liste{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:16px}
 .liste li{display:flex;gap:14px;align-items:flex-start}
@@ -133,13 +133,10 @@ section{padding:110px 0}
 .liste li span{color:var(--grau)}
 .haken{flex:0 0 28px;height:28px;border-radius:50%;background:var(--blau);display:grid;place-items:center;color:#fff;margin-top:2px}
 .haken svg{width:15px;height:15px}
-.nacht{position:relative;border-radius:26px;background:linear-gradient(165deg,#0d1a26,#121214 60%);padding:34px;color:#fff;overflow:hidden;min-height:420px;box-shadow:var(--schatten)}
-.nacht .mond{position:absolute;top:30px;right:34px;width:58px;height:58px;border-radius:50%;box-shadow:inset -14px -4px 0 0 #fff;opacity:.9}
-.nacht .stern{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;animation:funkeln 3s infinite}
-@keyframes funkeln{50%{opacity:.15}}
-.zeitachse{position:relative;margin-top:84px;display:grid;gap:14px}
-.zeitachse div{display:flex;gap:16px;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 16px}
-.zeitachse time{font-weight:800;color:var(--blau);min-width:58px;font-variant-numeric:tabular-nums}
+.foto-panel{position:relative;margin:0;border-radius:26px;overflow:hidden;min-height:420px;box-shadow:var(--schatten);background:var(--schwarz)}
+.foto-panel img{width:100%;height:100%;min-height:420px;object-fit:cover}
+.foto-panel figcaption{position:absolute;left:18px;bottom:18px;background:#fff;border-radius:14px;padding:12px 16px;box-shadow:var(--schatten)}
+.foto-panel b{display:block;color:var(--schwarz)}.foto-panel span{color:var(--grau);font-size:.9rem}
 
 /* Ablauf */
 .schritte{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;counter-reset:s}
@@ -257,7 +254,7 @@ footer .unten{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display
   </a>
   <nav class="menu">
     <a href="#leistungen">Leistungen</a>
-    <a href="#schluesselservice">Schlüsselservice</a>
+    <a href="#qualitaet">Qualität</a>
     <a href="#ablauf">Ablauf</a>
     <a href="#hausverwaltungen">Hausverwaltungen</a>
     <a href="#kontakt">Kontakt</a>
@@ -270,8 +267,8 @@ footer .unten{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display
   <div class="wrap grid">
     <div>
       <div class="kicker rein">Gebäudereinigung · Neufahrn &amp; Freising</div>
-      <h1 class="rein verz1">Ihr Büro. <em>Sauber</em>, bevor Sie morgens kommen.</h1>
-      <p class="sub rein verz2">Büro-, Praxis- und Gewerbereinigung im Landkreis Freising und Münchner Norden – mit Schlüsselservice, festen Reinigungskräften und dem Inhaber als direktem Ansprechpartner.</p>
+      <h1 class="rein verz1">Saubere Büros. <em>Ein</em> Ansprechpartner.</h1>
+      <p class="sub rein verz2">Büro-, Praxis- und Gewerbereinigung im Landkreis Freising und Münchner Norden – mit festen Reinigungskräften, Profi-Technik und dem Inhaber als direktem Ansprechpartner.</p>
       <div class="hero-cta rein verz3">
         <a class="btn" href="#kontakt">Kostenloses Angebot
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -282,9 +279,8 @@ footer .unten{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display
       <div class="chips rein verz3">
         <span class="chip"><i></i>Handwerksbetrieb seit 2011</span>
         <span class="chip"><i></i>Inhabergeführt</span>
-        <span class="chip"><i></i>Schlüsselservice</span>
         <span class="chip"><i></i>Festpreis in 24 h</span>
-        <span class="chip"><i></i>Versichert inkl. Schlüsselverlust</span>
+        <span class="chip"><i></i>Haftpflichtversichert</span>
         <span class="chip"><i></i>ista Servicepartner</span>
       </div>
     </div>
@@ -317,8 +313,8 @@ footer .unten{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display
     </article>
     <article class="leistung rein verz1">
       <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 20 3M17 6l3 3M15 8l2 2"/></svg></div>
-      <h3>Schlüsselobjekte</h3>
-      <p>Wir reinigen eigenständig, wenn niemand da ist – mit dokumentierter Schlüsselübergabe, festen Zeiten und Versicherung inklusive Schlüsselverlust.</p>
+      <h3>Teppich- &amp; Bodenpflege</h3>
+      <p>Teppich-Tiefenreinigung mit Profi-Geräten, Einscheibenmaschine, Grundreinigung und Pflege von Hartböden.</p>
     </article>
     <article class="leistung rein verz2">
       <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg></div>
@@ -338,33 +334,27 @@ footer .unten{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display
     <article class="leistung rein verz2">
       <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
       <h3>Grund- &amp; Sonderreinigung</h3>
-      <p>Grundreinigung, Bauendreinigung, Umzugsreinigung, Teppich- und Bodenpflege – einmalig oder regelmäßig.</p>
+      <p>Grundreinigung, Bauendreinigung, Umzugsreinigung – einmalig oder regelmäßig.</p>
     </article>
   </div>
 </div></section>
 
-<section id="schluesselservice" class="flaeche"><div class="wrap split">
+<section id="qualitaet" class="flaeche"><div class="wrap split">
   <div>
-    <div class="kicker rein">Schlüsselservice</div>
-    <h2 class="rein">Sie machen Feierabend.<br>Wir übernehmen.</h2>
-    <p class="lead rein" style="margin-bottom:0">Bei Schlüsselobjekten reinigen wir eigenständig nach festem Plan – frühmorgens, abends oder am Wochenende. Sie kommen ins saubere Büro und müssen sich um nichts kümmern.</p>
+    <div class="kicker rein">Qualität</div>
+    <h2 class="rein">Sauber. Zuverlässig.<br>Persönlich.</h2>
+    <p class="lead rein" style="margin-bottom:0">Bei uns sprechen Sie mit dem Inhaber – nicht mit einem Callcenter. Und Sie bekommen Profi-Technik statt Haushaltsgeräten.</p>
     <ul class="liste">
-      <li class="rein"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Dokumentierte Schlüsselübergabe</b><span>Schriftliches Übergabeprotokoll, nur eingewiesene Mitarbeiter haben Zugang.</span></div></li>
+      <li class="rein"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Ein fester Ansprechpartner</b><span>Robert Königbauer kümmert sich persönlich – vom Angebot bis zur Reklamation.</span></div></li>
       <li class="rein verz1"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Feste Reinigungskräfte</b><span>Immer dieselben Gesichter in Ihrem Objekt – keine wechselnden Aushilfen.</span></div></li>
-      <li class="rein verz2"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Qualitätskontrolle durch den Inhaber</b><span>Regelmäßige Kontrollen vor Ort und ein direkter Draht, wenn etwas nicht passt.</span></div></li>
-      <li class="rein verz3"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Versichert – auch bei Schlüsselverlust</b><span>Unsere Betriebshaftpflichtversicherung deckt auch den Verlust von Schlüsseln ab.</span></div></li>
-      <li class="rein verz3"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Alarmanlage &amp; Abschließen</b><span>Wir halten uns an Ihre Abläufe – Licht aus, Fenster zu, Alarm scharf.</span></div></li>
+      <li class="rein verz2"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Profi-Technik</b><span>Teppich-Tiefenreinigung, Einscheibenmaschine und Arbeitsbühne für Glasflächen in großer Höhe.</span></div></li>
+      <li class="rein verz3"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Betriebshaftpflichtversichert</b><span>Ihr Objekt ist bei uns abgesichert.</span></div></li>
     </ul>
   </div>
-  <div class="nacht rein verz1" id="nacht">
-    <div class="mond"></div>
-    <div class="zeitachse">
-      <div><time>18:30</time>Ihr Team macht Feierabend</div>
-      <div><time>19:00</time>Wir schließen auf &amp; reinigen</div>
-      <div><time>21:00</time>Kontrolle, Licht aus, abschließen</div>
-      <div><time>07:30</time>Sie kommen ins saubere Büro ✨</div>
-    </div>
-  </div>
+  <figure class="foto-panel rein verz1">
+    <img loading="lazy" src="img/galerie/3.jpg" alt="Glasreinigung mit Arbeitsbühne in einer Lichthalle">
+    <figcaption><b>Profi-Technik bis unters Dach</b><span>Glasreinigung mit Arbeitsbühne</span></figcaption>
+  </figure>
 </div></section>
 
 <section id="ablauf"><div class="wrap">
@@ -431,8 +421,7 @@ footer .unten{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display
   <div class="kicker rein">FAQ</div>
   <h2 class="rein" style="margin-bottom:24px">Häufige Fragen</h2>
   <details class="rein"><summary>Was kostet eine Büroreinigung?</summary><p>Das hängt von Fläche, Reinigungsintervall und Bodenbelägen ab. Nach einer kostenlosen Besichtigung erhalten Sie innerhalb von 24 Stunden einen verbindlichen Festpreis.</p></details>
-  <details class="rein"><summary>Wie funktioniert der Schlüsselservice?</summary><p>Sie übergeben uns einen Schlüssel oder Transponder gegen schriftliches Protokoll. Nur eingewiesene, feste Mitarbeiter haben Zugang. Über unsere Betriebshaftpflichtversicherung ist auch ein Schlüsselverlust abgesichert. Wir reinigen zu den vereinbarten Zeiten und halten uns an Ihre Abläufe (Alarmanlage, Abschließen, Licht).</p></details>
-  <details class="rein"><summary>Reinigen Sie auch früh morgens, abends oder am Wochenende?</summary><p>Ja. Wir richten uns nach Ihrem Betrieb, damit Ihr Team ungestört arbeiten kann.</p></details>
+  <details class="rein"><summary>Reinigen Sie auch früh morgens, abends oder am Wochenende?</summary><p>Nach Absprache ja – wir stimmen die Reinigungszeiten mit Ihnen ab, damit Ihr Betrieb möglichst wenig gestört wird.</p></details>
   <details class="rein"><summary>Arbeiten Sie auch für Hausverwaltungen?</summary><p>Ja – Treppenhaus- und Objektreinigung für Hausverwaltungen und WEGs, inklusive Reinigungsnachweis.</p></details>
   <details class="rein"><summary>Wie schnell können Sie starten?</summary><p>In der Regel innerhalb von 1–2 Wochen nach Auftragserteilung, bei Sonderreinigungen oft schneller.</p></details>
 </div></section>
@@ -472,7 +461,7 @@ footer .unten{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display
   <div class="grid">
     <div><img src="img/logo-rk-dunkel.png" alt="Königbauer Gebäudereinigung"><p>Gebäudereinigung aus Neufahrn bei Freising – für Büros, Praxen, Gewerbe und Hausverwaltungen.</p></div>
     <div><b>Kontakt</b>Robert Königbauer<br>Georg-Stegschuster-Straße 18<br>85375 Neufahrn bei Freising<br><a href="tel:+491721083808">0172 108 3808</a><br><a href="mailto:info@koenigbauer-gebaeudereinigung.de">info@koenigbauer-gebaeudereinigung.de</a></div>
-    <div><b>Leistungen</b><a href="#leistungen">Büroreinigung</a><br><a href="#schluesselservice">Schlüsselservice</a><br><a href="#leistungen">Praxisreinigung</a><br><a href="#hausverwaltungen">Treppenhausreinigung</a><br><a href="#leistungen">Glasreinigung</a></div>
+    <div><b>Leistungen</b><a href="#leistungen">Büroreinigung</a><br><a href="#qualitaet">Qualität</a><br><a href="#leistungen">Praxisreinigung</a><br><a href="#hausverwaltungen">Treppenhausreinigung</a><br><a href="#leistungen">Glasreinigung</a></div>
   </div>
   <div class="unten"><span>© <span id="jahr">2026</span> Königbauer Gebäudereinigung</span><span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></span></div>
 </div></footer>
@@ -487,9 +476,6 @@ addEventListener('scroll',kopfPruefen,{passive:true});kopfPruefen();
 // Elemente beim Scrollen einblenden
 const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('sichtbar');io.unobserve(x.target)}}),{threshold:.12});
 document.querySelectorAll('.rein').forEach(el=>io.observe(el));
-// Sterne im Nachtbild
-const nacht=document.getElementById('nacht');
-for(let i=0;i<26;i++){const s=document.createElement('i');s.className='stern';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*45+'%';s.style.animationDelay=Math.random()*3+'s';nacht.appendChild(s)}
 // Slider: Pfeile, Punkte, Autoplay
 const slider=document.getElementById('slider'),slides=[...slider.children],punkte=document.getElementById('punkte');
 slides.forEach((_,i)=>{const b=document.createElement('button');b.type='button';b.ariaLabel='Bild '+(i+1);b.onclick=()=>gehe(i);punkte.appendChild(b)});

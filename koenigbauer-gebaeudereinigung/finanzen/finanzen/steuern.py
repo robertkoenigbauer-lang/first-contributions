@@ -64,7 +64,7 @@ def jahresschaetzung(gewinn, cfg):
     zve = max(0.0, gewinn + (cfg.get("zve_partner_euro", 0) if zusammen else 0) - abzuege)
     est_tarif = einkommensteuer(zve, jahr, zusammen)
     anrechnung = min(GEWST_ANRECHNUNG_FAKTOR * messbetrag, gewst, est_tarif)
-    est = max(0.0, est_tarif - anrechnung)
+    est = max(0.0, est_tarif - anrechnung - (cfg.get("einbehaltene_lohnsteuer_partner_jahr", 0) if zusammen else 0))
     so = soli(est, jahr, zusammen)
     kist = round(est * cfg["kirchensteuer_satz"], 2) if cfg.get("kirchensteuer") else 0.0
     kammer = cfg.get("kammer_und_verbaende", {})

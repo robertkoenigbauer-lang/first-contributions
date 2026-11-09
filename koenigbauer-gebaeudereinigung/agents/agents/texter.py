@@ -12,13 +12,13 @@ SEGMENT_AUFHAENGER = {
     "hausverwaltung": "Treppenhaus- und Objektreinigung für Ihre verwalteten Wohnanlagen – mit Reinigungsnachweis und festen Intervallen. Als ista Servicepartner sind wir ohnehin regelmäßig in Wohnanlagen im Landkreis unterwegs",
     "versicherung": "eine saubere, gepflegte Agentur, in der sich Ihre Kunden wohlfühlen",
     "steuer_recht": "diskrete, zuverlässige Büroreinigung außerhalb Ihrer Mandantenzeiten",
-    "firma_buero": "Büroreinigung mit Schlüsselservice: Wir reinigen abends oder frühmorgens, wenn niemand da ist – abgesichert durch unsere Betriebshaftpflicht inklusive Schlüsselverlust. Sie kommen ins saubere Büro und müssen sich um nichts kümmern",
+    "firma_buero": "zuverlässige Büroreinigung mit festen Reinigungskräften und dem Inhaber als direktem Ansprechpartner – Sie müssen sich um nichts kümmern",
     "praxis": "hygienische Praxisreinigung nach Ihren Hygieneplänen, außerhalb der Sprechzeiten",
     "bank": "gepflegte Filial- und Kundenbereiche, auch SB-Zonen",
     "kita_schule": "gründliche, kindgerechte Reinigung Ihrer Einrichtung",
     "laden": "ein sauberer erster Eindruck für Ihre Kunden – Laden- und Schaufensterreinigung",
     "fitness_hotel": "Reinigung von Trainings-, Umkleide- und Sanitärbereichen mit festen Intervallen",
-    "gewerbe": "Unterhaltsreinigung für Ihr Gewerbeobjekt – Büros, Treppenhäuser, Sanitär – auf Wunsch als Schlüsselobjekt außerhalb Ihrer Geschäftszeiten",
+    "gewerbe": "Unterhaltsreinigung für Ihr Gewerbeobjekt – Büros, Treppenhäuser, Sanitär",
 }
 
 SYSTEM = """Du bist der Vertriebstexter von {inhaber}, Inhaber der {firma} in {plz_ort}.
@@ -29,7 +29,8 @@ Regeln:
 - Keine Herabsetzung von Mitbewerbern, keine Superlative ("bester", "günstigster"), keine Garantien, die nicht im Firmenprofil stehen.
 - Klarer nächster Schritt: kostenlose Besichtigung / kurzer Anruf.
 - Nenne niemals Mitarbeiter- oder Kundenzahlen und keine Namen von Bestandskunden.
-- Bei Büros und Gewerbe den Schlüsselservice betonen (Reinigung außerhalb der Geschäftszeiten).
+- Biete keinen Schlüsselservice und keine Reinigung ohne Anwesenheit des Kunden an – das gibt es nicht.
+- Bei Büros und Gewerbe den festen Ansprechpartner, feste Reinigungskräfte und Profi-Technik betonen.
 - Den Hinweis "ista Servicepartner" nur bei Hausverwaltungen verwenden.
 - Am Ende ein Satz: Wer keine weiteren Informationen wünscht, genügt eine kurze Nachricht.
 Antworte ausschließlich als JSON."""
