@@ -1,7 +1,7 @@
 # Wachstumsplan Königbauer Gebäudereinigung – 90 Tage
 
 **Ziel:** Mit wenig Geld maximal sichtbar werden, systematisch Gewerbekunden gewinnen und die Büroarbeit durch Automatisierung klein halten.
-**Zielgruppen:** Hausverwaltungen/WEGs (Treppenhäuser = Daueraufträge), Firmen mit Büros, Arztpraxen, Kanzleien, Versicherungsagenturen, Banken, Läden, Fitnessstudios, Hotels im Umkreis von 20 km um Neufahrn (Freising, Eching, Hallbergmoos, Unterschleißheim, Garching, Erding, Moosburg, Flughafen-Umfeld).
+**Zielgruppen (Priorität):** 1. Firmen mit Büros und **Schlüsselobjekte** (Reinigung außerhalb der Geschäftszeiten), 2. Arztpraxen, Kanzleien, Versicherungsagenturen, 3. Hausverwaltungen/WEGs (Argument: ista Servicepartner). Weitere: Arztpraxen, Kanzleien, Versicherungsagenturen, Banken, Läden, Fitnessstudios, Hotels im Umkreis von 20 km um Neufahrn (Freising, Eching, Hallbergmoos, Unterschleißheim, Garching, Erding, Moosburg, Flughafen-Umfeld).
 
 ---
 
@@ -23,13 +23,13 @@ Auch wichtig: **keine Aussagen gegen Mitbewerber** („besser als XY", „die Bi
 ---
 
 ## Woche 1 – Fundament (fast kostenlos)
-- [ ] **Domain** sichern: `koenigbauer-gebaeudereinigung.de` (Hauptdomain, ohne Umlaute – lässt sich in E-Mails/Visitenkarten sicher tippen) **und** `königbauer-gebäudereinigung.de` als Weiterleitung. Kosten ~1–2 €/Monat je Domain (z. B. bei IONOS, Strato, all-inkl., Netcup).
-- [ ] **Website** aus `website/` hochladen (Hosting ~3–5 €/Monat oder kostenlos via Netlify/Cloudflare Pages). Platzhalter (Telefon, Adresse, USt-ID) ausfüllen, **Profi-Foto** als `website/img/robert-koenigbauer.jpg` ablegen, Impressum & Datenschutz fertigstellen.
+- [ ] **Domain** `koenigbauer-gebaeudereinigung.de` von IONOS zu einem günstigen Hoster umziehen (Anleitung im README, Abschnitt 1).
+- [ ] **Website** aus `website/` hochladen, dein Foto mit `foto_aufbereiten.py` einsetzen, Hoster-Namen in `datenschutz.html` eintragen.
 - [ ] **E-Mail-Adresse** info@… und robert@… einrichten.
 - [ ] **Google-Unternehmensprofil** anlegen/optimieren (business.google.com): Kategorie „Gebäudereinigungsdienst", Servicegebiete eintragen, 10+ Fotos (Team, Fahrzeug, vorher/nachher), Leistungen, Öffnungszeiten, Website-Link. **Das ist der wichtigste Einzelschritt für „Gebäudereinigung Neufahrn".**
 - [ ] **Bewertungen**: Jeden Bestandskunden persönlich um eine Google-Bewertung bitten (Link/QR-Code aus dem Profil). Ziel: 15 Bewertungen in 30 Tagen. Bewertungen sind der größte Hebel im Maps-Ranking.
 - [ ] Einträge in **Bing Places, Apple Business Connect, Gelbe Seiten, Das Örtliche, 11880, Cylex, Handwerkskammer-Betriebsbörse** – überall identischer Name/Adresse/Telefon.
-- [ ] **Fotoshooting**: 1 Stunde mit lokalem Fotografen (~150–300 €): Porträt, du mit Team, du im Objekt. Für Website, Visitenkarte, Flyer, LinkedIn.
+- [ ] **Fotos mit dem Handy**: 1 Porträt (Tageslicht am Fenster, ruhiger Hintergrund, Arbeitskleidung mit Logo, Handy auf Augenhöhe), 4–6 Arbeitsfotos (vorher/nachher, Team bei der Arbeit, Fahrzeug). Mit `website/foto_aufbereiten.py` aufbereiten.
 
 ## Woche 2 – Druck & Werbung starten
 - [ ] **Visitenkarten** (`print/visitenkarte.html` → PDF) bei Druckerei bestellen (z. B. 500 Stück ~20–30 € bei Online-Druckereien).
@@ -45,7 +45,7 @@ Jede Woche, ca. 1–2 Stunden deiner Zeit:
 3. **Nachfass-Anrufe** 7 Tage nach dem Brief mit Leitfaden aus der Anrufliste (oder eine Teilzeit-Kraft / Bürohilfe übernimmt – du hast ja Personal-Budget).
 4. **Status pflegen:** `python run.py status 12 termin` → Agent plant den nächsten Schritt automatisch.
 
-Reihenfolge nach Potenzial: **Hausverwaltungen** zuerst (eine Verwaltung = viele Treppenhäuser), dann Praxen, Firmenbüros, Gewerbeobjekte, Kanzleien/Versicherungen, Läden.
+Reihenfolge nach Potenzial: **Firmenbüros und Gewerbeobjekte** zuerst (Schlüsselobjekte, Daueraufträge), dann Praxen, Kanzleien/Versicherungen, Hausverwaltungen (mit ista-Argument), Läden.
 
 **Rechnung:** 25 Briefe/Woche × 12 Wochen = 300 Firmen. Bei realistisch 2–4 % Abschluss = **6–12 neue Daueraufträge**. Kosten Porto/Druck ≈ 300–400 €.
 

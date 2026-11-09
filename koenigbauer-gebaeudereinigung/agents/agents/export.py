@@ -6,27 +6,38 @@ from pathlib import Path
 
 AUSGABE = Path(__file__).resolve().parent.parent / "ausgabe"
 
+LOGO = Path(__file__).resolve().parents[2] / "website" / "img" / "logo-rk.png"
+
 BRIEF_CSS = """
-@page{size:A4;margin:0}body{margin:0;font-family:Arial,sans-serif;font-size:10.5pt;color:#1b2733}
+@page{size:A4;margin:0}body{margin:0;font-family:Arial,sans-serif;font-size:10.5pt;color:#2a2a2b}
 .brief{width:210mm;height:297mm;padding:0 20mm 0 25mm;position:relative;page-break-after:always;box-sizing:border-box}
-.kopf{height:45mm;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #2bb673;padding-bottom:4mm}
-.kopf b{font-size:16pt;color:#0b3d6e;letter-spacing:.05em}.kopf small{color:#5b6b7b;display:block;letter-spacing:.2em}
-.absender{font-size:7pt;color:#5b6b7b;margin-top:5mm;text-decoration:underline}
+.kopf{height:45mm;display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:4mm}
+.kopf img{height:22mm}.kopf .kontakt{text-align:right;font-size:8.5pt;line-height:1.5}
+.kopf .kontakt b{color:#121214;font-size:10pt}
+.linie{height:1.2mm;background:linear-gradient(90deg,#2a2a2b 50%,#008dd2 50%)}
+.absender{font-size:7pt;color:#5f6670;margin-top:5mm;text-decoration:underline}
 .anschrift{height:40mm;padding-top:2mm;line-height:1.4}
-.datum{text-align:right;margin-bottom:8mm}.betreff{font-weight:bold;margin-bottom:6mm}
+.datum{text-align:right;margin-bottom:8mm}.betreff{font-weight:bold;margin-bottom:6mm;color:#121214}
 .text{white-space:pre-line;line-height:1.5}
-.fuss{position:absolute;bottom:12mm;left:25mm;right:20mm;font-size:7.5pt;color:#5b6b7b;border-top:1px solid #dde5ee;padding-top:2mm}
+.fuss{position:absolute;bottom:12mm;left:25mm;right:20mm;font-size:7.5pt;color:#5f6670;border-top:1px solid #e4e7eb;padding-top:2mm}
 """
+
+
+def _logo_src():
+    import base64
+    return "data:image/png;base64," + base64.b64encode(LOGO.read_bytes()).decode() if LOGO.exists() else ""
 
 
 def serienbriefe(eintraege, profil, datei="briefe.html"):
     AUSGABE.mkdir(exist_ok=True)
     e = html.escape
+    logo = _logo_src()
     seiten = []
     for lead, texte in eintraege:
         seiten.append(f"""<div class="brief">
-<div class="kopf"><div><b>KÖNIGBAUER</b><small>GEBÄUDEREINIGUNG</small></div>
-<div style="text-align:right;font-size:8.5pt">{e(profil['inhaber'])}<br>{e(profil['telefon'])}<br>{e(profil['email'])}</div></div>
+<div class="kopf"><img src="{logo}" alt="Königbauer Gebäudereinigung">
+<div class="kontakt"><b>{e(profil['firma'])}</b><br>{e(profil['inhaber'])}<br>Tel. {e(profil['telefon'])}<br>{e(profil['email'])}<br>{e(profil['website'])}</div></div>
+<div class="linie"></div>
 <div class="absender">{e(profil['firma'])} · {e(profil['strasse'])} · {e(profil['plz_ort'])}</div>
 <div class="anschrift">{e(lead['name'])}<br>{e(lead.get('ansprechpartner') or '')}{'<br>' if lead.get('ansprechpartner') else ''}{e(lead.get('strasse') or '')}<br>{e(lead.get('plz') or '')} {e(lead.get('ort') or '')}</div>
 <div class="datum">{e(profil['zentrum']['name'])}, {date.today().strftime('%d.%m.%Y')}</div>

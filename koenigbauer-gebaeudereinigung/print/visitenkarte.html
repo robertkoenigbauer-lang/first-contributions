@@ -1,48 +1,56 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8">
 <title>Visitenkarte Königbauer</title>
-<!-- Druck: Im Browser öffnen → Drucken → "Als PDF speichern", Ränder: keine, Hintergrundgrafiken: an.
-     Format 85 x 55 mm + 3 mm Beschnitt (= 91 x 61 mm). Seite 1 = Vorderseite, Seite 2 = Rückseite. -->
+<!-- Druck: Browser → Drucken → "Als PDF speichern", Ränder: keine, Hintergrundgrafiken: an.
+     Format 85 x 55 mm + 3 mm Beschnitt rundum (= 91 x 61 mm). Seite 1 = Vorderseite, Seite 2 = Rückseite.
+     Texte/Logos halten mind. 3 mm Abstand zum Endformat (Sicherheitsabstand). -->
 <style>
 @page{size:91mm 61mm;margin:0}
-:root{--blau:#0b3d6e;--blau2:#1565c0;--gruen:#2bb673}
+:root{--schwarz:#121214;--anthrazit:#2a2a2b;--blau:#008dd2}
 *{box-sizing:border-box}
 body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;background:#fff}
-.karte{width:91mm;height:61mm;padding:3mm;page-break-after:always;position:relative;overflow:hidden}
-.innen{width:85mm;height:55mm;padding:5mm;position:relative}
-.vorne{background:linear-gradient(135deg,var(--blau),var(--blau2));color:#fff}
-.vorne .innen{display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
-.vorne h1{font-size:17pt;margin:0;letter-spacing:.02em}
-.vorne .sub{font-size:8pt;letter-spacing:.25em;text-transform:uppercase;opacity:.9;margin-top:1mm}
-.vorne .linie{width:16mm;height:1.2mm;background:var(--gruen);margin:4mm 0}
-.vorne .claim{font-size:8.5pt}
-.hinten .innen{display:grid;grid-template-columns:24mm 1fr;gap:4mm;align-items:center}
-.hinten img{width:24mm;height:30mm;object-fit:cover;border-radius:2mm;background:#cfd8e3}
-.hinten h2{font-size:11pt;margin:0;color:var(--blau)}
-.hinten .rolle{font-size:7.5pt;color:#5b6b7b;margin-bottom:2.5mm}
-.hinten p{font-size:7.5pt;margin:.6mm 0;color:#1b2733}
-.hinten .web{color:var(--blau2);font-weight:700}
-.hinten .band{position:absolute;left:0;right:0;bottom:0;height:2mm;background:var(--gruen)}
-@media screen{body{background:#e9eef3;padding:20px}.karte{margin:0 auto 20px;box-shadow:0 4px 14px rgba(0,0,0,.2)}}
+.karte{width:91mm;height:61mm;page-break-after:always;position:relative;overflow:hidden}
+/* Vorderseite */
+.vorne{background:var(--schwarz);color:#fff}
+.vorne::before{content:"";position:absolute;width:70mm;height:70mm;border-radius:50%;background:rgba(0,141,210,.35);filter:blur(14mm);right:-26mm;top:-30mm}
+.vorne .logo{position:absolute;left:9mm;top:12mm;height:21mm}
+.vorne .name{position:absolute;left:9mm;bottom:10mm;font-weight:800;font-size:12pt;letter-spacing:.01em;line-height:1.15}
+.vorne .name small{display:block;font-weight:600;font-size:6.3pt;letter-spacing:.32em;text-transform:uppercase;color:var(--blau);margin-top:1mm}
+.vorne .streifen{position:absolute;right:0;top:0;bottom:0;width:3mm;background:var(--blau)}
+/* Rückseite */
+.hinten{background:#fff;color:var(--anthrazit)}
+.hinten .inhalt{position:absolute;left:9mm;right:8mm;top:9mm;bottom:9mm;display:grid;grid-template-columns:22mm 1fr;gap:4.5mm;align-items:center}
+.hinten .foto{width:23mm;height:29mm;border-radius:2.5mm;overflow:hidden;background:var(--schwarz);display:grid;place-items:center}
+.hinten .foto img{width:100%;height:100%;object-fit:cover}
+.hinten .foto.leer img{width:70%;height:auto;object-fit:contain}
+.hinten h2{font-size:11pt;margin:0;color:var(--schwarz)}
+.hinten .rolle{font-size:6.8pt;color:var(--blau);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:.6mm 0 2.6mm}
+.hinten p{font-size:7pt;margin:.7mm 0;display:flex;gap:1.8mm;align-items:center;white-space:nowrap}
+.hinten p span{white-space:normal;line-height:1.25}
+.hinten p svg{width:2.8mm;height:2.8mm;flex:0 0 auto;color:var(--blau)}
+.hinten .web{font-weight:800;color:var(--schwarz)}
+.hinten .unten{position:absolute;left:0;right:0;bottom:0;height:3.5mm;background:linear-gradient(90deg,var(--schwarz) 50%,var(--blau) 50%)}
+@media screen{body{background:#dfe4ea;padding:24px;display:flex;flex-wrap:wrap;gap:24px;justify-content:center}.karte{box-shadow:0 8px 24px rgba(0,0,0,.25);zoom:1.5}}
 </style></head>
 <body>
-<div class="karte vorne"><div class="innen">
-  <h1>KÖNIGBAUER</h1>
-  <div class="sub">Gebäudereinigung</div>
-  <div class="linie"></div>
-  <div class="claim">Büro · Treppenhaus · Praxis · Gewerbe<br>Neufahrn · Freising · Münchner Norden</div>
-</div></div>
+<div class="karte vorne">
+  <img class="logo" src="../website/img/logo-rk-dunkel.png" alt="RK Logo">
+  <div class="name">Königbauer<small>Gebäudereinigung</small></div>
+  <div class="streifen"></div>
+</div>
 
-<div class="karte hinten"><div class="innen">
-  <img src="../website/img/robert-koenigbauer.jpg" alt="Robert Königbauer">
-  <div>
-    <h2>Robert Königbauer</h2>
-    <div class="rolle">Inhaber · Ihr persönlicher Ansprechpartner</div>
-    <p>📞 0XXX / XXXXXXX</p>
-    <p>✉ info@koenigbauer-gebaeudereinigung.de</p>
-    <p>📍 STRASSE HAUSNR, 85375 Neufahrn</p>
-    <p class="web">koenigbauer-gebaeudereinigung.de</p>
+<div class="karte hinten">
+  <div class="inhalt">
+    <div class="foto"><img src="../website/img/robert-koenigbauer.jpg" alt="Robert Königbauer" onerror="this.onerror=null;this.src='../website/img/logo-rk-dunkel.png';this.parentNode.classList.add('leer')"></div>
+    <div>
+      <h2>Robert Königbauer</h2>
+      <div class="rolle">Inhaber</div>
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>0172 108 3808</p>
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>info@koenigbauer-gebaeudereinigung.de</p>
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 22s8-7.6 8-13a8 8 0 0 0-16 0c0 5.4 8 13 8 13z"/><circle cx="12" cy="9" r="3"/></svg><span>Georg-Stegschuster-Str. 18<br>85375 Neufahrn bei Freising</span></p>
+      <p class="web"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg>koenigbauer-gebaeudereinigung.de</p>
+    </div>
   </div>
-  <div class="band"></div>
-</div></div>
+  <div class="unten"></div>
+</div>
 </body></html>

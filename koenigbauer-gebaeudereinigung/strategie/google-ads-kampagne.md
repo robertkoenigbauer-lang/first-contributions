@@ -18,7 +18,7 @@ Du zahlst Google pro **Klick**, damit deine Anzeige ganz oben erscheint, wenn je
 | Gebotsstrategie | Erste 2–3 Wochen „Klicks maximieren" mit Max. CPC 4 €, danach „Conversions maximieren" |
 | Werbezeiten | Mo–Fr 6–20 Uhr, Sa 8–14 Uhr (B2B-Kunden suchen im Büro) |
 | Geräte | alle; Anruf-Erweiterung aktiv |
-| Conversion-Tracking | Formular abgesendet + Anrufe über Anzeige + Klick auf Telefonnummer der Website (Pflicht, sonst fliegst du blind) |
+| Conversion-Tracking | Anrufe über die Anzeige (ohne Website-Code möglich). Formular-Tracking auf der Website erst mit Cookie-Einwilligungsbanner + Ergänzung der Datenschutzerklärung |
 
 **Realistische Erwartung:** Klickpreise für „Gebäudereinigung" im Raum München liegen grob bei 2–6 €. Bei 450 € ≈ 100–180 Klicks/Monat. Bei 5–10 % Anfragequote ≈ **5–15 Anfragen/Monat**. Ein Büro-Dauerauftrag ist oft mehrere tausend Euro im Jahr wert – ein einziger gewonnener Kunde kann das Budget refinanzieren.
 
@@ -53,13 +53,13 @@ Keyword-Optionen: `[exakt]` und `"Wortgruppe"` – **keine** weitgehend passende
 9. Feste Reinigungskräfte
 10. Regional aus Neufahrn
 11. Jetzt Angebot anfordern
-12. Probereinigung halber Preis
+12. Schlüsselservice fürs Büro
 
 **Beschreibungen (max. 90 Zeichen)**
 1. Büros, Treppenhäuser, Praxen: zuverlässig gereinigt. Kostenlose Besichtigung vor Ort.
 2. Kein Callcenter – Sie sprechen direkt mit dem Inhaber. Festpreis-Angebot in 24 Stunden.
 3. Feste Reinigungskräfte & Qualitätsprotokoll. Für Firmen und Hausverwaltungen im Raum Freising.
-4. Neukunden: Probereinigung zum halben Preis. Jetzt anrufen oder Angebot online anfordern.
+4. Schlüsselservice: Wir reinigen, wenn Sie Feierabend haben. Jetzt Angebot anfordern.
 
 **Erweiterungen (Assets):** Anruf (deine Nummer), Standort (verknüpftes Unternehmensprofil), Sitelinks: „Büroreinigung", „Treppenhausreinigung", „Praxisreinigung", „Angebot anfordern"; Zusatzinfos: „Festpreis", „Kostenlose Besichtigung", „Feste Teams".
 

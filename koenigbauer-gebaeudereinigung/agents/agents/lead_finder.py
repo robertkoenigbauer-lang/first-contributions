@@ -10,18 +10,18 @@ OVERPASS_URLS = ["https://overpass-api.de/api/interpreter", "https://overpass.ku
 
 # Segment -> (OSM-Filter, Basis-Score). Höherer Score = größeres/regelmäßigeres Reinigungsvolumen.
 SEGMENTE = {
-    "hausverwaltung": (['office"="property_management', 'office"="estate_agent'], 95),
-    "versicherung":   (['office"="insurance'], 70),
-    "steuer_recht":   (['office"="tax_advisor', 'office"="lawyer', 'office"="notary', 'office"="accountant'], 70),
+    "hausverwaltung": (['office"="property_management', 'office"="estate_agent'], 80),
+    "versicherung":   (['office"="insurance'], 80),
+    "steuer_recht":   (['office"="tax_advisor', 'office"="lawyer', 'office"="notary', 'office"="accountant'], 80),
     "firma_buero":    (['office"="company', 'office"="it', 'office"="consulting', 'office"="logistics',
-                        'office"="employment_agency', 'office"="architect', 'office"="engineer'], 80),
+                        'office"="employment_agency', 'office"="architect', 'office"="engineer'], 95),
     "praxis":         (['amenity"="doctors', 'amenity"="dentist', 'healthcare"="physiotherapist'], 85),
     "bank":           (['amenity"="bank'], 60),
     "kita_schule":    (['amenity"="kindergarten', 'amenity"="childcare'], 55),
     "laden":          (['shop"="car', 'shop"="furniture', 'shop"="optician', 'shop"="hairdresser',
                         'shop"="clothes', 'shop"="electronics'], 45),
     "fitness_hotel":  (['leisure"="fitness_centre', 'tourism"="hotel'], 65),
-    "gewerbe":        (['building"="office', 'building"="commercial'], 75),
+    "gewerbe":        (['building"="office', 'building"="commercial'], 90),
 }
 
 

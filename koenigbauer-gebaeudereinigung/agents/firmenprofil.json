@@ -2,22 +2,25 @@
   "firma": "Königbauer Gebäudereinigung",
   "inhaber": "Robert Königbauer",
   "rolle": "Inhaber",
-  "strasse": "STRASSE HAUSNR",
+  "strasse": "Georg-Stegschuster-Straße 18",
   "plz_ort": "85375 Neufahrn bei Freising",
-  "telefon": "0XXX / XXXXXXX",
+  "telefon": "0172 108 3808",
   "email": "info@koenigbauer-gebaeudereinigung.de",
   "website": "www.koenigbauer-gebaeudereinigung.de",
   "zentrum": {"name": "Neufahrn bei Freising", "lat": 48.3156, "lon": 11.6650},
   "radius_km": 20,
-  "leistungen": ["Büroreinigung", "Treppenhausreinigung", "Praxis- und Kanzleireinigung", "Ladenreinigung", "Glas- und Fensterreinigung", "Grund- und Sonderreinigung"],
+  "schwerpunkt": "Büroreinigung und Schlüsselobjekte (Reinigung außerhalb der Geschäftszeiten mit eigenem Schlüssel)",
+  "leistungen": ["Büroreinigung", "Reinigung von Schlüsselobjekten", "Praxis- und Kanzleireinigung", "Treppenhausreinigung", "Glas- und Fensterreinigung", "Grund- und Sonderreinigung"],
   "usps": [
-    "Fester Ansprechpartner: der Inhaber persönlich",
+    "Inhabergeführt: Robert Königbauer ist persönlich Ansprechpartner",
+    "Schlüsselservice: Reinigung außerhalb der Geschäftszeiten mit dokumentierter Schlüsselübergabe",
     "Festpreis-Angebot innerhalb von 24 Stunden nach kostenloser Besichtigung",
     "Feste Reinigungskräfte pro Objekt",
-    "Qualitätskontrollen mit Protokoll",
-    "Regional in Neufahrn, schnell vor Ort"
+    "Regional aus Neufahrn, schnell vor Ort"
   ],
-  "angebot_neukunden": "Kostenlose Besichtigung und Probereinigung zum halben Preis",
+  "besonderheiten": {"hausverwaltung": "ista Servicepartner – regelmäßig in Wohnanlagen im Landkreis unterwegs"},
+  "angebot_neukunden": "Kostenlose Besichtigung und Festpreis-Angebot innerhalb von 24 Stunden",
   "tonalitaet": "freundlich, direkt, bodenständig-bayerisch, per Sie, kurz, keine Floskeln, kein Marketing-Sprech",
+  "nicht_erwaehnen": ["Anzahl der Mitarbeiter", "Anzahl der Kunden", "Namen von Bestandskunden"],
   "referenzen": []
 }

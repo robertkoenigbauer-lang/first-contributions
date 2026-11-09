@@ -1,0 +1,35 @@
+{
+  "_hinweis": "Werte aus deinen letzten Bescheiden eintragen. Alles mit 'PRÜFEN' ist eine Schätzung.",
+  "steuerjahr": 2027,
+  "rechtsform": "Einzelunternehmen",
+  "gewinnermittlung": "EÜR",
+  "veranlagung": "einzeln",
+  "_veranlagung_info": "'einzeln' oder 'zusammen' (Ehegatten-Splitting) – PRÜFEN",
+  "zve_partner_euro": 0,
+  "kirchensteuer": false,
+  "kirchensteuer_satz": 0.08,
+  "gewerbesteuer_hebesatz_prozent": 350,
+  "_hebesatz_info": "Neufahrn b. Freising laut IHK-Tabelle 2025: 350 % – mit Gewerbesteuerbescheid abgleichen",
+  "ust_voranmeldung": "monat",
+  "_ust_info": "'monat' oder 'quartal'; mit Dauerfristverlängerung verschiebt sich die Fälligkeit um 1 Monat",
+  "dauerfristverlaengerung": false,
+  "ust_versteuerung": "soll",
+  "_ust_versteuerung_info": "'soll' (nach Rechnungsdatum) oder 'ist' (nach Zahlungseingang) – PRÜFEN",
+  "vorauszahlungen": {
+    "einkommensteuer_pro_quartal": 0,
+    "gewerbesteuer_pro_quartal": 0,
+    "_info": "Beträge aus dem letzten Steuerbescheid / Vorauszahlungsbescheid eintragen"
+  },
+  "abzuege_privat_jahr": {
+    "krankenversicherung_pflege": 0,
+    "altersvorsorge": 0,
+    "sonstige_sonderausgaben": 0
+  },
+  "kammer_und_verbaende": {
+    "handwerkskammer_grundbeitrag": 0,
+    "handwerkskammer_zusatzbeitrag_prozent_gewerbeertrag": 0,
+    "bg_bau_jahresbeitrag_geschaetzt": 0,
+    "_info": "Aus den letzten Beitragsbescheiden der HWK München und der BG BAU eintragen"
+  },
+  "sicherheitszuschlag_ruecklage": 0.10
+}

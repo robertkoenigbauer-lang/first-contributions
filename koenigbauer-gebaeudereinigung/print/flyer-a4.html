@@ -1,63 +1,75 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8">
-<title>Flyer Königbauer Gebäudereinigung</title>
-<!-- A4-Infoblatt zum Verschicken (Brief-Beilage, PDF-Anhang, Auslage). Drucken → Als PDF speichern, Hintergrundgrafiken an. -->
+<title>Infoblatt Königbauer Gebäudereinigung</title>
+<!-- A4-Infoblatt (Briefbeilage, PDF-Anhang, Auslage). Drucken → Als PDF speichern, Ränder keine, Hintergrundgrafiken an. -->
 <style>
 @page{size:A4;margin:0}
-:root{--blau:#0b3d6e;--blau2:#1565c0;--gruen:#2bb673;--hell:#f4f7fb;--text:#1b2733;--grau:#5b6b7b}
+:root{--schwarz:#121214;--anthrazit:#2a2a2b;--blau:#008dd2;--hell:#eef6fb;--grau:#5f6670}
 *{box-sizing:border-box}
-body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);background:#fff}
-.seite{width:210mm;height:297mm;position:relative;overflow:hidden}
-.kopf{background:linear-gradient(135deg,var(--blau),var(--blau2));color:#fff;padding:16mm 16mm 12mm;display:grid;grid-template-columns:1fr 52mm;gap:10mm;align-items:center}
-.kopf h1{font-size:25pt;margin:0 0 3mm;line-height:1.15}
-.kopf p{font-size:12pt;margin:0;opacity:.95}
-.kopf .marke{font-size:9pt;letter-spacing:.25em;text-transform:uppercase;opacity:.85;margin-bottom:6mm}
-.foto{background:#fff;padding:2mm;border-radius:3mm}
-.foto img{width:100%;height:62mm;object-fit:cover;border-radius:2mm;background:#cfd8e3}
-.foto div{color:var(--text);font-size:8.5pt;padding:1.5mm 1mm 0}
-.inhalt{padding:10mm 16mm}
-h2{color:var(--blau);font-size:15pt;margin:0 0 4mm}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-bottom:8mm}
-.box{background:var(--hell);border-radius:3mm;padding:5mm}
-.box h3{margin:0 0 1.5mm;font-size:11.5pt;color:var(--blau)}
-.box p{margin:0;font-size:9.5pt;color:var(--grau)}
-.vorteile{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;text-align:center;margin-bottom:8mm}
-.vorteile b{display:block;font-size:18pt;color:var(--gruen)}
-.vorteile span{font-size:9pt}
-.angebot{border:2px dashed var(--gruen);border-radius:3mm;padding:5mm 6mm;font-size:11pt}
-.angebot strong{color:var(--blau)}
-.fuss{position:absolute;bottom:0;left:0;right:0;background:var(--blau);color:#fff;padding:7mm 16mm;display:flex;justify-content:space-between;font-size:10pt}
-.fuss b{font-size:12pt}
-@media screen{body{background:#e9eef3;padding:20px}.seite{margin:0 auto;box-shadow:0 4px 14px rgba(0,0,0,.2);background:#fff}}
+body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--anthrazit);background:#fff}
+.seite{width:210mm;height:297mm;position:relative;overflow:hidden;background:#fff}
+.kopf{background:var(--schwarz);color:#fff;padding:14mm 16mm 16mm;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 56mm;gap:10mm;align-items:center}
+.kopf::before{content:"";position:absolute;width:120mm;height:120mm;border-radius:50%;background:rgba(0,141,210,.38);filter:blur(25mm);right:-40mm;top:-50mm}
+.kopf .logo{height:16mm;margin-bottom:9mm;position:relative}
+.kopf h1{font-size:27pt;margin:0 0 4mm;line-height:1.08;letter-spacing:-.02em;position:relative}
+.kopf h1 em{font-style:normal;color:var(--blau)}
+.kopf p{font-size:11.5pt;margin:0;color:rgba(255,255,255,.8);position:relative}
+.foto{position:relative;border-radius:5mm;overflow:hidden;height:70mm;background:linear-gradient(160deg,#1d1f23,#0d0e10);border:1px solid rgba(255,255,255,.15);display:grid;place-items:center}
+.foto img{width:100%;height:100%;object-fit:cover}
+.foto.leer img{width:70%;height:auto;object-fit:contain}
+.foto span{position:absolute;left:3mm;right:3mm;bottom:3mm;background:#fff;color:var(--schwarz);border-radius:2.5mm;padding:2mm 3mm;font-size:8.5pt;line-height:1.3}
+.inhalt{padding:11mm 16mm 0}
+h2{color:var(--schwarz);font-size:14pt;margin:0 0 5mm}
+h2 small{display:block;font-size:7.5pt;letter-spacing:.25em;color:var(--blau);text-transform:uppercase;margin-bottom:1mm}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin-bottom:9mm}
+.box{border:1px solid #e4e7eb;border-radius:3.5mm;padding:4.5mm 5mm;border-left:3px solid var(--blau)}
+.box.dunkel{background:var(--schwarz);color:#fff;border-color:var(--schwarz);border-left-color:var(--blau)}
+.box h3{margin:0 0 1.2mm;font-size:11pt;color:inherit}
+.box p{margin:0;font-size:9pt;color:var(--grau)}
+.box.dunkel p{color:rgba(255,255,255,.75)}
+.vorteile{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin-bottom:9mm}
+.vorteile div{background:var(--hell);border-radius:3.5mm;padding:4mm 3mm;text-align:center}
+.vorteile b{display:block;font-size:17pt;color:var(--blau);line-height:1.1}
+.vorteile span{font-size:8.5pt}
+.cta{display:flex;justify-content:space-between;align-items:center;gap:6mm;border:2px solid var(--blau);border-radius:4mm;padding:5mm 6mm}
+.cta b{color:var(--schwarz);font-size:11.5pt}
+.cta p{margin:1mm 0 0;font-size:9.5pt;color:var(--grau)}
+.cta .tel{background:var(--blau);color:#fff;font-weight:800;font-size:13pt;padding:3mm 5mm;border-radius:999px;white-space:nowrap}
+.fuss{position:absolute;bottom:0;left:0;right:0;background:var(--schwarz);color:rgba(255,255,255,.8);padding:6mm 16mm;display:flex;justify-content:space-between;font-size:9pt}
+.fuss b{color:#fff}
+@media screen{body{background:#dfe4ea;padding:20px}.seite{margin:0 auto;box-shadow:0 8px 24px rgba(0,0,0,.2)}}
 </style></head>
 <body><div class="seite">
   <div class="kopf">
     <div>
-      <div class="marke">Königbauer Gebäudereinigung</div>
-      <h1>Saubere Räume.<br>Ein fester Ansprechpartner.</h1>
-      <p>Gebäudereinigung für Unternehmen, Hausverwaltungen und Praxen in Neufahrn, Freising und im Münchner Norden.</p>
+      <img class="logo" src="../website/img/logo-rk-dunkel.png" alt="RK">
+      <h1>Ihr Büro. <em>Sauber</em>, bevor Sie morgens kommen.</h1>
+      <p>Büro-, Praxis- und Gewerbereinigung in Neufahrn, Freising und im Münchner Norden – mit Schlüsselservice und dem Inhaber als direktem Ansprechpartner.</p>
     </div>
-    <div class="foto"><img src="../website/img/robert-koenigbauer.jpg" alt="Robert Königbauer"><div><b>Robert Königbauer</b><br>Inhaber</div></div>
+    <div class="foto"><img src="../website/img/robert-koenigbauer.jpg" alt="Robert Königbauer" onerror="this.onerror=null;this.src='../website/img/logo-rk-dunkel.png';this.parentNode.classList.add('leer')"><span><b>Robert Königbauer</b><br>Inhaber · Ihr Ansprechpartner</span></div>
   </div>
   <div class="inhalt">
-    <h2>Was wir für Sie reinigen</h2>
+    <h2><small>Leistungen</small>Was wir für Sie reinigen</h2>
     <div class="grid">
-      <div class="box"><h3>Büros &amp; Bürokomplexe</h3><p>Unterhaltsreinigung täglich oder wöchentlich – vor oder nach Ihren Arbeitszeiten.</p></div>
-      <div class="box"><h3>Treppenhäuser &amp; Wohnanlagen</h3><p>Für Hausverwaltungen und WEGs – mit Reinigungsnachweis und festen Intervallen.</p></div>
-      <div class="box"><h3>Praxen, Kanzleien, Agenturen</h3><p>Hygienisch, diskret, zuverlässig – auch für Versicherungsbüros und Banken.</p></div>
-      <div class="box"><h3>Läden, Glas &amp; Sonderreinigung</h3><p>Schaufenster, Fenster, Grund- und Bauendreinigung, Bodenpflege.</p></div>
+      <div class="box dunkel"><h3>Büros &amp; Bürokomplexe</h3><p>Unterhaltsreinigung täglich oder mehrmals pro Woche – außerhalb Ihrer Arbeitszeiten.</p></div>
+      <div class="box"><h3>Schlüsselobjekte</h3><p>Wir reinigen eigenständig, wenn niemand da ist – mit dokumentierter Schlüsselübergabe.</p></div>
+      <div class="box"><h3>Praxen, Kanzleien, Agenturen</h3><p>Arztpraxen, Steuerbüros, Versicherungsagenturen – hygienisch und diskret.</p></div>
+      <div class="box"><h3>Treppenhäuser &amp; Sonderreinigung</h3><p>Für Hausverwaltungen, dazu Glas-, Grund- und Bauendreinigung.</p></div>
     </div>
-    <h2>Warum Königbauer?</h2>
+    <h2><small>Ihr Vorteil</small>Warum Königbauer?</h2>
     <div class="vorteile">
-      <div><b>24 h</b><span>Festpreis-Angebot</span></div>
+      <div><b>24 h</b><span>Festpreis nach Besichtigung</span></div>
       <div><b>1</b><span>Ansprechpartner – der Inhaber</span></div>
       <div><b>fest</b><span>Gleiche Reinigungskräfte</span></div>
-      <div><b>0 €</b><span>Besichtigung</span></div>
+      <div><b>0 €</b><span>Besichtigung &amp; Beratung</span></div>
     </div>
-    <div class="angebot"><strong>Ihr Vorteil zum Kennenlernen:</strong> Kostenlose Besichtigung und eine <strong>Probereinigung zum halben Preis</strong> für Neukunden. Rufen Sie mich einfach an – ich komme persönlich vorbei.</div>
+    <div class="cta">
+      <div><b>Kostenlose Besichtigung vereinbaren</b><p>Ich komme persönlich vorbei – Sie erhalten innerhalb von 24 Stunden einen Festpreis.</p></div>
+      <div class="tel">0172 108 3808</div>
+    </div>
   </div>
   <div class="fuss">
-    <div><b>Robert Königbauer</b><br>0XXX / XXXXXXX · info@koenigbauer-gebaeudereinigung.de</div>
-    <div style="text-align:right"><b>koenigbauer-gebaeudereinigung.de</b><br>Neufahrn bei Freising</div>
+    <div><b>Königbauer Gebäudereinigung</b> · Georg-Stegschuster-Straße 18 · 85375 Neufahrn bei Freising</div>
+    <div style="white-space:nowrap"><b>koenigbauer-gebaeudereinigung.de</b></div>
   </div>
 </div></body></html>

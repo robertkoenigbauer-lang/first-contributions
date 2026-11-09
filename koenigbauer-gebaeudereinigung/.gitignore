@@ -1,3 +1,5 @@
 agents/daten/crm.sqlite
 agents/ausgabe/
+finanzen/daten/
+finanzen/ausgabe/
 __pycache__/

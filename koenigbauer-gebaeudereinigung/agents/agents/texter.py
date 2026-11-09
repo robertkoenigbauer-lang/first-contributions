@@ -9,16 +9,16 @@ import os
 MODELL = os.environ.get("KOENIGBAUER_MODELL", "claude-sonnet-5-5")
 
 SEGMENT_AUFHAENGER = {
-    "hausverwaltung": "Treppenhaus- und Objektreinigung für Ihre verwalteten Wohnanlagen – mit Reinigungsnachweis, festen Intervallen und einem Ansprechpartner, der erreichbar ist",
+    "hausverwaltung": "Treppenhaus- und Objektreinigung für Ihre verwalteten Wohnanlagen – mit Reinigungsnachweis und festen Intervallen. Als ista Servicepartner sind wir ohnehin regelmäßig in Wohnanlagen im Landkreis unterwegs",
     "versicherung": "eine saubere, gepflegte Agentur, in der sich Ihre Kunden wohlfühlen",
     "steuer_recht": "diskrete, zuverlässige Büroreinigung außerhalb Ihrer Mandantenzeiten",
-    "firma_buero": "Büroreinigung, die einfach funktioniert – ohne dass Sie sich darum kümmern müssen",
+    "firma_buero": "Büroreinigung mit Schlüsselservice: Wir reinigen abends oder frühmorgens, wenn niemand da ist – Sie kommen ins saubere Büro und müssen sich um nichts kümmern",
     "praxis": "hygienische Praxisreinigung nach Ihren Hygieneplänen, außerhalb der Sprechzeiten",
     "bank": "gepflegte Filial- und Kundenbereiche, auch SB-Zonen",
     "kita_schule": "gründliche, kindgerechte Reinigung Ihrer Einrichtung",
     "laden": "ein sauberer erster Eindruck für Ihre Kunden – Laden- und Schaufensterreinigung",
     "fitness_hotel": "Reinigung von Trainings-, Umkleide- und Sanitärbereichen mit festen Intervallen",
-    "gewerbe": "Unterhaltsreinigung für Ihr Gewerbeobjekt – Büros, Treppenhäuser, Sanitär",
+    "gewerbe": "Unterhaltsreinigung für Ihr Gewerbeobjekt – Büros, Treppenhäuser, Sanitär – auf Wunsch als Schlüsselobjekt außerhalb Ihrer Geschäftszeiten",
 }
 
 SYSTEM = """Du bist der Vertriebstexter von {inhaber}, Inhaber der {firma} in {plz_ort}.
@@ -28,6 +28,9 @@ Regeln:
 - Konkreter Bezug zum Empfänger (Branche, Ort). Nichts erfinden, was nicht in den Daten steht.
 - Keine Herabsetzung von Mitbewerbern, keine Superlative ("bester", "günstigster"), keine Garantien, die nicht im Firmenprofil stehen.
 - Klarer nächster Schritt: kostenlose Besichtigung / kurzer Anruf.
+- Nenne niemals Mitarbeiter- oder Kundenzahlen und keine Namen von Bestandskunden.
+- Bei Büros und Gewerbe den Schlüsselservice betonen (Reinigung außerhalb der Geschäftszeiten).
+- Den Hinweis "ista Servicepartner" nur bei Hausverwaltungen verwenden.
 - Am Ende ein Satz: Wer keine weiteren Informationen wünscht, genügt eine kurze Nachricht.
 Antworte ausschließlich als JSON."""
 
@@ -55,8 +58,8 @@ def _vorlage(lead, profil):
             f"{profil['zentrum']['name']}. Für Betriebe in {ort} biete ich {aufh}.\n\n"
             "Was Sie bei uns bekommen:\n"
             + "".join(f"• {u}\n" for u in profil["usps"][:4]) +
-            f"\nZum Kennenlernen: {profil['angebot_neukunden']}. Ich komme gern persönlich vorbei, "
-            "schaue mir Ihre Räume an und Sie erhalten innerhalb von 24 Stunden einen Festpreis.\n\n"
+            "\nIch komme gern persönlich vorbei und schaue mir Ihre Räume an – kostenlos und unverbindlich. "
+            "Innerhalb von 24 Stunden erhalten Sie einen Festpreis.\n\n"
             f"Rufen Sie mich einfach an unter {profil['telefon']} – oder ich melde mich in den nächsten Tagen kurz telefonisch bei Ihnen.\n\n"
             "Sollten Sie keine weiteren Informationen wünschen, genügt eine kurze Nachricht."
         ),
