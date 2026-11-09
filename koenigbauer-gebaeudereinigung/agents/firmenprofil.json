@@ -7,20 +7,38 @@
   "telefon": "0172 108 3808",
   "email": "info@koenigbauer-gebaeudereinigung.de",
   "website": "www.koenigbauer-gebaeudereinigung.de",
-  "zentrum": {"name": "Neufahrn bei Freising", "lat": 48.3156, "lon": 11.6650},
+  "zentrum": {
+    "name": "Neufahrn bei Freising",
+    "lat": 48.3156,
+    "lon": 11.665
+  },
   "radius_km": 20,
   "schwerpunkt": "Büroreinigung und Schlüsselobjekte (Reinigung außerhalb der Geschäftszeiten mit eigenem Schlüssel)",
-  "leistungen": ["Büroreinigung", "Reinigung von Schlüsselobjekten", "Praxis- und Kanzleireinigung", "Treppenhausreinigung", "Glas- und Fensterreinigung", "Grund- und Sonderreinigung"],
+  "leistungen": [
+    "Büroreinigung",
+    "Reinigung von Schlüsselobjekten",
+    "Praxis- und Kanzleireinigung",
+    "Treppenhausreinigung",
+    "Glas- und Fensterreinigung",
+    "Grund- und Sonderreinigung"
+  ],
   "usps": [
     "Inhabergeführt: Robert Königbauer ist persönlich Ansprechpartner",
     "Schlüsselservice: Reinigung außerhalb der Geschäftszeiten mit dokumentierter Schlüsselübergabe",
+    "Abgesichert: Betriebshaftpflichtversicherung inklusive Schlüsselverlust",
     "Festpreis-Angebot innerhalb von 24 Stunden nach kostenloser Besichtigung",
     "Feste Reinigungskräfte pro Objekt",
     "Regional aus Neufahrn, schnell vor Ort"
   ],
-  "besonderheiten": {"hausverwaltung": "ista Servicepartner – regelmäßig in Wohnanlagen im Landkreis unterwegs"},
+  "besonderheiten": {
+    "hausverwaltung": "ista Servicepartner – regelmäßig in Wohnanlagen im Landkreis unterwegs"
+  },
   "angebot_neukunden": "Kostenlose Besichtigung und Festpreis-Angebot innerhalb von 24 Stunden",
   "tonalitaet": "freundlich, direkt, bodenständig-bayerisch, per Sie, kurz, keine Floskeln, kein Marketing-Sprech",
-  "nicht_erwaehnen": ["Anzahl der Mitarbeiter", "Anzahl der Kunden", "Namen von Bestandskunden"],
+  "nicht_erwaehnen": [
+    "Anzahl der Mitarbeiter",
+    "Anzahl der Kunden",
+    "Namen von Bestandskunden"
+  ],
   "referenzen": []
 }

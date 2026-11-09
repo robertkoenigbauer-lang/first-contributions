@@ -12,7 +12,7 @@ SEGMENT_AUFHAENGER = {
     "hausverwaltung": "Treppenhaus- und Objektreinigung für Ihre verwalteten Wohnanlagen – mit Reinigungsnachweis und festen Intervallen. Als ista Servicepartner sind wir ohnehin regelmäßig in Wohnanlagen im Landkreis unterwegs",
     "versicherung": "eine saubere, gepflegte Agentur, in der sich Ihre Kunden wohlfühlen",
     "steuer_recht": "diskrete, zuverlässige Büroreinigung außerhalb Ihrer Mandantenzeiten",
-    "firma_buero": "Büroreinigung mit Schlüsselservice: Wir reinigen abends oder frühmorgens, wenn niemand da ist – Sie kommen ins saubere Büro und müssen sich um nichts kümmern",
+    "firma_buero": "Büroreinigung mit Schlüsselservice: Wir reinigen abends oder frühmorgens, wenn niemand da ist – abgesichert durch unsere Betriebshaftpflicht inklusive Schlüsselverlust. Sie kommen ins saubere Büro und müssen sich um nichts kümmern",
     "praxis": "hygienische Praxisreinigung nach Ihren Hygieneplänen, außerhalb der Sprechzeiten",
     "bank": "gepflegte Filial- und Kundenbereiche, auch SB-Zonen",
     "kita_schule": "gründliche, kindgerechte Reinigung Ihrer Einrichtung",
