@@ -65,7 +65,7 @@ def eur(x):
     return f"{x:,.2f} €".replace(",", "X").replace(".", ",").replace("X", ".")
 
 
-def html_bericht(a, cfg, rechnungen=None, datei="finanzbericht.html"):
+def html_bericht(a, cfg, rechnungen=None, datei="finanzbericht.html", personal_auswertung=None):
     AUSGABE.mkdir(exist_ok=True)
     e = html.escape
     s = a["schaetzung"]
@@ -83,6 +83,22 @@ def html_bericht(a, cfg, rechnungen=None, datei="finanzbericht.html"):
     re_zeilen = "".join(f"<tr class='{'rot' if r['status']=='ÜBERFÄLLIG' else ''}'><td>{e(r['nr'])}</td><td>{e(r['kunde'])}</td><td>{r['datum']}</td><td>{r['faellig']}</td><td>{eur(r['brutto'])}</td><td>{r['status']}</td></tr>" for r in offen)
     unklar_zeilen = "".join(f"<tr><td>{b['datum']}</td><td>{eur(b['betrag'])}</td><td>{e(b['name'])}</td><td>{e(b['zweck'][:80])}</td></tr>" for b in a["unklar"][:30])
     nachz = a["nachzahlung_geschaetzt"]
+    pa = personal_auswertung
+    personal_html = ""
+    if pa:
+        namen = {m["kuerzel"]: m for m in pa["mitarbeiter"]}
+        zeilen = "".join(
+            f"<tr><td>{r['monat']}</td><td>{e(namen[r['kuerzel']]['name'])}</td><td>{e(namen[r['kuerzel']]['art'])}</td>"
+            f"<td>{e(namen[r['kuerzel']]['bereich'])}</td><td>{eur(r['brutto'])}</td><td>{eur(r['gesamtkosten'])}</td></tr>"
+            for r in pa["abrechnungen"])
+        bereiche = "".join(f"<tr><td>{m}</td><td>{', '.join(f'{e(b)}: {eur(k)}' for b, k in v.items())}</td><td><b>{eur(sum(v.values()))}</b></td></tr>"
+                           for m, v in pa["pro_bereich"].items())
+        warn = "".join(f"<li>{e(w)}</li>" for w in pa["warnungen"])
+        personal_html = (f"<section><h2>👷 Personal</h2><div class='kacheln'><div class='k'><small>Ø Personalkosten pro Monat (inkl. Arbeitgeberanteile)</small><b>{eur(pa['kosten_monat_schnitt'])}</b></div>"
+                         f"<div class='k'><small>Hochgerechnet aufs Jahr</small><b>{eur(pa['kosten_jahr_prognose'])}</b></div></div>"
+                         f"<table><tr><th>Monat</th><th>Kosten nach Bereich</th><th>Summe</th></tr>{bereiche}</table>"
+                         f"<details style='margin-top:12px'><summary>Einzelne Abrechnungen</summary><table><tr><th>Monat</th><th>Name</th><th>Art</th><th>Bereich</th><th>Brutto</th><th>Kosten AG</th></tr>{zeilen}</table></details>"
+                         + (f"<h3 style='margin-top:18px'>Hinweise</h3><ul>{warn}</ul>" if warn else "") + "</section>")
     seite = f"""<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Finanz-Cockpit {a['jahr']} – Königbauer</title><style>
 :root{{--s:#121214;--b:#008dd2;--g:#5f6670;--l:#e4e7eb;--f:#f5f7f9}}*{{box-sizing:border-box}}
@@ -110,6 +126,7 @@ td,th{{padding:8px 10px;border-bottom:1px solid var(--l);text-align:left}}th{{co
 <section><h2>💡 Klartext</h2><p>Robert, von jedem Euro Netto-Umsatz solltest du etwa <b>{a['ruecklage_quote_umsatz']*100:.0f} Cent</b> für Einkommen- und Gewerbesteuer auf ein Extra-Konto legen. Die <b>Umsatzsteuer (19 %)</b> auf jeder Rechnung gehört nie dir: Sie geht jeden Monat bzw. jedes Quartal komplett ans Finanzamt, deshalb gleich mit weglegen.</p>
 <p>Deine Einkommen- und Gewerbesteuer-Vorauszahlungen (laut Bescheid bzw. Konto): <b>{eur(a['vorauszahlungen_jahr'])}</b> im Jahr. Geschätzte {'Nachzahlung' if nachz > 0 else 'Erstattung'} nach der Steuererklärung: <b>{eur(abs(nachz))}</b>{' – bitte zusätzlich zurücklegen!' if nachz > 0 else '.'}</p>
 <p class="hinweis">Durchschnittliche Steuerbelastung auf den Gewinn: {s['durchschnittssatz']*100:.1f} %. Gewerbesteuer {eur(s['gewerbesteuer'])}, davon werden {eur(s['gewst_anrechnung'])} auf die Einkommensteuer angerechnet. Handwerkskammer ca. {eur(s['handwerkskammer'])}, BG BAU ca. {eur(s['bg_bau'])} (laut Einstellungen).</p></section>
+{personal_html}
 <section><h2>Einnahmen &amp; Ausgaben pro Monat (netto)</h2><div class="leg"><i class="ein"></i>Einnahmen<i class="aus"></i>Ausgaben</div><div class="chart">{balken}</div></section>
 <section><h2>📅 Was in den nächsten 90 Tagen fällig wird</h2><table><tr><th>Datum</th><th>Was</th><th>Betrag</th></tr>{term_zeilen}</table></section>
 <div class="zwei">

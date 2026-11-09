@@ -71,6 +71,7 @@ Echter Betrieb:
 | `offen` | Welche Rechnungen sind noch nicht bezahlt / überfällig |
 | `kalender` | USt-VA, Lohnsteuer, SV-Beiträge, ESt- und GewSt-Vorauszahlungen der nächsten 90 Tage |
 | `unklar` | Buchungen, die noch keiner Kategorie zugeordnet sind (Stichwort in `kategorien.json` ergänzen) |
+| `personal` | Lohnkosten je Monat, Mitarbeiter und Bereich (Gebäudereinigung / ista), Warnungen zu Minijob-Grenze und Mindestlohn. Daten in `daten/personal.json` (Vorlage: `personal.beispiel.json`, bleibt auf deinem Rechner) |
 | `frag "…"` | Steuerfrage an die KI – mit deinen echten Zahlen als Grundlage |
 
 **Wichtig:** Das ist ein Planungs- und Frühwarnsystem, damit du nie von einer Nachzahlung überrascht wirst. Die Steuererklärungen und verbindlichen Zahlen macht weiterhin dein Steuerberater – dem kannst du das Cockpit und die zugeordneten Buchungen aber als saubere Grundlage geben.

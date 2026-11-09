@@ -7,6 +7,7 @@
   python run.py offen                                  # Offene / überfällige Rechnungen
   python run.py kalender [--tage 90]                   # Steuer- und Zahlungstermine
   python run.py unklar                                 # Buchungen ohne Kategorie
+  python run.py personal                               # Lohnkosten je Monat/Mitarbeiter/Bereich, Minijob-Grenzen
   python run.py frag "Kann ich den neuen Staubsauger absetzen?"   # Finanzfrage an die KI (mit deinen Zahlen)
   python run.py demo                                   # Beispieldaten erzeugen, um das Cockpit anzusehen
 """
@@ -18,7 +19,7 @@ import sys
 from datetime import date, timedelta
 from pathlib import Path
 
-from finanzen import bank, steuern, rechnungen, kalender, bericht
+from finanzen import bank, steuern, rechnungen, kalender, bericht, personal
 
 BASIS = Path(__file__).parent
 DATEN = BASIS / "daten"
@@ -27,7 +28,11 @@ RECHNUNGEN = DATEN / "rechnungen.json"
 
 
 def cfg():
-    return json.loads((BASIS / "einstellungen.json").read_text(encoding="utf-8"))
+    c = json.loads((BASIS / "einstellungen.json").read_text(encoding="utf-8"))
+    privat = DATEN / "einstellungen.privat.json"  # eigene Werte, nicht in Git
+    if privat.exists():
+        c.update({k: v for k, v in json.loads(privat.read_text(encoding="utf-8")).items() if not k.startswith("_")})
+    return c
 
 
 def laden(p):
@@ -70,11 +75,22 @@ def _abgeglichen():
     return rechnungen.abgleichen(laden(RECHNUNGEN), laden(BUCHUNGEN))
 
 
-def cmd_bericht(a):
+def _cfg_mit_personal():
+    """Übernimmt den Bruttolohn der angestellten Ehefrau automatisch in die Steuerschätzung."""
     c = cfg()
+    d = personal.laden()
+    p = personal.auswerten(d) if d else None
+    if p and p["ehegatte_brutto_jahr"] and c.get("veranlagung") == "zusammen":
+        c["zve_partner_euro"] = max(0.0, p["ehegatte_brutto_jahr"] - 1230)  # minus Arbeitnehmer-Pauschbetrag
+        c["einbehaltene_lohnsteuer_partner_jahr"] = p["ehegatte_lohnsteuer_jahr"]
+    return c, p
+
+
+def cmd_bericht(a):
+    c, p = _cfg_mit_personal()
     jahr = a.jahr or (max((b["datum"][:4] for b in laden(BUCHUNGEN)), default=str(date.today().year)))
     auswertung = bericht.auswerten(laden(BUCHUNGEN), c, bank.regeln_laden(), int(jahr))
-    pfad = bericht.html_bericht(auswertung, c, _abgeglichen())
+    pfad = bericht.html_bericht(auswertung, c, _abgeglichen(), personal_auswertung=p)
     s = auswertung["schaetzung"]
     print(f"📊 Finanz-Cockpit {jahr}: {pfad}")
     print(f"   Gewinn hochgerechnet: {bericht.eur(auswertung['gewinn_jahr'])} | Steuern geschätzt: {bericht.eur(s['steuern_gesamt'])}"
@@ -94,6 +110,29 @@ def cmd_kalender(a):
         print(f"{d.strftime('%a %d.%m.%Y')}  {t}" + (f"  ({bericht.eur(b)})" if b else ""))
 
 
+def cmd_personal(a):
+    d = personal.laden()
+    if not d:
+        sys.exit("Keine Personaldaten. Vorlage personal.beispiel.json nach daten/personal.json kopieren und ausfüllen.")
+    p = personal.auswerten(d)
+    namen = {m["kuerzel"]: m for m in p["mitarbeiter"]}
+    for monat in p["pro_monat"]:
+        print(f"\n── {monat} " + "─" * 60)
+        print(f"{'Mitarbeiter':<24}{'Art':<10}{'Bereich':<19}{'Std.':>6}{'Brutto':>12}{'Netto':>12}{'Kosten AG':>13}")
+        for r in (x for x in p["abrechnungen"] if x["monat"] == monat):
+            m = namen[r["kuerzel"]]
+            std = f"{r['stunden']:.1f}" if r.get("stunden") else "–"
+            print(f"{m['name']:<24}{m['art']:<10}{m['bereich']:<19}{std:>6}{bericht.eur(r['brutto']):>12}{bericht.eur(r['netto']):>12}{bericht.eur(r['gesamtkosten']):>13}")
+        v = p["pro_monat"][monat]
+        print(f"{'SUMME':<59}{bericht.eur(v['brutto']):>12}{bericht.eur(v['netto']):>12}{bericht.eur(v['gesamtkosten']):>13}")
+        print("   nach Bereich: " + ", ".join(f"{b}: {bericht.eur(k)}" for b, k in p["pro_bereich"][monat].items()))
+    print(f"\nØ Personalkosten pro Monat: {bericht.eur(p['kosten_monat_schnitt'])}  →  aufs Jahr: {bericht.eur(p['kosten_jahr_prognose'])}")
+    if p["ehegatte_brutto_jahr"]:
+        print(f"Bruttolohn Ehefrau aufs Jahr: {bericht.eur(p['ehegatte_brutto_jahr'])} (fließt automatisch in die Steuerschätzung)")
+    for w in p["warnungen"]:
+        print("⚠️  " + w)
+
+
 def cmd_unklar(a):
     for b in laden(BUCHUNGEN):
         if b["kategorie"] == "unklar":
@@ -104,11 +143,14 @@ def cmd_frag(a):
     if not os.environ.get("ANTHROPIC_API_KEY"):
         sys.exit("Für Fragen an die KI bitte ANTHROPIC_API_KEY setzen (siehe README).")
     import anthropic
-    c = cfg()
+    c, p = _cfg_mit_personal()
     buch = laden(BUCHUNGEN)
     jahr = max((b["datum"][:4] for b in buch), default=str(date.today().year))
     aw = bericht.auswerten(buch, c, bank.regeln_laden(), int(jahr)) if buch else {}
     kontext = {k: aw.get(k) for k in ("jahr", "gewinn_jahr", "umsatz_jahr_netto", "schaetzung", "ruecklage_monat", "nach_kategorie", "nachzahlung_geschaetzt")}
+    if p:  # Personal ohne Namen an die KI geben
+        kontext["personal"] = {"anzahl": len(p["mitarbeiter"]), "arten": [m["art"] for m in p["mitarbeiter"]],
+                               "kosten_monat_schnitt": p["kosten_monat_schnitt"], "pro_bereich": p["pro_bereich"], "warnungen": p["warnungen"]}
     antwort = anthropic.Anthropic().messages.create(
         model=os.environ.get("KOENIGBAUER_MODELL", "claude-sonnet-5-5"), max_tokens=1500,
         system=("Du bist der Finanz-Assistent von Robert Königbauer (Gebäudereinigung, Einzelunternehmen, EÜR, Neufahrn bei Freising, Bayern, "
@@ -155,6 +197,7 @@ def main():
     sp.add_parser("offen").set_defaults(f=cmd_offen)
     x = sp.add_parser("kalender"); x.add_argument("--tage", type=int, default=90); x.set_defaults(f=cmd_kalender)
     sp.add_parser("unklar").set_defaults(f=cmd_unklar)
+    sp.add_parser("personal").set_defaults(f=cmd_personal)
     x = sp.add_parser("frag"); x.add_argument("frage"); x.set_defaults(f=cmd_frag)
     sp.add_parser("demo").set_defaults(f=cmd_demo)
     a = p.parse_args()

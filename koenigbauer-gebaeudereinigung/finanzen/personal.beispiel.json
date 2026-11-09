@@ -1,0 +1,9 @@
+{
+  "_hinweis": "Vorlage. Echte Daten gehören nach daten/personal.json (wird nicht zu GitHub hochgeladen). Keine SV-Nummern, Steuer-IDs oder Geburtsdaten eintragen – werden nicht gebraucht.",
+  "mitarbeiter": [
+    {"kuerzel": "anna", "name": "Anna Beispiel", "art": "minijob", "bereich": "gebaeudereinigung", "eintritt": "2026-01-01", "stundenlohn": 16.00}
+  ],
+  "abrechnungen": [
+    {"monat": "2026-01", "kuerzel": "anna", "stunden": 30.0, "brutto": 480.00, "an_sv": 0.00, "lohnsteuer": 0.00, "netto": 480.00, "ag_sv": 134.40, "ag_umlagen": 15.22, "gesamtkosten": 629.62, "brutto_lfd_jahr": 480.00}
+  ]
+}

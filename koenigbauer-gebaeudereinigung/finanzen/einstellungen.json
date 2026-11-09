@@ -3,9 +3,9 @@
   "steuerjahr": 2027,
   "rechtsform": "Einzelunternehmen",
   "gewinnermittlung": "EÜR",
-  "veranlagung": "zusammen",
-  "_veranlagung_info": "verheiratet, Zusammenveranlagung (Splitting). Zu versteuerndes Einkommen der Ehefrau unten eintragen (0 = keine eigenen Einkünfte).",
-  "zve_partner_euro": 11000,
+  "veranlagung": "einzeln",
+  "_veranlagung_info": "'einzeln' oder 'zusammen' (Ehegatten-Splitting)",
+  "zve_partner_euro": 0,
   "kirchensteuer": false,
   "kirchensteuer_satz": 0.08,
   "gewerbesteuer_hebesatz_prozent": 350,
@@ -16,9 +16,9 @@
   "ust_versteuerung": "soll",
   "_ust_versteuerung_info": "'soll' (nach Rechnungsdatum) oder 'ist' (nach Zahlungseingang) – PRÜFEN",
   "vorauszahlungen": {
-    "einkommensteuer_pro_quartal": 3500,
-    "gewerbesteuer_pro_quartal": 550,
-    "_info": "Stand Nov. 2026 laut Robert: ESt ca. 3.500 €/Quartal, GewSt ab 2027 ca. 5xx €/Quartal (vorher 3xx €). Genaue Beträge aus den Bescheiden eintragen."
+    "einkommensteuer_pro_quartal": 0,
+    "gewerbesteuer_pro_quartal": 0,
+    "_info": "Beträge aus dem Vorauszahlungsbescheid – in daten/einstellungen.privat.json eintragen"
   },
   "abzuege_privat_jahr": {
     "krankenversicherung_pflege": 0,
@@ -32,7 +32,10 @@
     "_info": "Aus den letzten Beitragsbescheiden der HWK München und der BG BAU eintragen"
   },
   "sicherheitszuschlag_ruecklage": 0.1,
-  "_zve_partner_info": "Ehefrau ist im Betrieb angestellt (ca. 1.000 €+ brutto/Monat, sozialversicherungspflichtig). Grobe Schätzung: ca. 12.000–13.000 € brutto/Jahr minus 1.230 € Arbeitnehmer-Pauschbetrag. Genauen Bruttolohn eintragen. Ihr Lohn ist im Betrieb Betriebsausgabe (Kategorie Löhne) und hier als ihr Einkommen in der Zusammenveranlagung.",
+  "_zve_partner_info": "Wird automatisch aus daten/personal.json berechnet, wenn ein Mitarbeiter als Ehegatte markiert ist (Bruttolohn aufs Jahr minus 1.230 € Arbeitnehmer-Pauschbetrag).",
   "einbehaltene_lohnsteuer_partner_jahr": 0,
-  "_lohnsteuer_partner_info": "Lohnsteuer, die vom Lohn der Ehefrau einbehalten wird (Lohnabrechnung), wird auf die gemeinsame Einkommensteuer angerechnet."
+  "_lohnsteuer_partner_info": "Lohnsteuer, die vom Lohn der Ehefrau einbehalten wird (Lohnabrechnung), wird auf die gemeinsame Einkommensteuer angerechnet.",
+  "kirchensteuer_ehefrau": false,
+  "_kirchensteuer_ehefrau_info": "Nur bei Zusammenveranlagung: Ist nur der Ehepartner Kirchenmitglied, fällt Kirchensteuer auf dessen Anteil an (Bayern 8 % auf die Hälfte der gemeinsamen Einkommensteuer).",
+  "_privat": "Eigene Werte NICHT hier eintragen, sondern in daten/einstellungen.privat.json – die Datei bleibt auf deinem Rechner."
 }

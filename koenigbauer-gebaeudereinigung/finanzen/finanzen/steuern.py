@@ -67,6 +67,8 @@ def jahresschaetzung(gewinn, cfg):
     est = max(0.0, est_tarif - anrechnung - (cfg.get("einbehaltene_lohnsteuer_partner_jahr", 0) if zusammen else 0))
     so = soli(est, jahr, zusammen)
     kist = round(est * cfg["kirchensteuer_satz"], 2) if cfg.get("kirchensteuer") else 0.0
+    if zusammen and cfg.get("kirchensteuer_ehefrau") and not cfg.get("kirchensteuer"):
+        kist = round(est / 2 * cfg["kirchensteuer_satz"], 2)  # nur ein Ehegatte Kirchenmitglied: Halbteilung
     kammer = cfg.get("kammer_und_verbaende", {})
     hwk = kammer.get("handwerkskammer_grundbeitrag", 0) + max(0, gewinn - GEWST_FREIBETRAG) * kammer.get("handwerkskammer_zusatzbeitrag_prozent_gewerbeertrag", 0) / 100
     gesamt = est + so + kist + gewst
