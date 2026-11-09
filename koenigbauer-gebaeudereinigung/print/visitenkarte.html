@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<title>Visitenkarte Königbauer</title>
+<!-- Druck: Im Browser öffnen → Drucken → "Als PDF speichern", Ränder: keine, Hintergrundgrafiken: an.
+     Format 85 x 55 mm + 3 mm Beschnitt (= 91 x 61 mm). Seite 1 = Vorderseite, Seite 2 = Rückseite. -->
+<style>
+@page{size:91mm 61mm;margin:0}
+:root{--blau:#0b3d6e;--blau2:#1565c0;--gruen:#2bb673}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;background:#fff}
+.karte{width:91mm;height:61mm;padding:3mm;page-break-after:always;position:relative;overflow:hidden}
+.innen{width:85mm;height:55mm;padding:5mm;position:relative}
+.vorne{background:linear-gradient(135deg,var(--blau),var(--blau2));color:#fff}
+.vorne .innen{display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.vorne h1{font-size:17pt;margin:0;letter-spacing:.02em}
+.vorne .sub{font-size:8pt;letter-spacing:.25em;text-transform:uppercase;opacity:.9;margin-top:1mm}
+.vorne .linie{width:16mm;height:1.2mm;background:var(--gruen);margin:4mm 0}
+.vorne .claim{font-size:8.5pt}
+.hinten .innen{display:grid;grid-template-columns:24mm 1fr;gap:4mm;align-items:center}
+.hinten img{width:24mm;height:30mm;object-fit:cover;border-radius:2mm;background:#cfd8e3}
+.hinten h2{font-size:11pt;margin:0;color:var(--blau)}
+.hinten .rolle{font-size:7.5pt;color:#5b6b7b;margin-bottom:2.5mm}
+.hinten p{font-size:7.5pt;margin:.6mm 0;color:#1b2733}
+.hinten .web{color:var(--blau2);font-weight:700}
+.hinten .band{position:absolute;left:0;right:0;bottom:0;height:2mm;background:var(--gruen)}
+@media screen{body{background:#e9eef3;padding:20px}.karte{margin:0 auto 20px;box-shadow:0 4px 14px rgba(0,0,0,.2)}}
+</style></head>
+<body>
+<div class="karte vorne"><div class="innen">
+  <h1>KÖNIGBAUER</h1>
+  <div class="sub">Gebäudereinigung</div>
+  <div class="linie"></div>
+  <div class="claim">Büro · Treppenhaus · Praxis · Gewerbe<br>Neufahrn · Freising · Münchner Norden</div>
+</div></div>
+
+<div class="karte hinten"><div class="innen">
+  <img src="../website/img/robert-koenigbauer.jpg" alt="Robert Königbauer">
+  <div>
+    <h2>Robert Königbauer</h2>
+    <div class="rolle">Inhaber · Ihr persönlicher Ansprechpartner</div>
+    <p>📞 0XXX / XXXXXXX</p>
+    <p>✉ info@koenigbauer-gebaeudereinigung.de</p>
+    <p>📍 STRASSE HAUSNR, 85375 Neufahrn</p>
+    <p class="web">koenigbauer-gebaeudereinigung.de</p>
+  </div>
+  <div class="band"></div>
+</div></div>
+</body></html>

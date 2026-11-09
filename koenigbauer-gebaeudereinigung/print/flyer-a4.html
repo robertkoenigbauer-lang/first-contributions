@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<title>Flyer Königbauer Gebäudereinigung</title>
+<!-- A4-Infoblatt zum Verschicken (Brief-Beilage, PDF-Anhang, Auslage). Drucken → Als PDF speichern, Hintergrundgrafiken an. -->
+<style>
+@page{size:A4;margin:0}
+:root{--blau:#0b3d6e;--blau2:#1565c0;--gruen:#2bb673;--hell:#f4f7fb;--text:#1b2733;--grau:#5b6b7b}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);background:#fff}
+.seite{width:210mm;height:297mm;position:relative;overflow:hidden}
+.kopf{background:linear-gradient(135deg,var(--blau),var(--blau2));color:#fff;padding:16mm 16mm 12mm;display:grid;grid-template-columns:1fr 52mm;gap:10mm;align-items:center}
+.kopf h1{font-size:25pt;margin:0 0 3mm;line-height:1.15}
+.kopf p{font-size:12pt;margin:0;opacity:.95}
+.kopf .marke{font-size:9pt;letter-spacing:.25em;text-transform:uppercase;opacity:.85;margin-bottom:6mm}
+.foto{background:#fff;padding:2mm;border-radius:3mm}
+.foto img{width:100%;height:62mm;object-fit:cover;border-radius:2mm;background:#cfd8e3}
+.foto div{color:var(--text);font-size:8.5pt;padding:1.5mm 1mm 0}
+.inhalt{padding:10mm 16mm}
+h2{color:var(--blau);font-size:15pt;margin:0 0 4mm}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-bottom:8mm}
+.box{background:var(--hell);border-radius:3mm;padding:5mm}
+.box h3{margin:0 0 1.5mm;font-size:11.5pt;color:var(--blau)}
+.box p{margin:0;font-size:9.5pt;color:var(--grau)}
+.vorteile{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;text-align:center;margin-bottom:8mm}
+.vorteile b{display:block;font-size:18pt;color:var(--gruen)}
+.vorteile span{font-size:9pt}
+.angebot{border:2px dashed var(--gruen);border-radius:3mm;padding:5mm 6mm;font-size:11pt}
+.angebot strong{color:var(--blau)}
+.fuss{position:absolute;bottom:0;left:0;right:0;background:var(--blau);color:#fff;padding:7mm 16mm;display:flex;justify-content:space-between;font-size:10pt}
+.fuss b{font-size:12pt}
+@media screen{body{background:#e9eef3;padding:20px}.seite{margin:0 auto;box-shadow:0 4px 14px rgba(0,0,0,.2);background:#fff}}
+</style></head>
+<body><div class="seite">
+  <div class="kopf">
+    <div>
+      <div class="marke">Königbauer Gebäudereinigung</div>
+      <h1>Saubere Räume.<br>Ein fester Ansprechpartner.</h1>
+      <p>Gebäudereinigung für Unternehmen, Hausverwaltungen und Praxen in Neufahrn, Freising und im Münchner Norden.</p>
+    </div>
+    <div class="foto"><img src="../website/img/robert-koenigbauer.jpg" alt="Robert Königbauer"><div><b>Robert Königbauer</b><br>Inhaber</div></div>
+  </div>
+  <div class="inhalt">
+    <h2>Was wir für Sie reinigen</h2>
+    <div class="grid">
+      <div class="box"><h3>Büros &amp; Bürokomplexe</h3><p>Unterhaltsreinigung täglich oder wöchentlich – vor oder nach Ihren Arbeitszeiten.</p></div>
+      <div class="box"><h3>Treppenhäuser &amp; Wohnanlagen</h3><p>Für Hausverwaltungen und WEGs – mit Reinigungsnachweis und festen Intervallen.</p></div>
+      <div class="box"><h3>Praxen, Kanzleien, Agenturen</h3><p>Hygienisch, diskret, zuverlässig – auch für Versicherungsbüros und Banken.</p></div>
+      <div class="box"><h3>Läden, Glas &amp; Sonderreinigung</h3><p>Schaufenster, Fenster, Grund- und Bauendreinigung, Bodenpflege.</p></div>
+    </div>
+    <h2>Warum Königbauer?</h2>
+    <div class="vorteile">
+      <div><b>24 h</b><span>Festpreis-Angebot</span></div>
+      <div><b>1</b><span>Ansprechpartner – der Inhaber</span></div>
+      <div><b>fest</b><span>Gleiche Reinigungskräfte</span></div>
+      <div><b>0 €</b><span>Besichtigung</span></div>
+    </div>
+    <div class="angebot"><strong>Ihr Vorteil zum Kennenlernen:</strong> Kostenlose Besichtigung und eine <strong>Probereinigung zum halben Preis</strong> für Neukunden. Rufen Sie mich einfach an – ich komme persönlich vorbei.</div>
+  </div>
+  <div class="fuss">
+    <div><b>Robert Königbauer</b><br>0XXX / XXXXXXX · info@koenigbauer-gebaeudereinigung.de</div>
+    <div style="text-align:right"><b>koenigbauer-gebaeudereinigung.de</b><br>Neufahrn bei Freising</div>
+  </div>
+</div></body></html>

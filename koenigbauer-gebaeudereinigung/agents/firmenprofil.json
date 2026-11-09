@@ -1,0 +1,23 @@
+{
+  "firma": "Königbauer Gebäudereinigung",
+  "inhaber": "Robert Königbauer",
+  "rolle": "Inhaber",
+  "strasse": "STRASSE HAUSNR",
+  "plz_ort": "85375 Neufahrn bei Freising",
+  "telefon": "0XXX / XXXXXXX",
+  "email": "info@koenigbauer-gebaeudereinigung.de",
+  "website": "www.koenigbauer-gebaeudereinigung.de",
+  "zentrum": {"name": "Neufahrn bei Freising", "lat": 48.3156, "lon": 11.6650},
+  "radius_km": 20,
+  "leistungen": ["Büroreinigung", "Treppenhausreinigung", "Praxis- und Kanzleireinigung", "Ladenreinigung", "Glas- und Fensterreinigung", "Grund- und Sonderreinigung"],
+  "usps": [
+    "Fester Ansprechpartner: der Inhaber persönlich",
+    "Festpreis-Angebot innerhalb von 24 Stunden nach kostenloser Besichtigung",
+    "Feste Reinigungskräfte pro Objekt",
+    "Qualitätskontrollen mit Protokoll",
+    "Regional in Neufahrn, schnell vor Ort"
+  ],
+  "angebot_neukunden": "Kostenlose Besichtigung und Probereinigung zum halben Preis",
+  "tonalitaet": "freundlich, direkt, bodenständig-bayerisch, per Sie, kurz, keine Floskeln, kein Marketing-Sprech",
+  "referenzen": []
+}
