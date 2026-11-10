@@ -123,6 +123,28 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .liste{display:flex;flex-direction:column;gap:10px;width:100%}
 .liste .eintrag{border-left:5px solid var(--bad);background:var(--surface);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
 .liste .eintrag.ok{border-left-color:var(--ok)}
+/* Bilder */
+.bild{display:flex;justify-content:center;align-items:center;min-height:110px;background:var(--bg);border-radius:14px;padding:10px;margin-top:10px}
+.bild svg{max-width:100%;height:auto}
+.emo{font-size:3.6rem;line-height:1.1;letter-spacing:4px}
+.mini{display:inline-flex;width:64px;justify-content:center;vertical-align:middle}
+.mini .emo{font-size:1.15rem;letter-spacing:0;white-space:nowrap}
+.vokabeln .satz{display:block;font-size:.85rem;color:var(--muted);font-weight:600}
+.mini svg{width:64px;height:auto}
+.vokabeln td{vertical-align:middle}
+/* Zuordnen */
+.paare{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.paare .spalte{display:flex;flex-direction:column;gap:8px;min-width:0}
+.pk{border:2px solid var(--line);background:var(--bg);border-radius:10px;padding:10px;font-weight:700;text-align:left;min-height:48px;overflow-wrap:anywhere}
+.pk.sel{border-color:var(--fach);background:color-mix(in srgb,var(--fach) 18%,transparent)}
+.pk.done{border-color:var(--ok);background:var(--ok-bg);opacity:.7}
+.pk.err{border-color:var(--bad);background:var(--bad-bg)}
+/* Satzbau */
+.bau{min-height:60px;border:2px dashed var(--fach);border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bau:empty::before{content:"Tippe die Wörter in der richtigen Reihenfolge an";color:var(--muted);font-size:.9rem;padding:4px}
+.woerter{display:flex;flex-wrap:wrap;gap:8px}
+.wchip{border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;font-weight:800;font-size:1.05rem}
+.bau .wchip{border-color:var(--fach)}
 .fuss{font-size:.85rem;color:var(--muted);text-align:center}
 @media (max-width:480px){h1{font-size:1.75rem}.frage{font-size:1.15rem}.papier{padding-left:38px}.papier::before{left:24px}.heute .zahl{font-size:2.4rem}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -157,6 +179,45 @@ const text=(frage,loesungen,erkl,tipp)=>({typ:"text",frage,loesung:[].concat(loe
 const zahl=(frage,wert,erkl,einheit)=>({typ:"zahl",frage,loesung:wert,erkl,einheit});
 const bruch=(frage,z,n,modus,erkl)=>({typ:"bruch",frage,loesung:[z,n],modus,erkl});
 const karte=(frage,antwort)=>({typ:"karte",frage,antwort});
+/* paare(frage, [[links,rechts],...]) → Zuordnen; satz(frage, "Richtiger Satz.") → Wörter in Reihenfolge antippen */
+const paare=(frage,liste)=>({typ:"paare",frage,paare:liste});
+const satz=(frage,loesung,erkl)=>({typ:"satz",frage,loesung,erkl});
+
+/* ================================================================
+   BILDER (kindgerecht, selbst gezeichnet)
+   ================================================================ */
+const EMO=s=>`<span class="emo">${s}</span>`;
+const sv=(w,h,inner,lbl)=>`<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${lbl||"Bild"}" fill="none" stroke="var(--fg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+function hausSVG(raum){
+  const R={bedroom:[20,70],bathroom:[120,70],kitchen:[20,130],livingroom:[120,130]};
+  const raeume=Object.entries(R).map(([k,[x,y]])=>`<rect x="${x}" y="${y}" width="100" height="60" fill="${k===raum?"color-mix(in srgb, var(--fach) 30%, var(--surface))":"var(--surface)"}" stroke="none"/>`).join("");
+  const rahmen=raum&&R[raum]?`<rect x="${R[raum][0]+2}" y="${R[raum][1]+2}" width="96" height="56" stroke="var(--fach)" stroke-width="4"/>`:"";
+  return sv(240,200,`<polygon points="12,72 120,10 228,72" fill="var(--bg)"/><circle cx="120" cy="48" r="9"/>${raeume}
+   <rect x="20" y="70" width="200" height="120"/><line x1="120" y1="70" x2="120" y2="190"/><line x1="20" y1="130" x2="220" y2="130"/>
+   <rect x="28" y="96" width="5" height="26" fill="var(--fg)"/><rect x="33" y="108" width="62" height="14" rx="3" fill="var(--bg)"/><rect x="36" y="100" width="18" height="9" rx="3" fill="var(--surface)"/><line x1="95" y1="108" x2="95" y2="124"/>
+   <path d="M132 102 h66 v8 a12 12 0 0 1 -12 12 h-42 a12 12 0 0 1 -12 -12 z" fill="var(--bg)"/><path d="M192 102 v-18 h-8"/><circle cx="148" cy="96" r="4"/><circle cx="160" cy="93" r="5"/><circle cx="172" cy="97" r="3.5"/>
+   <rect x="28" y="148" width="36" height="38" fill="var(--bg)"/><circle cx="38" cy="155" r="3.5"/><circle cx="54" cy="155" r="3.5"/><rect x="33" y="164" width="26" height="16"/><rect x="66" y="148" width="36" height="38" fill="var(--bg)"/><line x1="72" y1="155" x2="96" y2="155"/>
+   <rect x="128" y="160" width="54" height="14" rx="4" fill="var(--bg)"/><rect x="132" y="170" width="46" height="14" rx="3" fill="var(--bg)"/><rect x="125" y="166" width="8" height="18" rx="3" fill="var(--bg)"/><rect x="177" y="166" width="8" height="18" rx="3" fill="var(--bg)"/>
+   <rect x="190" y="146" width="24" height="18" rx="2" fill="var(--bg)"/><line x1="202" y1="164" x2="202" y2="184"/><line x1="195" y1="184" x2="209" y2="184"/>`,"Haus mit Zimmern")}
+function spuelSVG(rein){
+  const pfeil=rein?`<path d="M168 60 H118 M130 48 L118 60 L130 72" stroke="var(--fach)" stroke-width="5"/>`:`<path d="M118 60 H168 M156 48 L168 60 L156 72" stroke="var(--fach)" stroke-width="5"/>`;
+  return sv(230,120,`<rect x="10" y="10" width="96" height="100" rx="6" fill="var(--bg)"/><line x1="10" y1="26" x2="106" y2="26"/><circle cx="92" cy="18" r="3"/>
+   <path d="M18 92 h80"/>${[30,46,62,78].map(x=>`<ellipse cx="${x}" cy="72" rx="5" ry="18" fill="var(--surface)"/>`).join("")}${pfeil}
+   <circle cx="200" cy="60" r="20" fill="var(--surface)"/><circle cx="200" cy="60" r="10"/>`,rein?"Teller kommen in die Spülmaschine":"Teller kommen aus der Spülmaschine")}
+const saugerSVG=()=>sv(200,120,`<rect x="20" y="66" width="70" height="36" rx="16" fill="var(--bg)"/><circle cx="36" cy="104" r="8" fill="var(--surface)"/><circle cx="76" cy="104" r="8" fill="var(--surface)"/>
+   <path d="M88 76 C 120 40, 130 20, 150 20" /><line x1="150" y1="20" x2="160" y2="100"/><rect x="146" y="98" width="34" height="10" rx="3" fill="var(--fg)"/><circle cx="188" cy="104" r="2" fill="var(--fg)"/><circle cx="194" cy="98" r="1.5" fill="var(--fg)"/>`,"Staubsauger");
+const gegenSVG=()=>sv(260,130,`<rect x="0" y="80" width="260" height="34" fill="var(--bg)" stroke="none"/><line x1="10" y1="97" x2="250" y2="97" stroke-dasharray="12 10"/>
+   <rect x="14" y="20" width="70" height="56" fill="var(--surface)"/><polygon points="10,22 49,4 88,22" fill="var(--surface)"/><line x1="49" y1="4" x2="49" y2="-6"/><rect x="40" y="50" width="18" height="26"/><text x="49" y="128" text-anchor="middle" fill="var(--fg)" stroke="none" font-size="15" font-weight="800">school</text>
+   <rect x="176" y="30" width="70" height="46" fill="var(--surface)"/><path d="M172 30 h78 l-6 12 h-66 z" fill="color-mix(in srgb, var(--fach) 40%, var(--surface))"/><rect x="200" y="54" width="20" height="22"/><text x="211" y="128" text-anchor="middle" fill="var(--fg)" stroke="none" font-size="15" font-weight="800">market</text>
+   <path d="M98 56 H162 M108 46 L98 56 L108 66 M152 46 L162 56 L152 66" stroke="var(--fach)" stroke-width="4"/>`,"Schule gegenüber vom Markt");
+function oftSVG(n){const T=["Mo","Di","Mi","Do","Fr","Sa","So"];
+  return sv(266,70,T.map((t,i)=>`<rect x="${4+i*37}" y="4" width="32" height="32" rx="7" fill="${i<n?"var(--fach)":"var(--surface)"}"/>${i<n?`<path d="M${12+i*37} 20 l6 6 l10 -12" stroke="var(--surface)" stroke-width="3.5"/>`:""}<text x="${20+i*37}" y="58" text-anchor="middle" fill="var(--fg)" stroke="none" font-size="14" font-weight="700">${t}</text>`).join(""),`${n} von 7 Tagen`)}
+const kaefigSVG=()=>sv(160,120,`<rect x="20" y="20" width="120" height="90" rx="8" fill="var(--bg)"/><text x="80" y="88" text-anchor="middle" font-size="46" stroke="none">🐹</text>${[38,56,74,92,110,128].map(x=>`<line x1="${x}" y1="20" x2="${x}" y2="110"/>`).join("")}<path d="M20 20 Q80 -6 140 20"/>`,"Meerschweinchen im Käfig");
+const BILD={bedroom:()=>hausSVG("bedroom"),livingroom:()=>hausSVG("livingroom"),kitchen:()=>hausSVG("kitchen"),bathroom:()=>hausSVG("bathroom"),
+  often:()=>oftSVG(4),usually:()=>oftSVG(6),never:()=>oftSVG(0),opposite:gegenSVG,guineapig:()=>EMO("🐹"),cage:kaefigSVG,
+  empty:()=>spuelSVG(false),load:()=>spuelSVG(true),hoover:saugerSVG,tidy:()=>EMO("🧸📚👕 ➜ ✨"),clean:()=>EMO("🧽🚗✨"),takeout:()=>EMO("🗑️ ➜ 🚪"),
+  before:()=>EMO("🥣 ➜ 🏫"),cooking:()=>EMO("❤️🍳"),cook:()=>EMO("👨‍🍳🍝")};
+const bild=k=>`<div class="bild">${BILD[k]()}</div>`;
 /* Vokabelliste → Karten: Deutsch→Englisch eintippen, Englisch→Deutsch auswählen */
 function vokabeln(liste,richtung="beide"){
   const k=[];liste.forEach(([de,en],i)=>{const ens=[].concat(en);
@@ -182,6 +243,45 @@ const FAECHER=[
    probe:  Datum der Probe "JJJJ-MM-TT" (optional, dann erscheint ein Countdown)
    Neue Karten immer HINTEN anhängen, damit der Lernstand erhalten bleibt.
    ================================================================ */
+/* Englisch Unit 2 – Vokabelblatt S. 28–30 (Sätze vom Blatt; ergänzte Sätze für Wörter ohne Satz) */
+const U2=[
+ {en:"bedroom",de:"das Kinderzimmer, das Schlafzimmer",bild:"bedroom",satz:"My ___ is green and it's nice.",form:"bedroom"},
+ {en:"often",de:"oft, häufig",bild:"often",satz:"I ___ get up late on Saturdays.",form:"often"},
+ {en:"living room",de:"das Wohnzimmer",bild:"livingroom",satz:"I do my homework in the ___.",form:"living room"},
+ {en:"opposite",de:"gegenüber",bild:"opposite",satz:"The school is ___ the market.",form:"opposite"},
+ {en:"usually",de:"normalerweise, gewöhnlich",bild:"usually",satz:"Luke ___ plays football on Mondays.",form:"usually"},
+ {en:"guinea pig",de:"das Meerschweinchen",bild:"guineapig",satz:"My ___ lives in a big cage.",form:"guinea pig"},
+ {en:"to empty the dishwasher",de:"die Spülmaschine ausräumen",bild:"empty",satz:"After school I ___ the dishwasher.",form:"empty"},
+ {en:"to tidy",de:"aufräumen, in Ordnung bringen",bild:"tidy",satz:"I always have to ___ my bedroom.",form:"tidy"},
+ {en:"to clean",de:"sauber machen, putzen",bild:"clean",satz:"My father ___ the car.",form:"cleans",warum:"my father = he → cleans mit s"},
+ {en:"cage",de:"der Käfig",bild:"cage",satz:"The guinea pig is in the ___.",form:"cage"},
+ {en:"to take out",de:"hinausbringen",bild:"takeout",satz:"I ___ the rubbish every week.",form:"take out"},
+ {en:"before",de:"vor, bevor",bild:"before",satz:"I have breakfast ___ school.",form:"before"},
+ {en:"to load the dishwasher",de:"die Spülmaschine einräumen",bild:"load",satz:"My mum always ___ the dishwasher.",form:"loads",warum:"my mum = she → loads mit s"},
+ {en:"cooking",de:"das Kochen, Koch-",bild:"cooking",satz:"I love ___ with mum.",form:"cooking"},
+ {en:"never",de:"nie, niemals",bild:"never",satz:"I ___ get up early on Sundays.",form:"never"},
+ {en:"to hoover",de:"staubsaugen",bild:"hoover",satz:"I usually ___ the living room.",form:"hoover"},
+ {en:"kitchen",de:"die Küche",bild:"kitchen",satz:"We eat together in the ___.",form:"kitchen"},
+ {en:"bathroom",de:"das Badezimmer",bild:"bathroom",satz:"I brush my teeth in the ___.",form:"bathroom"},
+ {en:"to cook",de:"kochen",bild:"cook",satz:"My dad often ___ dinner for our family.",form:"cooks",warum:"my dad = he → cooks mit s"},
+];
+function u2Karten(){
+  const k=[],n=U2.length,ohneTo=e=>e.replace(/^to /,"");
+  // 1. Bild + Deutsch → Englisch schreiben
+  U2.forEach(w=>k.push(text(`Wie heißt das auf Englisch?${bild(w.bild)}<div style="margin-top:8px">„${w.de}“</div>`,[w.en,ohneTo(w.en)],`${w.de} = <b>${w.en}</b>`,"Achte auf die Schreibweise!")));
+  // 2. Bild → englisches Wort auswählen
+  U2.forEach((w,i)=>k.push(mc(`Was passt zum Bild?${bild(w.bild)}`,w.en,[1,2,3].map(d=>U2[(i+d*5)%n].en),`${w.en} = ${w.de}`)));
+  // 3. Englisch → Deutsch
+  U2.forEach((w,i)=>k.push(mc(`Was heißt <b>„${w.en}“</b> auf Deutsch?`,w.de,[1,2,3].map(d=>U2[(i+d*4)%n].de),`${w.en} = ${w.de}`)));
+  // 4. Lückensatz
+  U2.forEach(w=>k.push(text(`Setze ein:<br>${w.satz.replace("___",L)}<div class="tipp">(${w.de})</div>`,[w.form],`${w.satz.replace("___","<b>"+w.form+"</b>")}${w.warum?"<br>"+w.warum:""}`)));
+  // 5. Zuordnen
+  k.push(paare("Ordne zu: Zimmer",[["bedroom","Kinderzimmer, Schlafzimmer"],["living room","Wohnzimmer"],["kitchen","Küche"],["bathroom","Badezimmer"]]));
+  k.push(paare("Ordne zu: Hausarbeit",[["to tidy","aufräumen"],["to clean","putzen"],["to hoover","staubsaugen"],["to take out","hinausbringen"],["to cook","kochen"]]));
+  k.push(paare("Ordne zu: Spülmaschine & Meerschweinchen",[["to empty the dishwasher","Spülmaschine ausräumen"],["to load the dishwasher","Spülmaschine einräumen"],["guinea pig","Meerschweinchen"],["cage","Käfig"]]));
+  k.push(paare("Ordne zu: Wie oft? Wo? Wann?",[["often","oft"],["usually","normalerweise"],["never","nie"],["opposite","gegenüber"],["before","vor, bevor"]]));
+  return k}
+
 const THEMEN=[
 /* ---------------------------------------------------------------- DEUTSCH */
 {id:"d-praesens",fach:"deutsch",titel:"Das Präsens",quelle:"Beispiel",probe:null,
@@ -218,22 +318,103 @@ const THEMEN=[
  ]},
 
 /* ---------------------------------------------------------------- ENGLISCH */
-{id:"e-home",fach:"englisch",titel:"Vocabulary: At home",quelle:"Beispiel",probe:null,
- merke:`<h2>At home</h2>
- <div class="tabwrap"><table>
- <tr><td>washing machine</td><td>Waschmaschine</td></tr><tr><td>fridge</td><td>Kühlschrank</td></tr>
- <tr><td>dishwasher</td><td>Spülmaschine</td></tr><tr><td>cooker</td><td>Herd</td></tr>
- <tr><td>vacuum cleaner</td><td>Staubsauger</td></tr><tr><td>cupboard</td><td>(Küchen-)Schrank</td></tr>
- <tr><td>wardrobe</td><td>Kleiderschrank</td></tr><tr><td>shelf</td><td>Regal</td></tr>
- <tr><td>stairs</td><td>Treppe</td></tr><tr><td>kitchen</td><td>Küche</td></tr>
- <tr><td>bathroom</td><td>Badezimmer</td></tr><tr><td>living room</td><td>Wohnzimmer</td></tr>
- <tr><td>bedroom</td><td>Schlafzimmer</td></tr><tr><td>to tidy up</td><td>aufräumen</td></tr>
- <tr><td>to do the washing-up</td><td>abspülen</td></tr><tr><td>to lay the table</td><td>den Tisch decken</td></tr></table></div>
- <div class="merk">Schwierige Wörter: cu<b>p</b>board (das p hört man nicht!), w<b>a</b>rdrobe, sh<b>e</b>lf</div>`,
- karten:vokabeln([["die Waschmaschine","washing machine"],["der Kühlschrank",["fridge","refrigerator"]],["die Spülmaschine","dishwasher"],["der Herd",["cooker","stove"]],
-  ["der Staubsauger",["vacuum cleaner","hoover"]],["der (Küchen-)Schrank","cupboard"],["der Kleiderschrank","wardrobe"],["das Regal","shelf"],["die Treppe","stairs"],
-  ["die Küche","kitchen"],["das Badezimmer","bathroom"],["das Wohnzimmer","living room"],["das Schlafzimmer","bedroom"],["aufräumen","to tidy up"],
-  ["abspülen",["to do the washing-up","to wash up","to do the dishes"]],["den Tisch decken",["to lay the table","to set the table"]]])},
+{id:"e-u2-vokabeln",fach:"englisch",titel:"Unit 2 – Vokabeln",quelle:"Vokabelblatt S. 28–30",probe:"2026-11-13",
+ merke:`<h2>Unit 2 – Vokabeln</h2><p>Buch S. 28–30 · Intro / Topic 1</p>
+ <div class="tabwrap"><table class="vokabeln">${U2.map(w=>`<tr><td><span class="mini">${BILD[w.bild]()}</span></td><td><b>${w.en}</b><span class="satz">${w.satz.replace("___","<b>"+w.form+"</b>")}</span></td><td>${w.de}</td></tr>`).join("")}</table></div>
+ <div class="merk">Wie oft? <b>never</b> (nie) – <b>often</b> (oft) – <b>usually</b> (normalerweise) – <b>always</b> (immer)<br>Sie stehen <b>vor</b> dem Verb: I <b>often</b> get up late.</div>
+ <p>Achtung: my mum / my dad / Luke = he/she → <b>s</b> am Verb: My mum always load<b>s</b> the dishwasher.</p>`,
+ karten:u2Karten()},
+{id:"e-u2-where",fach:"englisch",titel:"Where is it? – Rooms",quelle:"Buch S. 28 / Heft",probe:"2026-11-13",
+ merke:`<h2>Where is it?</h2>
+ <div class="tabwrap"><table class="vokabeln">${[["bedroom","Kinderzimmer, Schlafzimmer"],["livingroom","Wohnzimmer"],["kitchen","Küche"],["bathroom","Badezimmer"]].map(([k,de])=>`<tr><td><span class="mini">${hausSVG(k)}</span></td><td><b>${k==="livingroom"?"living room":k}</b></td><td>${de}</td></tr>`).join("")}</table></div>
+ <h3>Book p. 28</h3>
+ <ul><li>Luke and Holly live in this road. It's <b>Brook Lane</b>.</li><li>Luke likes computer games there. It's the <b>bedroom</b>.</li>
+ <li>Luke often goes there with his friends and Sherlock. It's the <b>park</b>.</li><li>Holly often does her homework there. It's the <b>living room</b>.</li>
+ <li>Holly often goes there on Saturdays. It's the <b>shopping centre</b>.</li></ul>`,
+ karten:[
+  ...[["bedroom","bedroom"],["livingroom","living room"],["kitchen","kitchen"],["bathroom","bathroom"]].map(([k,en],i,a)=>mc(`Which room is it?${bild(k)}`,en,a.filter(x=>x[1]!==en).map(x=>x[1]),`It's the ${en}.`)),
+  mc("Where do you sleep?","in the bedroom",["in the kitchen","in the bathroom","in the living room"],"Im Schlafzimmer = in the bedroom"),
+  mc("Where do you cook?","in the kitchen",["in the bedroom","in the bathroom","in the living room"],"Kochen in der Küche = in the kitchen"),
+  mc("Where do you have a bath?","in the bathroom",["in the kitchen","in the bedroom","in the living room"],"Baden im Badezimmer = in the bathroom"),
+  mc("Where do you watch TV with your family?","in the living room",["in the bathroom","in the kitchen","in the cage"],"Fernsehen im Wohnzimmer = in the living room"),
+  mc("Where is the dishwasher?","in the kitchen",["in the bedroom","in the bathroom","in the park"],"Die Spülmaschine steht in der Küche."),
+  mc("Book p. 28: Where do Luke and Holly live?","in Brook Lane",["in the park","in the shopping centre","in the kitchen"],"Luke and Holly live in Brook Lane."),
+  mc("Book p. 28: Where does Luke like computer games?","in the bedroom",["in the kitchen","in the park","in the bathroom"],"Luke likes computer games in the bedroom."),
+  mc("Book p. 28: Where does Luke often go with his friends and Sherlock?","to the park",["to the shopping centre","to the bathroom","to school"],"Luke often goes to the park with his friends and Sherlock."),
+  mc("Book p. 28: Where does Holly often do her homework?","in the living room",["in the bedroom","in the kitchen","in the park"],"Holly often does her homework in the living room."),
+  mc("Book p. 28: Where does Holly often go on Saturdays?","to the shopping centre",["to the park","to Brook Lane","to the bathroom"],"Holly often goes to the shopping centre on Saturdays."),
+  text(`Holly often does her homework there. It's the ${L}.`,["living room"],"It's the living room.","Tippe das Zimmer auf Englisch"),
+  text(`Luke likes computer games there. It's the ${L}.`,["bedroom"],"It's the bedroom.","Tippe das Zimmer auf Englisch"),
+ ]},
+{id:"e-past-aussagen",fach:"englisch",titel:"Simple past: Aussagen",quelle:"Heft 28.09.",probe:"2026-11-13",
+ merke:`<h2>Die einfache Vergangenheit – simple past</h2><h3>Aussagen</h3>
+ <p>Um über Dinge zu sprechen, die in der Vergangenheit passiert und vorbei sind, verwendest du das <b>simple past</b>.</p>
+ <div class="merk">Bei den meisten Verben hängst du <b>-ed</b> an: play → play<b>ed</b>, visit → visit<b>ed</b></div>
+ <p>I played cricket yesterday. – Ich spielte gestern Kricket.<br>Jay visited his uncle last week. – Jay besuchte letzte Woche seinen Onkel.</p>
+ <p>Im Deutschen gibt es zwei Möglichkeiten: He played football. = Er <b>spielte</b> Fußball. / Er <b>hat</b> Fußball <b>gespielt</b>.</p>
+ <h3>Achtung Schreibweise</h3><p>worry → worr<b>ied</b>, tidy → tid<b>ied</b> (y wird zu ie) · love → love<b>d</b> (nur -d)</p>
+ <h3>Unregelmäßige Verben</h3>
+ <div class="tabwrap"><table><tr><td>go</td><td><b>went</b></td><td>buy</td><td><b>bought</b></td></tr><tr><td>do</td><td><b>did</b></td><td>take</td><td><b>took</b></td></tr><tr><td>have</td><td><b>had</b></td><td></td><td></td></tr></table></div>
+ <h3>be: was / were</h3>
+ <div class="tabwrap"><table><tr><th>Langform</th><th>verneint</th><th>Kurzform</th></tr>
+ ${[["I","was"],["you","were"],["he","was"],["she","was"],["it","was"],["we","were"],["you","were"],["they","were"]].map(([p,v])=>`<tr><td>${p} ${v}</td><td>${p} ${v} not</td><td>${p} ${v}n't</td></tr>`).join("")}</table></div>
+ <p>Signalwörter: <b>yesterday, last week, last Saturday, ago</b></p>`,
+ karten:[
+  karte("Wann verwendest du das simple past?","Für Dinge, die in der <b>Vergangenheit</b> passiert und <b>vorbei</b> sind. Signalwörter: yesterday, last week …"),
+  karte("Wie bildest du das simple past bei den meisten Verben?","Du hängst <b>-ed</b> an das Verb: play → played, visit → visited"),
+  ...[["I ___ cricket yesterday.","play","played"],["Jay ___ his uncle last week.","visit","visited"],["She ___ about the test.","worry","worried","y wird zu ie: worried"],
+   ["We ___ a film yesterday.","watch","watched"],["Luke ___ his bedroom last Saturday.","tidy","tidied","y wird zu ie: tidied"],["My dad ___ the car yesterday.","clean","cleaned"],
+   ["I ___ the living room last week.","hoover","hoovered"],["Holly ___ the dishwasher after school.","empty","emptied","y wird zu ie: emptied"],["Mum ___ dinner for us yesterday.","cook","cooked"],
+   ["They ___ the film.","love","loved","Endet schon auf e → nur -d: loved"],
+   ["Yesterday we ___ to the park.","go","went","unregelmäßig: go → went"],["I ___ a new pen last week.","buy","bought","unregelmäßig: buy → bought"],
+   ["She ___ her homework yesterday.","do","did","unregelmäßig: do → did"],["He ___ out the rubbish yesterday.","take","took","unregelmäßig: take → took"],
+   ["We ___ a party last Saturday.","have","had","unregelmäßig: have → had"]]
+   .map(([s,v,r,e])=>text(`${s.replace("___",L)} <span class="muted">(${v})</span>`,[r],e||`${v} + ed → ${r}`,"Setze das Verb ins simple past")),
+  mc("go → simple past?","went",["goed","gone","wented"],"go → went"),mc("buy → simple past?","bought",["buyed","brought","buied"],"buy → bought (nicht brought, das kommt von bring!)"),
+  mc("take → simple past?","took",["taked","tooked","taken"],"take → took"),mc("have → simple past?","had",["haved","has","hadded"],"have → had"),mc("do → simple past?","did",["doed","done","dids"],"do → did"),
+  paare("Ordne zu: unregelmäßige Verben",[["go","went"],["buy","bought"],["do","did"],["take","took"],["have","had"]]),
+  ...[["I ___ at home yesterday.","was","I → was"],["You ___ late.","were","you → were"],["Holly ___ in the park.","was","Holly = she → was"],["We ___ tired.","were","we → were"],
+   ["They ___ at school.","were","they → were"],["It ___ cold yesterday.","was","it → was"]].map(([s,r,e])=>mc(s.replace("___",L),r,[r==="was"?"were":"was"],e)),
+  karte("Welche Formen hat <b>be</b> in der Vergangenheit?","<b>was</b>: I, he, she, it<br><b>were</b>: you, we, they<br>verneint: wasn't, weren't"),
+  ...[["she was not","she wasn't"],["they were not","they weren't"],["I was not","I wasn't"],["you were not","you weren't"]].map(([l,k])=>text(`Wie heißt die <b>Kurzform</b> von „${l}“?`,[k],`${l} = ${k}`,"mit Apostroph: '")),
+  mc("He played football. – Wie kann man das übersetzen?","beide: „Er spielte Fußball.“ und „Er hat Fußball gespielt.“",["nur „Er spielt Fußball.“","nur „Er wird Fußball spielen.“"],"Im Deutschen gibt es zwei Möglichkeiten, Vergangenes auszudrücken."),
+ ]},
+{id:"e-past-fragen",fach:"englisch",titel:"Simple past: Verneinung, Fragen & Kurzantworten",quelle:"Heft 06.10.",probe:"2026-11-13",
+ merke:`<h2>Simple past: Verneinung, Fragen und Kurzantwort</h2>
+ <h3>Verneinung</h3>
+ <p>Um zu sagen, was in der Vergangenheit <b>nicht</b> passiert ist, setzt du <b>didn't</b> (= did not) vor das Verb.</p>
+ <div class="merk">didn't + Grundform: Olivia didn't <b>win</b> (nicht: won!)</div>
+ <p>Olivia didn't win the game. – Olivia hat das Spiel nicht gewonnen.<br>They didn't buy a new book. – Sie haben kein neues Buch gekauft.</p>
+ <p>Verneinungen mit be bildest du mit <b>wasn't</b> und <b>weren't</b>:<br>Holly wasn't at school. – Holly war nicht in der Schule.<br>We weren't late. – Wir sind nicht zu spät gekommen.</p>
+ <h3>Ja/Nein-Fragen</h3>
+ <div class="merk"><b>Did</b> steht am Satzanfang – <b>außer bei be</b> (Was …? Were …?)</div>
+ <p>Did you lose your pen? – Hast du deinen Stift verloren?<br>Did Olivia ask Gwen? – Hat Olivia Gwen gefragt?<br>Did Luke play football? – Hat Luke Fußball gespielt?<br>Did they have a party? – Haben sie eine Party gefeiert?</p>
+ <h3>Kurzantworten</h3><p>Yes, I did. / No, I didn't. &nbsp;·&nbsp; Yes, she was. / No, she wasn't.</p>
+ <h3>Fragen mit Fragewort</h3><p>Das Fragewort steht am <b>Satzanfang</b>.<br>What did you do with the scarf? – Was hast du mit dem Schal gemacht?<br>When were they in the classroom? – Wann waren sie im Klassenzimmer?</p>`,
+ karten:[
+  karte("Wie sagst du, dass etwas in der Vergangenheit <b>nicht</b> passiert ist?","Du setzt <b>didn't</b> (= did not) vor das Verb. Das Verb steht in der Grundform: Olivia didn't <b>win</b> the game."),
+  mc(`Olivia ${L} the game. <span class="muted">(hat nicht gewonnen)</span>`,"didn't win",["didn't won","wasn't win","not won"],"didn't + Grundform: didn't win"),
+  mc(`They ${L} a new book. <span class="muted">(haben nicht gekauft)</span>`,"didn't buy",["didn't bought","weren't buy","don't buy"],"didn't + Grundform: didn't buy"),
+  mc(`Holly ${L} at school. <span class="muted">(war nicht)</span>`,"wasn't",["weren't","didn't","isn't"],"Holly = she → wasn't"),
+  mc(`We ${L} late. <span class="muted">(waren nicht)</span>`,"weren't",["wasn't","didn't","aren't"],"we → weren't"),
+  ...[["Olivia hat das Spiel nicht gewonnen.","Olivia didn't win the game."],["Sie haben kein neues Buch gekauft.","They didn't buy a new book."],["Holly war nicht in der Schule.","Holly wasn't at school."],
+   ["Wir sind nicht zu spät gekommen.","We weren't late."],["Hast du deinen Stift verloren?","Did you lose your pen?"],["Hat Olivia Gwen gefragt?","Did Olivia ask Gwen?"],
+   ["Hat Luke Fußball gespielt?","Did Luke play football?"],["Haben sie eine Party gefeiert?","Did they have a party?"],["Was hast du mit dem Schal gemacht?","What did you do with the scarf?"],
+   ["Wann waren sie im Klassenzimmer?","When were they in the classroom?"]].map(([de,en])=>satz(`Bau den englischen Satz:<br>„${de}“`,en)),
+  karte("Wie stellst du im simple past eine Ja/Nein-Frage?","<b>Did</b> kommt an den Satzanfang, das Verb steht in der Grundform: <b>Did</b> Luke <b>play</b> football?<br>Außer bei be: <b>Was</b> Holly at school? <b>Were</b> they late?"),
+  mc(`${L} Luke play football?`,"Did",["Was","Does"],"Frage im simple past → Did"),
+  mc(`${L} Holly at school yesterday?`,"Was",["Did","Were"],"Bei be gibt es keine did-Frage: Holly → Was"),
+  mc(`${L} they in the classroom?`,"Were",["Did","Was"],"Bei be: they → Were"),
+  mc(`${L} you lose your pen?`,"Did",["Were","Was"],"lose ist kein be → Did"),
+  mc("Welche Frage ist richtig?","Did Luke play football?",["Did Luke played football?","Played Luke football?","Does Luke played football?"],"Nach did kommt die Grundform: play"),
+  mc("Did you lose your pen? – Yes, …","I did.",["I lost.","I was.","I do."],"Kurzantwort mit did: Yes, I did."),
+  mc("Did Olivia ask Gwen? – No, …","she didn't.",["she wasn't.","she doesn't.","she didn't ask."],"Kurzantwort: No, she didn't."),
+  mc("Was Holly at school? – No, …","she wasn't.",["she didn't.","she weren't.","she isn't."],"Frage mit was → Antwort mit wasn't"),
+  mc("Were they late? – Yes, …","they were.",["they did.","they was.","they are."],"Frage mit were → Antwort mit were"),
+  karte("Wo steht das Fragewort bei Fragen im simple past?","Am <b>Satzanfang</b>: <b>What</b> did you do with the scarf? <b>When</b> were they in the classroom?"),
+  mc(`${L} did you do with the scarf? <span class="muted">(Was …?)</span>`,"What",["When","Where","Who"],"Was = What"),
+  mc(`${L} were they in the classroom? <span class="muted">(Wann …?)</span>`,"When",["What","Where","Why"],"Wann = When"),
+ ]},
 
 /* ---------------------------------------------------------------- MATHE */
 {id:"m-brueche",fach:"mathe",titel:"Brüche addieren & subtrahieren",quelle:"Beispiel",probe:null,
@@ -284,7 +465,9 @@ function bewerte(kid,ok){
 function heuteDran(){
   // zuerst Themen mit naher Probe, dann schon gelernte (niedrige Box zuerst), dann neue
   const prio=k=>{const p=k.t.probe?tageBis(k.t.probe):99;const s=stand(k.id);return (p>=0&&p<=14?0:100)+(s?s.box:10)+Math.random()};
-  return alleKarten().filter(istFaellig).sort((a,b)=>prio(a)-prio(b))}
+  return alleKarten().filter(k=>k.t.quelle!=="Beispiel"&&istFaellig(k)).sort((a,b)=>prio(a)-prio(b))}
+// kurz vor einer Probe gibt es mehr Fragen pro Tag
+const tagesMenge=()=>THEMEN.some(t=>t.probe&&tageBis(t.probe)>=0&&tageBis(t.probe)<=4)?30:15;
 
 /* ================================================================
    PRÜFEN
@@ -296,6 +479,8 @@ function parseZahl(s){s=String(s).trim().replace(/\s| |\./g,"").replace(",",".
 function parseBruch(s){s=String(s).trim().replace(/\s/g,"");let m=s.match(/^(\d+)\/(\d+)$/);if(m&&+m[2]>0)return[+m[1],+m[2]];m=s.match(/^(\d+)$/);if(m)return[+m[1],1];return null}
 function pruefe(q,antwort){
   if(q.typ==="karte")return antwort===true;
+  if(q.typ==="paare")return antwort<=1; // höchstens ein Fehlversuch
+  if(q.typ==="satz")return norm(antwort)===norm(q.loesung);
   if(q.typ==="mc")return antwort===q.loesung;
   if(q.typ==="zahl"){const v=parseZahl(antwort);return v!==null&&Math.abs(v-q.loesung)<1e-9}
   if(q.typ==="bruch"){const b=parseBruch(antwort);if(!b)return false;const [z,n]=q.loesung;
@@ -303,6 +488,8 @@ function pruefe(q,antwort){
   const a=norm(antwort);return q.loesung.some(l=>{const x=norm(l);return a===x||ohneArtikel(a)===ohneArtikel(x)})}
 function loesungText(q){
   if(q.typ==="karte")return q.antwort;
+  if(q.typ==="paare")return q.paare.map(([a,b])=>`${a} = ${b}`).join(" · ");
+  if(q.typ==="satz")return esc(q.loesung);
   if(q.typ==="bruch"){const [z,n]=q.loesung;if(z%n===0)return String(z/n);const g=ggT(z,n);return g>1&&q.modus==="gleich"?`${F(z,n)} = ${F(z/g,n/g)}`:F(z,n)}
   if(q.typ==="zahl")return Z(String(q.loesung).replace(".",","))+(q.einheit?" "+q.einheit:"");
   if(q.typ==="text")return esc(q.loesung[0]);return q.loesung}
@@ -312,21 +499,25 @@ function loesungText(q){
    modus: heute (Wiederholen) | ueben (ein Thema) | probe (ohne Hilfe, mit Note)
    ================================================================ */
 let Q=null;
-function frageAus(k){const q=Object.assign({},k.make(),{kid:k.id,themaId:k.t.id});if(q.typ==="mc")q.optionen=shuffle(q.optionen);return q}
+function frageAus(k){const q=Object.assign({},k.make(),{kid:k.id,themaId:k.t.id});if(q.typ==="mc")q.optionen=shuffle(q.optionen);
+  if(q.typ==="paare"){q.links=shuffle(q.paare.map((_,i)=>i));q.rechts=shuffle(q.paare.map((_,i)=>i))}
+  if(q.typ==="satz"){q.woerter=q.loesung.split(" ");let o;do{o=shuffle(q.woerter.map((_,i)=>i))}while(q.woerter.length>2&&o.every((x,i)=>x===i));q.reihe=o}
+  return q}
+const neueFrage=()=>Object.assign(Q,{beantwortet:false,aufgedeckt:false,auswahl:null,sel:null,fertigPaare:[],fehlPaar:null,pf:0,bau:[]});
 function starte(modus,opt={}){
   let karten;
-  if(modus==="heute")karten=heuteDran().slice(0,15);
+  if(modus==="heute")karten=heuteDran().slice(0,tagesMenge());
   else if(modus==="ueben")karten=shuffle(kartenVon(thema(opt.themaId))).slice(0,12);
   else karten=shuffle(opt.themaIds.flatMap(id=>kartenVon(thema(id)))).slice(0,20);
   if(!karten.length)return;
-  Q=Object.assign({modus,fragen:karten.map(frageAus),i:0,antworten:[],beantwortet:false,aufgedeckt:false,auswahl:null},opt);render();window.scrollTo({top:0})}
+  Q=Object.assign({modus,fragen:karten.map(frageAus),i:0,antworten:[]},opt);neueFrage();render();window.scrollTo({top:0})}
 function antworten(wert){
   if(!Q||Q.beantwortet)return;const q=Q.fragen[Q.i],ok=pruefe(q,wert);
   Q.antworten.push({q,wert,ok});Q.beantwortet=true;Q.auswahl=wert;bewerte(q.kid,ok);
   if(Q.modus==="probe"&&q.typ!=="karte"){weiter();return}
   if(q.typ==="karte"){weiter();return}
   render()}
-function weiter(){Q.i++;Q.beantwortet=false;Q.aufgedeckt=false;Q.auswahl=null;if(Q.i>=Q.fragen.length)Q.fertig=true;render()}
+function weiter(){Q.i++;neueFrage();if(Q.i>=Q.fragen.length)Q.fertig=true;render()}
 const note=p=>p>=92?1:p>=81?2:p>=67?3:p>=50?4:p>=30?5:6;
 const NOTENTEXT={1:"Sehr gut! Du bist bestens vorbereitet.",2:"Gut! Nur noch ein paar Kleinigkeiten.",3:"Befriedigend. Schau dir die Fehler nochmal an.",4:"Ausreichend. Lies den Hefteintrag nochmal und übe weiter.",5:"Da geht noch was! Übe die Themen einzeln.",6:"Nicht aufgeben! Fang mit dem Hefteintrag an und übe Schritt für Schritt."};
 
@@ -346,7 +537,7 @@ function vStart(){
    <div class="stats"><div class="stat"><b>${S.heute.anzahl}</b><span>heute gelöst</span></div>
    <div class="stat"><b>${S.serie.letzter>=tag(-1)?S.serie.tage:0}</b><span>Tage in Folge</span></div>
    <div class="stat"><b>${gelernt}<small class="muted">/${alle.length}</small></b><span>sitzt schon</span></div></div></header>
-   <section class="heute">${dran?`<div class="t"><span class="zahl">${Math.min(dran,15)}</span><div><h2>Heute dran</h2><p class="muted">Fragen aus allen Fächern, die du heute wiederholen solltest.${dran>15?` Danach warten noch ${dran-15}.`:""}</p></div></div>
+   <section class="heute">${dran?`<div class="t"><span class="zahl">${Math.min(dran,tagesMenge())}</span><div><h2>Heute dran</h2><p class="muted">Fragen, die du heute wiederholen solltest. Themen für die nächste Probe kommen zuerst.${dran>tagesMenge()?` Danach warten noch ${dran-tagesMenge()}.`:""}</p></div></div>
      <button class="btn" data-act="heute">Los geht's</button>`
     :`<div class="t"><span class="zahl">✓</span><div><h2>Alles erledigt für heute!</h2><p class="muted">Morgen kommen wieder Fragen dran. Du kannst unten trotzdem jedes Thema üben.</p></div></div>`}</section>
    ${proben.length?`<section class="proben"><h3>Nächste Proben</h3>${proben.map(t=>`<div class="probe-zeile" style="--fach:${fach(t.fach).farbe}"><span class="tage">${probeText(t)}</span><span><b>${fach(t.fach).name}:</b> ${t.titel}</span></div>`).join("")}</section>`:""}
@@ -384,12 +575,21 @@ function vQuiz(){
     feld=Q.aufgedeckt?`<div class="antwortkarte pop">${q.antwort}</div><p class="tipp">Sei ehrlich: Hast du das gewusst?</p>
       <div class="row"><button class="btn ok" data-act="gewusst">Gewusst</button><button class="btn bad" data-act="nichtgewusst">Nicht gewusst</button></div>`
      :`<p class="tipp">Überleg dir die Antwort oder sag sie laut. Dann dreh die Karte um.</p><div><button class="btn" data-act="aufdecken" id="aufdeckbtn">Antwort zeigen</button></div>`}
+  else if(q.typ==="paare"){const fp=Q.fertigPaare,fe=Q.fehlPaar||[];
+    const knopf=(seite,i,txt)=>{let c="pk";if(fp.includes(i))c+=" done";else if(seite==="l"&&Q.sel===i)c+=" sel";else if((seite==="l"&&fe[0]===i)||(seite==="r"&&fe[1]===i))c+=" err";
+      return `<button class="${c}" data-p${seite}="${i}" ${fp.includes(i)||fertig?"disabled":""}>${txt}</button>`};
+    feld=`<p class="tipp">Tippe links ein Wort an und dann rechts die passende Übersetzung.</p><div class="paare"><div class="spalte">${q.links.map(i=>knopf("l",i,q.paare[i][0])).join("")}</div>
+      <div class="spalte">${q.rechts.map(i=>knopf("r",i,q.paare[i][1])).join("")}</div></div>`}
+  else if(q.typ==="satz"){
+    feld=`<div class="bau">${Q.bau.map((w,k)=>`<button class="wchip" data-bau="${k}" ${fertig?"disabled":""}>${esc(q.woerter[w])}</button>`).join("")}</div>
+      ${fertig?"":`<div class="woerter">${q.reihe.filter(i=>!Q.bau.includes(i)).map(i=>`<button class="wchip" data-w="${i}">${esc(q.woerter[i])}</button>`).join("")}</div>
+      <div class="row"><button class="btn" data-act="satzpruefen" ${Q.bau.length===q.woerter.length?"":"disabled"}>Prüfen</button>${Q.bau.length?`<button class="btn ghost small" data-act="satzleeren">Von vorn</button>`:""}</div>`}`}
   else if(q.typ==="mc"){feld=`<div class="optionen">${q.optionen.map((o,i)=>{let c="opt";if(fertig){if(o===q.loesung)c+=" richtig";else if(o===Q.auswahl)c+=" falsch"}
      return `<button class="${c}" data-opt="${i}" ${fertig?"disabled":""}>${o}</button>`}).join("")}</div>`}
   else{const tipp=q.typ==="bruch"?"Bruch so eingeben: 3/4":q.typ==="zahl"?"Nur die Zahl eingeben":q.tipp||"";
     feld=`<form class="eingabe" id="eform" autocomplete="off"><input id="antwort" autocapitalize="off" autocorrect="off" spellcheck="false" ${fertig?"disabled":""} value="${fertig?esc(Q.auswahl):""}" aria-label="Antwort">
      ${q.einheit?`<span class="einheit">${q.einheit}</span>`:""}${fertig?"":`<button class="btn" type="submit">Prüfen</button>`}</form>${tipp&&!fertig?`<p class="tipp">${tipp}</p>`:""}`}
-  const rueck=fertig&&q.typ!=="karte"?`<div class="rueck ${letzte.ok?"ok":"no"} pop"><strong>${letzte.ok?pick(["Richtig!","Super!","Klasse!","Genau!","Stark!"]):"Leider falsch."}</strong>
+  const rueck=fertig&&q.typ!=="karte"?`<div class="rueck ${letzte.ok?"ok":"no"} pop"><strong>${letzte.ok?pick(["Richtig!","Super!","Klasse!","Genau!","Stark!"]):q.typ==="paare"?`${Q.pf} Fehlversuche – das üben wir nochmal.`:"Leider falsch."}</strong>
      ${letzte.ok?"":`<span>Richtig ist: <b>${loesungText(q)}</b></span>`}${q.erkl?`<span>${q.erkl}</span>`:""}</div>
      <div class="row"><button class="btn" data-act="weiter" id="weiterbtn">${Q.i+1<Q.fragen.length?"Weiter":"Auswertung"}</button></div>`:"";
   const titel=Q.modus==="probe"?"Probe-Training":Q.modus==="heute"?"Heute dran":t.titel;
@@ -404,7 +604,7 @@ function vErgebnis(){
   let kopf;
   if(Q.modus==="probe")kopf=`<p class="muted">Deine Note im Probe-Training</p><div class="note">${note(p)}</div><p><b>${r} von ${n}</b> richtig (${p} %). ${NOTENTEXT[note(p)]}</p>`;
   else kopf=`<h2>${Q.modus==="heute"?"Geschafft für heute!":thema(Q.themaId).titel}</h2><p><b>${r} von ${n}</b> richtig (${p} %). ${falsch.length?"Was falsch war, kommt morgen wieder dran.":"Alles richtig, super!"}</p>`;
-  const liste=(Q.modus==="probe"?Q.antworten:falsch).map(a=>`<div class="eintrag ${a.ok?"ok":""}"><div>${a.q.frage}</div><div>${a.ok?"✓ richtig":`${a.q.typ==="karte"||a.wert===""?"":`✗ Deine Antwort: ${esc(a.wert)} · `}Richtig: <b>${loesungText(a.q)}</b>`}</div>${!a.ok&&a.q.erkl?`<div class="muted">${a.q.erkl}</div>`:""}</div>`).join("");
+  const liste=(Q.modus==="probe"?Q.antworten:falsch).map(a=>`<div class="eintrag ${a.ok?"ok":""}"><div>${a.q.frage}</div><div>${a.ok?"✓ richtig":`${a.q.typ==="karte"||a.q.typ==="paare"||a.wert===""?"":`✗ Deine Antwort: ${esc(a.wert)} · `}Richtig: <b>${loesungText(a.q)}</b>`}</div>${!a.ok&&a.q.erkl?`<div class="muted">${a.q.erkl}</div>`:""}</div>`).join("");
   const zurueck=Q.modus==="heute"?"":`<button class="btn ghost" data-go="fach" data-fach="${thema(Q.fragen[0].themaId).fach}">Zurück zum Fach</button>`;
   const nochmal=Q.modus==="heute"?(heuteDran().length?`<button class="btn" data-act="heute">Weitere Fragen</button>`:""):`<button class="btn" data-act="nochmal">Nochmal</button>`;
   return `<div style="--fach:${farbe};display:flex;flex-direction:column;gap:16px">
@@ -422,10 +622,18 @@ app.addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;const d=b.dataset;
   if(d.go){go(d.go,{fach:d.fach,thema:d.thema});return}
   if(d.opt!==undefined&&Q){antworten(Q.fragen[Q.i].optionen[+d.opt]);return}
+  if(d.pl!==undefined&&Q){Q.sel=+d.pl;Q.fehlPaar=null;render();return}
+  if(d.pr!==undefined&&Q){if(Q.sel===null)return;const r=+d.pr;
+    if(r===Q.sel){Q.fertigPaare.push(r);Q.sel=null;Q.fehlPaar=null;if(Q.fertigPaare.length===Q.fragen[Q.i].paare.length){antworten(Q.pf);return}}
+    else{Q.pf++;Q.fehlPaar=[Q.sel,r];Q.sel=null}render();return}
+  if(d.w!==undefined&&Q){Q.bau.push(+d.w);render();return}
+  if(d.bau!==undefined&&Q){Q.bau.splice(+d.bau,1);render();return}
   switch(d.act){
    case"heute":starte("heute");break;
    case"ueben":starte("ueben",{themaId:d.thema});break;
    case"probe":{const ids=[...document.querySelectorAll(".chips input:checked")].map(i=>i.value);if(ids.length)starte("probe",{themaIds:ids,fachId:d.fach});break}
+   case"satzpruefen":{const q=Q.fragen[Q.i];antworten(Q.bau.map(i=>q.woerter[i]).join(" "));break}
+   case"satzleeren":Q.bau=[];render();break;
    case"aufdecken":Q.aufgedeckt=true;render();break;
    case"gewusst":antworten(true);break;
    case"nichtgewusst":antworten(false);break;
