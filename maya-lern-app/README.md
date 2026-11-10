@@ -1,15 +1,19 @@
-# Mayas Lernheft
+# Majas Lernheft
 
-Lern-App für Mathe, Deutsch, Englisch, NT und GPG (5. Klasse, bayerische Mittelschule).
+Lern-App für Maja (6. Klasse), gezielt auf ihren **aktuellen** Stoff in Mathe, Deutsch, Englisch, NT und GPG.
+Die Themen kommen aus Fotos ihrer Hefteinträge, Buchseiten und Arbeitsblätter.
 
-- `index.html` ist die ganze App: einfach im Browser öffnen, sie läuft auch ohne Internet (nur die Schriftarten kommen aus dem Netz).
-- Jedes Thema hat einen **Hefteintrag** zum Lernen und **Üben** mit immer neuen Aufgaben.
-- **Probe-Training**: gemischte Aufgaben aus den gewählten Themen, ohne Hilfe, am Ende mit Note.
-- **Fehler-Kiste**: falsch gelöste Aufgaben kommen zurück, bis sie richtig gelöst sind.
-- Der Fortschritt (Sterne, Fehler-Kiste) wird im Browser des Geräts gespeichert.
+- **Heute dran**: täglich bis zu 15 Fragen aus allen Fächern (Lernkartei mit 5 Boxen).
+  Richtig → kommt nach 1, 2, 4, 7, 14 Tagen wieder. Falsch → morgen wieder.
+  Themen mit naher Probe kommen zuerst.
+- **Hefteintrag** zum Nachlesen, **Üben** pro Thema, **Probe-Training** mit Note.
+- Fragetypen: Auswahl, Eintippen (z. B. englische Rechtschreibung), Zahlen, Brüche, Karteikarten zum Umdrehen
+  (für Fragen wie „Was ist das Präsens?“).
+- Der Fortschritt wird im Browser des Geräts gespeichert.
 
-## Inhalte anpassen
+## Neues Thema eintragen
 
-Alle Fächer und Themen stehen im Block `const FAECHER=[...]` in `index.html`.
-Ein Thema besteht aus `titel`, `merke` (Hefteintrag als HTML) und `gen()` (liefert eine Aufgabe).
-Aufgabentypen: `mc(...)` (Auswahl), `text(...)` (Wort eintippen), `zahl(...)` und `bruch(...)`.
+Im Array `THEMEN` in `index.html` ein Objekt ergänzen:
+`{id, fach, titel, quelle, probe, merke, karten:[...]}`.
+Neue Karten in bestehenden Themen immer hinten anhängen, damit der Lernstand erhalten bleibt.
+Themen mit `quelle:"Beispiel"` sind Platzhalter, bis Majas echte Unterlagen da sind.

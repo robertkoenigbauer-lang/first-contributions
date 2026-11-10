@@ -1,15 +1,15 @@
-<title>Mayas Lernheft</title>
+<title>Majas Lernheft</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap">
 <style>
-/* Layout: Schulheft-Stapel. Jedes Fach hat seine Heftfarbe, Mathe auf Karopapier, Sprachen auf Linien. */
+/* Layout: Schulheft-Stapel. Jedes Fach hat seine Heftfarbe, Mathe auf Karopapier, sonst Linien. */
 :root{
   --bg:#f3f5fa; --surface:#ffffff; --fg:#1d2433; --muted:#5d6678; --line:#dfe3ec;
   --paper:#fffef9; --paper-line:#cfdcef; --paper-margin:#f1a8a8;
   --ok:#1f8a4c; --ok-bg:#e3f5ea; --bad:#c23b3b; --bad-bg:#fbe7e7;
-  --mathe:#2f6fd6; --deutsch:#d64545; --englisch:#c99400; --nt:#2e9e5b; --gpg:#e07a1f;
+  --mathe:#2f6fd6; --deutsch:#d64545; --englisch:#b88700; --nt:#2e9e5b; --gpg:#e07a1f;
   --star:#f2b705; --shadow:0 1px 2px rgba(20,30,60,.06),0 4px 14px rgba(20,30,60,.06);
   --f-display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
   --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -42,31 +42,40 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .btn{border:0;border-radius:12px;padding:12px 18px;font-weight:800;background:var(--fach,var(--mathe));color:#fff;font-size:1rem;min-height:48px}
 .btn.ghost{background:transparent;color:var(--fg);border:2px solid var(--line)}
 .btn.small{padding:8px 14px;min-height:40px;font-size:.95rem}
+.btn.ok{background:var(--ok)}.btn.bad{background:var(--bad)}
 .btn:disabled{opacity:.45;cursor:default}
-.back{background:none;border:0;padding:6px 0;color:var(--muted);font-weight:700}
+.back{background:none;border:0;padding:6px 0;color:var(--muted);font-weight:700;align-self:flex-start}
 /* Kopf */
 .kopf{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end}
 .stats{display:flex;gap:10px;flex-wrap:wrap}
 .stat{background:var(--surface);border-radius:12px;padding:8px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;min-width:96px}
 .stat b{font-family:var(--f-display);font-size:1.4rem;line-height:1;font-variant-numeric:tabular-nums}
 .stat span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+/* Heute dran */
+.heute{--fach:var(--mathe);background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:20px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:3px solid var(--fach)}
+.heute .zahl{font-family:var(--f-display);font-weight:800;font-size:3rem;line-height:1;color:var(--fach);font-variant-numeric:tabular-nums}
+.heute .t{display:flex;gap:16px;align-items:center;min-width:0;flex:1 1 260px}
+.proben{display:flex;flex-direction:column;gap:8px}
+.probe-zeile{display:flex;gap:12px;align-items:center;background:var(--surface);border-radius:12px;padding:10px 14px;box-shadow:var(--shadow);border-left:6px solid var(--fach)}
+.probe-zeile .tage{font-family:var(--f-display);font-weight:800;font-size:1.2rem;min-width:5.5em;font-variant-numeric:tabular-nums}
 /* Hefte */
 .hefte{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
-.heft{position:relative;text-align:left;border:0;background:var(--surface);border-radius:6px 14px 14px 6px;padding:18px 16px 16px 30px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;min-height:150px;overflow:hidden}
+.heft{position:relative;text-align:left;border:0;background:var(--surface);border-radius:6px 14px 14px 6px;padding:18px 16px 16px 30px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;min-height:140px;overflow:hidden}
 .heft::before{content:"";position:absolute;inset:0 auto 0 0;width:16px;background:var(--fach)}
 .heft .kurz{font-family:var(--f-display);font-weight:800;font-size:2rem;color:var(--fach);line-height:1}
 .heft .name{font-family:var(--f-display);font-weight:700;font-size:1.25rem}
 .heft .info{font-size:.9rem;color:var(--muted);margin-top:auto}
+.heft.leer{opacity:.75}
 .balken{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
 .balken i{display:block;height:100%;background:var(--fach,var(--mathe));border-radius:99px;transition:width .3s}
-.kiste{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--surface);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);--fach:var(--deutsch)}
 /* Fachseite */
 .fachkopf{border-left:10px solid var(--fach);padding:4px 0 4px 14px;display:flex;flex-direction:column;gap:4px}
 .themen{display:flex;flex-direction:column;gap:10px}
 .thema{background:var(--surface);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.thema .t{min-width:0;flex:1 1 220px;display:flex;flex-direction:column;gap:2px}
-.sterne{color:var(--star);letter-spacing:2px;font-size:1.05rem}
-.sterne .leer{color:var(--line)}
+.thema .t{min-width:0;flex:1 1 220px;display:flex;flex-direction:column;gap:4px}
+.badge{display:inline-block;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:99px;border:1.5px solid var(--line);color:var(--muted)}
+.badge.heft-q{border-color:var(--fach);color:var(--fach)}
+.leerhinweis{background:var(--surface);border-radius:14px;padding:18px;box-shadow:var(--shadow);border:2px dashed var(--line);display:flex;flex-direction:column;gap:6px}
 .probe{background:var(--surface);border-radius:14px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;border:2px dashed var(--fach)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{display:flex;gap:6px;align-items:center;border:2px solid var(--line);border-radius:99px;padding:6px 12px;font-size:.9rem;font-weight:700;cursor:pointer;user-select:none}
@@ -77,7 +86,7 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
   background-image:linear-gradient(var(--paper-line) 1px,transparent 1px);background-size:100% 32px;background-position:0 21px}
 .papier::before{content:"";position:absolute;top:0;bottom:0;left:30px;width:2px;background:var(--paper-margin)}
 .papier.karo{background-image:linear-gradient(var(--paper-line) 1px,transparent 1px),linear-gradient(90deg,var(--paper-line) 1px,transparent 1px);background-size:16px 16px;background-position:0 0}
-.papier h2{color:var(--fach);line-height:32px;margin-bottom:0}
+.papier h2{color:var(--fach);line-height:32px}
 .papier h3{line-height:32px;margin-top:8px}
 .papier ul{margin:0;padding-left:22px}
 .papier .merk{border:2px solid var(--fach);border-radius:8px;padding:0 12px;background:color-mix(in srgb,var(--paper) 85%,var(--fach));margin:8px 0;line-height:32px}
@@ -86,37 +95,36 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .tabwrap{overflow-x:auto}
 /* Bruch */
 .frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.1;margin:0 3px;font-variant-numeric:tabular-nums;font-weight:800}
-.frac>span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
+.frac>span:first-child{border-bottom:2px solid currentColor}
 .frac>span{padding:0 3px}
 /* Quiz */
 .quizkopf{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .karte{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:22px 20px;display:flex;flex-direction:column;gap:18px;border-top:8px solid var(--fach)}
+.karte .fachzeile{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--fach)}
 .frage{font-size:1.3rem;font-weight:700;line-height:1.55}
-.frage .wort{background:color-mix(in srgb,var(--fach) 22%,transparent);border-radius:6px;padding:0 5px}
 .frage .lueck{display:inline-block;min-width:60px;border-bottom:3px solid var(--fach)}
-.frage svg{display:block;margin-top:10px;max-width:100%}
 .optionen{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .opt{border:2px solid var(--line);background:var(--bg);border-radius:12px;padding:12px 14px;text-align:left;font-weight:700;font-size:1.05rem;min-height:56px}
 .opt:hover:not(:disabled){border-color:var(--fach)}
 .opt.richtig{border-color:var(--ok);background:var(--ok-bg)}
 .opt.falsch{border-color:var(--bad);background:var(--bad-bg)}
-.opt.gewaehlt{border-color:var(--fach);background:color-mix(in srgb,var(--fach) 14%,transparent)}
 .eingabe{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .eingabe input{font:inherit;font-size:1.3rem;font-weight:800;padding:10px 14px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--fg);flex:1 1 180px;min-width:0}
 .eingabe .einheit{font-weight:800;font-size:1.2rem}
 .tipp{font-size:.88rem;color:var(--muted)}
+.antwortkarte{background:var(--bg);border-radius:12px;padding:14px;border-left:6px solid var(--fach);font-weight:600}
 .rueck{border-radius:12px;padding:12px 14px;font-weight:600;display:flex;flex-direction:column;gap:4px}
-.rueck.ok{background:var(--ok-bg);color:var(--fg);border-left:6px solid var(--ok)}
-.rueck.no{background:var(--bad-bg);color:var(--fg);border-left:6px solid var(--bad)}
+.rueck.ok{background:var(--ok-bg);border-left:6px solid var(--ok)}
+.rueck.no{background:var(--bad-bg);border-left:6px solid var(--bad)}
 .rueck strong{font-family:var(--f-display);font-size:1.15rem}
 /* Ergebnis */
 .ergebnis{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;border-top:8px solid var(--fach)}
 .note{font-family:var(--f-display);font-weight:800;font-size:3.4rem;line-height:1;color:var(--fach)}
 .liste{display:flex;flex-direction:column;gap:10px;width:100%}
-.liste .eintrag{border-left:5px solid var(--bad);background:var(--bg);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.liste .eintrag{border-left:5px solid var(--bad);background:var(--surface);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
 .liste .eintrag.ok{border-left-color:var(--ok)}
 .fuss{font-size:.85rem;color:var(--muted);text-align:center}
-@media (max-width:480px){h1{font-size:1.75rem}.frage{font-size:1.15rem}.papier{padding-left:38px}.papier::before{left:24px}}
+@media (max-width:480px){h1{font-size:1.75rem}.frage{font-size:1.15rem}.papier{padding-left:38px}.papier::before{left:24px}.heute .zahl{font-size:2.4rem}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
 .pop{animation:pop .25s ease-out}
@@ -132,647 +140,298 @@ const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const ggT=(a,b)=>b?ggT(b,a%b):Math.abs(a);
+const kgV=(a,b)=>a*b/ggT(a,b);
 const F=(z,n)=>`<span class="frac"><span>${z}</span><span>${n}</span></span>`;
-const Z=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g," "); // 47 382
-const W=t=>`<span class="wort">${t}</span>`;
+const Z=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g," ");
 const L=`<span class="lueck">&nbsp;</span>`;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-/* Aufgabentypen */
+/* Aufgabentypen
+   mc(frage, richtig, [falsche], erklärung)        → Auswahl
+   text(frage, [richtige Antworten], erkl, tipp)   → eintippen (Groß/klein egal)
+   zahl(frage, wert, erkl, einheit)                → Zahl eintippen
+   bruch(frage, z, n, modus, erkl)                 → Bruch eintippen (gleich | gekuerzt | genau)
+   karte(frage, antwort)                           → Karteikarte: umdrehen, selbst bewerten */
 const mc=(frage,richtig,falsche,erkl)=>({typ:"mc",frage,loesung:richtig,optionen:[richtig,...falsche],erkl});
 const text=(frage,loesungen,erkl,tipp)=>({typ:"text",frage,loesung:[].concat(loesungen),erkl,tipp});
 const zahl=(frage,wert,erkl,einheit)=>({typ:"zahl",frage,loesung:wert,erkl,einheit});
-const bruch=(frage,z,n,modus,erkl)=>({typ:"bruch",frage,loesung:[z,n],modus,erkl}); // modus: gleich | gekuerzt | genau
-const ausPool=(pool)=>()=>pick(pool);
-const andere=(alle,richtig,n=3)=>shuffle(alle.filter(x=>x!==richtig)).slice(0,n);
-
-function balkenSVG(z,n){
-  const w=Math.min(320,n*40),h=44,s=w/n;let r="";
-  for(let i=0;i<n;i++) r+=`<rect x="${i*s+1}" y="1" width="${s-2}" height="${h-2}" rx="4" fill="${i<z?"var(--fach)":"var(--bg)"}" stroke="var(--fg)" stroke-width="1.5"/>`;
-  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="Streifen">${r}</svg>`;
-}
-function rechteckSVG(a,b){
-  const k=Math.min(220/Math.max(a,b),18),w=a*k,h=b*k;
-  return `<svg width="${w+70}" height="${h+40}" viewBox="0 0 ${w+70} ${h+40}" role="img" aria-label="Rechteck"><rect x="10" y="10" width="${w}" height="${h}" fill="color-mix(in srgb, var(--fach) 18%, transparent)" stroke="var(--fach)" stroke-width="3"/><text x="${10+w/2}" y="${h+32}" text-anchor="middle" fill="var(--fg)" font-weight="800" font-size="15">${a} cm</text><text x="${w+18}" y="${10+h/2+5}" fill="var(--fg)" font-weight="800" font-size="15">${b} cm</text></svg>`;
-}
+const bruch=(frage,z,n,modus,erkl)=>({typ:"bruch",frage,loesung:[z,n],modus,erkl});
+const karte=(frage,antwort)=>({typ:"karte",frage,antwort});
+/* Vokabelliste → Karten: Deutsch→Englisch eintippen, Englisch→Deutsch auswählen */
+function vokabeln(liste,richtung="beide"){
+  const k=[];liste.forEach(([de,en],i)=>{const ens=[].concat(en);
+    k.push(text(`Wie schreibt man <b>„${de}“</b> auf Englisch?`,ens,`${de} = <b>${ens.join(" / ")}</b>`,"Achte auf die Schreibweise!"));
+    if(richtung==="beide"){const falsche=[1,2,3].map(d=>liste[(i+d*3)%liste.length][0]).filter(x=>x!==de);
+      k.push(mc(`Was heißt <b>„${ens[0]}“</b> auf Deutsch?`,de,[...new Set(falsche)],`${ens[0]} = ${de}`))}});
+  return k}
 
 /* ================================================================
-   INHALTE
-   Hier werden Fächer, Hefteinträge (merke) und Aufgaben gepflegt.
-   Jedes Thema hat entweder gen() (erzeugt immer neue Aufgaben)
-   oder einen festen Pool von Aufgaben.
+   FÄCHER
    ================================================================ */
 const FAECHER=[
-/* ---------------------------------------------------------------- MATHE */
-{id:"mathe",name:"Mathe",kurz:"M",farbe:"var(--mathe)",papier:"karo",themen:[
-{id:"m-bruch-verstehen",titel:"Brüche verstehen",
- merke:`<h2>Brüche verstehen</h2>
- <div class="merk">Ein Bruch beschreibt einen <b>Teil von einem Ganzen</b>.</div>
- <p>${F("3","4")} &nbsp; oben: <b>Zähler</b> (wie viele Teile ich nehme) – unten: <b>Nenner</b> (in wie viele gleich große Teile das Ganze geteilt ist)</p>
- <h3>Bruchteil von einer Zahl</h3>
- <p>${F(3,4)} von 20 → erst durch den Nenner teilen, dann mal den Zähler: 20 : 4 = 5, 5 · 3 = <b>15</b></p>
- <h3>Brüche vergleichen</h3>
- <ul><li>Gleicher Nenner: Der Bruch mit dem größeren Zähler ist größer. ${F(5,8)} &gt; ${F(3,8)}</li>
- <li>Gleicher Zähler: Je größer der Nenner, desto kleiner die Teile. ${F(1,3)} &gt; ${F(1,5)}</li></ul>`,
- gen(){const art=R(0,3);
-  if(art===0){const n=R(2,10),z=R(1,n-1);return bruch(`Welcher Bruch ist gefärbt?${balkenSVG(z,n)}`,z,n,"gleich",`Das Ganze hat ${n} Teile, ${z} davon sind gefärbt: ${F(z,n)}.`)}
-  if(art===1){const n=pick([2,3,4,5,6,8,10]),z=R(1,n-1),k=R(2,12),x=n*k;return zahl(`Wie viel ist ${F(z,n)} von ${x}?`,k*z,`${x} : ${n} = ${k}, dann ${k} · ${z} = ${k*z}.`)}
-  if(art===2){const n=R(3,12);let a=R(1,n-1),b=R(1,n-1);while(b===a)b=R(1,n-1);const g=Math.max(a,b);return mc("Welcher Bruch ist größer?",F(g,n),[F(Math.min(a,b),n)],`Gleicher Nenner: Der größere Zähler gewinnt. ${F(g,n)} ist größer.`)}
-  const z=R(1,3);let n1=R(2,9),n2=R(2,9);while(n2===n1||n1<=z||n2<=z){n1=R(2,9);n2=R(2,9)}const gross=n1<n2?n1:n2,klein=n1<n2?n2:n1;
-  return mc("Welcher Bruch ist größer?",F(z,gross),[F(z,klein)],`Gleicher Zähler: Je kleiner der Nenner, desto größer die Teile. ${F(z,gross)} ist größer.`)}},
-{id:"m-bruch-rechnen",titel:"Brüche addieren & subtrahieren",
- merke:`<h2>Brüche addieren und subtrahieren</h2>
- <div class="merk">Gleicher Nenner: <b>Nenner bleibt gleich</b>, nur die <b>Zähler</b> werden addiert oder subtrahiert.</div>
- <p>${F(1,4)} + ${F(1,4)} = ${F(2,4)} = ${F(1,2)} &nbsp;&nbsp; ${F(5,6)} − ${F(2,6)} = ${F(3,6)} = ${F(1,2)}</p>
- <p>Am Ende immer schauen: Kann ich <b>kürzen</b>?</p>
- <h3>Ungleiche Nenner</h3>
- <p>Erst auf den gleichen Nenner bringen (erweitern): ${F(1,2)} + ${F(1,4)} = ${F(2,4)} + ${F(1,4)} = ${F(3,4)}</p>
- <h3>Ein Ganzes</h3><p>${F(4,4)} = ${F(3,3)} = ${F(8,8)} = 1</p>`,
- gen(){const art=R(0,3),n=R(2,12);
-  const kurz=(z,nn)=>{const g=ggT(z,nn);if(z===nn)return " = 1 Ganzes";return g>1?` = ${F(z/g,nn/g)} (gekürzt)`:""};
-  if(art===0){const a=R(1,n-1),b=R(1,n-a);return bruch(`${F(a,n)} + ${F(b,n)} = ?`,a+b,n,"gleich",`Nenner bleibt ${n}, Zähler: ${a} + ${b} = ${a+b} → ${F(a+b,n)}${kurz(a+b,n)}`)}
-  if(art===1){const nn=Math.max(n,3),a=R(2,nn),b=R(1,a-1);return bruch(`${F(a,nn)} − ${F(b,nn)} = ?`,a-b,nn,"gleich",`Nenner bleibt ${nn}, Zähler: ${a} − ${b} = ${a-b} → ${F(a-b,nn)}${kurz(a-b,nn)}`)}
-  if(art===2){const nn=Math.max(n,3),a=R(1,nn-1);return bruch(`${F(a,nn)} + ? = 1`,nn-a,nn,"gleich",`1 Ganzes = ${F(nn,nn)}. Es fehlen ${nn} − ${a} = ${nn-a} Teile → ${F(nn-a,nn)}`)}
-  const k=pick([2,3,4,5]),m=2*k,a=R(1,k-1),b=R(1,m-1-2*a>0?m-1-2*a:1);
-  return bruch(`${F(a,k)} + ${F(b,m)} = ?`,2*a+b,m,"gleich",`Erweitere ${F(a,k)} mit 2: ${F(2*a,m)}. Dann ${F(2*a,m)} + ${F(b,m)} = ${F(2*a+b,m)}${kurz(2*a+b,m)}`)}},
-{id:"m-kuerzen",titel:"Erweitern & Kürzen",
- merke:`<h2>Erweitern und Kürzen</h2>
- <div class="merk"><b>Erweitern:</b> Zähler und Nenner mit der <b>gleichen Zahl malnehmen</b>.<br><b>Kürzen:</b> Zähler und Nenner durch die <b>gleiche Zahl teilen</b>.</div>
- <p>Der Wert des Bruchs bleibt gleich! Nur die Teile werden feiner oder gröber.</p>
- <p>Erweitern mit 3: ${F(2,5)} = ${F("2·3","5·3")} = ${F(6,15)}</p>
- <p>Kürzen mit 4: ${F(8,12)} = ${F("8:4","12:4")} = ${F(2,3)}</p>
- <p><b>Vollständig gekürzt</b> heißt: Es gibt keine Zahl mehr (außer 1), durch die Zähler und Nenner beide teilbar sind.</p>`,
- gen(){const art=R(0,2);let n=R(2,9),z=R(1,n-1);while(ggT(z,n)!==1){n=R(2,9);z=R(1,n-1)}const k=R(2,6);
-  if(art===0)return bruch(`Kürze vollständig: ${F(z*k,n*k)}`,z,n,"gekuerzt",`Zähler und Nenner sind beide durch ${k} teilbar: ${F(z*k,n*k)} = ${F(z,n)}`);
-  if(art===1)return bruch(`Erweitere ${F(z,n)} mit ${k}.`,z*k,n*k,"genau",`${F(`${z}·${k}`,`${n}·${k}`)} = ${F(z*k,n*k)}`);
-  return zahl(`Ergänze: ${F(z,n)} = ${F("?",n*k)}`,z*k,`Der Nenner wurde mit ${k} malgenommen (${n} · ${k} = ${n*k}), also auch der Zähler: ${z} · ${k} = ${z*k}.`)}},
-{id:"m-zahlen",titel:"Große Zahlen & Runden",
- merke:`<h2>Große Zahlen und Runden</h2>
- <div class="tabwrap"><table><tr><th>M</th><th>HT</th><th>ZT</th><th>T</th><th>H</th><th>Z</th><th>E</th></tr><tr><td>1</td><td>4</td><td>7</td><td>3</td><td>8</td><td>2</td><td>5</td></tr></table></div>
- <p>1 473 825 = eine Million vierhundertdreiundsiebzigtausend­achthundertfünfundzwanzig</p>
- <div class="merk"><b>Runden:</b> Schau auf die Ziffer <b>rechts</b> neben der Rundungsstelle.<br>0, 1, 2, 3, 4 → abrunden &nbsp;|&nbsp; 5, 6, 7, 8, 9 → aufrunden</div>
- <p>47 382 auf Hunderter: Zehnerziffer ist 8 → aufrunden → <b>47 400</b></p>`,
- gen(){const art=R(0,2);
-  if(art===0){const stellen=[[10,"Zehner"],[100,"Hunderter"],[1000,"Tausender"],[10000,"Zehntausender"]];const [s,name]=pick(stellen);const x=R(10000,999999);const r=Math.round(x/s)*s;
-   const ziffer=Math.floor(x/(s/10))%10;return zahl(`Runde ${Z(x)} auf ${name}.`,r,`Rechts neben der ${name}stelle steht eine ${ziffer} → ${ziffer>=5?"aufrunden":"abrunden"}: ${Z(r)}`)}
-  if(art===1){const x=R(100000,999999),st=[["Einer",1],["Zehner",10],["Hunderter",100],["Tausender",1000],["Zehntausender",10000],["Hunderttausender",100000]];const [name,s]=pick(st);const d=Math.floor(x/s)%10;
-   return zahl(`Welche Ziffer steht an der <b>${name}</b>stelle von ${Z(x)}?`,d,`In ${Z(x)} steht an der ${name}stelle die ${d}.`)}
-  const x=pick([R(1,99)*1000,R(1,99)*10000,R(10,999)*100]);const nach=Math.random()<.5;
-  return zahl(`Wie heißt der <b>${nach?"Nachfolger":"Vorgänger"}</b> von ${Z(x)}?`,nach?x+1:x-1,`${nach?"Nachfolger = eins mehr":"Vorgänger = eins weniger"}: ${Z(nach?x+1:x-1)}`)}},
-{id:"m-schriftlich",titel:"Schriftlich rechnen",
- merke:`<h2>Schriftlich rechnen</h2>
- <ul><li><b>Addieren:</b> Stellen genau untereinander, rechts bei den Einern anfangen, Übertrag klein notieren.</li>
- <li><b>Subtrahieren:</b> Von unten nach oben ergänzen, Übertrag in die nächste Spalte.</li>
- <li><b>Multiplizieren:</b> Von rechts nach links jede Ziffer malnehmen, Übertrag dazuzählen.</li>
- <li><b>Dividieren:</b> Von links nach rechts: Wie oft passt die Zahl hinein? Rest mitnehmen.</li></ul>
- <div class="merk"><b>Probe:</b> Plus ↔ Minus, Mal ↔ Geteilt. Rechne zur Kontrolle rückwärts!</div>`,
- gen(){const art=R(0,3);
-  if(art===0){const a=R(1200,8999),b=R(300,4999);return zahl(`${Z(a)} + ${Z(b)} = ?`,a+b,`Ergebnis: ${Z(a+b)}. Probe: ${Z(a+b)} − ${Z(b)} = ${Z(a)}`)}
-  if(art===1){const a=R(3000,9999),b=R(400,a-200);return zahl(`${Z(a)} − ${Z(b)} = ?`,a-b,`Ergebnis: ${Z(a-b)}. Probe: ${Z(a-b)} + ${Z(b)} = ${Z(a)}`)}
-  if(art===2){const a=R(112,989),b=R(3,9);return zahl(`${a} · ${b} = ?`,a*b,`Ergebnis: ${Z(a*b)}. Probe: ${Z(a*b)} : ${b} = ${a}`)}
-  const b=R(2,9),q=R(12,250);return zahl(`${Z(b*q)} : ${b} = ?`,q,`Ergebnis: ${q}. Probe: ${q} · ${b} = ${Z(b*q)}`)}},
-{id:"m-groessen",titel:"Größen umrechnen",
- merke:`<h2>Größen umrechnen</h2>
- <div class="tabwrap"><table>
- <tr><th>Länge</th><td>1 km = 1000 m</td><td>1 m = 100 cm</td><td>1 cm = 10 mm</td></tr>
- <tr><th>Gewicht</th><td>1 t = 1000 kg</td><td>1 kg = 1000 g</td><td></td></tr>
- <tr><th>Zeit</th><td>1 h = 60 min</td><td>1 min = 60 s</td><td>1 Tag = 24 h</td></tr>
- <tr><th>Geld</th><td>1 € = 100 ct</td><td></td><td></td></tr></table></div>
- <div class="merk">Große Einheit → kleine Einheit: <b>malnehmen</b>.<br>Kleine Einheit → große Einheit: <b>teilen</b>.</div>`,
- gen(){const g=[
-  ()=>{const a=R(2,15);return zahl(`${a} m = ? cm`,a*100,`1 m = 100 cm, also ${a} · 100 = ${a*100} cm.`,"cm")},
-  ()=>{const a=R(2,9);return zahl(`${a} km = ? m`,a*1000,`1 km = 1000 m, also ${Z(a*1000)} m.`,"m")},
-  ()=>{const a=R(2,30);return zahl(`${a} cm = ? mm`,a*10,`1 cm = 10 mm, also ${a*10} mm.`,"mm")},
-  ()=>{const a=R(2,9);return zahl(`${a} kg = ? g`,a*1000,`1 kg = 1000 g, also ${Z(a*1000)} g.`,"g")},
-  ()=>{const a=R(2,9);return zahl(`${Z(a*1000)} g = ? kg`,a,`1000 g = 1 kg, also ${Z(a*1000)} : 1000 = ${a} kg.`,"kg")},
-  ()=>{const a=R(2,12);return zahl(`${a*100} cm = ? m`,a,`100 cm = 1 m, also ${a*100} : 100 = ${a} m.`,"m")},
-  ()=>{const a=R(2,5);return zahl(`${a} h = ? min`,a*60,`1 h = 60 min, also ${a} · 60 = ${a*60} min.`,"min")},
-  ()=>{const a=R(2,6);return zahl(`${a} min = ? s`,a*60,`1 min = 60 s, also ${a} · 60 = ${a*60} s.`,"s")},
-  ()=>{const e=R(1,9),c=R(5,95);return zahl(`${e},${String(c).padStart(2,"0")} € = ? ct`,e*100+c,`1 € = 100 ct: ${e} € = ${e*100} ct, plus ${c} ct = ${e*100+c} ct.`,"ct")},
-  ()=>{const a=R(2,5);return zahl(`${a} t = ? kg`,a*1000,`1 t = 1000 kg, also ${Z(a*1000)} kg.`,"kg")},
- ];return pick(g)()}},
-{id:"m-flaeche",titel:"Umfang & Fläche",
- merke:`<h2>Umfang und Flächeninhalt</h2>
- <h3>Rechteck</h3>
- <ul><li><b>Umfang</b> (einmal außen herum): u = 2 · a + 2 · b</li>
- <li><b>Flächeninhalt</b> (was drinnen liegt): A = a · b</li></ul>
- <h3>Quadrat</h3><ul><li>u = 4 · a &nbsp;&nbsp; A = a · a</li></ul>
- <div class="merk">Umfang in <b>cm</b>, Fläche in <b>cm²</b> (Quadratzentimeter)!</div>`,
- gen(){const a=R(3,14),b=R(2,10),art=R(0,3);
-  if(art===0)return zahl(`Berechne den <b>Umfang</b> des Rechtecks.${rechteckSVG(a,b)}`,2*a+2*b,`u = 2 · ${a} cm + 2 · ${b} cm = ${2*a} + ${2*b} = ${2*a+2*b} cm`,"cm");
-  if(art===1)return zahl(`Berechne den <b>Flächeninhalt</b> des Rechtecks.${rechteckSVG(a,b)}`,a*b,`A = ${a} cm · ${b} cm = ${a*b} cm²`,"cm²");
-  if(art===2)return zahl(`Ein Quadrat hat die Seitenlänge ${b} cm. Wie groß ist der <b>Umfang</b>?`,4*b,`u = 4 · ${b} cm = ${4*b} cm`,"cm");
-  return zahl(`Ein Quadrat hat die Seitenlänge ${b} cm. Wie groß ist der <b>Flächeninhalt</b>?`,b*b,`A = ${b} cm · ${b} cm = ${b*b} cm²`,"cm²")}},
-]},
-
-/* ---------------------------------------------------------------- DEUTSCH */
-{id:"deutsch",name:"Deutsch",kurz:"D",farbe:"var(--deutsch)",papier:"linien",themen:[
-{id:"d-wortarten",titel:"Wortarten",
- merke:`<h2>Wortarten</h2>
- <ul><li><b>Nomen</b> (Namenwort): Menschen, Tiere, Dinge, Gefühle → groß geschrieben. <i>Hund, Schule, Freude</i></li>
- <li><b>Verb</b> (Tunwort): was jemand tut oder was passiert. <i>laufen, schreibt, ist</i></li>
- <li><b>Adjektiv</b> (Wiewort): wie etwas ist. <i>schön, laut, schnell</i></li>
- <li><b>Artikel</b> (Begleiter): <i>der, die, das, ein, eine</i></li>
- <li><b>Pronomen</b> (Fürwort): steht für ein Nomen. <i>ich, du, er, sie, es, wir, ihr</i></li>
- <li><b>Präposition</b> (Verhältniswort): zeigt, wo/wann. <i>auf, unter, neben, in, über</i></li></ul>`,
- gen:(()=>{const ARTEN=["Nomen","Verb","Adjektiv","Artikel","Pronomen","Präposition"];
-  const S=[["Der Hund bellt laut.",[["Hund","Nomen"],["bellt","Verb"],["laut","Adjektiv"],["Der","Artikel"]]],
-   ["Maya schreibt einen langen Brief.",[["schreibt","Verb"],["langen","Adjektiv"],["Brief","Nomen"],["einen","Artikel"]]],
-   ["Wir spielen im Garten.",[["Wir","Pronomen"],["spielen","Verb"],["Garten","Nomen"]]],
-   ["Die Katze schläft auf dem Sofa.",[["auf","Präposition"],["Katze","Nomen"],["schläft","Verb"]]],
-   ["Er isst gern süße Äpfel.",[["Er","Pronomen"],["süße","Adjektiv"],["Äpfel","Nomen"],["isst","Verb"]]],
-   ["Unter dem Tisch liegt ein Ball.",[["Unter","Präposition"],["liegt","Verb"],["ein","Artikel"],["Ball","Nomen"]]],
-   ["Das Wetter ist heute schön.",[["schön","Adjektiv"],["Wetter","Nomen"],["ist","Verb"]]],
-   ["Sie lacht über den lustigen Witz.",[["Sie","Pronomen"],["über","Präposition"],["lustigen","Adjektiv"],["Witz","Nomen"]]],
-   ["Die Freundschaft ist mir wichtig.",[["Freundschaft","Nomen"],["wichtig","Adjektiv"]]],
-   ["Neben der Schule steht eine alte Kirche.",[["Neben","Präposition"],["alte","Adjektiv"],["steht","Verb"],["eine","Artikel"]]]];
-  return ()=>{const [satz,teile]=pick(S),[w,art]=pick(teile);const markiert=satz.replace(new RegExp(`(^|\\s)${w}(?=[\\s.])`),`$1${W(w)}`);
-   return mc(`Welche Wortart ist das markierte Wort?<br>„${markiert}“`,art,andere(ARTEN,art),`„${w}“ ist ein${art==="Nomen"||art==="Verb"||art==="Adjektiv"||art==="Artikel"||art==="Pronomen"?"":"e"} ${art}.`)}})()},
-{id:"d-zeitformen",titel:"Zeitformen",
- merke:`<h2>Zeitformen</h2>
- <div class="tabwrap"><table><tr><th>Zeitform</th><th>Beispiel</th><th>Wann?</th></tr>
- <tr><td>Präsens</td><td>ich spiele</td><td>jetzt / immer</td></tr>
- <tr><td>Präteritum</td><td>ich spielte, ich ging</td><td>Vergangenheit (geschrieben, Erzählungen)</td></tr>
- <tr><td>Perfekt</td><td>ich habe gespielt, ich bin gegangen</td><td>Vergangenheit (gesprochen)</td></tr>
- <tr><td>Futur</td><td>ich werde spielen</td><td>Zukunft</td></tr></table></div>
- <div class="merk">Perfekt = <b>haben/sein</b> + Partizip (ge…t / ge…en)<br>Futur = <b>werden</b> + Grundform</div>
- <p>Starke Verben ändern im Präteritum den Selbstlaut: gehen → ging, singen → sang, lesen → las</p>`,
- gen:(()=>{const Z4=["Präsens","Präteritum","Perfekt","Futur"];
-  const B=[["Ich spiele Fußball.","Präsens"],["Ich spielte Fußball.","Präteritum"],["Ich habe Fußball gespielt.","Perfekt"],["Ich werde Fußball spielen.","Futur"],
-   ["Wir gingen ins Kino.","Präteritum"],["Sie ist nach Hause gelaufen.","Perfekt"],["Der Lehrer erklärt die Aufgabe.","Präsens"],["Morgen werden wir einen Ausflug machen.","Futur"],
-   ["Er hatte großen Hunger.","Präteritum"],["Hast du deine Hausaufgaben gemacht?","Perfekt"],["Die Kinder lachen laut.","Präsens"],["Wirst du mir helfen?","Futur"]];
-  const FORM=[["ich gehe","Präteritum","ich ging",["ich gehte","ich gang","ich bin gegangen"]],["er singt","Präteritum","er sang",["er singte","er sung","er hat gesungen"]],
-   ["wir laufen","Präteritum","wir liefen",["wir laufte","wir lauften","wir sind gelaufen"]],["sie liest","Präteritum","sie las",["sie lest","sie lieste","sie hat gelesen"]],
-   ["du schreibst","Präteritum","du schriebst",["du schreibtest","du schrabst","du hast geschrieben"]],["ich schwimme","Perfekt","ich bin geschwommen",["ich habe geschwimmt","ich schwamm","ich bin geschwimmt"]],
-   ["er kauft","Perfekt","er hat gekauft",["er ist gekauft","er kaufte","er hat gekauften"]],["wir fahren","Perfekt","wir sind gefahren",["wir haben gefahrt","wir fuhren","wir sind gefahrt"]],
-   ["ich esse","Präteritum","ich aß",["ich esste","ich ass","ich habe gegessen"]],["sie spielt","Futur","sie wird spielen",["sie spielte","sie hat gespielt","sie werdet spielen"]]];
-  return ()=>{if(Math.random()<.5){const [s,z]=pick(B);return mc(`In welcher Zeitform steht der Satz?<br>„${s}“`,z,andere(Z4,z),`Der Satz steht im ${z}.`)}
-   const [f,zf,r,fa]=pick(FORM);return mc(`Wie heißt „${f}“ im <b>${zf}</b>?`,r,fa,`${zf}: ${r}`)}})()},
-{id:"d-satzglieder",titel:"Satzglieder",
- merke:`<h2>Satzglieder</h2>
- <p>Satzglieder findest du mit der <b>Umstellprobe</b>: Was zusammen bleibt, ist ein Satzglied.</p>
- <div class="tabwrap"><table><tr><th>Satzglied</th><th>Frage</th><th>Beispiel</th></tr>
- <tr><td>Subjekt</td><td>Wer oder was?</td><td><u>Maya</u> liest ein Buch.</td></tr>
- <tr><td>Prädikat</td><td>Was tut …?</td><td>Maya <u>liest</u> ein Buch.</td></tr>
- <tr><td>Akkusativobjekt</td><td>Wen oder was?</td><td>Maya liest <u>ein Buch</u>.</td></tr>
- <tr><td>Dativobjekt</td><td>Wem?</td><td>Sie schenkt <u>ihrer Freundin</u> ein Buch.</td></tr></table></div>
- <div class="merk">Das Prädikat steht im Aussagesatz immer an <b>2. Stelle</b>.</div>`,
- gen:(()=>{const S=[[["Maya","S"],["liest","P"],["ein spannendes Buch","A"]],[["Der Opa","S"],["schenkt","P"],["dem Kind","D"],["einen Ball","A"]],
-   [["Am Morgen","X"],["trinkt","P"],["Paul","S"],["einen Kakao","A"]],[["Die Schüler","S"],["helfen","P"],["dem Lehrer","D"]],
-   [["Im Sommer","X"],["besuchen","P"],["wir","S"],["unsere Tante","A"]],[["Meine Schwester","S"],["gibt","P"],["dem Hund","D"],["einen Knochen","A"]],
-   [["Der Wind","S"],["weht","P"],["sehr stark","X"]],[["Gestern","X"],["zeigte","P"],["die Lehrerin","S"],["uns","D"],["einen Film","A"]]];
-  const NAME={S:"Subjekt",P:"Prädikat",A:"Akkusativobjekt",D:"Dativobjekt"},FRAGE={S:"Wer oder was?",P:"Was tut …?",A:"Wen oder was?",D:"Wem?"};
-  return ()=>{if(Math.random()<.25){const r=pick(["S","A","D"]);return mc(`Mit welcher Frage findest du das <b>${NAME[r]}</b>?`,FRAGE[r],andere(Object.values(FRAGE),FRAGE[r]),`${NAME[r]}: „${FRAGE[r]}“`)}
-   const s=pick(S),moegl=s.filter(t=>t[1]!=="X"),[w,r]=pick(moegl);const satz=s.map(t=>t[0]).join(" ")+".";const satzG=satz.charAt(0).toUpperCase()+satz.slice(1);
-   return mc(`Was ist das <b>${NAME[r]}</b>?<br>„${satzG}“`,w,s.map(t=>t[0]).filter(x=>x!==w).slice(0,3),`Frage: ${FRAGE[r]} → „${w}“`)}})()},
-{id:"d-rechtschreibung",titel:"Rechtschreibung",
- merke:`<h2>Rechtschreibung</h2>
- <h3>das oder dass?</h3>
- <div class="merk">Kannst du <b>dieses</b> oder <b>welches</b> einsetzen → <b>das</b>. Sonst → <b>dass</b>.</div>
- <h3>s, ss oder ß?</h3>
- <ul><li>Nach <b>kurzem</b> Selbstlaut: <b>ss</b> (Wasser, Klasse)</li>
- <li>Nach <b>langem</b> Selbstlaut oder ei/au/eu: <b>ß</b>, wenn es scharf klingt (Straße, Fuß, weiß)</li>
- <li>Summt das s beim Verlängern: <b>s</b> (Gras → Gräser, Haus → Häuser)</li></ul>
- <h3>Groß oder klein?</h3><p>Verben und Adjektive werden <b>groß</b>, wenn sie zum Nomen werden. Signalwörter: <b>das, beim, zum, etwas, viel, nichts</b> → das Lesen, beim Laufen, etwas Schönes</p>`,
- gen:(()=>{const DD=[[`Ich hoffe, ${L} du morgen kommst.`,"dass"],[`${L} Buch liegt auf dem Tisch.`,"Das"],[`Das ist das Fahrrad, ${L} mir gehört.`,"das"],
-   [`Er sagt, ${L} er müde ist.`,"dass"],[`Weißt du, ${L} heute die Ferien beginnen?`,"dass"],[`Das Haus, ${L} dort steht, ist sehr alt.`,"das"],
-   [`Ich finde es toll, ${L} du mir hilfst.`,"dass"],[`Siehst du ${L} Pferd auf der Wiese?`,"das"]];
-  const SS=[["Stra_e","ß","Straße: langes a, scharfes s → ß"],["Wa_er","ss","Wasser: kurzes a → ss"],["Fu_","ß","Fuß: langes u, scharf (Füße) → ß"],["Ha_e","s","Hase: das s summt → s"],
-   ["Schlo_","ss","Schloss: kurzes o → ss"],["gie_en","ß","gießen: nach ie, scharf → ß"],["Gra_","s","Gras: verlängern → Gräser, s summt → s"],["Kla_e","ss","Klasse: kurzes a → ss"],
-   ["wei_ (die Farbe)","ß","weiß: nach ei, scharf → ß"],["Mau_","s","Maus: verlängern → Mäuse, s summt → s"],["Ku_ (Busserl)","ss","Kuss: kurzes u → ss"],["gro_","ß","groß: langes o, scharf → ß"]];
-  const GK=[["Beim Laufen bekomme ich Seitenstechen.","Beim laufen bekomme ich Seitenstechen.","„beim“ ist ein Signalwort → das Laufen"],
-   ["Ich gehe gern schwimmen.","Ich gehe gern Schwimmen.","Hier ist „schwimmen“ ein Verb (was tue ich?) → klein"],["Das Lesen macht mir Spaß.","Das lesen macht mir Spaß.","„das“ als Begleiter → das Lesen"],
-   ["Sie hat etwas Schönes erlebt.","Sie hat etwas schönes erlebt.","„etwas“ ist ein Signalwort → etwas Schönes"],["Wir laufen zur Schule.","Wir Laufen zur Schule.","„laufen“ ist hier das Verb → klein"],
-   ["Zum Malen brauche ich Farben.","Zum malen brauche ich Farben.","„zum“ ist ein Signalwort → zum Malen"],["Es gibt nichts Neues.","Es gibt nichts neues.","„nichts“ ist ein Signalwort → nichts Neues"]];
-  return ()=>{const a=R(0,2);
-   if(a===0){const [s,r]=pick(DD);const opts=r==="Das"?["Das","Dass"]:["das","dass"];return mc(`Setze richtig ein:<br>${s}`,r,opts.filter(o=>o!==r),r.toLowerCase()==="das"?`Man kann „dieses/welches“ einsetzen → ${r}`:"Man kann nicht „dieses/welches“ einsetzen → dass")}
-   if(a===1){const [w,r,e]=pick(SS);return mc(`Was gehört in die Lücke?<br><b>${w}</b>`,r,["s","ss","ß"].filter(x=>x!==r),e)}
-   const [ok,falsch,e]=pick(GK);return mc("Welcher Satz ist richtig geschrieben?",ok,[falsch],e)}})()},
-{id:"d-steigerung",titel:"Adjektive steigern",
- merke:`<h2>Adjektive steigern</h2>
- <div class="tabwrap"><table><tr><th>Grundstufe</th><th>1. Steigerung</th><th>2. Steigerung</th></tr>
- <tr><td>(Positiv)</td><td>(Komparativ)</td><td>(Superlativ)</td></tr>
- <tr><td>klein</td><td>kleiner</td><td>am kleinsten</td></tr>
- <tr><td>alt</td><td>älter</td><td>am ältesten</td></tr>
- <tr><td>gut</td><td>besser</td><td>am besten</td></tr>
- <tr><td>viel</td><td>mehr</td><td>am meisten</td></tr></table></div>
- <div class="merk">Vergleich: so groß <b>wie</b> … (gleich) &nbsp;|&nbsp; größer <b>als</b> … (ungleich)</div>`,
- gen:(()=>{const A=[["klein","kleiner","kleinsten"],["groß","größer","größten"],["gut","besser","besten"],["viel","mehr","meisten"],["schnell","schneller","schnellsten"],
-   ["alt","älter","ältesten"],["hoch","höher","höchsten"],["gern","lieber","liebsten"],["warm","wärmer","wärmsten"],["jung","jünger","jüngsten"],["kurz","kürzer","kürzesten"],["lang","länger","längsten"]];
-  return ()=>{const [p,k,s]=pick(A);const r=Math.random();
-   if(r<.4)return text(`Wie heißt der <b>Komparativ</b> (1. Steigerung) von „${p}“?`,[k],`${p} – ${k} – am ${s}`);
-   if(r<.8)return text(`Wie heißt der <b>Superlativ</b> (2. Steigerung) von „${p}“?`,[`am ${s}`,s],`${p} – ${k} – am ${s}`,"mit „am …“");
-   const als=Math.random()<.5;return mc(`Welches Wort passt?<br>Tom ist ${als?k:"so "+p} ${L} Lisa.`,als?"als":"wie",[als?"wie":"als"],als?"Bei ungleich (Komparativ) → als":"Bei gleich (so … wie) → wie")}})()},
-]},
-
-/* ---------------------------------------------------------------- ENGLISCH */
-{id:"englisch",name:"Englisch",kurz:"E",farbe:"var(--englisch)",papier:"linien",themen:[
-{id:"e-vokabeln",titel:"Vocabulary: School & Family",
- merke:`<h2>Vocabulary</h2>
- <div class="tabwrap"><table>
- <tr><td>school</td><td>Schule</td><td>mother / mum</td><td>Mutter / Mama</td></tr>
- <tr><td>teacher</td><td>Lehrer/in</td><td>father / dad</td><td>Vater / Papa</td></tr>
- <tr><td>pencil</td><td>Bleistift</td><td>sister</td><td>Schwester</td></tr>
- <tr><td>ruler</td><td>Lineal</td><td>brother</td><td>Bruder</td></tr>
- <tr><td>rubber</td><td>Radiergummi</td><td>grandparents</td><td>Großeltern</td></tr>
- <tr><td>schoolbag</td><td>Schultasche</td><td>pet</td><td>Haustier</td></tr>
- <tr><td>exercise book</td><td>Heft</td><td>friend</td><td>Freund/in</td></tr>
- <tr><td>homework</td><td>Hausaufgaben</td><td>birthday</td><td>Geburtstag</td></tr>
- <tr><td>classroom</td><td>Klassenzimmer</td><td>breakfast</td><td>Frühstück</td></tr></table></div>
- <p>Days: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday – immer <b>groß</b>!</p>`,
- gen:(()=>{const V=[["die Schule",["school"]],["der Lehrer / die Lehrerin",["teacher"]],["der Bleistift",["pencil"]],["das Lineal",["ruler"]],["der Radiergummi",["rubber","eraser"]],
-   ["die Schultasche",["schoolbag","school bag","bag"]],["das Heft",["exercise book","exercisebook"]],["die Hausaufgaben",["homework"]],["das Klassenzimmer",["classroom"]],["der Kuli",["pen","biro"]],
-   ["die Mutter",["mother","mum","mom"]],["der Vater",["father","dad"]],["die Schwester",["sister"]],["der Bruder",["brother"]],["die Großeltern",["grandparents"]],
-   ["der Freund / die Freundin",["friend"]],["das Haustier",["pet"]],["der Geburtstag",["birthday"]],["das Frühstück",["breakfast"]],["hungrig",["hungry"]],
-   ["Mittwoch",["Wednesday"]],["Donnerstag",["Thursday"]],["das Pferd",["horse"]],["der Hund",["dog"]],["die Tafel",["board"]]];
-  return ()=>{const [de,en]=pick(V);
-   if(Math.random()<.55)return text(`Was heißt <b>„${de}“</b> auf Englisch?`,en,`${de} = ${en.join(" / ")}`);
-   const falsche=shuffle(V.filter(v=>v[0]!==de)).slice(0,3).map(v=>v[0]);return mc(`Was heißt <b>„${en[0]}“</b> auf Deutsch?`,de,falsche,`${en[0]} = ${de}`)}})()},
-{id:"e-tobe",titel:"to be: am / is / are",
- merke:`<h2>to be (sein)</h2>
- <div class="tabwrap"><table><tr><td>I</td><td><b>am</b></td><td>I'm</td></tr><tr><td>you</td><td><b>are</b></td><td>you're</td></tr>
- <tr><td>he / she / it</td><td><b>is</b></td><td>he's / she's / it's</td></tr><tr><td>we / you / they</td><td><b>are</b></td><td>we're / they're</td></tr></table></div>
- <p>Verneinung: I'm <b>not</b> … / she <b>isn't</b> … / they <b>aren't</b> …</p>
- <p>Frage: <b>Are</b> you eleven? – Yes, I am. / <b>Is</b> she your sister? – No, she isn't.</p>`,
- gen:ausPool([["I ___ eleven years old.","am"],["She ___ my best friend.","is"],["We ___ in class 5b.","are"],["They ___ at home today.","are"],["It ___ very cold today.","is"],
-   ["You ___ really funny.","are"],["My parents ___ teachers.","are"],["Tom ___ from London.","is"],["My cat ___ black and white.","is"],["___ you hungry?","Are"],["___ your brother twelve?","Is"],["I ___ not tired.","am"]]
-  .map(([s,r])=>mc(`Setze ein: <b>${s.replace("___",L)}</b>`,r,["am","is","are"].map(x=>/^___/.test(s)?x[0].toUpperCase()+x.slice(1):x).filter(x=>x!==r),
-   r.toLowerCase()==="am"?"I → am":r.toLowerCase()==="is"?"he / she / it (eine Person oder Sache) → is":"you / we / they (mehrere) → are")))},
-{id:"e-simplepresent",titel:"Simple present",
- merke:`<h2>Simple present</h2>
- <p>Für Dinge, die man <b>regelmäßig</b> oder <b>immer</b> tut.</p>
- <div class="merk"><b>he, she, it – das s muss mit!</b><br>I play → she play<b>s</b> &nbsp; I watch → he watch<b>es</b> &nbsp; I fly → it fl<b>ies</b><br>Achtung: have → <b>has</b>, do → <b>does</b>, go → <b>goes</b></div>
- <p>Signalwörter: <b>always, often, usually, sometimes, never, every day, on Mondays</b></p>
- <p>Verneinung: I <b>don't</b> like fish. – She <b>doesn't</b> like fish. (ohne s am Verb!)</p>
- <p>Frage: <b>Do</b> you have a pet? – <b>Does</b> he play football?</p>`,
- gen:ausPool([
-   text(`She ${L} (play) tennis every Monday.`,"plays","he/she/it → s: plays"),text(`My brother ${L} (watch) TV after school.`,"watches","watch → watches (nach ch kommt -es)"),
-   text(`I ${L} (like) pizza.`,"like","I → kein s: like"),text(`He ${L} (go) to school by bus.`,"goes","go → goes"),text(`We ${L} (live) in Germany.`,"live","we → kein s: live"),
-   text(`My cat ${L} (sleep) a lot.`,"sleeps","my cat = it → sleeps"),text(`Tom ${L} (have) a dog.`,"has","have → has bei he/she/it"),text(`Lisa ${L} (do) her homework every day.`,"does","do → does"),
-   text(`The baby often ${L} (cry).`,"cries","Mitlaut + y → ies: cries"),text(`My friends ${L} (play) football on Sundays.`,"play","my friends = they → kein s"),
-   mc(`He ${L} like fish.`,"doesn't",["don't","isn't"],"he/she/it → doesn't"),mc(`I ${L} play the guitar.`,"don't",["doesn't","am not"],"I → don't"),
-   mc(`${L} your sister like horses?`,"Does",["Do","Is"],"your sister = she → Does"),mc(`${L} you have a pet?`,"Do",["Does","Are"],"you → Do"),
-   mc(`${L} they go to school by bike?`,"Do",["Does","Are"],"they → Do")])},
-{id:"e-progressive",titel:"Present progressive",
- merke:`<h2>Present progressive</h2>
- <p>Für Dinge, die <b>gerade jetzt</b> passieren.</p>
- <div class="merk">am / is / are + Verb mit <b>-ing</b><br>I <b>am reading</b>. She <b>is playing</b>. They <b>are swimming</b>.</div>
- <p>Signalwörter: <b>now, right now, at the moment, Look!, Listen!</b></p>
- <p>Schreibung: write → writ<b>ing</b> (e fällt weg), swim → swi<b>mm</b>ing, run → ru<b>nn</b>ing</p>`,
- gen:ausPool([["Look! The dog ___ (run) in the garden.","is running"],["I ___ (read) a book at the moment.","am reading"],["They ___ (play) football right now.","are playing"],
-   ["Listen! Maya ___ (sing).","is singing"],["We ___ (swim) in the lake now.","are swimming"],["He ___ (write) a letter at the moment.","is writing"],
-   ["Mum ___ (cook) dinner right now.","is cooking"],["The children ___ (dance) now.","are dancing"],["Look! It ___ (rain).","is raining"]]
-  .map(([s,r])=>{const alt=[r];if(r.startsWith("is "))alt.push("'s "+r.slice(3));if(r.startsWith("am "))alt.push("'m "+r.slice(3));if(r.startsWith("are "))alt.push("'re "+r.slice(4));
-   return text(s.replace("___",L),alt,`Gerade jetzt → am/is/are + -ing: ${r}`,"z. B. is playing")}))},
-{id:"e-questionwords",titel:"Question words",
- merke:`<h2>Question words</h2>
- <div class="tabwrap"><table><tr><td><b>Who</b></td><td>Wer?</td><td><b>What</b></td><td>Was?</td></tr>
- <tr><td><b>Where</b></td><td>Wo? Wohin?</td><td><b>When</b></td><td>Wann?</td></tr>
- <tr><td><b>Why</b></td><td>Warum?</td><td><b>How</b></td><td>Wie?</td></tr>
- <tr><td><b>How old</b></td><td>Wie alt?</td><td><b>What time</b></td><td>Wie spät?</td></tr></table></div>
- <div class="merk">Achtung: <b>Who</b> = wer (nicht wo!) – <b>Where</b> = wo</div>`,
- gen:(()=>{const Q=["What","Where","When","Who","Why","How"];
-  return ausPool([["___ is your name?","What"],["___ do you live?","Where"],["___ is your birthday?","When"],["___ is your best friend?","Who"],["___ are you sad?","Why"],
-   ["___ old are you?","How"],["___ are you today? – I'm fine, thanks.","How"],["___ is that boy over there?","Who"],["___ time is it?","What"],["___ is my pencil? – It's under the table.","Where"]]
-   .map(([s,r])=>mc(s.replace("___",L),r,andere(Q,r),`${r} = ${({What:"Was",Where:"Wo",When:"Wann",Who:"Wer",Why:"Warum",How:"Wie"})[r]}`)))})()},
-{id:"e-plural",titel:"Plural",
- merke:`<h2>Plural (Mehrzahl)</h2>
- <ul><li>Meistens <b>-s</b>: dog → dogs, book → books</li>
- <li>Nach s, x, sh, ch → <b>-es</b>: bus → buses, box → boxes, watch → watches</li>
- <li>Mitlaut + y → <b>-ies</b>: baby → babies, family → families</li>
- <li>f/fe → <b>-ves</b>: knife → knives, wolf → wolves</li></ul>
- <div class="merk">Unregelmäßig: child → <b>children</b>, man → <b>men</b>, woman → <b>women</b>, mouse → <b>mice</b>, foot → <b>feet</b>, tooth → <b>teeth</b>, person → <b>people</b>, sheep → <b>sheep</b></div>`,
- gen:ausPool([["child","children"],["mouse","mice"],["man","men"],["woman","women"],["foot","feet"],["tooth","teeth"],["box","boxes"],["baby","babies"],["bus","buses"],
-   ["knife","knives"],["sheep","sheep"],["family","families"],["dog","dogs"],["watch","watches"],["person","people"],["city","cities"],["boy","boys"]]
-  .map(([s,p])=>text(`Wie heißt die Mehrzahl von <b>${s}</b>?`,p,`one ${s} → two ${p}`)))},
-]},
-
-/* ---------------------------------------------------------------- NT */
-{id:"nt",name:"Natur & Technik",kurz:"NT",farbe:"var(--nt)",papier:"linien",themen:[
-{id:"nt-pflanzen",titel:"Aufbau & Leben der Pflanzen",
- merke:`<h2>Die Pflanze</h2>
- <ul><li><b>Wurzel:</b> hält die Pflanze im Boden, nimmt Wasser und Mineralstoffe auf</li>
- <li><b>Sprossachse (Stängel):</b> trägt die Pflanze, leitet Wasser nach oben</li>
- <li><b>Blatt:</b> stellt mit Sonnenlicht Nährstoffe her (Fotosynthese)</li>
- <li><b>Blüte:</b> dient der Fortpflanzung</li></ul>
- <div class="merk"><b>Fotosynthese:</b> Wasser + Kohlenstoffdioxid + Licht → Zucker + Sauerstoff<br>Der grüne Blattfarbstoff heißt <b>Chlorophyll</b>.</div>
- <p>Bestäubung: Pollen kommt auf die Narbe. Aus dem Fruchtknoten wird die Frucht, aus dem Samen keimt eine neue Pflanze.</p>`,
- gen:ausPool([mc("Welcher Pflanzenteil nimmt Wasser und Mineralstoffe aus dem Boden auf?","Wurzel",["Blatt","Blüte","Sprossachse"],"Die Wurzel nimmt Wasser und Mineralstoffe auf."),
-   mc("Welcher Teil trägt die Pflanze und leitet das Wasser nach oben?","Sprossachse",["Wurzel","Blüte","Samen"],"Die Sprossachse (Stängel) trägt und leitet."),
-   mc("Wo stellt die Pflanze mit Sonnenlicht Zucker her?","im Blatt",["in der Wurzel","in der Blüte","im Samen"],"Im Blatt findet die Fotosynthese statt."),
-   mc("Welcher Pflanzenteil dient der Fortpflanzung?","Blüte",["Wurzel","Blatt","Sprossachse"],"Die Blüte dient der Fortpflanzung."),
-   mc("Was braucht die Pflanze für die Fotosynthese?","Licht, Wasser und Kohlenstoffdioxid",["Sauerstoff, Zucker und Erde","nur Wasser","Licht und Sauerstoff"],"Licht, Wasser und Kohlenstoffdioxid → Zucker und Sauerstoff"),
-   mc("Was gibt die Pflanze bei der Fotosynthese an die Luft ab?","Sauerstoff",["Kohlenstoffdioxid","Wasserdampf","Stickstoff"],"Pflanzen geben Sauerstoff ab – den brauchen wir zum Atmen."),
-   mc("Wie heißt der grüne Farbstoff in den Blättern?","Chlorophyll",["Pollen","Nektar","Stärke"],"Chlorophyll = Blattgrün"),
-   mc("Wie heißt es, wenn Pollen auf die Narbe einer Blüte gelangt?","Bestäubung",["Keimung","Fotosynthese","Verdunstung"],"Das ist die Bestäubung – oft durch Bienen oder Wind."),
-   mc("Aus welchem Teil der Blüte entwickelt sich die Frucht?","Fruchtknoten",["Kelchblatt","Staubblatt","Kronblatt"],"Aus dem Fruchtknoten wird die Frucht."),
-   mc("Aus einem Samen wächst eine neue Pflanze. Wie heißt das?","Keimung",["Bestäubung","Befruchtung","Fotosynthese"],"Das ist die Keimung. Dafür braucht der Samen Wasser, Wärme und Luft.")])},
-{id:"nt-wirbeltiere",titel:"Wirbeltiere",
- merke:`<h2>Die 5 Wirbeltierklassen</h2>
- <div class="tabwrap"><table><tr><th>Klasse</th><th>Haut</th><th>Atmung</th><th>Körpertemperatur</th></tr>
- <tr><td>Fische</td><td>Schuppen</td><td>Kiemen</td><td>wechselwarm</td></tr>
- <tr><td>Amphibien (Lurche)</td><td>feucht, nackt</td><td>Larve: Kiemen, später Lunge + Haut</td><td>wechselwarm</td></tr>
- <tr><td>Reptilien (Kriechtiere)</td><td>trocken, Hornschuppen</td><td>Lunge</td><td>wechselwarm</td></tr>
- <tr><td>Vögel</td><td>Federn</td><td>Lunge</td><td>gleichwarm</td></tr>
- <tr><td>Säugetiere</td><td>Fell / Haare</td><td>Lunge</td><td>gleichwarm</td></tr></table></div>
- <div class="merk">Säugetiere säugen ihre Jungen mit <b>Milch</b>. Wal, Delfin und Fledermaus sind auch Säugetiere!</div>`,
- gen:(()=>{const K=["Fische","Amphibien","Reptilien","Vögel","Säugetiere"];
-  const T=[["Frosch","Amphibien"],["Eidechse","Reptilien"],["Wal","Säugetiere"],["Pinguin","Vögel"],["Hai","Fische"],["Fledermaus","Säugetiere"],["Schlange","Reptilien"],
-   ["Molch","Amphibien"],["Delfin","Säugetiere"],["Forelle","Fische"],["Krokodil","Reptilien"],["Strauß","Vögel"],["Kröte","Amphibien"],["Schildkröte","Reptilien"],["Igel","Säugetiere"]];
-  const M=[["Welche Tiere atmen ihr ganzes Leben mit Kiemen?","Fische"],["Welche Wirbeltiere haben Federn?","Vögel"],["Welche Tiere säugen ihre Jungen mit Milch?","Säugetiere"],
-   ["Welche Tiere haben eine trockene Haut mit Hornschuppen?","Reptilien"],["Welche Tiere haben eine feuchte Haut und leben als Larve (Kaulquappe) im Wasser?","Amphibien"]];
-  return ()=>{if(Math.random()<.65){const [t,k]=pick(T);return mc(`Zu welcher Wirbeltierklasse gehört der/die/das <b>${t}</b>?`,k,andere(K,k),`${t} → ${k}`)}
-   if(Math.random()<.2)return mc("Welche Wirbeltierklassen sind gleichwarm?","Vögel und Säugetiere",["Fische und Amphibien","Reptilien und Vögel","alle fünf"],"Nur Vögel und Säugetiere halten ihre Körpertemperatur gleich.");
-   const [f,k]=pick(M);return mc(f,k,andere(K,k),`Richtig: ${k}`)}})()},
-{id:"nt-stoffe",titel:"Aggregatzustände",
- merke:`<h2>Aggregatzustände</h2>
- <p>Stoffe können <b>fest</b>, <b>flüssig</b> oder <b>gasförmig</b> sein.</p>
- <ul><li>fest → flüssig: <b>Schmelzen</b> &nbsp; flüssig → fest: <b>Erstarren</b></li>
- <li>flüssig → gasförmig: <b>Verdampfen</b> &nbsp; gasförmig → flüssig: <b>Kondensieren</b></li></ul>
- <div class="merk">Wasser: Schmelztemperatur <b>0 °C</b>, Siedetemperatur <b>100 °C</b></div>
- <h3>Teilchenmodell</h3>
- <ul><li>fest: Teilchen dicht und geordnet, bewegen sich kaum</li><li>flüssig: Teilchen dicht, aber verschiebbar</li><li>gasförmig: Teilchen weit auseinander, bewegen sich schnell</li></ul>`,
- gen:(()=>{const V=["Schmelzen","Erstarren","Verdampfen","Kondensieren"];
-  return ausPool([mc("Eis wird zu Wasser. Wie heißt der Vorgang?","Schmelzen",andere(V,"Schmelzen"),"fest → flüssig = Schmelzen"),
-   mc("Wasser wird im Gefrierfach zu Eis. Wie heißt der Vorgang?","Erstarren",andere(V,"Erstarren"),"flüssig → fest = Erstarren"),
-   mc("Wasser kocht im Topf und wird zu Wasserdampf. Wie heißt der Vorgang?","Verdampfen",andere(V,"Verdampfen"),"flüssig → gasförmig = Verdampfen"),
-   mc("Am kalten Badezimmerspiegel bilden sich Tropfen. Wie heißt der Vorgang?","Kondensieren",andere(V,"Kondensieren"),"gasförmig → flüssig = Kondensieren"),
-   zahl("Bei wie viel Grad Celsius gefriert Wasser?",0,"Wasser gefriert bei 0 °C.","°C"),zahl("Bei wie viel Grad Celsius siedet (kocht) Wasser?",100,"Wasser siedet bei 100 °C.","°C"),
-   mc("Welcher Stoff ist bei Zimmertemperatur gasförmig?","Luft",["Milch","Eisen","Holz"],"Luft ist ein Gas(gemisch)."),
-   mc("Welcher Stoff ist bei Zimmertemperatur flüssig?","Milch",["Luft","Stein","Butter aus dem Kühlschrank"],"Milch ist flüssig."),
-   mc("Wie verhalten sich die Teilchen in einem <b>festen</b> Stoff?","dicht gepackt und geordnet",["weit auseinander und schnell","gar nicht vorhanden","verschiebbar wie in Wasser"],"Fest: dicht gepackt und geordnet."),
-   mc("Wie verhalten sich die Teilchen in einem <b>Gas</b>?","weit auseinander und schnell",["dicht gepackt und geordnet","sie stehen still","dicht, aber verschiebbar"],"Gas: Teilchen weit auseinander, schnelle Bewegung.")])})()},
-{id:"nt-koerper",titel:"Körper & Sinne",
- merke:`<h2>Körper und Sinne</h2>
- <div class="tabwrap"><table><tr><th>Sinn</th><th>Organ</th></tr><tr><td>Sehen</td><td>Auge</td></tr><tr><td>Hören</td><td>Ohr</td></tr>
- <tr><td>Riechen</td><td>Nase</td></tr><tr><td>Schmecken</td><td>Zunge</td></tr><tr><td>Tasten / Fühlen</td><td>Haut</td></tr></table></div>
- <ul><li>Das <b>Herz</b> pumpt das Blut durch den Körper.</li><li>In der <b>Lunge</b> gelangt Sauerstoff ins Blut.</li>
- <li>Ein Erwachsener hat etwa <b>206 Knochen</b>. Der <b>Schädel</b> schützt das Gehirn.</li>
- <li><b>Gelenke</b> verbinden Knochen beweglich. Muskeln arbeiten als <b>Gegenspieler</b> (Beuger und Strecker).</li></ul>`,
- gen:(()=>{const O=["Auge","Ohr","Nase","Zunge","Haut"];const S=[["sehen","Auge"],["hören","Ohr"],["riechen","Nase"],["schmecken","Zunge"],["tasten (Wärme, Druck spüren)","Haut"]];
-  const P=[mc("Welches Organ pumpt das Blut durch den Körper?","Herz",["Lunge","Leber","Magen"],"Das Herz ist eine Pumpe."),
-   mc("Wo gelangt der Sauerstoff aus der Luft ins Blut?","in der Lunge",["im Herzen","im Magen","in der Nase"],"In der Lunge."),
-   mc("Wie viele Knochen hat ein erwachsener Mensch ungefähr?","206",["26","106","1006"],"Etwa 206 Knochen."),
-   mc("Wie heißt die bewegliche Verbindung zwischen zwei Knochen?","Gelenk",["Sehne","Muskel","Wirbel"],"Gelenke machen uns beweglich, z. B. Knie und Ellenbogen."),
-   mc("Was schützt das Gehirn?","der Schädel",["die Rippen","die Wirbelsäule","das Becken"],"Der Schädel ist wie ein Helm."),
-   mc("Was schützen die Rippen?","Herz und Lunge",["das Gehirn","die Beine","den Magen allein"],"Der Brustkorb schützt Herz und Lunge."),
-   mc("Der Bizeps beugt den Arm. Wie nennt man Muskeln, die gegeneinander arbeiten?","Gegenspieler",["Partner","Sehnen","Gelenke"],"Beuger und Strecker sind Gegenspieler.")];
-  return ()=>{if(Math.random()<.4){const [v,o]=pick(S);return mc(`Mit welchem Sinnesorgan kannst du <b>${v}</b>?`,o,andere(O,o),`${v} → ${o}`)}return pick(P)}})()},
-]},
-
-/* ---------------------------------------------------------------- GPG */
-{id:"gpg",name:"GPG",kurz:"GPG",farbe:"var(--gpg)",papier:"linien",themen:[
-{id:"g-orientierung",titel:"Orientierung & Karten",
- merke:`<h2>Orientierung</h2>
- <ul><li>Himmelsrichtungen: <b>N</b>orden, <b>O</b>sten, <b>S</b>üden, <b>W</b>esten (Merksatz: <i>Nie Ohne Seife Waschen</i>)</li>
- <li>Die Sonne geht im <b>Osten</b> auf, steht mittags im <b>Süden</b> und geht im <b>Westen</b> unter.</li>
- <li>Die Kompassnadel zeigt nach <b>Norden</b>.</li></ul>
- <h3>Karten</h3>
- <ul><li><b>Legende</b> = Zeichenerklärung der Karte</li><li>Physische Karte: blau = Wasser, grün = Tiefland, gelb/braun = Hügel und Gebirge</li></ul>
- <div class="merk"><b>Maßstab 1 : 100 000</b> → 1 cm auf der Karte = 100 000 cm = <b>1 km</b> in Wirklichkeit</div>`,
- gen:(()=>{const H=["Norden","Osten","Süden","Westen"];
-  const P=[mc("Wo geht die Sonne auf?","im Osten",["im Westen","im Norden","im Süden"],"Die Sonne geht im Osten auf."),
-   mc("Wo geht die Sonne unter?","im Westen",["im Osten","im Norden","im Süden"],"Die Sonne geht im Westen unter."),
-   mc("Wo steht die Sonne mittags (bei uns)?","im Süden",["im Norden","im Osten","im Westen"],"Mittags steht die Sonne im Süden."),
-   mc("In welche Richtung zeigt die Kompassnadel?","nach Norden",["nach Süden","nach Osten","immer nach oben"],"Die Kompassnadel zeigt nach Norden."),
-   mc("Wie heißt die Zeichenerklärung auf einer Karte?","Legende",["Maßstab","Kompass","Atlas"],"Die Legende erklärt die Zeichen und Farben."),
-   mc("Was bedeutet die Farbe Blau auf einer physischen Karte?","Wasser",["Gebirge","Tiefland","Städte"],"Blau = Gewässer."),
-   mc("Was bedeutet Braun auf einer physischen Karte?","Gebirge",["Wasser","Tiefland","Wald"],"Braun = hohes Gebirge."),
-   mc("Welche Himmelsrichtung liegt zwischen Norden und Osten?","Nordosten",["Nordwesten","Südosten","Südwesten"],"Zwischen N und O liegt Nordosten (NO)."),
-   mc("Welche Himmelsrichtung liegt gegenüber von Westen?","Osten",andere(H,"Osten"),"Westen ↔ Osten")];
-  return ()=>{if(Math.random()<.35){const [m,km]=pick([["1 : 100 000",1],["1 : 50 000",.5],["1 : 200 000",2]]);const cm=R(2,8);const r=+(cm*km).toFixed(1);
-    return zahl(`Auf einer Karte mit dem Maßstab <b>${m}</b> sind zwei Orte ${cm} cm voneinander entfernt. Wie viele km sind das in Wirklichkeit?`,r,`Bei ${m} ist 1 cm = ${String(km).replace(".",",")} km. ${cm} · ${String(km).replace(".",",")} km = ${String(r).replace(".",",")} km`,"km")}
-   return pick(P)}})()},
-{id:"g-erde",titel:"Kontinente & Ozeane",
- merke:`<h2>Die Erde</h2>
- <p><b>7 Kontinente:</b> Asien (größter), Afrika, Nordamerika, Südamerika, Antarktis, Europa, Australien</p>
- <p><b>Ozeane:</b> Pazifik (größter), Atlantik, Indischer Ozean, Arktischer Ozean (Nordpolarmeer), Südlicher Ozean</p>
- <div class="merk">Der <b>Äquator</b> teilt die Erde in eine Nord- und eine Südhalbkugel.</div>
- <p>Der Atlantik liegt zwischen Europa/Afrika und Amerika.</p>`,
- gen:(()=>{const K=["Europa","Asien","Afrika","Nordamerika","Südamerika","Australien","Antarktis"];
-  const L2=[["Deutschland","Europa"],["Ägypten","Afrika"],["Brasilien","Südamerika"],["Kanada","Nordamerika"],["China","Asien"],["Italien","Europa"],["Kenia","Afrika"],["Japan","Asien"],["USA","Nordamerika"],["Argentinien","Südamerika"]];
-  const P=[zahl("Wie viele Kontinente gibt es?",7,"Es gibt 7 Kontinente."),mc("Welcher ist der größte Kontinent?","Asien",["Afrika","Europa","Nordamerika"],"Asien ist der größte Kontinent."),
-   mc("Welcher ist der größte Ozean?","Pazifik",["Atlantik","Indischer Ozean","Nordpolarmeer"],"Der Pazifik (Pazifischer Ozean) ist der größte."),
-   mc("Auf welchem Kontinent liegt der Südpol?","Antarktis",["Australien","Südamerika","Afrika"],"Der Südpol liegt in der Antarktis."),
-   mc("Welche Linie teilt die Erde in Nord- und Südhalbkugel?","Äquator",["Nullmeridian","Polarkreis","Wendekreis"],"Der Äquator."),
-   mc("Welcher Ozean liegt zwischen Europa und Amerika?","Atlantik",["Pazifik","Indischer Ozean","Mittelmeer"],"Der Atlantik.")];
-  return ()=>{if(Math.random()<.5){const [l,k]=pick(L2);return mc(`Auf welchem Kontinent liegt <b>${l}</b>?`,k,andere(K,k),`${l} liegt in ${k}.`)}return pick(P)}})()},
-{id:"g-bayern",titel:"Bayern & Deutschland",
- merke:`<h2>Bayern und Deutschland</h2>
- <ul><li>Deutschland hat <b>16 Bundesländer</b>, Hauptstadt: <b>Berlin</b></li>
- <li>Bayern ist das <b>flächengrößte</b> Bundesland, Landeshauptstadt: <b>München</b></li>
- <li>Höchster Berg Deutschlands: <b>Zugspitze</b> (2 962 m)</li><li>Wichtigster Fluss in Bayern: <b>Donau</b></li></ul>
- <h3>Die 7 Regierungsbezirke</h3>
- <div class="tabwrap"><table><tr><td>Oberbayern</td><td>München</td></tr><tr><td>Niederbayern</td><td>Landshut</td></tr><tr><td>Oberpfalz</td><td>Regensburg</td></tr>
- <tr><td>Oberfranken</td><td>Bayreuth</td></tr><tr><td>Mittelfranken</td><td>Ansbach (größte Stadt: Nürnberg)</td></tr><tr><td>Unterfranken</td><td>Würzburg</td></tr><tr><td>Schwaben</td><td>Augsburg</td></tr></table></div>
- <p>Nachbarländer Bayerns: Österreich, Tschechien, Schweiz (am Bodensee) sowie die Bundesländer Baden-Württemberg, Hessen, Thüringen, Sachsen</p>`,
- gen:(()=>{const RB=["Oberbayern","Niederbayern","Oberpfalz","Oberfranken","Mittelfranken","Unterfranken","Schwaben"];
-  const ST=[["Nürnberg","Mittelfranken"],["Augsburg","Schwaben"],["Würzburg","Unterfranken"],["Regensburg","Oberpfalz"],["Landshut","Niederbayern"],["Bayreuth","Oberfranken"],["München","Oberbayern"],["Ingolstadt","Oberbayern"],["Bamberg","Oberfranken"],["Passau","Niederbayern"]];
-  const P=[mc("Wie heißt die Landeshauptstadt von Bayern?","München",["Nürnberg","Augsburg","Regensburg"],"München."),mc("Wie heißt die Hauptstadt von Deutschland?","Berlin",["München","Hamburg","Bonn"],"Berlin."),
-   zahl("Wie viele Bundesländer hat Deutschland?",16,"Deutschland hat 16 Bundesländer."),zahl("In wie viele Regierungsbezirke ist Bayern eingeteilt?",7,"Bayern hat 7 Regierungsbezirke."),
-   mc("Wie heißt der höchste Berg Deutschlands?","Zugspitze",["Watzmann","Großglockner","Feldberg"],"Die Zugspitze, 2 962 m."),mc("Welcher große Fluss fließt durch Regensburg und Passau?","Donau",["Rhein","Main","Isar"],"Die Donau."),
-   mc("Welcher Staat grenzt im Osten an Bayern?","Tschechien",["Frankreich","Polen","Italien"],"Im Osten liegt Tschechien, im Süden Österreich."),
-   mc("Welches ist das flächengrößte Bundesland?","Bayern",["Niedersachsen","Nordrhein-Westfalen","Baden-Württemberg"],"Bayern ist das größte Bundesland.")];
-  return ()=>{if(Math.random()<.45){const [s,r]=pick(ST);return mc(`In welchem Regierungsbezirk liegt <b>${s}</b>?`,r,andere(RB,r),`${s} liegt in ${r}.`)}return pick(P)}})()},
-{id:"g-steinzeit",titel:"Steinzeit",
- merke:`<h2>Die Steinzeit</h2>
- <h3>Altsteinzeit</h3>
- <ul><li>Menschen lebten als <b>Jäger und Sammler</b>.</li><li>Sie waren <b>Nomaden</b>: kein fester Wohnsitz, sie zogen den Tieren hinterher.</li>
- <li>Werkzeug: <b>Faustkeil</b> aus Feuerstein. Wichtig: Beherrschung des <b>Feuers</b>. Höhlenmalereien zeigen Tiere.</li></ul>
- <h3>Jungsteinzeit</h3>
- <ul><li>Menschen wurden <b>sesshaft</b>: <b>Ackerbau</b> und <b>Viehzucht</b>, Häuser, Dörfer.</li><li>Neue Erfindungen: Tongefäße, Webstuhl, geschliffene Steinbeile.</li>
- <li>Begann im <b>Fruchtbaren Halbmond</b> (Vorderer Orient).</li></ul>
- <div class="merk"><b>Ötzi:</b> Gletschermumie, 1991 in den Ötztaler Alpen gefunden, lebte vor etwa <b>5 300 Jahren</b>.</div>`,
- gen:ausPool([mc("Wie lebten die Menschen in der Altsteinzeit?","als Jäger und Sammler",["als Bauern in Dörfern","als Händler in Städten","als Fischer auf Schiffen"],"Altsteinzeit: Jäger und Sammler."),
-   mc("Was ist ein Nomade?","ein Mensch ohne festen Wohnsitz, der umherzieht",["ein Bauer mit großem Hof","ein Werkzeug aus Stein","ein Höhlenbild"],"Nomaden ziehen umher, z. B. den Tierherden nach."),
-   mc("Was änderte sich in der Jungsteinzeit?","Die Menschen wurden sesshaft und betrieben Ackerbau.",["Die Menschen erfanden das Auto.","Die Menschen zogen nur noch umher.","Die Menschen hörten auf zu jagen und zu essen."],"Jungsteinzeit: sesshaft, Ackerbau und Viehzucht."),
-   mc("Welches Werkzeug ist typisch für die Altsteinzeit?","Faustkeil",["Pflug","Webstuhl","Schwert aus Eisen"],"Der Faustkeil war ein Allzweckwerkzeug."),
-   mc("Aus welchem Stein wurden viele Werkzeuge hergestellt?","Feuerstein",["Marmor","Granit","Kalkstein"],"Feuerstein lässt sich scharfkantig abschlagen."),
-   mc("Wo wurde Ötzi gefunden?","in den Ötztaler Alpen",["in einer Höhle in Frankreich","in der Wüste in Ägypten","am Bodensee"],"Ötzi wurde 1991 in einem Gletscher der Ötztaler Alpen gefunden."),
-   mc("Vor wie vielen Jahren lebte Ötzi ungefähr?","vor etwa 5 300 Jahren",["vor etwa 500 Jahren","vor etwa 50 000 Jahren","vor etwa 2 000 Jahren"],"Ötzi lebte vor etwa 5 300 Jahren."),
-   zahl("In welchem Jahr wurde Ötzi gefunden?",1991,"1991 fanden Wanderer Ötzi im Gletschereis."),
-   mc("Was zeigen die meisten Höhlenmalereien?","Tiere",["Häuser","Autos","Pflanzen auf Feldern"],"Meist Tiere, die gejagt wurden: Pferde, Bisons, Hirsche."),
-   mc("Wo begannen die Menschen zuerst mit Ackerbau?","im Fruchtbaren Halbmond",["in Bayern","in Amerika","in der Antarktis"],"Im Fruchtbaren Halbmond (Vorderer Orient)."),
-   mc("Welche Erfindung gehört zur Jungsteinzeit?","Tongefäße",["Buchdruck","Dampfmaschine","Telefon"],"Tongefäße zum Aufbewahren von Vorräten.")])},
-{id:"g-zusammenleben",titel:"Zusammenleben & Kinderrechte",
- merke:`<h2>Zusammenleben und Kinderrechte</h2>
- <ul><li>Die <b>UN-Kinderrechtskonvention</b> wurde <b>1989</b> beschlossen. Sie gilt für alle Kinder unter <b>18 Jahren</b>.</li>
- <li>Beispiele: Recht auf <b>Bildung</b>, auf <b>Spiel und Freizeit</b>, auf <b>Schutz vor Gewalt</b>, auf <b>Gesundheit</b>, auf eine <b>eigene Meinung</b>.</li></ul>
- <h3>In der Klasse</h3>
- <ul><li>Die Klasse wählt <b>Klassensprecher</b> – in einer <b>geheimen</b> Wahl.</li><li>Regeln helfen, dass alle gut miteinander auskommen.</li>
- <li>Zu Rechten gehören auch <b>Pflichten</b> (z. B. Schulpflicht, Rücksicht nehmen).</li></ul>`,
- gen:ausPool([zahl("In welchem Jahr wurde die UN-Kinderrechtskonvention beschlossen?",1989,"1989 von den Vereinten Nationen (UN)."),
-   zahl("Bis zu welchem Alter gelten die Kinderrechte?",18,"Für alle Kinder und Jugendlichen unter 18 Jahren.","Jahre"),
-   mc("Welches ist <b>kein</b> Kinderrecht?","Recht auf ein eigenes Handy",["Recht auf Bildung","Recht auf Spiel und Freizeit","Recht auf Schutz vor Gewalt"],"Ein Handy ist kein Kinderrecht."),
-   mc("Wie wird der Klassensprecher gewählt?","in einer geheimen Wahl",["Die Lehrkraft bestimmt ihn.","Der Lauteste wird es.","Durch Losen"],"Geheim: Niemand sieht, wen du wählst."),
-   mc("Welche Organisation hat die Kinderrechte beschlossen?","die Vereinten Nationen (UN)",["die Bundesregierung","der Bayerische Landtag","die Schule"],"Die Vereinten Nationen (UN)."),
-   mc("Warum gibt es Regeln in der Klasse?","damit alle fair und gut zusammen lernen können",["damit die Lehrkraft schimpfen kann","damit niemand Spaß hat","Regeln gibt es nur für Erwachsene"],"Regeln schützen alle."),
-   mc("Was ist eine Pflicht von Schülerinnen und Schülern?","pünktlich zum Unterricht kommen",["jeden Tag Süßigkeiten essen","nie Hausaufgaben machen","immer zuerst reden"],"Zu Rechten gehören Pflichten."),
-   mc("Was gehört zum Recht auf Bildung?","Jedes Kind darf zur Schule gehen.",["Jedes Kind muss arbeiten.","Nur Jungen dürfen lernen.","Schule kostet viel Geld."],"Alle Kinder haben das Recht, zur Schule zu gehen.")])},
-]},
+ {id:"mathe",name:"Mathe",kurz:"M",farbe:"var(--mathe)",papier:"karo"},
+ {id:"deutsch",name:"Deutsch",kurz:"D",farbe:"var(--deutsch)",papier:"linien"},
+ {id:"englisch",name:"Englisch",kurz:"E",farbe:"var(--englisch)",papier:"linien"},
+ {id:"nt",name:"Natur & Technik",kurz:"NT",farbe:"var(--nt)",papier:"linien"},
+ {id:"gpg",name:"GPG",kurz:"GPG",farbe:"var(--gpg)",papier:"linien"},
 ];
 
 /* ================================================================
-   SPEICHER (nur in diesem Browser)
+   THEMEN – kommen aus Majas Heften, Büchern und Arbeitsblättern.
+   quelle: woher der Stoff kommt ("Beispiel" = noch nicht aus Majas Unterlagen)
+   probe:  Datum der Probe "JJJJ-MM-TT" (optional, dann erscheint ein Countdown)
+   Neue Karten immer HINTEN anhängen, damit der Lernstand erhalten bleibt.
    ================================================================ */
-const KEY="maya-lernheft-v1";
-let S={stand:{},fehler:[],heute:{datum:"",anzahl:0}};
+const THEMEN=[
+/* ---------------------------------------------------------------- DEUTSCH */
+{id:"d-praesens",fach:"deutsch",titel:"Das Präsens",quelle:"Beispiel",probe:null,
+ merke:`<h2>Das Präsens (Gegenwart)</h2>
+ <h3>Wann verwendet man das Präsens?</h3>
+ <ul><li>Was <b>gerade jetzt</b> passiert: <i>Maja liest gerade ein Buch.</i></li>
+ <li>Was <b>regelmäßig</b> passiert: <i>Ich gehe jeden Tag zur Schule.</i></li>
+ <li>Was <b>immer gilt</b>: <i>Die Erde dreht sich um die Sonne.</i></li>
+ <li>Mit Zeitangabe auch für die <b>Zukunft</b>: <i>Morgen schreiben wir eine Probe.</i></li></ul>
+ <h3>Wie bildet man das Präsens?</h3>
+ <div class="merk"><b>Wortstamm + Personalendung</b></div>
+ <div class="tabwrap"><table><tr><th>Person</th><th>spielen</th><th>Endung</th></tr>
+ <tr><td>ich</td><td>spiel<b>e</b></td><td>-e</td></tr><tr><td>du</td><td>spiel<b>st</b></td><td>-st</td></tr>
+ <tr><td>er / sie / es</td><td>spiel<b>t</b></td><td>-t</td></tr><tr><td>wir</td><td>spiel<b>en</b></td><td>-en</td></tr>
+ <tr><td>ihr</td><td>spiel<b>t</b></td><td>-t</td></tr><tr><td>sie</td><td>spiel<b>en</b></td><td>-en</td></tr></table></div>
+ <p>Achtung: Manche Verben ändern bei <b>du</b> und <b>er/sie/es</b> den Selbstlaut: laufen → du l<b>ä</b>ufst, lesen → er l<b>ie</b>st, essen → du <b>i</b>sst, fahren → du f<b>ä</b>hrst</p>`,
+ karten:[
+  karte("Was ist das Präsens?","Das Präsens ist die <b>Gegenwartsform</b> eines Verbs. Es zeigt, was jetzt passiert, was regelmäßig passiert oder was immer gilt."),
+  mc("Wofür verwendet man das Präsens?","für das, was jetzt passiert oder immer gilt",["nur für Dinge, die gestern passiert sind","nur für Befehle","nur in Gedichten"],"Das Präsens ist die Gegenwart: jetzt, regelmäßig, immer."),
+  karte("Nenne die vier Situationen, in denen man das Präsens verwendet.","1. was gerade passiert<br>2. was regelmäßig passiert<br>3. was immer gilt<br>4. mit Zeitangabe für die Zukunft (<i>Morgen fahren wir …</i>)"),
+  mc("In welchem Satz steht das Präsens?","Maja liest ein Buch.",["Maja las ein Buch.","Maja hat ein Buch gelesen.","Maja wird ein Buch lesen."],"„liest“ ist Gegenwart. Die anderen: Präteritum, Perfekt, Futur."),
+  mc("„Die Erde dreht sich um die Sonne.“ Warum steht dieser Satz im Präsens?","weil es immer gilt",["weil es gestern passiert ist","weil es ein Befehl ist","weil es nur einmal passiert"],"Allgemeine Wahrheiten stehen im Präsens."),
+  mc("„Morgen schreiben wir eine Probe.“ Wann passiert das?","in der Zukunft",["jetzt gerade","in der Vergangenheit","jeden Tag"],"Das Verb steht im Präsens, aber „morgen“ zeigt: Es geht um die Zukunft."),
+  karte("Wie bildet man das Präsens?","<b>Wortstamm + Personalendung</b><br>ich spiel-e, du spiel-st, er spiel-t, wir spiel-en, ihr spiel-t, sie spiel-en"),
+  text(`Setze ins Präsens: du ${L} (laufen)`,["du läufst","läufst"],"laufen → du l<b>ä</b>ufst (a wird zu ä)"),
+  text(`Setze ins Präsens: er ${L} (lesen)`,["er liest","liest"],"lesen → er l<b>ie</b>st"),
+  text(`Setze ins Präsens: ihr ${L} (spielen)`,["ihr spielt","spielt"],"ihr → Endung -t: ihr spielt"),
+  text(`Setze ins Präsens: sie (eine Person) ${L} (essen)`,["sie isst","isst"],"essen → sie <b>i</b>sst (mit ss)"),
+  text(`Setze ins Präsens: du ${L} (fahren)`,["du fährst","fährst"],"fahren → du f<b>ä</b>hrst"),
+  text(`Setze ins Präsens: es ${L} (geben)`,["es gibt","gibt"],"geben → es g<b>i</b>bt"),
+  mc("Setze ins Präsens: „Wir gingen nach Hause.“","Wir gehen nach Hause.",["Wir sind nach Hause gegangen.","Wir werden nach Hause gehen.","Wir gangen nach Hause."],"gingen (Präteritum) → gehen (Präsens)"),
+  mc("Welche Endung hat das Verb bei „du“ im Präsens?","-st",["-t","-e","-en"],"du spiel<b>st</b>, du mach<b>st</b>"),
+  mc("Welches deutsche Wort passt zu „Präsens“?","Gegenwart",["Vergangenheit","Zukunft","Befehlsform"],"Präsens = Gegenwart"),
+ ]},
+
+/* ---------------------------------------------------------------- ENGLISCH */
+{id:"e-home",fach:"englisch",titel:"Vocabulary: At home",quelle:"Beispiel",probe:null,
+ merke:`<h2>At home</h2>
+ <div class="tabwrap"><table>
+ <tr><td>washing machine</td><td>Waschmaschine</td></tr><tr><td>fridge</td><td>Kühlschrank</td></tr>
+ <tr><td>dishwasher</td><td>Spülmaschine</td></tr><tr><td>cooker</td><td>Herd</td></tr>
+ <tr><td>vacuum cleaner</td><td>Staubsauger</td></tr><tr><td>cupboard</td><td>(Küchen-)Schrank</td></tr>
+ <tr><td>wardrobe</td><td>Kleiderschrank</td></tr><tr><td>shelf</td><td>Regal</td></tr>
+ <tr><td>stairs</td><td>Treppe</td></tr><tr><td>kitchen</td><td>Küche</td></tr>
+ <tr><td>bathroom</td><td>Badezimmer</td></tr><tr><td>living room</td><td>Wohnzimmer</td></tr>
+ <tr><td>bedroom</td><td>Schlafzimmer</td></tr><tr><td>to tidy up</td><td>aufräumen</td></tr>
+ <tr><td>to do the washing-up</td><td>abspülen</td></tr><tr><td>to lay the table</td><td>den Tisch decken</td></tr></table></div>
+ <div class="merk">Schwierige Wörter: cu<b>p</b>board (das p hört man nicht!), w<b>a</b>rdrobe, sh<b>e</b>lf</div>`,
+ karten:vokabeln([["die Waschmaschine","washing machine"],["der Kühlschrank",["fridge","refrigerator"]],["die Spülmaschine","dishwasher"],["der Herd",["cooker","stove"]],
+  ["der Staubsauger",["vacuum cleaner","hoover"]],["der (Küchen-)Schrank","cupboard"],["der Kleiderschrank","wardrobe"],["das Regal","shelf"],["die Treppe","stairs"],
+  ["die Küche","kitchen"],["das Badezimmer","bathroom"],["das Wohnzimmer","living room"],["das Schlafzimmer","bedroom"],["aufräumen","to tidy up"],
+  ["abspülen",["to do the washing-up","to wash up","to do the dishes"]],["den Tisch decken",["to lay the table","to set the table"]]])},
+
+/* ---------------------------------------------------------------- MATHE */
+{id:"m-brueche",fach:"mathe",titel:"Brüche addieren & subtrahieren",quelle:"Beispiel",probe:null,
+ merke:`<h2>Brüche addieren und subtrahieren</h2>
+ <h3>Gleicher Nenner (gleichnamig)</h3>
+ <div class="merk">Nenner bleibt gleich, nur die <b>Zähler</b> rechnen.</div>
+ <p>${F(1,4)} + ${F(1,4)} = ${F(2,4)} = ${F(1,2)} &nbsp;&nbsp; ${F(1,3)} + ${F(1,3)} = ${F(2,3)}</p>
+ <h3>Verschiedene Nenner (ungleichnamig)</h3>
+ <div class="merk">1. <b>Hauptnenner</b> suchen (kleinste Zahl, in der beide Nenner stecken)<br>2. Beide Brüche darauf <b>erweitern</b><br>3. Zähler rechnen, am Ende <b>kürzen</b></div>
+ <p>${F(1,3)} + ${F(1,4)}: Hauptnenner 12 → ${F(4,12)} + ${F(3,12)} = ${F(7,12)}</p>`,
+ slots:8,
+ gen(){const art=R(0,3);
+  const kurz=(z,n)=>{if(z%n===0)return ` = ${z/n}`;const g=ggT(z,n);return g>1?` = ${F(z/g,n/g)} (gekürzt)`:""};
+  if(art===0){const n=R(2,12),a=R(1,n-1),b=R(1,n-1);return bruch(`${F(a,n)} + ${F(b,n)} = ?`,a+b,n,"gleich",`Gleicher Nenner: ${a} + ${b} = ${a+b} → ${F(a+b,n)}${kurz(a+b,n)}`)}
+  if(art===1){const n=R(3,12),a=R(2,n),b=R(1,a-1);return bruch(`${F(a,n)} − ${F(b,n)} = ?`,a-b,n,"gleich",`Gleicher Nenner: ${a} − ${b} = ${a-b} → ${F(a-b,n)}${kurz(a-b,n)}`)}
+  let n1,n2,a,b,H;do{n1=R(2,8);n2=R(2,8);a=R(1,n1-1);b=R(1,n2-1);H=kgV(n1,n2)}while(n1===n2||H>24||(art===3&&a*n2<=b*n1));
+  const x=a*H/n1,y=b*H/n2,plus=art===2,erg=plus?x+y:x-y;
+  return bruch(`${F(a,n1)} ${plus?"+":"−"} ${F(b,n2)} = ?`,erg,H,"gleich",`Hauptnenner ${H}: ${F(a,n1)} = ${F(x,H)}, ${F(b,n2)} = ${F(y,H)}. Dann ${x} ${plus?"+":"−"} ${y} = ${erg} → ${F(erg,H)}${kurz(erg,H)}`)}},
+];
+
+/* ================================================================
+   SPEICHER (nur in diesem Browser) + Wiederholsystem (Lernkartei)
+   Box 1–5: richtig → eine Box weiter (später wieder dran), falsch → zurück in Box 1.
+   ================================================================ */
+const KEY="maja-lernheft-v2";
+let S={karten:{},heute:{datum:"",anzahl:0},serie:{letzter:"",tage:0}};
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
 const speichern=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
-const heute=()=>new Date().toISOString().slice(0,10);
-if(S.heute.datum!==heute())S.heute={datum:heute(),anzahl:0};
+const tag=(plus=0)=>{const d=new Date();d.setDate(d.getDate()+plus);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+if(S.heute.datum!==tag())S.heute={datum:tag(),anzahl:0};
+const ABSTAND=[0,1,2,4,7,14]; // Tage bis zur nächsten Abfrage je Box
 
-const sterne=id=>{const b=(S.stand[id]||{}).best||0;return b>=90?3:b>=70?2:b>=50?1:0};
-const sterneHTML=n=>`<span class="sterne" aria-label="${n} von 3 Sternen">${"★".repeat(n)}<span class="leer">${"★".repeat(3-n)}</span></span>`;
 const fach=id=>FAECHER.find(f=>f.id===id);
-const thema=id=>{for(const f of FAECHER){const t=f.themen.find(t=>t.id===id);if(t)return[f,t]}return[]};
+const thema=id=>THEMEN.find(t=>t.id===id);
+const themenVon=fid=>THEMEN.filter(t=>t.fach===fid);
+function kartenVon(t){
+  if(t.gen)return Array.from({length:t.slots||6},(_,k)=>({id:`${t.id}~${k}`,t,make:()=>t.gen()}));
+  return t.karten.map((q,i)=>({id:`${t.id}#${i}`,t,make:()=>q}))}
+const alleKarten=()=>THEMEN.flatMap(kartenVon);
+const stand=id=>S.karten[id];
+const istFaellig=k=>{const s=stand(k.id);return !s||s.faellig<=tag()};
+const sitzt=k=>{const s=stand(k.id);return s&&s.box>=3};
+const tageBis=d=>Math.round((new Date(d+"T12:00")-new Date(tag()+"T12:00"))/864e5);
+function bewerte(kid,ok){
+  const s=S.karten[kid]||{box:0};s.box=ok?Math.min(5,s.box+1):1;s.faellig=tag(ok?ABSTAND[s.box]:1);S.karten[kid]=s;
+  S.heute.anzahl++;if(S.serie.letzter!==tag()){S.serie.tage=S.serie.letzter===tag(-1)?S.serie.tage+1:1;S.serie.letzter=tag()}
+  speichern()}
+function heuteDran(){
+  // zuerst Themen mit naher Probe, dann schon gelernte (niedrige Box zuerst), dann neue
+  const prio=k=>{const p=k.t.probe?tageBis(k.t.probe):99;const s=stand(k.id);return (p>=0&&p<=14?0:100)+(s?s.box:10)+Math.random()};
+  return alleKarten().filter(istFaellig).sort((a,b)=>prio(a)-prio(b))}
 
 /* ================================================================
    PRÜFEN
    ================================================================ */
 const norm=s=>String(s).toLowerCase().trim().replace(/[’`´]/g,"'").replace(/\s+/g," ").replace(/[.!?]+$/,"")
   .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss");
-const ohneArtikel=s=>s.replace(/^(the|a|an|to) /,"");
+const ohneArtikel=s=>s.replace(/^(the|a|an) /,"");
 function parseZahl(s){s=String(s).trim().replace(/\s| |\./g,"").replace(",",".");if(!/^-?\d+(\.\d+)?$/.test(s))return null;return parseFloat(s)}
 function parseBruch(s){s=String(s).trim().replace(/\s/g,"");let m=s.match(/^(\d+)\/(\d+)$/);if(m&&+m[2]>0)return[+m[1],+m[2]];m=s.match(/^(\d+)$/);if(m)return[+m[1],1];return null}
 function pruefe(q,antwort){
+  if(q.typ==="karte")return antwort===true;
   if(q.typ==="mc")return antwort===q.loesung;
   if(q.typ==="zahl"){const v=parseZahl(antwort);return v!==null&&Math.abs(v-q.loesung)<1e-9}
   if(q.typ==="bruch"){const b=parseBruch(antwort);if(!b)return false;const [z,n]=q.loesung;
-    if(q.modus==="genau")return b[0]===z&&b[1]===n;
-    const gleich=b[0]*n===z*b[1];if(q.modus==="gekuerzt")return gleich&&ggT(b[0],b[1])===1;return gleich}
+    if(q.modus==="genau")return b[0]===z&&b[1]===n;const gleich=b[0]*n===z*b[1];return q.modus==="gekuerzt"?gleich&&ggT(b[0],b[1])===1:gleich}
   const a=norm(antwort);return q.loesung.some(l=>{const x=norm(l);return a===x||ohneArtikel(a)===ohneArtikel(x)})}
 function loesungText(q){
-  if(q.typ==="bruch"){const [z,n]=q.loesung;const g=ggT(z,n);if(q.modus==="gleich"&&g>1)return `${F(z,n)} = ${n/g===1?z/g:F(z/g,n/g)}`;return n===1?String(z):F(z,n)}
+  if(q.typ==="karte")return q.antwort;
+  if(q.typ==="bruch"){const [z,n]=q.loesung;if(z%n===0)return String(z/n);const g=ggT(z,n);return g>1&&q.modus==="gleich"?`${F(z,n)} = ${F(z/g,n/g)}`:F(z,n)}
   if(q.typ==="zahl")return Z(String(q.loesung).replace(".",","))+(q.einheit?" "+q.einheit:"");
   if(q.typ==="text")return esc(q.loesung[0]);return q.loesung}
 
 /* ================================================================
-   QUIZ
+   ABFRAGE
+   modus: heute (Wiederholen) | ueben (ein Thema) | probe (ohne Hilfe, mit Note)
    ================================================================ */
 let Q=null;
-function baueQuiz(themen,n){
-  const fragen=[],gesehen=new Set();let reihe=[];
-  for(let i=0;i<n;i++){if(!reihe.length)reihe=shuffle(themen);const t=reihe.pop();let q,v=0;
-    do{q=t.gen();v++}while(gesehen.has(q.frage)&&v<15);gesehen.add(q.frage);
-    q=Object.assign({},q,{themaId:t.id});if(q.typ==="mc")q.optionen=shuffle(q.optionen);fragen.push(q)}
-  return fragen}
-function starte(modus,fachId,themaIds,titel){
-  const f=fach(fachId);let fragen;
-  if(modus==="fehler"){fragen=shuffle(S.fehler).slice(0,10).map(q=>Object.assign({},q,{optionen:q.optionen?shuffle(q.optionen):undefined}))}
-  else{const ts=f.themen.filter(t=>themaIds.includes(t.id));fragen=baueQuiz(ts,modus==="probe"?Math.max(12,ts.length*3):8)}
-  Q={modus,fachId,themaIds,titel,fragen,i:0,antworten:[],beantwortet:false,auswahl:null};render()}
+function frageAus(k){const q=Object.assign({},k.make(),{kid:k.id,themaId:k.t.id});if(q.typ==="mc")q.optionen=shuffle(q.optionen);return q}
+function starte(modus,opt={}){
+  let karten;
+  if(modus==="heute")karten=heuteDran().slice(0,15);
+  else if(modus==="ueben")karten=shuffle(kartenVon(thema(opt.themaId))).slice(0,12);
+  else karten=shuffle(opt.themaIds.flatMap(id=>kartenVon(thema(id)))).slice(0,20);
+  if(!karten.length)return;
+  Q=Object.assign({modus,fragen:karten.map(frageAus),i:0,antworten:[],beantwortet:false,aufgedeckt:false,auswahl:null},opt);render();window.scrollTo({top:0})}
 function antworten(wert){
-  if(!Q||Q.beantwortet)return;const q=Q.fragen[Q.i];const ok=pruefe(q,wert);
-  Q.antworten.push({q,wert,ok});Q.beantwortet=true;Q.auswahl=wert;S.heute.anzahl++;
-  const key=q.frage+"|"+q.typ;
-  if(!ok){if(!S.fehler.some(x=>x.frage+"|"+x.typ===key))S.fehler.push(Object.assign({},q));if(S.fehler.length>60)S.fehler.shift()}
-  else if(Q.modus==="fehler"){S.fehler=S.fehler.filter(x=>x.frage+"|"+x.typ!==key)}
-  speichern();
-  if(Q.modus==="probe"){weiter();return}
+  if(!Q||Q.beantwortet)return;const q=Q.fragen[Q.i],ok=pruefe(q,wert);
+  Q.antworten.push({q,wert,ok});Q.beantwortet=true;Q.auswahl=wert;bewerte(q.kid,ok);
+  if(Q.modus==="probe"&&q.typ!=="karte"){weiter();return}
+  if(q.typ==="karte"){weiter();return}
   render()}
-function weiter(){Q.i++;Q.beantwortet=false;Q.auswahl=null;
-  if(Q.i>=Q.fragen.length){abschluss();Q.fertig=true}render()}
-function abschluss(){
-  if(Q.modus==="fehler")return;
-  const proThema={};for(const a of Q.antworten){(proThema[a.q.themaId]??=[]).push(a.ok)}
-  for(const [id,arr] of Object.entries(proThema)){const p=Math.round(100*arr.filter(Boolean).length/arr.length);const st=S.stand[id]||{best:0,runden:0,richtig:0,gesamt:0};
-    if(Q.modus==="ueben"||arr.length>=2)st.best=Math.max(st.best,p);st.runden++;st.richtig+=arr.filter(Boolean).length;st.gesamt+=arr.length;S.stand[id]=st}
-  speichern()}
+function weiter(){Q.i++;Q.beantwortet=false;Q.aufgedeckt=false;Q.auswahl=null;if(Q.i>=Q.fragen.length)Q.fertig=true;render()}
 const note=p=>p>=92?1:p>=81?2:p>=67?3:p>=50?4:p>=30?5:6;
-const NOTENTEXT={1:"Sehr gut! Du bist bestens vorbereitet.",2:"Gut! Nur noch ein paar Kleinigkeiten.",3:"Befriedigend. Schau dir die Fehler nochmal an.",4:"Ausreichend. Lies die Hefteinträge nochmal und übe weiter.",5:"Da geht noch was! Üb die Themen einzeln.",6:"Nicht aufgeben! Fang mit dem Hefteintrag an und übe Schritt für Schritt."};
+const NOTENTEXT={1:"Sehr gut! Du bist bestens vorbereitet.",2:"Gut! Nur noch ein paar Kleinigkeiten.",3:"Befriedigend. Schau dir die Fehler nochmal an.",4:"Ausreichend. Lies den Hefteintrag nochmal und übe weiter.",5:"Da geht noch was! Übe die Themen einzeln.",6:"Nicht aufgeben! Fang mit dem Hefteintrag an und übe Schritt für Schritt."};
 
 /* ================================================================
    ANSICHTEN
    ================================================================ */
 let V={seite:"start"};
 const app=document.getElementById("app");
-function go(seite,daten={}){V=Object.assign({seite},daten);if(seite!=="quiz")Q=null;render();window.scrollTo({top:0})}
+function go(seite,daten={}){V=Object.assign({seite},daten);Q=null;render();window.scrollTo({top:0})}
+const quelleBadge=t=>t.quelle==="Beispiel"?`<span class="badge">Beispiel</span>`:`<span class="badge heft-q">${esc(t.quelle)}</span>`;
+const probeText=t=>{const d=tageBis(t.probe);return d===0?"heute":d===1?"morgen":`in ${d} Tagen`};
 
 function vStart(){
-  const gesamtSterne=FAECHER.reduce((s,f)=>s+f.themen.reduce((a,t)=>a+sterne(t.id),0),0),max=FAECHER.reduce((s,f)=>s+f.themen.length*3,0);
-  return `<header class="kopf"><div><p class="muted">Lernheft</p><h1>Hallo Maya!</h1></div>
-   <div class="stats"><div class="stat"><b>${S.heute.anzahl}</b><span>heute gelöst</span></div><div class="stat"><b>${gesamtSterne}<small class="muted">/${max}</small></b><span>Sterne</span></div></div></header>
-   <p class="muted">Such dir ein Fach aus. Lies zuerst den Hefteintrag, dann übe. Vor einer Probe hilft das Probe-Training.</p>
-   <section class="hefte">${FAECHER.map(f=>{const st=f.themen.reduce((a,t)=>a+sterne(t.id),0),mx=f.themen.length*3;
-     return `<button class="heft" style="--fach:${f.farbe}" data-go="fach" data-fach="${f.id}"><span class="kurz">${f.kurz}</span><span class="name">${f.name}</span>
-      <span class="info">${f.themen.length} Themen · ${st}/${mx} ★</span><span class="balken"><i style="width:${Math.round(100*st/mx)}%"></i></span></button>`}).join("")}</section>
-   <section class="kiste"><div><h3>Fehler-Kiste</h3><p class="muted">${S.fehler.length?`${S.fehler.length} Aufgabe${S.fehler.length===1?"":"n"} zum Wiederholen. Richtig gelöst fliegen sie raus.`:"Leer! Falsche Antworten landen hier, damit du sie nochmal üben kannst."}</p></div>
-   <button class="btn" data-act="fehler" ${S.fehler.length?"":"disabled"}>Fehler üben</button></section>
-   <p class="fuss">Dein Fortschritt wird nur auf diesem Gerät gespeichert.</p>`}
+  const dran=heuteDran().length,alle=alleKarten(),gelernt=alle.filter(sitzt).length;
+  const proben=THEMEN.filter(t=>t.probe&&tageBis(t.probe)>=0).sort((a,b)=>a.probe<b.probe?-1:1);
+  return `<header class="kopf"><div><p class="muted">Lernheft</p><h1>Hallo Maja!</h1></div>
+   <div class="stats"><div class="stat"><b>${S.heute.anzahl}</b><span>heute gelöst</span></div>
+   <div class="stat"><b>${S.serie.letzter>=tag(-1)?S.serie.tage:0}</b><span>Tage in Folge</span></div>
+   <div class="stat"><b>${gelernt}<small class="muted">/${alle.length}</small></b><span>sitzt schon</span></div></div></header>
+   <section class="heute">${dran?`<div class="t"><span class="zahl">${Math.min(dran,15)}</span><div><h2>Heute dran</h2><p class="muted">Fragen aus allen Fächern, die du heute wiederholen solltest.${dran>15?` Danach warten noch ${dran-15}.`:""}</p></div></div>
+     <button class="btn" data-act="heute">Los geht's</button>`
+    :`<div class="t"><span class="zahl">✓</span><div><h2>Alles erledigt für heute!</h2><p class="muted">Morgen kommen wieder Fragen dran. Du kannst unten trotzdem jedes Thema üben.</p></div></div>`}</section>
+   ${proben.length?`<section class="proben"><h3>Nächste Proben</h3>${proben.map(t=>`<div class="probe-zeile" style="--fach:${fach(t.fach).farbe}"><span class="tage">${probeText(t)}</span><span><b>${fach(t.fach).name}:</b> ${t.titel}</span></div>`).join("")}</section>`:""}
+   <section class="hefte">${FAECHER.map(f=>{const ts=themenVon(f.id),ks=ts.flatMap(kartenVon),s=ks.filter(sitzt).length;
+     return `<button class="heft ${ts.length?"":"leer"}" style="--fach:${f.farbe}" data-go="fach" data-fach="${f.id}"><span class="kurz">${f.kurz}</span><span class="name">${f.name}</span>
+      <span class="info">${ts.length?`${ts.length} Thema${ts.length===1?"":"en"} · ${s}/${ks.length} sitzt`:"Noch kein Thema"}</span><span class="balken"><i style="width:${ks.length?Math.round(100*s/ks.length):0}%"></i></span></button>`}).join("")}</section>
+   <p class="fuss">Fragen, die du richtig hast, kommen nach ein paar Tagen wieder. Falsche kommen schon morgen wieder dran.<br>Dein Fortschritt wird nur auf diesem Gerät gespeichert.</p>`}
 
 function vFach(){
-  const f=fach(V.fach);
+  const f=fach(V.fach),ts=themenVon(f.id);
   return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
-   <button class="back" data-go="start">← Alle Fächer</button>
-   <div class="fachkopf"><h1>${f.name}</h1><p class="muted">Tippe auf „Hefteintrag“ zum Lernen und auf „Üben“ für 8 Aufgaben.</p></div>
-   <section class="themen">${f.themen.map(t=>{const st=S.stand[t.id];return `<div class="thema"><div class="t"><h3>${t.titel}</h3>
-     <div class="row">${sterneHTML(sterne(t.id))}<span class="muted" style="font-size:.85rem">${st?`Bestes Ergebnis: ${st.best} %`:"Noch nicht geübt"}</span></div></div>
-     <div class="row"><button class="btn ghost small" data-go="merke" data-fach="${f.id}" data-thema="${t.id}">Hefteintrag</button>
-     <button class="btn small" data-act="ueben" data-fach="${f.id}" data-thema="${t.id}">Üben</button></div></div>`}).join("")}</section>
+   <button class="back" data-go="start">← Startseite</button>
+   <div class="fachkopf"><h1>${f.name}</h1><p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
+   ${ts.length?`<section class="themen">${ts.map(t=>{const ks=kartenVon(t),s=ks.filter(sitzt).length;return `<div class="thema"><div class="t"><h3>${t.titel}</h3>
+     <div class="row">${quelleBadge(t)}${t.probe&&tageBis(t.probe)>=0?`<span class="badge heft-q">Probe ${probeText(t)}</span>`:""}<span class="muted" style="font-size:.85rem">${s} von ${ks.length} sitzen</span></div>
+     <div class="balken"><i style="width:${Math.round(100*s/ks.length)}%"></i></div></div>
+     <div class="row"><button class="btn ghost small" data-go="merke" data-thema="${t.id}">Hefteintrag</button><button class="btn small" data-act="ueben" data-thema="${t.id}">Üben</button></div></div>`}).join("")}</section>
    <section class="probe"><h2>Probe-Training</h2><p>Wähle die Themen, die in der Probe drankommen. Du bekommst gemischte Aufgaben ohne Hilfe und am Ende eine Note.</p>
-    <div class="chips">${f.themen.map(t=>`<label class="chip"><input type="checkbox" id="pt-${t.id}" value="${t.id}" checked> ${t.titel}</label>`).join("")}</div>
-    <div><button class="btn" data-act="probe" data-fach="${f.id}">Probe starten</button></div></section></div>`}
+    <div class="chips">${ts.map(t=>`<label class="chip"><input type="checkbox" id="pt-${t.id}" value="${t.id}" checked> ${t.titel}</label>`).join("")}</div>
+    <div><button class="btn" data-act="probe" data-fach="${f.id}">Probe starten</button></div></section>`
+   :`<section class="leerhinweis"><h3>Hier ist noch nichts eingetragen.</h3><p class="muted">Sobald es Hefteinträge oder Arbeitsblätter aus ${f.name} gibt, kommen hier die passenden Fragen dazu.</p></section>`}</div>`}
 
 function vMerke(){
-  const [f,t]=thema(V.thema);
+  const t=thema(V.thema),f=fach(t.fach);
   return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
    <button class="back" data-go="fach" data-fach="${f.id}">← ${f.name}</button>
    <article class="papier ${f.papier==="karo"?"karo":""}">${t.merke}</article>
-   <div class="row"><button class="btn" data-act="ueben" data-fach="${f.id}" data-thema="${t.id}">Jetzt üben</button></div></div>`}
+   <div class="row"><button class="btn" data-act="ueben" data-thema="${t.id}">Jetzt üben</button></div></div>`}
 
 function vQuiz(){
-  const f=fach(Q.fachId)||{farbe:"var(--deutsch)",name:"Fehler-Kiste"};
-  if(Q.fertig)return vErgebnis(f);
-  const q=Q.fragen[Q.i],fertig=Q.beantwortet,letzte=Q.antworten[Q.antworten.length-1];
-  const farbe=Q.modus==="fehler"?(thema(q.themaId)[0]||{}).farbe||"var(--deutsch)":f.farbe;
+  if(Q.fertig)return vErgebnis();
+  const q=Q.fragen[Q.i],t=thema(q.themaId),f=fach(t.fach),fertig=Q.beantwortet,letzte=Q.antworten[Q.antworten.length-1];
   let feld="";
-  if(q.typ==="mc"){feld=`<div class="optionen">${q.optionen.map((o,i)=>{let c="opt";if(fertig){if(o===q.loesung)c+=" richtig";else if(o===Q.auswahl)c+=" falsch"}
+  if(q.typ==="karte"){
+    feld=Q.aufgedeckt?`<div class="antwortkarte pop">${q.antwort}</div><p class="tipp">Sei ehrlich: Hast du das gewusst?</p>
+      <div class="row"><button class="btn ok" data-act="gewusst">Gewusst</button><button class="btn bad" data-act="nichtgewusst">Nicht gewusst</button></div>`
+     :`<p class="tipp">Überleg dir die Antwort oder sag sie laut. Dann dreh die Karte um.</p><div><button class="btn" data-act="aufdecken" id="aufdeckbtn">Antwort zeigen</button></div>`}
+  else if(q.typ==="mc"){feld=`<div class="optionen">${q.optionen.map((o,i)=>{let c="opt";if(fertig){if(o===q.loesung)c+=" richtig";else if(o===Q.auswahl)c+=" falsch"}
      return `<button class="${c}" data-opt="${i}" ${fertig?"disabled":""}>${o}</button>`}).join("")}</div>`}
   else{const tipp=q.typ==="bruch"?"Bruch so eingeben: 3/4":q.typ==="zahl"?"Nur die Zahl eingeben":q.tipp||"";
-    feld=`<form class="eingabe" id="eform" autocomplete="off"><input id="antwort" ${q.typ==="text"?'autocapitalize="off" spellcheck="false"':'inputmode="text"'} ${fertig?"disabled":""} value="${fertig?esc(Q.auswahl):""}" aria-label="Antwort">
+    feld=`<form class="eingabe" id="eform" autocomplete="off"><input id="antwort" autocapitalize="off" autocorrect="off" spellcheck="false" ${fertig?"disabled":""} value="${fertig?esc(Q.auswahl):""}" aria-label="Antwort">
      ${q.einheit?`<span class="einheit">${q.einheit}</span>`:""}${fertig?"":`<button class="btn" type="submit">Prüfen</button>`}</form>${tipp&&!fertig?`<p class="tipp">${tipp}</p>`:""}`}
-  const rueck=fertig?`<div class="rueck ${letzte.ok?"ok":"no"} pop"><strong>${letzte.ok?pick(["Richtig!","Super!","Klasse!","Genau!","Stark!"]):"Leider falsch."}</strong>
+  const rueck=fertig&&q.typ!=="karte"?`<div class="rueck ${letzte.ok?"ok":"no"} pop"><strong>${letzte.ok?pick(["Richtig!","Super!","Klasse!","Genau!","Stark!"]):"Leider falsch."}</strong>
      ${letzte.ok?"":`<span>Richtig ist: <b>${loesungText(q)}</b></span>`}${q.erkl?`<span>${q.erkl}</span>`:""}</div>
      <div class="row"><button class="btn" data-act="weiter" id="weiterbtn">${Q.i+1<Q.fragen.length?"Weiter":"Auswertung"}</button></div>`:"";
-  const titel=Q.modus==="probe"?"Probe-Training":Q.modus==="fehler"?"Fehler-Kiste":Q.titel;
-  return `<div style="--fach:${farbe};display:flex;flex-direction:column;gap:16px">
+  const titel=Q.modus==="probe"?"Probe-Training":Q.modus==="heute"?"Heute dran":t.titel;
+  return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:16px">
    <div class="quizkopf"><button class="back" data-act="abbrechen">✕ Beenden</button><span class="muted" style="font-weight:700">${titel} · ${Q.i+1} / ${Q.fragen.length}</span></div>
    <div class="balken"><i style="width:${Math.round(100*Q.i/Q.fragen.length)}%"></i></div>
-   <section class="karte"><div class="frage">${q.frage}</div>${feld}${rueck}</section></div>`}
+   <section class="karte"><span class="fachzeile">${f.name} · ${t.titel}</span><div class="frage">${q.frage}</div>${feld}${rueck}</section></div>`}
 
-function vErgebnis(f){
-  const r=Q.antworten.filter(a=>a.ok).length,n=Q.antworten.length,p=Math.round(100*r/n);
-  const falsch=Q.antworten.filter(a=>!a.ok);
+function vErgebnis(){
+  const r=Q.antworten.filter(a=>a.ok).length,n=Q.antworten.length,p=Math.round(100*r/n),falsch=Q.antworten.filter(a=>!a.ok);
+  const farbe=Q.modus==="heute"?"var(--mathe)":fach(thema(Q.fragen[0].themaId).fach).farbe;
   let kopf;
   if(Q.modus==="probe")kopf=`<p class="muted">Deine Note im Probe-Training</p><div class="note">${note(p)}</div><p><b>${r} von ${n}</b> richtig (${p} %). ${NOTENTEXT[note(p)]}</p>`;
-  else if(Q.modus==="fehler")kopf=`<h2>Fehler-Kiste</h2><p><b>${r} von ${n}</b> richtig. ${S.fehler.length?`Noch ${S.fehler.length} in der Kiste.`:"Die Kiste ist leer!"}</p>`;
-  else{const st=sterne(Q.themaIds[0]);kopf=`<h2>${Q.titel}</h2>${sterneHTML(p>=90?3:p>=70?2:p>=50?1:0)}<p><b>${r} von ${n}</b> richtig (${p} %).${p>=90?" Perfekt!":p>=70?" Sehr ordentlich!":" Übe ruhig nochmal."}</p>`}
-  const liste=Q.modus==="probe"?Q.antworten.map(a=>`<div class="eintrag ${a.ok?"ok":""}"><div>${a.q.frage}</div><div>${a.ok?"✓ richtig":`✗ Deine Antwort: ${esc(a.wert)||"–"} · Richtig: <b>${loesungText(a.q)}</b>`}</div>${!a.ok&&a.q.erkl?`<div class="muted">${a.q.erkl}</div>`:""}</div>`).join("")
-    :falsch.map(a=>`<div class="eintrag"><div>${a.q.frage}</div><div>Richtig: <b>${loesungText(a.q)}</b></div></div>`).join("");
-  return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:16px">
-   <section class="ergebnis">${kopf}
-    <div class="row"><button class="btn" data-act="nochmal">Nochmal</button>${Q.modus!=="fehler"?`<button class="btn ghost" data-go="fach" data-fach="${Q.fachId}">Zurück zu ${f.name}</button>`:""}<button class="btn ghost" data-go="start">Startseite</button></div></section>
+  else kopf=`<h2>${Q.modus==="heute"?"Geschafft für heute!":thema(Q.themaId).titel}</h2><p><b>${r} von ${n}</b> richtig (${p} %). ${falsch.length?"Was falsch war, kommt morgen wieder dran.":"Alles richtig, super!"}</p>`;
+  const liste=(Q.modus==="probe"?Q.antworten:falsch).map(a=>`<div class="eintrag ${a.ok?"ok":""}"><div>${a.q.frage}</div><div>${a.ok?"✓ richtig":`${a.q.typ==="karte"||a.wert===""?"":`✗ Deine Antwort: ${esc(a.wert)} · `}Richtig: <b>${loesungText(a.q)}</b>`}</div>${!a.ok&&a.q.erkl?`<div class="muted">${a.q.erkl}</div>`:""}</div>`).join("");
+  const zurueck=Q.modus==="heute"?"":`<button class="btn ghost" data-go="fach" data-fach="${thema(Q.fragen[0].themaId).fach}">Zurück zum Fach</button>`;
+  const nochmal=Q.modus==="heute"?(heuteDran().length?`<button class="btn" data-act="heute">Weitere Fragen</button>`:""):`<button class="btn" data-act="nochmal">Nochmal</button>`;
+  return `<div style="--fach:${farbe};display:flex;flex-direction:column;gap:16px">
+   <section class="ergebnis">${kopf}<div class="row">${nochmal}${zurueck}<button class="btn ghost" data-go="start">Startseite</button></div></section>
    ${liste?`<section class="liste"><h3>${Q.modus==="probe"?"Alle Aufgaben":"Das schaust du dir nochmal an"}</h3>${liste}</section>`:""}</div>`}
 
 function render(){
   let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else h=vStart();
   app.innerHTML=h;
   const inp=document.getElementById("antwort");if(inp&&!inp.disabled)inp.focus({preventScroll:true});
-  const wb=document.getElementById("weiterbtn");if(wb)wb.focus({preventScroll:true});
-  const form=document.getElementById("eform");if(form)form.addEventListener("submit",e=>{e.preventDefault();const v=inp.value;if(!v.trim())return;antworten(v)});}
+  for(const id of["weiterbtn","aufdeckbtn"]){const b=document.getElementById(id);if(b)b.focus({preventScroll:true})}
+  const form=document.getElementById("eform");if(form)form.addEventListener("submit",e=>{e.preventDefault();if(inp.value.trim())antworten(inp.value)})}
 
 app.addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;const d=b.dataset;
   if(d.go){go(d.go,{fach:d.fach,thema:d.thema});return}
   if(d.opt!==undefined&&Q){antworten(Q.fragen[Q.i].optionen[+d.opt]);return}
   switch(d.act){
-   case"ueben":{const [f,t]=thema(d.thema);starte("ueben",f.id,[t.id],t.titel);window.scrollTo({top:0});break}
-   case"probe":{const ids=[...document.querySelectorAll('.chips input:checked')].map(i=>i.value);if(!ids.length)return;starte("probe",d.fach,ids,"Probe-Training");window.scrollTo({top:0});break}
-   case"fehler":starte("fehler",null,[],"Fehler-Kiste");break;
+   case"heute":starte("heute");break;
+   case"ueben":starte("ueben",{themaId:d.thema});break;
+   case"probe":{const ids=[...document.querySelectorAll(".chips input:checked")].map(i=>i.value);if(ids.length)starte("probe",{themaIds:ids,fachId:d.fach});break}
+   case"aufdecken":Q.aufgedeckt=true;render();break;
+   case"gewusst":antworten(true);break;
+   case"nichtgewusst":antworten(false);break;
    case"weiter":weiter();break;
-   case"abbrechen":{const z=Q.modus==="fehler"||!Q.fachId?{seite:"start"}:{seite:"fach",fach:Q.fachId};Q=null;go(z.seite,z);break}
-   case"nochmal":{const {modus,fachId,themaIds,titel}=Q;if(modus==="fehler"&&!S.fehler.length){go("start");break}starte(modus,fachId,themaIds,titel);break}
+   case"abbrechen":{const t=thema(Q.fragen[Q.i].themaId);const m=Q.modus;Q=null;if(m==="heute")go("start");else go("fach",{fach:t.fach});break}
+   case"nochmal":{const {modus,themaId,themaIds,fachId}=Q;starte(modus,{themaId,themaIds,fachId});break}
   }});
 render();
 </script>
