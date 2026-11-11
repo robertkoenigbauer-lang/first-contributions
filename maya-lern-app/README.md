@@ -13,6 +13,12 @@ Die Themen kommen aus Fotos ihrer Hefteinträge, Buchseiten und Arbeitsblätter.
   simple past Aussagen (Heft 28.09.) und Verneinung/Fragen/Kurzantworten (Heft 06.10.).
 - Der Fortschritt wird im Browser des Geräts gespeichert.
 
+## Noten
+
+Im Array `NOTEN` in `index.html`: `{fach, note:"2-", art:"Probe", datum:"JJJJ-MM-TT", thema:"…", gewicht:1}`.
+Die Seite „Noten & Schwachstellen“ zeigt den Durchschnitt pro Fach, worauf Maja steht,
+was jede mögliche nächste Note (1–6) am Schnitt ändert, und Themen mit vielen falschen Antworten.
+
 ## Neues Thema eintragen
 
 Im Array `THEMEN` in `index.html` ein Objekt ergänzen:

@@ -145,6 +145,25 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .woerter{display:flex;flex-wrap:wrap;gap:8px}
 .wchip{border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;font-weight:800;font-size:1.05rem}
 .bau .wchip{border-color:var(--fach)}
+/* Noten */
+.notenpill{display:inline-block;font-weight:800;font-size:.85rem;padding:2px 10px;border-radius:99px;background:color-mix(in srgb,var(--fach,var(--mathe)) 15%,transparent);color:var(--fg);font-variant-numeric:tabular-nums}
+.notenlink{border:0;background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;font-size:1rem}
+.notenlink>span:last-child{font-size:1.5rem;font-weight:800}
+.notenfach{background:var(--surface);border-radius:16px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;border-left:10px solid var(--fach)}
+.nf-kopf{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.nf-schnitt{display:flex;align-items:baseline;gap:10px}
+.nf-schnitt .gross{font-family:var(--f-display);font-weight:800;font-size:2.2rem;line-height:1;color:var(--fach);font-variant-numeric:tabular-nums}
+.notenliste{display:flex;flex-direction:column;gap:6px}
+.notenzeile{display:flex;gap:12px;align-items:center;background:var(--bg);border-radius:10px;padding:8px 12px}
+.nz-note{font-family:var(--f-display);font-weight:800;font-size:1.4rem;min-width:2.2em;text-align:center;color:var(--fach)}
+.nz-text{flex:1;min-width:0}
+.nz-datum{font-size:.85rem;font-variant-numeric:tabular-nums}
+.wenn{display:flex;flex-direction:column;gap:8px}
+.wenn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.wenn-zelle{background:var(--bg);border-radius:10px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.85rem;font-variant-numeric:tabular-nums;text-align:center}
+.wz-note{font-family:var(--f-display);font-weight:800;font-size:1.6rem;line-height:1.1}
+.wz-pfeil{font-weight:800;font-size:.78rem}
+.wz-pfeil.besser{color:var(--ok)}.wz-pfeil.schlechter{color:var(--bad)}
 .fuss{font-size:.85rem;color:var(--muted);text-align:center}
 @media (max-width:480px){h1{font-size:1.75rem}.frage{font-size:1.15rem}.papier{padding-left:38px}.papier::before{left:24px}.heute .zahl{font-size:2.4rem}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -436,6 +455,23 @@ const THEMEN=[
 ];
 
 /* ================================================================
+   NOTEN – werden aus Fotos/Nachrichten der Eltern eingetragen.
+   {fach, note:"2" | "2-" | "2+" | "2-3", art:"Probe", datum:"JJJJ-MM-TT", thema:"…", gewicht:1}
+   gewicht: wie stark die Note zählt (Standard 1). Tendenzen: 2+ = 1,75 · 2- = 2,25 · 2-3 = 2,5
+   ================================================================ */
+const NOTEN=[
+];
+function notenWert(s){s=String(s).trim().replace(",",".");let m=s.match(/^([1-6])\s*-\s*([1-6])$/);if(m)return(+m[1]+ +m[2])/2;
+  m=s.match(/^([1-6])\s*([+-]?)$/);if(m)return +m[1]+(m[2]==="+"?-.25:m[2]==="-"?.25:0);m=s.match(/^[1-6](\.\d+)?$/);return m?+s:null}
+const notenVon=fid=>NOTEN.filter(n=>n.fach===fid&&notenWert(n.note)!==null).sort((a,b)=>a.datum<b.datum?-1:1);
+function schnitt(fid,extra){const ns=notenVon(fid).map(n=>[notenWert(n.note),n.gewicht||1]);if(extra)ns.push([extra,1]);
+  if(!ns.length)return null;const w=ns.reduce((s,[,g])=>s+g,0);return ns.reduce((s,[v,g])=>s+v*g,0)/w}
+const komma=(x,d=2)=>x.toFixed(d).replace(".",",");
+function stehtAuf(x){if(x===null)return "–";const r=Math.round(x*100)/100,f=Math.floor(r);if(Math.abs(r-f-.5)<.001)return `${f} oder ${f+1}`;return String(Math.round(r))}
+const NOTENNAME={1:"sehr gut",2:"gut",3:"befriedigend",4:"ausreichend",5:"mangelhaft",6:"ungenügend"};
+const datumDE=d=>{const [y,m,t]=d.split("-");return `${+t}.${+m}.${y.slice(2)}`};
+
+/* ================================================================
    SPEICHER (nur in diesem Browser) + Wiederholsystem (Lernkartei)
    Box 1–5: richtig → eine Box weiter (später wieder dran), falsch → zurück in Box 1.
    ================================================================ */
@@ -467,6 +503,11 @@ function heuteDran(){
   const prio=k=>{const p=k.t.probe?tageBis(k.t.probe):99;const s=stand(k.id);return (p>=0&&p<=14?0:100)+(s?s.box:10)+Math.random()};
   return alleKarten().filter(k=>k.t.quelle!=="Beispiel"&&istFaellig(k)).sort((a,b)=>prio(a)-prio(b))}
 // kurz vor einer Probe gibt es mehr Fragen pro Tag
+// Schwachstellen: Themen, in denen viele schon geübte Fragen zuletzt falsch waren (Box 1)
+function schwachstellen(){
+  return THEMEN.filter(t=>t.quelle!=="Beispiel").map(t=>{const ks=kartenVon(t),ges=ks.filter(k=>stand(k.id)),falsch=ges.filter(k=>stand(k.id).box===1);
+    return {t,ges:ges.length,falsch:falsch.length,quote:ges.length?falsch.length/ges.length:0,offen:ks.length-ges.length,alle:ks.length}})
+   .filter(x=>x.ges>=4&&x.quote>=.25).sort((a,b)=>b.quote-a.quote)}
 const tagesMenge=()=>THEMEN.some(t=>t.probe&&tageBis(t.probe)>=0&&tageBis(t.probe)<=4)?30:15;
 
 /* ================================================================
@@ -543,14 +584,42 @@ function vStart(){
    ${proben.length?`<section class="proben"><h3>Nächste Proben</h3>${proben.map(t=>`<div class="probe-zeile" style="--fach:${fach(t.fach).farbe}"><span class="tage">${probeText(t)}</span><span><b>${fach(t.fach).name}:</b> ${t.titel}</span></div>`).join("")}</section>`:""}
    <section class="hefte">${FAECHER.map(f=>{const ts=themenVon(f.id),ks=ts.flatMap(kartenVon),s=ks.filter(sitzt).length;
      return `<button class="heft ${ts.length?"":"leer"}" style="--fach:${f.farbe}" data-go="fach" data-fach="${f.id}"><span class="kurz">${f.kurz}</span><span class="name">${f.name}</span>
+      ${schnitt(f.id)!==null?`<span class="notenpill">Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span>`:""}
       <span class="info">${ts.length?`${ts.length} Thema${ts.length===1?"":"en"} · ${s}/${ks.length} sitzt`:"Noch kein Thema"}</span><span class="balken"><i style="width:${ks.length?Math.round(100*s/ks.length):0}%"></i></span></button>`}).join("")}</section>
+   <button class="notenlink" data-go="noten"><span><b>Noten & Schwachstellen</b><br><span class="muted">${NOTEN.length?`${NOTEN.length} Note${NOTEN.length===1?"":"n"} eingetragen · Durchschnitt, Was-wäre-wenn und wo du üben solltest`:"Durchschnitt, Was-wäre-wenn und wo du üben solltest"}</span></span><span aria-hidden="true">→</span></button>
    <p class="fuss">Fragen, die du richtig hast, kommen nach ein paar Tagen wieder. Falsche kommen schon morgen wieder dran.<br>Dein Fortschritt wird nur auf diesem Gerät gespeichert.</p>`}
+
+function vNoten(){
+  const mitNoten=FAECHER.filter(f=>notenVon(f.id).length),schw=schwachstellen();
+  const gesamt=mitNoten.length?mitNoten.reduce((s,f)=>s+schnitt(f.id),0)/mitNoten.length:null;
+  const naechsteProbe=fid=>THEMEN.filter(t=>t.fach===fid&&t.probe&&tageBis(t.probe)>=0).sort((a,b)=>a.probe<b.probe?-1:1)[0];
+  const fachKarte=f=>{const ns=notenVon(f.id),x=schnitt(f.id),p=naechsteProbe(f.id);
+    if(!ns.length)return `<section class="notenfach" style="--fach:${f.farbe}"><div class="nf-kopf"><h3>${f.name}</h3><span class="muted">Noch keine Note</span></div>
+      ${p?`<p class="muted">Nächste Probe ${probeText(p)}: ${p.titel}</p>`:""}</section>`;
+    return `<section class="notenfach" style="--fach:${f.farbe}">
+     <div class="nf-kopf"><h3>${f.name}</h3><div class="nf-schnitt"><span class="gross">${komma(x)}</span><span>steht auf <b>${stehtAuf(x)}</b></span></div></div>
+     <div class="notenliste">${ns.map(n=>`<div class="notenzeile"><span class="nz-note">${esc(n.note)}</span><span class="nz-text"><b>${esc(n.art||"Note")}</b>${n.thema?` · ${esc(n.thema)}`:""}${(n.gewicht||1)!==1?` · zählt ${String(n.gewicht).replace(".",",")}-fach`:""}</span><span class="muted nz-datum">${n.datum?datumDE(n.datum):""}</span></div>`).join("")}</div>
+     <div class="wenn"><p><b>Was wäre, wenn${p?` du in der Probe ${probeText(p)} (${esc(p.titel)})`:" du in der nächsten Probe"} eine … schreibst?</b></p>
+      <div class="wenn-grid">${[1,2,3,4,5,6].map(g=>{const y=schnitt(f.id,g),d=y-x;return `<div class="wenn-zelle"><span class="wz-note">${g}</span><span>Ø ${komma(y)}</span><span class="muted">steht auf ${stehtAuf(y)}</span><span class="wz-pfeil ${d<-0.005?"besser":d>0.005?"schlechter":""}">${d<-0.005?"▲ besser":d>0.005?"▼ schlechter":"= gleich"}</span></div>`}).join("")}</div></div>
+    </section>`};
+  return `<div style="display:flex;flex-direction:column;gap:18px">
+   <button class="back" data-go="start">← Startseite</button>
+   <div class="kopf"><div><h1>Noten</h1><p class="muted">Alle eingetragenen Noten, der Durchschnitt pro Fach und was eine neue Note verändern würde.</p></div>
+    ${gesamt!==null?`<div class="stat"><b>${komma(gesamt)}</b><span>Ø aller Fächer</span></div>`:""}</div>
+   ${NOTEN.length?"":`<section class="leerhinweis"><h3>Noch keine Noten eingetragen.</h3><p class="muted">Sobald Noten da sind, siehst du hier den Durchschnitt in jedem Fach, auf welcher Note du stehst und was die nächste Probe verändern kann.</p></section>`}
+   ${mitNoten.map(fachKarte).join("")}${FAECHER.filter(f=>!notenVon(f.id).length).map(fachKarte).join("")}
+   <section class="probe" style="--fach:var(--deutsch)"><h2>Wo du üben solltest</h2>
+    ${schw.length?`<p>In diesen Themen waren zuletzt viele Antworten falsch:</p>${schw.map(x=>`<div class="thema" style="--fach:${fach(x.t.fach).farbe}"><div class="t"><h3>${x.t.titel}</h3><span class="muted" style="font-size:.85rem">${fach(x.t.fach).name} · ${x.falsch} von ${x.ges} geübten Fragen zuletzt falsch</span></div><button class="btn small" data-act="ueben" data-thema="${x.t.id}">Jetzt üben</button></div>`).join("")}`
+     :`<p class="muted">Gerade gibt es keine auffälligen Schwachstellen. Sobald du öfter übst, zeigt die App hier Themen, in denen noch viel falsch ist.</p>`}
+    ${(()=>{const schlecht=mitNoten.filter(f=>schnitt(f.id)>=3.5);return schlecht.length?`<p><b>Achtung bei den Noten:</b> ${schlecht.map(f=>`${f.name} (Ø ${komma(schnitt(f.id))})`).join(", ")}. Hier lohnt sich zusätzliches Üben besonders.</p>`:""})()}
+   </section>
+   <p class="fuss">Alle Noten zählen gleich, wenn nichts anderes eingetragen ist. Tendenzen: 2+ = 1,75 · 2− = 2,25.<br>Wie die Lehrkraft die Noten gewichtet, kann davon abweichen. Bei genau x,5 entscheidet die Lehrkraft.</p></div>`}
 
 function vFach(){
   const f=fach(V.fach),ts=themenVon(f.id);
   return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
    <button class="back" data-go="start">← Startseite</button>
-   <div class="fachkopf"><h1>${f.name}</h1><p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
+   <div class="fachkopf"><h1>${f.name}</h1>${schnitt(f.id)!==null?`<p><span class="notenpill">Note aktuell: Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span> <button class="back" style="display:inline" data-go="noten">Noten ansehen →</button></p>`:""}<p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
    ${ts.length?`<section class="themen">${ts.map(t=>{const ks=kartenVon(t),s=ks.filter(sitzt).length;return `<div class="thema"><div class="t"><h3>${t.titel}</h3>
      <div class="row">${quelleBadge(t)}${t.probe&&tageBis(t.probe)>=0?`<span class="badge heft-q">Probe ${probeText(t)}</span>`:""}<span class="muted" style="font-size:.85rem">${s} von ${ks.length} sitzen</span></div>
      <div class="balken"><i style="width:${Math.round(100*s/ks.length)}%"></i></div></div>
@@ -612,7 +681,7 @@ function vErgebnis(){
    ${liste?`<section class="liste"><h3>${Q.modus==="probe"?"Alle Aufgaben":"Das schaust du dir nochmal an"}</h3>${liste}</section>`:""}</div>`}
 
 function render(){
-  let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else h=vStart();
+  let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else if(V.seite==="noten")h=vNoten();else h=vStart();
   app.innerHTML=h;
   const inp=document.getElementById("antwort");if(inp&&!inp.disabled)inp.focus({preventScroll:true});
   for(const id of["weiterbtn","aufdeckbtn"]){const b=document.getElementById(id);if(b)b.focus({preventScroll:true})}
