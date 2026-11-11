@@ -9,7 +9,7 @@
   --bg:#f3f5fa; --surface:#ffffff; --fg:#1d2433; --muted:#5d6678; --line:#dfe3ec;
   --paper:#fffef9; --paper-line:#cfdcef; --paper-margin:#f1a8a8;
   --ok:#1f8a4c; --ok-bg:#e3f5ea; --bad:#c23b3b; --bad-bg:#fbe7e7;
-  --mathe:#2f6fd6; --deutsch:#d64545; --englisch:#b88700; --nt:#2e9e5b; --gpg:#e07a1f;
+  --mathe:#2f6fd6; --deutsch:#d64545; --englisch:#b88700; --nt:#2e9e5b; --gpg:#e07a1f; --musik:#8a4fd1; --wib:#4f6b8a;
   --star:#f2b705; --shadow:0 1px 2px rgba(20,30,60,.06),0 4px 14px rgba(20,30,60,.06);
   --f-display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
   --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -18,13 +18,13 @@
   --bg:#141824; --surface:#1d2231; --fg:#e8ebf3; --muted:#a2a9ba; --line:#2f364a;
   --paper:#1f2434; --paper-line:#2f3a55; --paper-margin:#6e3a44;
   --ok:#5fd394; --ok-bg:#173527; --bad:#ff8a8a; --bad-bg:#3b1d22;
-  --mathe:#6c9ef0; --deutsch:#f07777; --englisch:#f0c445; --nt:#5cc98a; --gpg:#f3a25c;
+  --mathe:#6c9ef0; --deutsch:#f07777; --englisch:#f0c445; --nt:#5cc98a; --gpg:#f3a25c; --musik:#b78af0; --wib:#8fa9c7;
   --star:#f7c948; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25); color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#141824; --surface:#1d2231; --fg:#e8ebf3; --muted:#a2a9ba; --line:#2f364a;
   --paper:#1f2434; --paper-line:#2f3a55; --paper-margin:#6e3a44;
   --ok:#5fd394; --ok-bg:#173527; --bad:#ff8a8a; --bad-bg:#3b1d22;
-  --mathe:#6c9ef0; --deutsch:#f07777; --englisch:#f0c445; --nt:#5cc98a; --gpg:#f3a25c;
+  --mathe:#6c9ef0; --deutsch:#f07777; --englisch:#f0c445; --nt:#5cc98a; --gpg:#f3a25c; --musik:#b78af0; --wib:#8fa9c7;
   --star:#f7c948; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25); color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.5;
@@ -145,6 +145,35 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .woerter{display:flex;flex-wrap:wrap;gap:8px}
 .wchip{border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;font-weight:800;font-size:1.05rem}
 .bau .wchip{border-color:var(--fach)}
+/* Lernplan & Probenplan */
+.lernplan{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:14px;border:3px solid var(--fach)}
+.lp-kopf{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.lp-kopf>div:first-child{min-width:0}
+.eyebrow{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--fach)}
+.lp-tage{display:flex;flex-direction:column;align-items:center;background:var(--fach);color:#fff;border-radius:14px;padding:8px 14px;min-width:84px}
+.lp-tage .gross{font-family:var(--f-display);font-weight:800;font-size:2.4rem;line-height:1}
+.lp-tage span:last-child{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.lp-hinweis{font-weight:700}
+.lp-gruppen{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.lp-spalte{background:var(--bg);border-radius:12px;padding:12px;border-top:5px solid var(--line);display:flex;flex-direction:column;gap:6px;min-width:0}
+.lp-spalte h3{font-size:1rem}
+.lp-spalte ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.lp-spalte li{display:flex;flex-direction:column;font-size:.92rem}
+.lp-spalte li span{color:var(--muted);font-size:.82rem}
+.lp-schwer{border-top-color:var(--bad)}.lp-gut{border-top-color:var(--ok)}.lp-neu{border-top-color:var(--fach)}.lp-mittel{border-top-color:var(--star)}
+.lp-fehler{background:var(--bad-bg);border-radius:12px;padding:12px}
+.lp-fehler h3{font-size:1rem}
+.lp-fehler ul{margin:6px 0 0;padding-left:18px;font-size:.92rem;display:flex;flex-direction:column;gap:4px}
+.probenplan{display:flex;flex-direction:column;gap:8px}
+.pp-zeile{display:flex;gap:12px;align-items:center;background:var(--surface);border-radius:12px;padding:10px 14px;box-shadow:var(--shadow);border-left:6px solid var(--fach)}
+.pp-zeile.vorbei{opacity:.75}
+.pp-datum{display:flex;flex-direction:column;align-items:center;min-width:3.2em;font-variant-numeric:tabular-nums;line-height:1.2}
+.pp-datum b{font-family:var(--f-display);font-size:1.1rem;color:var(--fach)}
+.pp-datum span{font-size:.85rem;color:var(--muted)}
+.pp-text{flex:1;min-width:0;font-size:.95rem}
+.pp-warn{color:var(--bad);font-weight:700;font-size:.88rem}
+.pp-tage{font-weight:800;font-size:.9rem;text-align:right;white-space:nowrap}
+.pp-tage.knapp{color:var(--bad)}
 /* Noten */
 .notenpill{display:inline-block;font-weight:800;font-size:.85rem;padding:2px 10px;border-radius:99px;background:color-mix(in srgb,var(--fach,var(--mathe)) 15%,transparent);color:var(--fg);font-variant-numeric:tabular-nums}
 .notenlink{border:0;background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;font-size:1rem}
@@ -254,6 +283,8 @@ const FAECHER=[
  {id:"englisch",name:"Englisch",kurz:"E",farbe:"var(--englisch)",papier:"linien"},
  {id:"nt",name:"Natur & Technik",kurz:"NT",farbe:"var(--nt)",papier:"linien"},
  {id:"gpg",name:"GPG",kurz:"GPG",farbe:"var(--gpg)",papier:"linien"},
+ {id:"musik",name:"Musik",kurz:"Mu",farbe:"var(--musik)",papier:"linien",neben:true},
+ {id:"wib",name:"Wirtschaft & Beruf",kurz:"WiB",farbe:"var(--wib)",papier:"linien",neben:true},
 ];
 
 /* ================================================================
@@ -337,13 +368,13 @@ const THEMEN=[
  ]},
 
 /* ---------------------------------------------------------------- ENGLISCH */
-{id:"e-u2-vokabeln",fach:"englisch",titel:"Unit 2 – Vokabeln",quelle:"Vokabelblatt S. 28–30",probe:"2026-11-13",
+{id:"e-u2-vokabeln",fach:"englisch",titel:"Unit 2 – Vokabeln",quelle:"Vokabelblatt S. 28–30",probe:null,
  merke:`<h2>Unit 2 – Vokabeln</h2><p>Buch S. 28–30 · Intro / Topic 1</p>
  <div class="tabwrap"><table class="vokabeln">${U2.map(w=>`<tr><td><span class="mini">${BILD[w.bild]()}</span></td><td><b>${w.en}</b><span class="satz">${w.satz.replace("___","<b>"+w.form+"</b>")}</span></td><td>${w.de}</td></tr>`).join("")}</table></div>
  <div class="merk">Wie oft? <b>never</b> (nie) – <b>often</b> (oft) – <b>usually</b> (normalerweise) – <b>always</b> (immer)<br>Sie stehen <b>vor</b> dem Verb: I <b>often</b> get up late.</div>
  <p>Achtung: my mum / my dad / Luke = he/she → <b>s</b> am Verb: My mum always load<b>s</b> the dishwasher.</p>`,
  karten:u2Karten()},
-{id:"e-u2-where",fach:"englisch",titel:"Where is it? – Rooms",quelle:"Buch S. 28 / Heft",probe:"2026-11-13",
+{id:"e-u2-where",fach:"englisch",titel:"Where is it? – Rooms",quelle:"Buch S. 28 / Heft",probe:null,
  merke:`<h2>Where is it?</h2>
  <div class="tabwrap"><table class="vokabeln">${[["bedroom","Kinderzimmer, Schlafzimmer"],["livingroom","Wohnzimmer"],["kitchen","Küche"],["bathroom","Badezimmer"]].map(([k,de])=>`<tr><td><span class="mini">${hausSVG(k)}</span></td><td><b>${k==="livingroom"?"living room":k}</b></td><td>${de}</td></tr>`).join("")}</table></div>
  <h3>Book p. 28</h3>
@@ -365,7 +396,7 @@ const THEMEN=[
   text(`Holly often does her homework there. It's the ${L}.`,["living room"],"It's the living room.","Tippe das Zimmer auf Englisch"),
   text(`Luke likes computer games there. It's the ${L}.`,["bedroom"],"It's the bedroom.","Tippe das Zimmer auf Englisch"),
  ]},
-{id:"e-past-aussagen",fach:"englisch",titel:"Simple past: Aussagen",quelle:"Heft 28.09.",probe:"2026-11-13",
+{id:"e-past-aussagen",fach:"englisch",titel:"Simple past: Aussagen",quelle:"Heft 28.09.",probe:null,
  merke:`<h2>Die einfache Vergangenheit – simple past</h2><h3>Aussagen</h3>
  <p>Um über Dinge zu sprechen, die in der Vergangenheit passiert und vorbei sind, verwendest du das <b>simple past</b>.</p>
  <div class="merk">Bei den meisten Verben hängst du <b>-ed</b> an: play → play<b>ed</b>, visit → visit<b>ed</b></div>
@@ -398,7 +429,7 @@ const THEMEN=[
   ...[["she was not","she wasn't"],["they were not","they weren't"],["I was not","I wasn't"],["you were not","you weren't"]].map(([l,k])=>text(`Wie heißt die <b>Kurzform</b> von „${l}“?`,[k],`${l} = ${k}`,"mit Apostroph: '")),
   mc("He played football. – Wie kann man das übersetzen?","beide: „Er spielte Fußball.“ und „Er hat Fußball gespielt.“",["nur „Er spielt Fußball.“","nur „Er wird Fußball spielen.“"],"Im Deutschen gibt es zwei Möglichkeiten, Vergangenes auszudrücken."),
  ]},
-{id:"e-past-fragen",fach:"englisch",titel:"Simple past: Verneinung, Fragen & Kurzantworten",quelle:"Heft 06.10.",probe:"2026-11-13",
+{id:"e-past-fragen",fach:"englisch",titel:"Simple past: Verneinung, Fragen & Kurzantworten",quelle:"Heft 06.10.",probe:null,
  merke:`<h2>Simple past: Verneinung, Fragen und Kurzantwort</h2>
  <h3>Verneinung</h3>
  <p>Um zu sagen, was in der Vergangenheit <b>nicht</b> passiert ist, setzt du <b>didn't</b> (= did not) vor das Verb.</p>
@@ -455,6 +486,24 @@ const THEMEN=[
 ];
 
 /* ================================================================
+   PROBENPLAN (aus dem Schulmanager bzw. von den Eltern)
+   themen: welche App-Themen in der Probe drankommen
+   ================================================================ */
+const PROBEN=[
+ {fach:"englisch",datum:"2026-11-13",titel:"Englisch-Probe Unit 2",themen:["e-u2-vokabeln","e-u2-where","e-past-aussagen","e-past-fragen"]},
+ {fach:"musik",datum:"2026-11-13",stunde:"5.–6. Stunde",titel:"Musik-Probe",themen:[]},
+ {fach:"mathe",datum:"2026-11-16",stunde:"1. Stunde",titel:"Mathe-Probe",themen:[]},
+ {fach:"gpg",datum:"2026-11-19",stunde:"3. Stunde",titel:"GPG-Probe",themen:[]},
+ {fach:"nt",datum:"2026-11-26",stunde:"1. Stunde",titel:"NT-Probe",themen:[]},
+ {fach:"wib",datum:"2026-12-02",stunde:"3. Stunde",titel:"Wirtschaft & Beruf-Probe",themen:[]},
+ {fach:"deutsch",datum:"2026-12-21",stunde:"1. Stunde",titel:"Deutsch-Probe",themen:[]},
+];
+// Themen bekommen das Datum ihrer nächsten Probe (für die Reihenfolge bei „Heute dran“)
+PROBEN.forEach(p=>p.themen.forEach(id=>{const t=THEMEN.find(x=>x.id===id);if(t&&(!t.probe||p.datum<t.probe))t.probe=p.datum}));
+const WOCHENTAG=["So","Mo","Di","Mi","Do","Fr","Sa"];
+const wtag=d=>WOCHENTAG[new Date(d+"T12:00").getDay()];
+
+/* ================================================================
    NOTEN – werden aus Fotos/Nachrichten der Eltern eingetragen.
    {fach, note:"2" | "2-" | "2+" | "2-3", art:"Probe", datum:"JJJJ-MM-TT", thema:"…", gewicht:1}
    gewicht: wie stark die Note zählt (Standard 1). Tendenzen: 2+ = 1,75 · 2- = 2,25 · 2-3 = 2,5
@@ -495,7 +544,7 @@ const istFaellig=k=>{const s=stand(k.id);return !s||s.faellig<=tag()};
 const sitzt=k=>{const s=stand(k.id);return s&&s.box>=3};
 const tageBis=d=>Math.round((new Date(d+"T12:00")-new Date(tag()+"T12:00"))/864e5);
 function bewerte(kid,ok){
-  const s=S.karten[kid]||{box:0};s.box=ok?Math.min(5,s.box+1):1;s.faellig=tag(ok?ABSTAND[s.box]:1);S.karten[kid]=s;
+  const s=S.karten[kid]||{box:0};s.box=ok?Math.min(5,s.box+1):1;s.faellig=tag(ok?ABSTAND[s.box]:1);s.f=!ok;S.karten[kid]=s;
   S.heute.anzahl++;if(S.serie.letzter!==tag()){S.serie.tage=S.serie.letzter===tag(-1)?S.serie.tage+1:1;S.serie.letzter=tag()}
   speichern()}
 function heuteDran(){
@@ -505,9 +554,19 @@ function heuteDran(){
 // kurz vor einer Probe gibt es mehr Fragen pro Tag
 // Schwachstellen: Themen, in denen viele schon geübte Fragen zuletzt falsch waren (Box 1)
 function schwachstellen(){
-  return THEMEN.filter(t=>t.quelle!=="Beispiel").map(t=>{const ks=kartenVon(t),ges=ks.filter(k=>stand(k.id)),falsch=ges.filter(k=>stand(k.id).box===1);
+  return THEMEN.filter(t=>t.quelle!=="Beispiel").map(t=>{const ks=kartenVon(t),ges=ks.filter(k=>stand(k.id)),falsch=ges.filter(k=>stand(k.id).f);
     return {t,ges:ges.length,falsch:falsch.length,quote:ges.length?falsch.length/ges.length:0,offen:ks.length-ges.length,alle:ks.length}})
    .filter(x=>x.ges>=4&&x.quote>=.25).sort((a,b)=>b.quote-a.quote)}
+// Stand pro Thema: wie viel geübt, wie viel sitzt, wie viel zuletzt falsch
+function themaStand(t){const ks=kartenVon(t),ges=ks.filter(k=>stand(k.id)),falsch=ges.filter(k=>stand(k.id).f),sitzen=ks.filter(sitzt);
+  const r={t,alle:ks.length,ges:ges.length,falsch:falsch.length,sitzen:sitzen.length,falschKarten:falsch};
+  r.lage=ges.length<Math.min(5,ks.length)?"neu":falsch.length/ges.length>=.25?"schwer":ges.length>=ks.length*.4&&falsch.length/ges.length<.15?"gut":"mittel";return r}
+const kommendeProben=()=>PROBEN.filter(p=>tageBis(p.datum)>=0).sort((a,b)=>a.datum<b.datum?-1:1);
+const offeneNoten=()=>PROBEN.filter(p=>{const d=tageBis(p.datum);return d<0&&d>=-21&&!NOTEN.some(n=>n.fach===p.fach&&n.datum===p.datum)});
+function lerntageText(p){const d=tageBis(p.datum);return d===0?"Heute ist die Probe – viel Erfolg!":d===1?"Morgen! Heute ist dein letzter Lerntag.":`Noch ${d} Lerntage.`}
+// Fragen für die Probenvorbereitung: zuletzt falsch → noch nie geübt → wackelig → Rest
+function vorbereitung(p,n=20){const prio=k=>{const s=stand(k.id);return (!s?1:s.f?0:1+s.box)+Math.random()*.9};
+  return p.themen.map(thema).filter(Boolean).flatMap(kartenVon).sort((a,b)=>prio(a)-prio(b)).slice(0,n)}
 const tagesMenge=()=>THEMEN.some(t=>t.probe&&tageBis(t.probe)>=0&&tageBis(t.probe)<=4)?30:15;
 
 /* ================================================================
@@ -548,6 +607,7 @@ const neueFrage=()=>Object.assign(Q,{beantwortet:false,aufgedeckt:false,auswahl:
 function starte(modus,opt={}){
   let karten;
   if(modus==="heute")karten=heuteDran().slice(0,tagesMenge());
+  else if(modus==="vorb")karten=vorbereitung(PROBEN[opt.probeIdx]);
   else if(modus==="ueben")karten=shuffle(kartenVon(thema(opt.themaId))).slice(0,12);
   else karten=shuffle(opt.themaIds.flatMap(id=>kartenVon(thema(id)))).slice(0,20);
   if(!karten.length)return;
@@ -571,6 +631,31 @@ function go(seite,daten={}){V=Object.assign({seite},daten);Q=null;render();windo
 const quelleBadge=t=>t.quelle==="Beispiel"?`<span class="badge">Beispiel</span>`:`<span class="badge heft-q">${esc(t.quelle)}</span>`;
 const probeText=t=>{const d=tageBis(t.probe);return d===0?"heute":d===1?"morgen":`in ${d} Tagen`};
 
+const plain=h=>String(h).replace(/<svg[\s\S]*?<\/svg>/g," ").replace(/<[^>]+>/g," ").replace(/&nbsp;/g," ").replace(/\s+/g," ").trim();
+const datumKurz=d=>`${wtag(d)}, ${datumDE(d).replace(/\d\d$/,"").replace(/\.$/,".")}`;
+function lernplanHTML(){
+  const p=kommendeProben().find(p=>p.themen.length&&tageBis(p.datum)<=14);if(!p)return "";
+  const f=fach(p.fach),st=p.themen.map(thema).filter(Boolean).map(themaStand),alle=st.reduce((s,x)=>s+x.alle,0),sitzen=st.reduce((s,x)=>s+x.sitzen,0);
+  const gruppe=(lage,titel,leer)=>{const xs=st.filter(x=>x.lage===lage);if(!xs.length&&lage==="mittel")return "";return `<div class="lp-spalte lp-${lage}"><h3>${titel}</h3>${xs.length?`<ul>${xs.map(x=>`<li><b>${x.t.titel}</b><span>${lage==="neu"?`${x.alle-x.ges} Fragen noch offen`:lage==="schwer"?`${x.falsch} von ${x.ges} zuletzt falsch`:`${x.sitzen} von ${x.alle} sitzen`}</span></li>`).join("")}</ul>`:`<p class="muted">${leer}</p>`}</div>`};
+  const fehler=st.flatMap(x=>x.falschKarten).filter(k=>!k.t.gen).slice(0,6);
+  const idx=PROBEN.indexOf(p),d=tageBis(p.datum);
+  return `<section class="lernplan" style="--fach:${f.farbe}">
+   <div class="lp-kopf"><div><p class="eyebrow">Nächste Probe · ${datumKurz(p.datum)}</p><h2>${p.titel}</h2></div><div class="lp-tage"><span class="gross">${d}</span><span>${d===1?"Lerntag":"Lerntage"}</span></div></div>
+   <p class="lp-hinweis">${lerntageText(p)} ${d>=1?`Übe jeden Tag ein bisschen – das bringt mehr als alles auf einmal.`:""}</p>
+   <div><div class="row" style="justify-content:space-between"><span class="muted">${sitzen} von ${alle} Fragen sitzen schon</span><span class="muted">${Math.round(100*sitzen/alle)} %</span></div><div class="balken"><i style="width:${Math.round(100*sitzen/alle)}%"></i></div></div>
+   <div class="lp-gruppen">${gruppe("schwer","Fällt dir noch schwer","Nichts – super!")}${gruppe("neu","Noch nicht geübt","Alles schon angefangen.")}${gruppe("mittel","Wird langsam","–")}${gruppe("gut","Läuft gut","Kommt noch – fleißig üben!")}</div>
+   ${fehler.length?`<div class="lp-fehler"><h3>Das war zuletzt falsch</h3><ul>${fehler.map(k=>{const q=k.make();return `<li>${esc(plain(q.frage)).slice(0,90)} → <b>${plain(loesungText(q))}</b></li>`}).join("")}</ul></div>`:""}
+   ${d>=1?`<div><button class="btn" data-act="vorb" data-probe="${idx}">Für die Probe üben (20 Fragen)</button></div>`:""}</section>`}
+function probenplanHTML(){
+  const ps=kommendeProben(),offen=offeneNoten();if(!ps.length&&!offen.length)return "";
+  return `<section class="probenplan"><h3>Probenplan</h3>
+   ${ps.map(p=>{const f=fach(p.fach),d=tageBis(p.datum),ts=p.themen.map(thema).filter(Boolean),ks=ts.flatMap(kartenVon),s=ks.filter(sitzt).length;
+     return `<div class="pp-zeile" style="--fach:${f.farbe}"><div class="pp-datum"><b>${wtag(p.datum)}</b><span>${datumDE(p.datum).replace(/\d\d$/,"")}</span></div>
+      <div class="pp-text"><b>${f.name}</b>${p.stunde?` <span class="muted">· ${p.stunde}</span>`:""}<br>${ts.length?`<span class="muted">${s} von ${ks.length} Fragen sitzen</span>`:`<span class="pp-warn">Noch keine Unterlagen in der App</span>`}</div>
+      <div class="pp-tage ${d<=3?"knapp":""}">${d===0?"heute":d===1?"morgen":`noch ${d} Tage`}</div></div>`}).join("")}
+   ${offen.map(p=>`<div class="pp-zeile vorbei" style="--fach:${fach(p.fach).farbe}"><div class="pp-datum"><b>${wtag(p.datum)}</b><span>${datumDE(p.datum).replace(/\d\d$/,"")}</span></div><div class="pp-text"><b>${fach(p.fach).name}</b> geschrieben<br><span class="muted">Note noch nicht eingetragen</span></div><div class="pp-tage">✓</div></div>`).join("")}
+  </section>`}
+
 function vStart(){
   const dran=heuteDran().length,alle=alleKarten(),gelernt=alle.filter(sitzt).length;
   const proben=THEMEN.filter(t=>t.probe&&tageBis(t.probe)>=0).sort((a,b)=>a.probe<b.probe?-1:1);
@@ -581,8 +666,8 @@ function vStart(){
    <section class="heute">${dran?`<div class="t"><span class="zahl">${Math.min(dran,tagesMenge())}</span><div><h2>Heute dran</h2><p class="muted">Fragen, die du heute wiederholen solltest. Themen für die nächste Probe kommen zuerst.${dran>tagesMenge()?` Danach warten noch ${dran-tagesMenge()}.`:""}</p></div></div>
      <button class="btn" data-act="heute">Los geht's</button>`
     :`<div class="t"><span class="zahl">✓</span><div><h2>Alles erledigt für heute!</h2><p class="muted">Morgen kommen wieder Fragen dran. Du kannst unten trotzdem jedes Thema üben.</p></div></div>`}</section>
-   ${proben.length?`<section class="proben"><h3>Nächste Proben</h3>${proben.map(t=>`<div class="probe-zeile" style="--fach:${fach(t.fach).farbe}"><span class="tage">${probeText(t)}</span><span><b>${fach(t.fach).name}:</b> ${t.titel}</span></div>`).join("")}</section>`:""}
-   <section class="hefte">${FAECHER.map(f=>{const ts=themenVon(f.id),ks=ts.flatMap(kartenVon),s=ks.filter(sitzt).length;
+   ${lernplanHTML()}${probenplanHTML()}
+   <section class="hefte">${FAECHER.filter(f=>!f.neben||themenVon(f.id).length).map(f=>{const ts=themenVon(f.id),ks=ts.flatMap(kartenVon),s=ks.filter(sitzt).length;
      return `<button class="heft ${ts.length?"":"leer"}" style="--fach:${f.farbe}" data-go="fach" data-fach="${f.id}"><span class="kurz">${f.kurz}</span><span class="name">${f.name}</span>
       ${schnitt(f.id)!==null?`<span class="notenpill">Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span>`:""}
       <span class="info">${ts.length?`${ts.length} Thema${ts.length===1?"":"en"} · ${s}/${ks.length} sitzt`:"Noch kein Thema"}</span><span class="balken"><i style="width:${ks.length?Math.round(100*s/ks.length):0}%"></i></span></button>`}).join("")}</section>
@@ -592,14 +677,14 @@ function vStart(){
 function vNoten(){
   const mitNoten=FAECHER.filter(f=>notenVon(f.id).length),schw=schwachstellen();
   const gesamt=mitNoten.length?mitNoten.reduce((s,f)=>s+schnitt(f.id),0)/mitNoten.length:null;
-  const naechsteProbe=fid=>THEMEN.filter(t=>t.fach===fid&&t.probe&&tageBis(t.probe)>=0).sort((a,b)=>a.probe<b.probe?-1:1)[0];
+  const naechsteProbe=fid=>kommendeProben().find(p=>p.fach===fid);
   const fachKarte=f=>{const ns=notenVon(f.id),x=schnitt(f.id),p=naechsteProbe(f.id);
     if(!ns.length)return `<section class="notenfach" style="--fach:${f.farbe}"><div class="nf-kopf"><h3>${f.name}</h3><span class="muted">Noch keine Note</span></div>
-      ${p?`<p class="muted">Nächste Probe ${probeText(p)}: ${p.titel}</p>`:""}</section>`;
+      ${p?`<p class="muted">Nächste Probe: ${datumKurz(p.datum)} · ${lerntageText(p)}</p>`:""}</section>`;
     return `<section class="notenfach" style="--fach:${f.farbe}">
      <div class="nf-kopf"><h3>${f.name}</h3><div class="nf-schnitt"><span class="gross">${komma(x)}</span><span>steht auf <b>${stehtAuf(x)}</b></span></div></div>
      <div class="notenliste">${ns.map(n=>`<div class="notenzeile"><span class="nz-note">${esc(n.note)}</span><span class="nz-text"><b>${esc(n.art||"Note")}</b>${n.thema?` · ${esc(n.thema)}`:""}${(n.gewicht||1)!==1?` · zählt ${String(n.gewicht).replace(".",",")}-fach`:""}</span><span class="muted nz-datum">${n.datum?datumDE(n.datum):""}</span></div>`).join("")}</div>
-     <div class="wenn"><p><b>Was wäre, wenn${p?` du in der Probe ${probeText(p)} (${esc(p.titel)})`:" du in der nächsten Probe"} eine … schreibst?</b></p>
+     <div class="wenn"><p><b>Was wäre, wenn${p?` du in der Probe am ${datumKurz(p.datum)}`:" du in der nächsten Probe"} eine … schreibst?</b></p>
       <div class="wenn-grid">${[1,2,3,4,5,6].map(g=>{const y=schnitt(f.id,g),d=y-x;return `<div class="wenn-zelle"><span class="wz-note">${g}</span><span>Ø ${komma(y)}</span><span class="muted">steht auf ${stehtAuf(y)}</span><span class="wz-pfeil ${d<-0.005?"besser":d>0.005?"schlechter":""}">${d<-0.005?"▲ besser":d>0.005?"▼ schlechter":"= gleich"}</span></div>`}).join("")}</div></div>
     </section>`};
   return `<div style="display:flex;flex-direction:column;gap:18px">
@@ -607,7 +692,7 @@ function vNoten(){
    <div class="kopf"><div><h1>Noten</h1><p class="muted">Alle eingetragenen Noten, der Durchschnitt pro Fach und was eine neue Note verändern würde.</p></div>
     ${gesamt!==null?`<div class="stat"><b>${komma(gesamt)}</b><span>Ø aller Fächer</span></div>`:""}</div>
    ${NOTEN.length?"":`<section class="leerhinweis"><h3>Noch keine Noten eingetragen.</h3><p class="muted">Sobald Noten da sind, siehst du hier den Durchschnitt in jedem Fach, auf welcher Note du stehst und was die nächste Probe verändern kann.</p></section>`}
-   ${mitNoten.map(fachKarte).join("")}${FAECHER.filter(f=>!notenVon(f.id).length).map(fachKarte).join("")}
+   ${mitNoten.map(fachKarte).join("")}${FAECHER.filter(f=>!notenVon(f.id).length&&(!f.neben||naechsteProbe(f.id))).map(fachKarte).join("")}
    <section class="probe" style="--fach:var(--deutsch)"><h2>Wo du üben solltest</h2>
     ${schw.length?`<p>In diesen Themen waren zuletzt viele Antworten falsch:</p>${schw.map(x=>`<div class="thema" style="--fach:${fach(x.t.fach).farbe}"><div class="t"><h3>${x.t.titel}</h3><span class="muted" style="font-size:.85rem">${fach(x.t.fach).name} · ${x.falsch} von ${x.ges} geübten Fragen zuletzt falsch</span></div><button class="btn small" data-act="ueben" data-thema="${x.t.id}">Jetzt üben</button></div>`).join("")}`
      :`<p class="muted">Gerade gibt es keine auffälligen Schwachstellen. Sobald du öfter übst, zeigt die App hier Themen, in denen noch viel falsch ist.</p>`}
@@ -619,7 +704,7 @@ function vFach(){
   const f=fach(V.fach),ts=themenVon(f.id);
   return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
    <button class="back" data-go="start">← Startseite</button>
-   <div class="fachkopf"><h1>${f.name}</h1>${schnitt(f.id)!==null?`<p><span class="notenpill">Note aktuell: Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span> <button class="back" style="display:inline" data-go="noten">Noten ansehen →</button></p>`:""}<p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
+   <div class="fachkopf"><h1>${f.name}</h1>${schnitt(f.id)!==null?`<p><span class="notenpill">Note aktuell: Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span> <button class="back" style="display:inline" data-go="noten">Noten ansehen →</button></p>`:""}${(()=>{const p=kommendeProben().find(p=>p.fach===f.id);return p?`<p><span class="notenpill">Probe ${datumKurz(p.datum)}</span> ${lerntageText(p)}</p>`:""})()}<p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
    ${ts.length?`<section class="themen">${ts.map(t=>{const ks=kartenVon(t),s=ks.filter(sitzt).length;return `<div class="thema"><div class="t"><h3>${t.titel}</h3>
      <div class="row">${quelleBadge(t)}${t.probe&&tageBis(t.probe)>=0?`<span class="badge heft-q">Probe ${probeText(t)}</span>`:""}<span class="muted" style="font-size:.85rem">${s} von ${ks.length} sitzen</span></div>
      <div class="balken"><i style="width:${Math.round(100*s/ks.length)}%"></i></div></div>
@@ -661,7 +746,7 @@ function vQuiz(){
   const rueck=fertig&&q.typ!=="karte"?`<div class="rueck ${letzte.ok?"ok":"no"} pop"><strong>${letzte.ok?pick(["Richtig!","Super!","Klasse!","Genau!","Stark!"]):q.typ==="paare"?`${Q.pf} Fehlversuche – das üben wir nochmal.`:"Leider falsch."}</strong>
      ${letzte.ok?"":`<span>Richtig ist: <b>${loesungText(q)}</b></span>`}${q.erkl?`<span>${q.erkl}</span>`:""}</div>
      <div class="row"><button class="btn" data-act="weiter" id="weiterbtn">${Q.i+1<Q.fragen.length?"Weiter":"Auswertung"}</button></div>`:"";
-  const titel=Q.modus==="probe"?"Probe-Training":Q.modus==="heute"?"Heute dran":t.titel;
+  const titel=Q.modus==="probe"?"Probe-Training":Q.modus==="heute"?"Heute dran":Q.modus==="vorb"?"Probe vorbereiten":t.titel;
   return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:16px">
    <div class="quizkopf"><button class="back" data-act="abbrechen">✕ Beenden</button><span class="muted" style="font-weight:700">${titel} · ${Q.i+1} / ${Q.fragen.length}</span></div>
    <div class="balken"><i style="width:${Math.round(100*Q.i/Q.fragen.length)}%"></i></div>
@@ -672,7 +757,7 @@ function vErgebnis(){
   const farbe=Q.modus==="heute"?"var(--mathe)":fach(thema(Q.fragen[0].themaId).fach).farbe;
   let kopf;
   if(Q.modus==="probe")kopf=`<p class="muted">Deine Note im Probe-Training</p><div class="note">${note(p)}</div><p><b>${r} von ${n}</b> richtig (${p} %). ${NOTENTEXT[note(p)]}</p>`;
-  else kopf=`<h2>${Q.modus==="heute"?"Geschafft für heute!":thema(Q.themaId).titel}</h2><p><b>${r} von ${n}</b> richtig (${p} %). ${falsch.length?"Was falsch war, kommt morgen wieder dran.":"Alles richtig, super!"}</p>`;
+  else kopf=`<h2>${Q.modus==="heute"?"Geschafft für heute!":Q.modus==="vorb"?`${PROBEN[Q.probeIdx].titel}: Runde geschafft!`:thema(Q.themaId).titel}</h2><p><b>${r} von ${n}</b> richtig (${p} %). ${falsch.length?"Was falsch war, kommt morgen wieder dran.":"Alles richtig, super!"}</p>`;
   const liste=(Q.modus==="probe"?Q.antworten:falsch).map(a=>`<div class="eintrag ${a.ok?"ok":""}"><div>${a.q.frage}</div><div>${a.ok?"✓ richtig":`${a.q.typ==="karte"||a.q.typ==="paare"||a.wert===""?"":`✗ Deine Antwort: ${esc(a.wert)} · `}Richtig: <b>${loesungText(a.q)}</b>`}</div>${!a.ok&&a.q.erkl?`<div class="muted">${a.q.erkl}</div>`:""}</div>`).join("");
   const zurueck=Q.modus==="heute"?"":`<button class="btn ghost" data-go="fach" data-fach="${thema(Q.fragen[0].themaId).fach}">Zurück zum Fach</button>`;
   const nochmal=Q.modus==="heute"?(heuteDran().length?`<button class="btn" data-act="heute">Weitere Fragen</button>`:""):`<button class="btn" data-act="nochmal">Nochmal</button>`;
@@ -699,6 +784,7 @@ app.addEventListener("click",e=>{
   if(d.bau!==undefined&&Q){Q.bau.splice(+d.bau,1);render();return}
   switch(d.act){
    case"heute":starte("heute");break;
+   case"vorb":starte("vorb",{probeIdx:+d.probe});break;
    case"ueben":starte("ueben",{themaId:d.thema});break;
    case"probe":{const ids=[...document.querySelectorAll(".chips input:checked")].map(i=>i.value);if(ids.length)starte("probe",{themaIds:ids,fachId:d.fach});break}
    case"satzpruefen":{const q=Q.fragen[Q.i];antworten(Q.bau.map(i=>q.woerter[i]).join(" "));break}
@@ -707,8 +793,8 @@ app.addEventListener("click",e=>{
    case"gewusst":antworten(true);break;
    case"nichtgewusst":antworten(false);break;
    case"weiter":weiter();break;
-   case"abbrechen":{const t=thema(Q.fragen[Q.i].themaId);const m=Q.modus;Q=null;if(m==="heute")go("start");else go("fach",{fach:t.fach});break}
-   case"nochmal":{const {modus,themaId,themaIds,fachId}=Q;starte(modus,{themaId,themaIds,fachId});break}
+   case"abbrechen":{const t=thema(Q.fragen[Q.i].themaId);const m=Q.modus;Q=null;if(m==="heute"||m==="vorb")go("start");else go("fach",{fach:t.fach});break}
+   case"nochmal":{const {modus,themaId,themaIds,fachId,probeIdx}=Q;starte(modus,{themaId,themaIds,fachId,probeIdx});break}
   }});
 render();
 </script>

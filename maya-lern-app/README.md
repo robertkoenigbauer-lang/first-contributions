@@ -13,6 +13,11 @@ Die Themen kommen aus Fotos ihrer Hefteinträge, Buchseiten und Arbeitsblätter.
   simple past Aussagen (Heft 28.09.) und Verneinung/Fragen/Kurzantworten (Heft 06.10.).
 - Der Fortschritt wird im Browser des Geräts gespeichert.
 
+## Probenplan
+
+Im Array `PROBEN`: `{fach, datum, stunde, titel, themen:[Themen-IDs]}`. Die Startseite zeigt die nächste Probe mit Lerntagen,
+was leicht/schwer fällt, die zuletzt falschen Fragen und „Für die Probe üben“. Proben ohne Themen erscheinen als Erinnerung.
+
 ## Noten
 
 Im Array `NOTEN` in `index.html`: `{fach, note:"2-", art:"Probe", datum:"JJJJ-MM-TT", thema:"…", gewicht:1}`.
