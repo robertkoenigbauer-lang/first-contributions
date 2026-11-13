@@ -315,6 +315,9 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
  .seitenleiste{position:static;padding:12px;gap:6px}.navliste{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
  .nav{width:auto;white-space:nowrap;padding:7px 12px;background:color-mix(in srgb,var(--surface) 70%,transparent)}.nav-titel{display:none}.marke{padding:0 4px 4px}}
 @media (max-width:620px){.dash{grid-template-columns:minmax(0,1fr)}.woche{grid-template-columns:minmax(0,1fr)}.woche.kurz{grid-template-columns:repeat(2,minmax(0,1fr))}.wtagk{min-height:0}}
+/* Kunst: bunt */
+.bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
+.stdplan td.bunt{font-weight:800}
 /* Weiß (Musik): mit grauem Rand und dunkler Schrift, damit es auf hellem Grund sichtbar bleibt */
 [style*="--musik"] .btn:not(.ghost),.btn[style*="--musik"]{color:#3a2a45;box-shadow:inset 0 0 0 2px #cdbfd8}
 [style*="--musik"] :is(.fachzeile,.eyebrow,.nk-schnitt,.kl-datum b,.kurz,.note,.papier h2,.pp-datum b){color:#7a6785}
@@ -1467,6 +1470,10 @@ const STUNDEN=["8.00","8.45","9.50","10.35","11.35","12.20","13.05","14.00","14.
 const STUNDENPLAN={1:["Mathe","Mathe","GPG","Englisch","Deutsch","Deutsch","Mittagspause","Informatik","EBSU"],2:["Religion","Religion","Englisch","Deutsch","Mathe","Förderunterricht"],
  3:["Mathe","Englisch","Deutsch","WiB","Sport","Sport"],4:["NT","NT","GPG","Englisch","WG","WG"],5:["Englisch","Deutsch","Kunst","Kunst","Musik","Musik"]};
 const PLANFACH={Mathe:"mathe",Deutsch:"deutsch",Englisch:"englisch",NT:"nt",GPG:"gpg",Musik:"musik",Informatik:"info",WiB:"wib"};
+// Farben für Stundenplan-Fächer ohne eigenes Lernfach
+const STUNDENFARBE={Religion:"#9a96a3",Sport:"#14b8b0",Kunst:"#f472b6",Förderunterricht:"#b8a6c9",Mittagspause:"#d9cfe3",EBSU:"#b8a6c9"};
+const stdFarbe=f=>PLANFACH[f]&&fach(PLANFACH[f])?fach(PLANFACH[f]).farbe:STUNDENFARBE[f]||"var(--muted)";
+const stdKlasse=f=>f==="Kunst"?"bunt":"";
 const TERMINE=[{datum:"2026-11-16",text:"Vorlesewettbewerb beginnt 📖"},{datum:"2026-11-16",text:"Referat Italien mit Nila 🇮🇹"},{datum:"2026-11-17",text:"Elternsprechtag"}];
 // Feste Erinnerungen (erscheinen im Notizblock und im Kalender)
 const ERINNERUNGEN=[
@@ -1756,12 +1763,12 @@ function naechsterSchultag(){const d=new Date();if(d.getHours()>=14)d.setDate(d.
 function schultagHTML(){const d=naechsterSchultag(),wd=new Date(d+"T12:00").getDay(),plan=STUNDENPLAN[wd]||[],pr=PROBEN.filter(p=>p.datum===d),te=TERMINE.filter(t=>t.datum===d);
   const tagText=d===tag()?"Heute":tageBis(d)===1?"Morgen":WTAG_LANG[wd];
   return `<section class="schultag"><div class="row" style="justify-content:space-between"><h3>${tagText} in der Schule <span class="muted" style="font-weight:600">· ${WTAG_LANG[wd]}, ${datumDE(d).replace(/\d\d$/,"")}</span></h3><button class="back" data-go="stundenplan">Stundenplan →</button></div>
-   <div class="stunden">${plan.map((f,i)=>f?`<span class="stunde ${pr.some(p=>fach(p.fach)&&PLANFACH[f]===p.fach)?"probe-std":""}" style="--fach:${PLANFACH[f]&&fach(PLANFACH[f])?fach(PLANFACH[f]).farbe:"var(--muted)"}"><small>${i+1}.</small> ${f}</span>`:"").join("")}</div>
+   <div class="stunden">${plan.map((f,i)=>f?`<span class="stunde ${stdKlasse(f)} ${pr.some(p=>fach(p.fach)&&PLANFACH[f]===p.fach)?"probe-std":""}" style="--fach:${stdFarbe(f)}"><small>${i+1}.</small> ${f}</span>`:"").join("")}</div>
    ${pr.map(p=>`<p class="pp-warn">📝 ${p.titel}${p.stunde?` (${p.stunde})`:""}</p>`).join("")}${te.map(t=>`<p><b>📅 ${t.text}</b></p>`).join("")}</section>`}
 function vStundenplan(){
   return `<div style="display:flex;flex-direction:column;gap:18px"><button class="back" data-go="start">← Startseite</button><h1>Stundenplan</h1>
    <div class="tabwrap"><table class="stdplan"><tr><th></th>${[1,2,3,4,5].map(w=>`<th>${WTAG_LANG[w].slice(0,2)}</th>`).join("")}</tr>
-   ${STUNDEN.map((z,i)=>`<tr><th>${i+1}.<br><small>${z}</small></th>${[1,2,3,4,5].map(w=>{const f=STUNDENPLAN[w][i]||"";const id=PLANFACH[f];return `<td style="--fach:${id&&fach(id)?fach(id).farbe:"var(--line)"}" class="${f?"voll":""}">${f}</td>`}).join("")}</tr>`).join("")}</table></div>
+   ${STUNDEN.map((z,i)=>`<tr><th>${i+1}.<br><small>${z}</small></th>${[1,2,3,4,5].map(w=>{const f=STUNDENPLAN[w][i]||"";return `<td style="--fach:${f?stdFarbe(f):"var(--line)"}" class="${f?"voll":""} ${stdKlasse(f)}">${f}</td>`}).join("")}</tr>`).join("")}</table></div>
    <section class="probenplan"><h3>Termine</h3>${TERMINE.filter(t=>tageBis(t.datum)>=0).map(t=>`<div class="pp-zeile" style="--fach:var(--muted)"><div class="pp-datum"><b>${wtag(t.datum)}</b><span>${datumDE(t.datum).replace(/\d\d$/,"")}</span></div><div class="pp-text"><b>${t.text}</b></div></div>`).join("")||`<p class="muted">Keine Termine.</p>`}</section></div>`}
 /* ================================================================
    DASHBOARD, KALENDER, NOTIZBLOCK
@@ -1790,7 +1797,7 @@ function termineAm(iso){
   return liste.sort((a,b)=>zahl(a.von)-zahl(b.von))}
 function terminHTML(t,kurz){
   return `<div class="ev ev-${t.typ}"><span class="ev-zeit">${t.von?`${t.von}${t.bis?`–${t.bis}`:""}`:"ganztags"}</span><span class="ev-titel">${t.icon} ${esc(t.titel)}${t.info?` <small>(${esc(t.info)})</small>`:""}</span>
-   ${t.faecher&&!kurz?`<span class="ev-faecher">${t.faecher.map(f=>`<i style="--fach:${PLANFACH[f]&&fach(PLANFACH[f])?fach(PLANFACH[f]).farbe:"var(--muted)"}">${f}</i>`).join("")}</span>`:""}</div>`}
+   ${t.faecher&&!kurz?`<span class="ev-faecher">${t.faecher.map(f=>`<i class="${stdKlasse(f)}" style="--fach:${stdFarbe(f)}">${f}</i>`).join("")}</span>`:""}</div>`}
 function wocheHTML(versatz,kurz){
   const mo=montagVon(versatz);
   return `<div class="woche ${kurz?"kurz":""}">${Array.from({length:7},(_,i)=>{const d=new Date(mo);d.setDate(mo.getDate()+i);const iso=isoTag(d),ts=termineAm(iso),heute=iso===tag();
