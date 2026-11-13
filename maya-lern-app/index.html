@@ -386,9 +386,26 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .sterne-bg{position:absolute;inset:0;pointer-events:none;opacity:.9;
   background-image:radial-gradient(1.5px 1.5px at 20px 30px,#fff,transparent),radial-gradient(1px 1px at 80px 120px,#fff,transparent),radial-gradient(2px 2px at 150px 60px,#ffe9a8,transparent),radial-gradient(1px 1px at 200px 190px,#fff,transparent),radial-gradient(1.5px 1.5px at 260px 90px,#bfe0ff,transparent),radial-gradient(1px 1px at 120px 230px,#fff,transparent),radial-gradient(1px 1px at 40px 170px,#ffc4ec,transparent);
   background-size:280px 260px;animation:funkeln 4s ease-in-out infinite alternate}
-.sterne-bg::after{content:"🪐";position:absolute;right:24px;top:18px;font-size:3rem;filter:drop-shadow(0 0 12px rgba(255,200,120,.6))}
+.sterne-bg::after{content:"🪐";position:absolute;left:46%;bottom:14px;font-size:2.6rem;opacity:.8;filter:drop-shadow(0 0 12px rgba(255,200,120,.6))}
+.wr-kopf-zeile{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.astro{max-width:42vw;height:auto;filter:drop-shadow(0 0 18px rgba(157,92,255,.55));margin-bottom:-8px}
+.astro-figur{animation:schweben 3.5s ease-in-out infinite;transform-origin:100px 140px}
+.flagge{transform-origin:129px 56px;animation:wehen 1.6s ease-in-out infinite}
+@keyframes wehen{0%,100%{transform:skewY(0)}50%{transform:skewY(-6deg) scaleX(.94)}}
+.raketen{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2}
+.rk{position:absolute;font-size:2rem;filter:drop-shadow(0 0 10px rgba(255,140,60,.7));animation:fliegen 14s linear infinite}
+.r1{left:-10%;top:6%;animation-delay:0s}.r2{left:-10%;top:15%;animation-delay:-6s;font-size:1.4rem}.r3{left:-10%;bottom:2%;animation-delay:-9s;font-size:2.2rem;animation-name:fliegen-flach}
+.r5{left:-10%;top:2%;animation-delay:-11s;font-size:1.2rem}
+.r4{left:42%;top:3%;font-size:1.8rem;animation:ufo 6s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(120,255,200,.7))}
+.komet{position:absolute;left:30%;top:4%;font-size:1.6rem;animation:komet 9s linear infinite}
+@keyframes fliegen{from{transform:translate(0,0)}to{transform:translate(min(1300px,130vw),-60px)}}
+@keyframes fliegen-flach{from{transform:translate(0,0)}to{transform:translate(min(1300px,130vw),-20px)}}
+@keyframes ufo{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,10px)}}
+@keyframes komet{from{transform:translate(0,0);opacity:0}10%{opacity:1}60%{opacity:1}to{transform:translate(-40vw,30vh);opacity:0}}
+@media (prefers-reduced-motion:reduce){.rk,.komet,.astro-figur,.flagge{animation:none}.r1{left:8%}.r2{left:40%}.r3{left:70%}.r5{left:55%}}
 @keyframes funkeln{from{opacity:.55}to{opacity:1}}
-.weltraum>*{position:relative}
+.weltraum>:not(.sterne-bg):not(.raketen):not(.planeten){position:relative;z-index:1}
+.raketen{z-index:2}
 .wr-kopf h1{font-size:2rem;text-shadow:0 0 18px rgba(170,120,255,.8)}.wr-kopf h1 span{font-size:1.1rem;opacity:.8}
 .wr-kopf p{opacity:.8;font-weight:700}
 .wr-back{color:#d9ccff!important}
@@ -411,6 +428,26 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .wr-termine{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
 .wr-termin{display:flex;gap:12px;flex-wrap:wrap}.wr-termin b{color:#ffd166;min-width:5.5em}
 @media (prefers-reduced-motion:reduce){.sterne-bg{animation:none}}
+/* Weltraum-Kalender */
+.kalender-raum{--surface:rgba(22,16,52,.72);--solid:#1b1438;--fg:#fff;--muted:#cfc4f0;--line:rgba(255,255,255,.16);--glass:rgba(255,255,255,.14);color:var(--fg)}
+.kalender-raum .eyebrow{color:#ffd166}
+.kalender-raum .btn.ghost{color:#fff;border-color:rgba(255,255,255,.3)}
+.kalender-raum .wtagk{box-shadow:0 0 0 1px rgba(255,255,255,.08),0 6px 18px rgba(0,0,0,.35)}
+.kalender-raum .wtagk.we{background:rgba(22,16,52,.5)}
+.kalender-raum .ev{background:color-mix(in srgb,var(--evf) 30%,rgba(22,16,52,.8))}
+.kalender-raum .legende span{background:color-mix(in srgb,var(--evf) 30%,rgba(22,16,52,.8))}
+.kalender-raum .notizen li{background:rgba(255,246,168,.16)}
+.kalender-raum .sterne-bg::after{display:none}
+.planeten{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.pl{position:absolute;filter:drop-shadow(0 0 24px rgba(120,170,255,.35))}
+.erde{width:min(460px,70vw);height:auto;right:-110px;top:-120px;animation:drehen 120s linear infinite}
+.kalender-raum .wr-kopf-zeile{min-height:250px;align-items:flex-end}
+.saturn{width:230px;height:auto;left:34%;top:6px;transform:rotate(-12deg);filter:drop-shadow(0 0 18px rgba(255,200,120,.45));animation:schweben 6s ease-in-out infinite}
+.mars{width:110px;height:auto;left:24%;top:140px;filter:drop-shadow(0 0 18px rgba(255,110,60,.5));animation:schweben 5s ease-in-out infinite}
+.planeten .rk{z-index:0}
+@keyframes drehen{to{transform:rotate(360deg)}}
+@media (max-width:620px){.saturn{width:140px;left:auto;right:6px;top:6px}.erde{width:300px;right:-130px;top:-70px}.mars{width:70px;left:52%;top:150px}.kalender-raum .wr-kopf-zeile{min-height:230px}}
+@media (prefers-reduced-motion:reduce){.erde,.saturn,.mars{animation:none}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -1897,12 +1934,30 @@ function schultagHTML(){const d=naechsterSchultag(),wd=new Date(d+"T12:00").getD
 const KNALL={Mathe:["#2563eb","h"],Deutsch:["#ef4444","h"],Englisch:["#facc15","d"],GPG:["#a0522d","h"],NT:["#16c45a","h"],Religion:["#94a3b8","d"],Sport:["#06d6c7","d"],
  Kunst:["bunt","d"],Musik:["#ffffff","d"],WiB:["#ff2d95","h"],Informatik:["#a855f7","h"],WG:["#ff7a00","h"],Förderunterricht:["#7c5cff","h"],Mittagspause:["#475569","h"],EBSU:["#00b4ff","h"]};
 const STD_ICON={Mathe:"➕",Deutsch:"📖",Englisch:"🇬🇧",GPG:"🌍",NT:"🔬",Religion:"🕊️",Sport:"⚽",Kunst:"🎨",Musik:"🎵",WiB:"💼",Informatik:"💻",WG:"🛠️",Förderunterricht:"⭐",Mittagspause:"🍝",EBSU:"🏀"};
+function astronautSVG(){return `<svg class="astro" viewBox="0 0 200 170" width="200" height="170" role="img" aria-label="Astronaut mit Flagge auf einem Planeten">
+ <defs><radialGradient id="plg" cx="35%" cy="30%"><stop offset="0" stop-color="#ff9ad5"/><stop offset=".6" stop-color="#9d5cff"/><stop offset="1" stop-color="#3b1d7a"/></radialGradient></defs>
+ <ellipse cx="100" cy="190" rx="120" ry="60" fill="url(#plg)"/>
+ <ellipse cx="60" cy="150" rx="12" ry="5" fill="rgba(40,10,80,.35)"/><ellipse cx="150" cy="158" rx="16" ry="6" fill="rgba(40,10,80,.35)"/><ellipse cx="105" cy="164" rx="8" ry="3" fill="rgba(40,10,80,.3)"/>
+ <g class="astro-figur">
+  <line x1="128" y1="136" x2="128" y2="52" stroke="#e6e6f0" stroke-width="3" stroke-linecap="round"/>
+  <path class="flagge" d="M129 54 q16 -6 32 2 q-2 10 0 22 q-16 -8 -32 -2 z" fill="#ff2d95"/>
+  <text x="145" y="74" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">M</text>
+  <rect x="70" y="86" width="16" height="30" rx="5" fill="#cfd6e6"/>
+  <rect x="80" y="84" width="38" height="40" rx="12" fill="#fff"/>
+  <rect x="90" y="96" width="18" height="12" rx="3" fill="#7c5cff"/><circle cx="95" cy="102" r="2" fill="#ffd166"/><circle cx="102" cy="102" r="2" fill="#06d6c7"/>
+  <path d="M116 92 q10 -2 12 6" stroke="#fff" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M82 94 q-10 8 -6 20" stroke="#fff" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <rect x="85" y="120" width="12" height="20" rx="5" fill="#fff"/><rect x="101" y="120" width="12" height="20" rx="5" fill="#fff"/>
+  <rect x="83" y="136" width="16" height="7" rx="3" fill="#9aa3b8"/><rect x="99" y="136" width="16" height="7" rx="3" fill="#9aa3b8"/>
+  <circle cx="99" cy="68" r="22" fill="#fff"/><ellipse cx="101" cy="68" rx="15" ry="12" fill="#1b2a5e"/><path d="M93 62 q5 -4 12 -2" stroke="#8fd3ff" stroke-width="3" stroke-linecap="round" fill="none"/>
+ </g></svg>`}
 function vStundenplan(){
   const heuteWd=new Date().getDay();
   const zelle=f=>{if(!f)return `<td class="leer"></td>`;const [c,t]=KNALL[f]||["#64748b","h"];
     return `<td><div class="planet ${c==="bunt"?"regenbogen":""} ${t==="d"?"dunkel":""}" style="--pc:${c==="bunt"?"#ff6fa0":c}"><span class="p-icon" aria-hidden="true">${STD_ICON[f]||"✨"}</span><span class="p-name ${f==="Mittagspause"?"ein-wort":""}">${f==="Förderunterricht"?"Förder&shy;unterricht":f}</span></div></td>`};
   return `<div class="weltraum"><div class="sterne-bg" aria-hidden="true"></div>
-   <div class="wr-kopf"><button class="back wr-back" data-go="start">← Startseite</button><h1>🚀 Mein Stundenplan <span>2026/2027</span></h1><p>Klasse 6a · Maja</p></div>
+   <div class="raketen" aria-hidden="true"><span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r3">🚀</span><span class="rk r4">🛸</span><span class="rk r5">🚀</span><span class="komet">☄️</span></div>
+   <div class="wr-kopf-zeile"><div class="wr-kopf"><button class="back wr-back" data-go="start">← Startseite</button><h1>🚀 Mein Stundenplan <span>2026/2027</span></h1><p>Klasse 6a · Maja</p></div>${astronautSVG()}</div>
    <div class="tabwrap"><table class="wr-plan"><thead><tr><th></th>${[1,2,3,4,5].map(w=>`<th class="${w===heuteWd?"heute-sp":""}">${WTAG_LANG[w]}</th>`).join("")}</tr></thead>
    <tbody>${STUNDEN.map((z,i)=>`<tr><th class="zeit"><b>${i+1}</b><small>${z}</small></th>${[1,2,3,4,5].map(w=>zelle(STUNDENPLAN[w][i]||"")).join("")}</tr>`).join("")}</tbody></table></div>
    <section class="wr-termine"><h3>🪐 Termine</h3>${TERMINE.filter(t=>tageBis(t.datum)>=0).map(t=>`<div class="wr-termin"><b>${wtag(t.datum)} ${datumDE(t.datum).replace(/\d\d$/,"")}</b><span>${t.text}</span></div>`).join("")||`<p>Keine Termine.</p>`}</section></div>`}
@@ -1941,14 +1996,32 @@ function wocheHTML(versatz,kurz){
     return `<div class="wtagk ${heute?"ist-heute":""} ${i>4?"we":""}"><div class="wtk-kopf"><b>${WTAG_LANG[d.getDay()].slice(0,2)}</b><span>${d.getDate()}.${d.getMonth()+1}.</span></div>
      ${ts.length?ts.map(t=>terminHTML(t,kurz)).join(""):`<span class="muted ev-leer">frei</span>`}</div>`}).join("")}</div>`}
 
+/* Planeten für den Weltraum-Kalender */
+function erdeSVG(){return `<svg viewBox="0 0 300 300" class="pl erde" role="img" aria-label="Weltkugel"><defs>
+ <radialGradient id="eg" cx="35%" cy="30%"><stop offset="0" stop-color="#7fd0ff"/><stop offset=".55" stop-color="#1f74d6"/><stop offset="1" stop-color="#0b2d6b"/></radialGradient>
+ <clipPath id="ec"><circle cx="150" cy="150" r="140"/></clipPath><radialGradient id="eglow"><stop offset=".85" stop-color="rgba(120,200,255,.0)"/><stop offset="1" stop-color="rgba(120,200,255,.45)"/></radialGradient></defs>
+ <circle cx="150" cy="150" r="148" fill="url(#eglow)"/><circle cx="150" cy="150" r="140" fill="url(#eg)"/>
+ <g clip-path="url(#ec)" fill="#3ddc84"><path d="M70 60 q40 -20 70 5 q10 25 -15 40 q-20 5 -25 30 q-10 25 -35 15 q-20 -15 -15 -45 q0 -30 20 -45z"/>
+  <path d="M170 90 q35 -10 55 15 q15 25 -5 45 q-15 10 -10 35 q5 30 -25 40 q-25 5 -25 -25 q0 -25 -15 -40 q-10 -40 25 -70z"/>
+  <path d="M60 190 q30 -5 45 15 q10 25 -15 40 q-25 10 -40 -10 q-10 -30 10 -45z"/><path d="M230 210 q20 0 25 20 q-5 20 -25 15 q-15 -15 0 -35z"/></g>
+ <g clip-path="url(#ec)" fill="rgba(255,255,255,.75)"><ellipse cx="120" cy="120" rx="40" ry="9"/><ellipse cx="200" cy="60" rx="30" ry="7"/><ellipse cx="170" cy="230" rx="45" ry="9"/></g></svg>`}
+function saturnSVG(){return `<svg viewBox="0 0 220 140" class="pl saturn" role="img" aria-label="Saturn"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe2a0"/><stop offset=".5" stop-color="#f0b45a"/><stop offset="1" stop-color="#b9772e"/></linearGradient></defs>
+ <ellipse cx="110" cy="70" rx="105" ry="24" fill="none" stroke="#e8c98a" stroke-width="10" opacity=".9"/>
+ <circle cx="110" cy="70" r="46" fill="url(#sg)"/><path d="M68 58 q42 -8 84 0 M66 74 q44 8 88 0 M72 88 q38 6 76 0" stroke="rgba(150,90,30,.45)" stroke-width="5" fill="none"/>
+ <path d="M5 70 q105 40 210 0" fill="none" stroke="#f5dca6" stroke-width="10"/></svg>`}
+function marsSVG(){return `<svg viewBox="0 0 140 140" class="pl mars" role="img" aria-label="Mars"><defs><radialGradient id="mg" cx="35%" cy="30%"><stop offset="0" stop-color="#ffab73"/><stop offset=".6" stop-color="#e2502a"/><stop offset="1" stop-color="#7a1f0e"/></radialGradient></defs>
+ <circle cx="70" cy="70" r="62" fill="url(#mg)"/><circle cx="50" cy="55" r="9" fill="rgba(120,30,10,.35)"/><circle cx="88" cy="85" r="13" fill="rgba(120,30,10,.3)"/><circle cx="78" cy="40" r="6" fill="rgba(120,30,10,.3)"/><circle cx="45" cy="92" r="5" fill="rgba(120,30,10,.3)"/></svg>`}
 function vKalender(){
   const v=V.woche||0,mo=montagVon(v),so=new Date(mo);so.setDate(mo.getDate()+6);
-  return `<div class="seitenkopf"><div><p class="eyebrow">Kalender</p><h1>${v===0?"Diese Woche":v===1?"Nächste Woche":v===-1?"Letzte Woche":`Woche vom ${mo.getDate()}.${mo.getMonth()+1}.`}</h1>
+  return `<div class="weltraum kalender-raum"><div class="sterne-bg" aria-hidden="true"></div>
+   <div class="planeten" aria-hidden="true">${erdeSVG()}${saturnSVG()}${marsSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="komet">☄️</span></div>
+   <div class="wr-kopf-zeile"><div class="seitenkopf" style="flex:1"><div><p class="eyebrow">🌌 Kalender</p><h1>${v===0?"Diese Woche":v===1?"Nächste Woche":v===-1?"Letzte Woche":`Woche vom ${mo.getDate()}.${mo.getMonth()+1}.`}</h1>
    <p class="muted">${mo.getDate()}.${mo.getMonth()+1}. – ${so.getDate()}.${so.getMonth()+1}.${so.getFullYear()}</p></div>
    <div class="row"><button class="btn ghost small" data-act="woche" data-w="${v-1}">← Woche</button>${v?`<button class="btn ghost small" data-act="woche" data-w="0">Heute</button>`:""}<button class="btn ghost small" data-act="woche" data-w="${v+1}">Woche →</button></div></div>
+   ${astronautSVG()}</div>
    ${wocheHTML(v,false)}
    <div class="legende"><span class="ev-schule">🏫 Schule</span><span class="ev-probe">📝 Probe</span><span class="ev-frei">🏐 Freizeit</span><span class="ev-termin">📅 Termin</span><span class="ev-notiz">📌 Notiz mit Datum</span></div>
-   <section class="kachel">${notizblockHTML()}</section>`}
+   <section class="kachel">${notizblockHTML()}</section></div>`}
 
 function notizblockHTML(){
   const offen=S.notizen.filter(n=>!n.erledigt),fertig=S.notizen.filter(n=>n.erledigt);
