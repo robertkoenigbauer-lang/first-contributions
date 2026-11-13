@@ -611,6 +611,9 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .wz-geld{font-size:.75rem;font-weight:800;color:#d4a300}
 .noten-raum .wz-geld{color:#ffd166}
 @media (max-width:480px){.bl-tabelle{grid-template-columns:repeat(3,1fr)}}
+/* Ferien */
+.ev-ferien{--evf:#f59e0b}
+.wtagk.ferientag{background:linear-gradient(160deg,rgba(245,158,11,.22),rgba(10,12,30,.3))!important}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2091,7 +2094,7 @@ function probenplanHTML(){
 
 function naechsterSchultag(){const d=new Date();if(d.getHours()>=14)d.setDate(d.getDate()+1);while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);
   return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function schultagHTML(){const d=naechsterSchultag(),wd=new Date(d+"T12:00").getDay(),plan=STUNDENPLAN[wd]||[],pr=PROBEN.filter(p=>p.datum===d),te=TERMINE.filter(t=>t.datum===d);
+function schultagHTML(){let d0=naechsterSchultag();while(schulfrei(d0)){const x=new Date(d0+"T12:00");x.setDate(x.getDate()+1);d0=isoTag(x)}const d=d0,wd=new Date(d+"T12:00").getDay(),plan=STUNDENPLAN[wd]||[],pr=PROBEN.filter(p=>p.datum===d),te=TERMINE.filter(t=>t.datum===d);
   const tagText=d===tag()?"Heute":tageBis(d)===1?"Morgen":WTAG_LANG[wd];
   return `<section class="schultag"><div class="row" style="justify-content:space-between"><h3>${tagText} in der Schule <span class="muted" style="font-weight:600">· ${WTAG_LANG[wd]}, ${datumDE(d).replace(/\d\d$/,"")}</span></h3><button class="back" data-go="stundenplan">Stundenplan →</button></div>
    <div class="stunden">${plan.map((f,i)=>f?`<span class="stunde ${stdKlasse(f)} ${pr.some(p=>fach(p.fach)&&PLANFACH[f]===p.fach)?"probe-std":""}" style="--fach:${stdFarbe(f)}"><small>${i+1}.</small> ${f}</span>`:"").join("")}</div>
@@ -2140,15 +2143,39 @@ const WOCHENTERMINE=[
 ];
 const isoTag=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 function montagVon(versatz=0){const d=new Date();const w=(d.getDay()+6)%7;d.setDate(d.getDate()-w+versatz*7);return d}
+/* ---------- Bayerischer Ferienkalender 2026/27 ---------- */
+const FERIEN=[
+ {von:"2026-11-02",bis:"2026-11-06",name:"Herbstferien",icon:"🍂"},
+ {von:"2026-11-18",bis:"2026-11-18",name:"Buß- und Bettag (schulfrei)",icon:"⛪"},
+ {von:"2026-12-24",bis:"2027-01-08",name:"Weihnachtsferien",icon:"🎄"},
+ {von:"2027-02-08",bis:"2027-02-12",name:"Faschingsferien",icon:"🎭"},
+ {von:"2027-03-22",bis:"2027-04-02",name:"Osterferien",icon:"🐣"},
+ {von:"2027-05-18",bis:"2027-05-28",name:"Pfingstferien",icon:"🌼"},
+ {von:"2027-08-02",bis:"2027-09-13",name:"Sommerferien",icon:"☀️"}];
+const FEIERTAGE=[["2026-12-25","1. Weihnachtsfeiertag"],["2026-12-26","2. Weihnachtsfeiertag"],["2027-01-01","Neujahr"],["2027-01-06","Heilige Drei Könige"],
+ ["2027-03-26","Karfreitag"],["2027-03-29","Ostermontag"],["2027-05-01","Tag der Arbeit"],["2027-05-06","Christi Himmelfahrt"],["2027-05-17","Pfingstmontag"],
+ ["2027-05-27","Fronleichnam"],["2027-08-15","Mariä Himmelfahrt"],["2027-10-03","Tag der Deutschen Einheit"],["2027-11-01","Allerheiligen"]];
+const SCHULJAHR_ENDE="2027-07-30"; // letzter Schultag vor den Sommerferien
+const ferienAm=iso=>FERIEN.find(f=>iso>=f.von&&iso<=f.bis);
+const feiertagAm=iso=>(FEIERTAGE.find(f=>f[0]===iso)||[])[1];
+const schulfrei=iso=>{const wd=new Date(iso+"T12:00").getDay();return wd===0||wd===6||!!ferienAm(iso)||!!feiertagAm(iso)};
+const SCHUL_AUFGABEN=["brotzeit"];
+const morgenIso=iso=>{const d=new Date(iso+"T12:00");d.setDate(d.getDate()+1);return isoTag(d)};
+// Aufgabe gilt an diesem Tag? (Brotzeit nur an Schultagen, Sportsachen nur wenn morgen Schule ist)
+const aufgabeGilt=(a,iso)=>!((SCHUL_AUFGABEN.includes(a.id)&&schulfrei(iso))||(a.id==="sport-schule"&&schulfrei(morgenIso(iso))));
+function schultageZwischen(von,bis){let n=0;const d=new Date(von+"T12:00"),e=new Date(bis+"T12:00");while(d<=e){if(!schulfrei(isoTag(d)))n++;d.setDate(d.getDate()+1)}return n}
 function termineAm(iso){
   const d=new Date(iso+"T12:00"),wd=d.getDay(),liste=[];
-  const plan=STUNDENPLAN[wd];
+  const fe=ferienAm(iso),ft=feiertagAm(iso);
+  if(fe)liste.push({von:"",titel:fe.name,icon:fe.icon,typ:"ferien"});
+  if(ft)liste.push({von:"",titel:ft,icon:"🎉",typ:"ferien"});
+  const plan=(fe||ft)?null:STUNDENPLAN[wd];
   if(plan){let letzte=-1;plan.forEach((f,i)=>{if(f)letzte=i});
     liste.push({von:"8:00",bis:SCHULENDE[letzte],titel:"Schule",icon:"🏫",typ:"schule",faecher:plan.filter(Boolean)})}
-  WOCHENTERMINE.filter(t=>t.tag===wd).forEach(t=>liste.push(Object.assign({},t)));
+  WOCHENTERMINE.filter(t=>t.tag===wd&&!(t.typ==="probe"&&(fe||ft))).forEach(t=>liste.push(Object.assign({},t)));
   PROBEN.filter(p=>p.datum===iso).forEach(p=>liste.push({von:"",titel:p.titel,icon:"📝",typ:"probe",info:p.stunde,fach:p.fach}));
   TERMINE.filter(t=>t.datum===iso).forEach(t=>liste.push({von:"",titel:t.text,icon:"📅",typ:"termin"}));
-  AUFGABEN.filter(a=>a.tage.includes(wd)).forEach(a=>liste.push({von:"",titel:a.text,icon:a.icon,typ:"notiz"}));
+  AUFGABEN.filter(a=>a.tage.includes(wd)&&aufgabeGilt(a,iso)).forEach(a=>liste.push({von:"",titel:a.text,icon:a.icon,typ:"notiz"}));
   ERINNERUNGEN.filter(e=>e.datum===iso).forEach(e=>liste.push({von:"",titel:e.text,icon:"🔔",typ:"notiz"}));
   S.notizen.filter(n=>n.datum===iso&&!n.erledigt).forEach(n=>liste.push({von:"",titel:n.text,icon:"📌",typ:"notiz"}));
   const zahl=s=>s?+s.replace(":",".")||0:-1;
@@ -2159,7 +2186,7 @@ function terminHTML(t,kurz){
 function wocheHTML(versatz,kurz){
   const mo=montagVon(versatz);
   return `<div class="woche ${kurz?"kurz":""}">${Array.from({length:7},(_,i)=>{const d=new Date(mo);d.setDate(mo.getDate()+i);const iso=isoTag(d),ts=termineAm(iso),heute=iso===tag();
-    return `<div class="wtagk ${heute?"ist-heute":""} ${i>4?"we":""}"><div class="wtk-kopf"><b>${WTAG_LANG[d.getDay()].slice(0,2)}</b><span>${d.getDate()}.${d.getMonth()+1}.</span></div>
+    return `<div class="wtagk ${heute?"ist-heute":""} ${i>4?"we":""} ${ferienAm(iso)||feiertagAm(iso)?"ferientag":""}"><div class="wtk-kopf"><b>${WTAG_LANG[d.getDay()].slice(0,2)}</b><span>${d.getDate()}.${d.getMonth()+1}.</span></div>
      ${ts.length?ts.map(t=>terminHTML(t,kurz)).join(""):`<span class="muted ev-leer">frei</span>`}</div>`}).join("")}</div>`}
 
 /* Planeten für den Weltraum-Kalender */
@@ -2193,7 +2220,7 @@ function vKalender(){
    <div class="row"><button class="btn ghost small" data-act="woche" data-w="${v-1}">← Woche</button>${v?`<button class="btn ghost small" data-act="woche" data-w="0">Heute</button>`:""}<button class="btn ghost small" data-act="woche" data-w="${v+1}">Woche →</button></div></div>
    </div>
    ${wocheHTML(v,false)}
-   <div class="legende"><span class="ev-schule">🏫 Schule</span><span class="ev-probe">📝 Probe</span><span class="ev-frei">🏐 Freizeit</span><span class="ev-termin">📅 Termin</span><span class="ev-notiz">📌 Notiz mit Datum</span></div>
+   <div class="legende"><span class="ev-schule">🏫 Schule</span><span class="ev-probe">📝 Probe</span><span class="ev-frei">🏐 Freizeit</span><span class="ev-termin">📅 Termin</span><span class="ev-notiz">📌 Notiz mit Datum</span><span class="ev-ferien">🏖️ Ferien / Feiertag</span></div>
    <section class="kachel">${notizblockHTML()}</section></div>`}
 
 function notizblockHTML(){
@@ -2289,7 +2316,8 @@ function kachelCountdown(){
    <p><b>${f.name}</b> · ${datumKurz(p.datum)}</p><button class="btn small" data-act="vorb" data-probe="${PROBEN.indexOf(p)}">Jetzt üben</button></section>`}
 
 function aufgabenHeute(){const iso=tag(),wd=new Date(iso+"T12:00").getDay();
-  const liste=AUFGABEN.filter(a=>!a.tage.length||a.tage.includes(wd)).map(a=>({id:a.id,text:a.text,icon:a.icon,lernen:a.lernen,taschengeld:a.taschengeld}));
+  const frei=!!(ferienAm(iso)||feiertagAm(iso));
+  const liste=AUFGABEN.filter(a=>(!a.tage.length||a.tage.includes(wd))&&aufgabeGilt(a,iso)).map(a=>({id:a.id,text:a.text,icon:a.icon,lernen:a.lernen,taschengeld:a.taschengeld}));
   ERINNERUNGEN.forEach((e,i)=>{if(e.datum===iso)liste.push({id:"e"+i,text:e.text,icon:"🔔",punkte:e.punkte})});
   TODOS.filter(t=>!S.todo[t.id]).forEach(t=>liste.push({id:"todo-"+t.id,text:t.text,icon:t.icon,todo:true}));
   return liste}
@@ -2375,6 +2403,18 @@ function schweinSVG(gr=110){return `<svg viewBox="0 0 120 100" width="${gr}" hei
  <rect x="30" y="80" width="10" height="14" rx="4" fill="#ff8fbb"/><rect x="74" y="80" width="10" height="14" rx="4" fill="#ff8fbb"/>
  <path d="M18 56 q-10 -4 -6 -12 q4 6 8 2" fill="none" stroke="#ff8fbb" stroke-width="4" stroke-linecap="round"/>
  <g class="muenze"><circle cx="57" cy="12" r="9" fill="#ffd23f" stroke="#e0a800" stroke-width="2"/><text x="57" y="16" text-anchor="middle" font-size="11" font-weight="800" fill="#9a7600">€</text></g></svg>`}
+function schuljahrPrognose(){const pw=S.spar.probenProWoche||2,von=tag(),jEnde=tag().slice(0,4)+"-12-31";
+  const st=sparStand(),fr=offeneFreitage(SCHULJAHR_ENDE),schulwochen=schultageZwischen(von,SCHULJAHR_ENDE)/5,proben=Math.round(schulwochen*pw);
+  const fs=FAECHER.map(f=>schnitt(f.id)).filter(x=>x!==null),schnittAlle=fs.length?fs.reduce((a,b)=>a+b,0)/fs.length:3;
+  const realNote=Math.min(6,Math.max(1,Math.round(schnittAlle)));
+  const bisJahr={fr:offeneFreitage(jEnde),proben:Math.round(schultageZwischen(von,jEnde)/5*pw)};
+  return {pw,st,fr,schulwochen,proben,realNote,bisJahr,tg:fr*TASCHENGELD,szen:[["⭐ Nur Einser",1],["👍 Nur Zweier",2],["📊 Realistisch (Note "+realNote+")",realNote]]}}
+function schuljahrHTML(){const p=schuljahrPrognose(),k=x=>String(Math.round(x*10)/10).replace(".",",");
+  return `<section class="kachel belohnung"><h3>🎒 Bis zum Schuljahresende (Fr, ${datumDE(SCHULJAHR_ENDE)})</h3>
+   <div class="row"><span>Wie viele Proben schreibst du pro Woche?</span>${[1,2,3,4].map(n=>`<button class="btn small ${n===p.pw?"":"ghost"}" data-act="probenwoche" data-n="${n}">${n}</button>`).join("")}</div>
+   <p class="muted">Noch <b>${k(p.schulwochen)} Schulwochen</b> (ohne Ferien und Feiertage) → etwa <b>${p.proben} Proben</b> · <b>${p.fr} Freitage</b> × ${euro(TASCHENGELD)} Taschengeld = ${euro(p.tg)}</p>
+   <div class="bl-szenarien">${p.szen.map(([n,g])=>{const geld=p.proben*NOTENGELD[g];return `<div><span>${n}</span><b>${euro(p.st+p.tg+geld)}</b><small>Kontostand ${euro(p.st)} + Taschengeld ${euro(p.tg)} + Noten ${euro(geld)}</small></div>`}).join("")}</div>
+   <p class="tipp">Bis Ende ${tag().slice(0,4)}: ${p.bisJahr.fr} Freitage und etwa ${p.bisJahr.proben} Proben. Geschenke kommen noch dazu. Ferien sind schon herausgerechnet (keine Proben).</p></section>`}
 function belohnungHTML(pr){const np=notenPrognose(),gesamt=x=>euro(pr.endeJahr+x);
   return `<section class="kachel belohnung"><h3>⭐ Noten-Belohnung</h3>
    <div class="bl-tabelle">${[1,2,3,4,5,6].map(g=>`<span class="bl-zelle n${g}"><b>${g}</b>${NOTENGELD[g]?euro(NOTENGELD[g]):"–"}</span>`).join("")}</div>
@@ -2404,6 +2444,7 @@ function vSparbuch(){
      <form id="zform" class="nform" autocomplete="off"><input id="zname" placeholder="z. B. Neue Kopfhörer" value="${z?esc(z.name):""}" aria-label="Sparziel"><input id="zbetrag" inputmode="decimal" placeholder="Betrag €" value="${z?String(z.betrag).replace(".",","):""}" aria-label="Betrag in Euro" style="width:110px"><button class="btn small" type="submit">${z?"Ändern":"Ziel setzen"}</button></form></section>
    </div>
    ${belohnungHTML(pr)}
+   ${schuljahrHTML()}
    <section class="kachel"><h3>✍️ Geld eintragen</h3>
     <form id="sform" class="sform" autocomplete="off">
      <div class="sp-arten">${SPARARTEN.map(([k,ic,n],i)=>`<label class="chip"><input type="radio" name="sart" value="${k}" ${k==="geburtstag"?"checked":""}> ${ic} ${n}</label>`).join("")}</div>
@@ -2687,6 +2728,7 @@ app.addEventListener("click",e=>{
   switch(d.act){
    case"heute":starte("heute");break;
    case"woche":V.woche=+d.w;render();break;
+   case"probenwoche":S.spar.probenProWoche=+d.n;speichern();render();break;
    case"druckart":V.art=d.art;render();break;
    case"tgheute":{const an=!S.spar.buchungen.some(b=>b.id==="tg-"+tag());taschengeldBuchen(an);const f=S.erledigt[tag()]||(S.erledigt[tag()]={});f.taschengeld=an;speichern();render();break}
    case"sloeschen":{S.spar.buchungen=S.spar.buchungen.filter(b=>b.id!==d.s);const m=String(d.s).match(/^tg-(.+)$/);if(m&&S.erledigt[m[1]])S.erledigt[m[1]].taschengeld=false;speichern();render();break}
