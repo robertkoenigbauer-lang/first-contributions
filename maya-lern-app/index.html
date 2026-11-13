@@ -9,7 +9,7 @@
   --bg:#f3f5fa; --surface:#ffffff; --fg:#1d2433; --muted:#5d6678; --line:#dfe3ec;
   --paper:#fffef9; --paper-line:#cfdcef; --paper-margin:#f1a8a8;
   --ok:#1f8a4c; --ok-bg:#e3f5ea; --bad:#c23b3b; --bad-bg:#fbe7e7;
-  --mathe:#2f6fd6; --deutsch:#d64545; --englisch:#b88700; --nt:#2e9e5b; --gpg:#e07a1f; --musik:#8a4fd1; --wib:#4f6b8a;
+  --mathe:#2f6fd6; --deutsch:#d64545; --englisch:#b88700; --nt:#2e9e5b; --gpg:#e07a1f; --musik:#8a4fd1; --wib:#4f6b8a; --info:#0f8a8a;
   --star:#f2b705; --shadow:0 1px 2px rgba(20,30,60,.06),0 4px 14px rgba(20,30,60,.06);
   --f-display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
   --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -18,13 +18,13 @@
   --bg:#141824; --surface:#1d2231; --fg:#e8ebf3; --muted:#a2a9ba; --line:#2f364a;
   --paper:#1f2434; --paper-line:#2f3a55; --paper-margin:#6e3a44;
   --ok:#5fd394; --ok-bg:#173527; --bad:#ff8a8a; --bad-bg:#3b1d22;
-  --mathe:#6c9ef0; --deutsch:#f07777; --englisch:#f0c445; --nt:#5cc98a; --gpg:#f3a25c; --musik:#b78af0; --wib:#8fa9c7;
+  --mathe:#6c9ef0; --deutsch:#f07777; --englisch:#f0c445; --nt:#5cc98a; --gpg:#f3a25c; --musik:#b78af0; --wib:#8fa9c7; --info:#4fc4c4;
   --star:#f7c948; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25); color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#141824; --surface:#1d2231; --fg:#e8ebf3; --muted:#a2a9ba; --line:#2f364a;
   --paper:#1f2434; --paper-line:#2f3a55; --paper-margin:#6e3a44;
   --ok:#5fd394; --ok-bg:#173527; --bad:#ff8a8a; --bad-bg:#3b1d22;
-  --mathe:#6c9ef0; --deutsch:#f07777; --englisch:#f0c445; --nt:#5cc98a; --gpg:#f3a25c; --musik:#b78af0; --wib:#8fa9c7;
+  --mathe:#6c9ef0; --deutsch:#f07777; --englisch:#f0c445; --nt:#5cc98a; --gpg:#f3a25c; --musik:#b78af0; --wib:#8fa9c7; --info:#4fc4c4;
   --star:#f7c948; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25); color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.5;
@@ -126,6 +126,9 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 /* Bilder */
 .bild{display:flex;justify-content:center;align-items:center;min-height:110px;background:var(--bg);border-radius:14px;padding:10px;margin-top:10px}
 .bild svg{max-width:100%;height:auto}
+.bild2{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.bild2 figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;flex:1 1 180px;min-width:0}
+.bild2 figcaption{font-family:var(--f-display);font-weight:800;font-size:1.3rem;color:var(--fach)}
 .emo{font-size:3.6rem;line-height:1.1;letter-spacing:4px}
 .mini{display:inline-flex;width:64px;justify-content:center;vertical-align:middle}
 .mini .emo{font-size:1.15rem;letter-spacing:0;white-space:nowrap}
@@ -264,8 +267,69 @@ const kaefigSVG=()=>sv(160,120,`<rect x="20" y="20" width="120" height="90" rx="
 const BILD={bedroom:()=>hausSVG("bedroom"),livingroom:()=>hausSVG("livingroom"),kitchen:()=>hausSVG("kitchen"),bathroom:()=>hausSVG("bathroom"),
   often:()=>oftSVG(4),usually:()=>oftSVG(6),never:()=>oftSVG(0),opposite:gegenSVG,guineapig:()=>EMO("🐹"),cage:kaefigSVG,
   empty:()=>spuelSVG(false),load:()=>spuelSVG(true),hoover:saugerSVG,tidy:()=>EMO("🧸📚👕 ➜ ✨"),clean:()=>EMO("🧽🚗✨"),takeout:()=>EMO("🗑️ ➜ 🚪"),
-  before:()=>EMO("🥣 ➜ 🏫"),cooking:()=>EMO("❤️🍳"),cook:()=>EMO("👨‍🍳🍝")};
+  before:()=>EMO("🥣 ➜ 🏫"),reib_rollen:()=>reibSVG("rollen"),grenze_n:()=>grenzSVG("n"),grenze_w:()=>grenzSVG("w"),grenze_s:()=>grenzSVG("s"),grenze_o:()=>grenzSVG("o"),note_achtel:()=>noteSVG("achtel"),kd:()=>klimadiagSVG(),kd_t:()=>klimadiagSVG("t"),kd_n:()=>klimadiagSVG("n"),schrank:()=>schrankSVG(false),cooking:()=>EMO("❤️🍳"),cook:()=>EMO("👨‍🍳🍝"),feed:()=>EMO("🐹🥕"),makebed:()=>EMO("🛏️✨"),breakfast:()=>EMO("🥣🍞☕")};
 const bild=k=>`<div class="bild">${BILD[k]()}</div>`;
+/* NT Reibung: Klotz wird mit dem Kraftmesser gezogen. Der farbige Teil am Kraftmesser zeigt, wie viel Kraft man braucht. */
+function reibSVG(art){
+  const kraft={glatt:.3,rau:.7,gewicht:.75,rollen:.12}[art],roll=art==="rollen",ky=roll?30:40;
+  const boden=art==="rau"?`<path d="M10 70 ${Array.from({length:20},(_,i)=>`l5 ${i%2?4:-4}`).join(" ")}" stroke-width="2"/><rect x="10" y="70" width="100" height="6" fill="var(--muted)" stroke="none" opacity=".45"/>`:"";
+  return sv(220,90,`<line x1="4" y1="76" x2="216" y2="76" stroke-width="4"/>${boden}
+   <rect x="20" y="${ky}" width="70" height="30" rx="2" fill="color-mix(in srgb, var(--fach) 22%, var(--surface))"/>
+   ${art==="gewicht"?`<rect x="44" y="20" width="22" height="20" rx="3" fill="var(--fg)"/><rect x="50" y="13" width="10" height="8" rx="2" fill="var(--fg)"/>`:""}
+   ${roll?[32,48,64,80].map(x=>`<circle cx="${x}" cy="67" r="7" fill="var(--surface)"/>`).join(""):""}
+   <line x1="90" y1="${ky+15}" x2="112" y2="${ky+15}"/><rect x="112" y="${ky+9}" width="62" height="12" rx="4" fill="var(--surface)"/>
+   <rect x="114" y="${ky+11}" width="${Math.round(58*kraft)}" height="8" rx="2" fill="var(--bad)" stroke="none"/>
+   <path d="M176 ${ky+15} H206 M198 ${ky+8} L206 ${ky+15} L198 ${ky+22}" stroke="var(--fach)" stroke-width="3.5"/>`,`Klotz wird gezogen (${art})`)}
+function schrankSVG(rollen){
+  return sv(220,120,`<line x1="4" y1="112" x2="216" y2="112" stroke-width="4"/>
+   ${rollen?`<rect x="96" y="92" width="90" height="8" fill="var(--bg)"/>${[106,128,152,176].map(x=>`<circle cx="${x}" cy="105" r="6" fill="var(--surface)"/>`).join("")}`:""}
+   <rect x="104" y="${rollen?16:36}" width="74" height="76" rx="3" fill="color-mix(in srgb, var(--fach) 18%, var(--surface))"/><line x1="141" y1="${rollen?20:40}" x2="141" y2="${rollen?88:108}"/>
+   <circle cx="136" cy="${rollen?54:74}" r="2.5" fill="var(--fg)"/><circle cx="146" cy="${rollen?54:74}" r="2.5" fill="var(--fg)"/>
+   <circle cx="40" cy="44" r="10" fill="var(--surface)"/><path d="M44 56 L70 70 L100 ${rollen?54:74}"/><path d="M44 56 L66 58 L100 ${rollen?44:64}"/><path d="M44 56 L36 84 L20 110 M36 84 L52 110"/>
+   ${rollen?`<path d="M190 60 H212 M204 53 L212 60 L204 67" stroke="var(--ok)" stroke-width="3.5"/>`:`<text x="196" y="64" font-size="28" font-weight="800" fill="var(--bad)" stroke="none">?</text>`}`,rollen?"Schrank auf einem Rollwagen":"Mann schiebt schweren Schrank")}
+/* GPG: Grenzen Europas als Kompass-Bild. frage = Seite, die mit „?“ gezeigt wird */
+function grenzSVG(frage){
+  const B={n:[105,6,"Norden","Europäisches","Nordmeer"],w:[4,90,"Westen","Atlantischer","Ozean"],s:[105,174,"Süden","Mittelmeer",""],o:[206,90,"Osten","Uralgebirge +","Fluss Ural"]};
+  return sv(320,220,`<rect x="110" y="70" width="100" height="80" rx="18" fill="color-mix(in srgb, var(--fach) 25%, var(--surface))"/><text x="160" y="116" text-anchor="middle" font-size="18" font-weight="800" fill="var(--fg)" stroke="none">EUROPA</text>
+   <path d="M160 70 V52 M160 150 V168 M110 110 H118 M210 110 H202" stroke="var(--muted)"/>
+   ${Object.entries(B).map(([k,[x,y,r,a,b]])=>`<rect x="${x}" y="${y}" width="110" height="42" rx="8" fill="${k===frage?"var(--bg)":"var(--surface)"}" ${k===frage?'stroke="var(--fach)" stroke-width="3"':""}/>
+     <text x="${x+55}" y="${y+15}" text-anchor="middle" font-size="11" font-weight="800" fill="var(--fach)" stroke="none">${r.toUpperCase()}</text>
+     ${k===frage?`<text x="${x+55}" y="${y+35}" text-anchor="middle" font-size="18" font-weight="800" fill="var(--fg)" stroke="none">?</text>`
+       :`<text x="${x+55}" y="${y+28}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fg)" stroke="none">${a}</text><text x="${x+55}" y="${y+39}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fg)" stroke="none">${b}</text>`}`).join("")}`,"Grenzen Europas")}
+/* GPG: Klimazonen als Schema (Farben wie auf Majas Karte) */
+const KLIMAFARBE={eis:"#e98a7a",see:"#f0b33c",ueber:"#b8946a",kuehl:"#9cc3e6",heiss:"#2f5f9e",sub:"#a9c9a4"};
+function klimaSVG(){
+  const t=(x,y,s,w=700,f=11)=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="${f}" font-weight="${w}" fill="#1d2433" stroke="none">${s}</text>`;
+  return sv(330,230,`<rect x="10" y="10" width="310" height="44" rx="6" fill="${KLIMAFARBE.eis}"/>${t(165,30,"kalte Zone: Schnee- und Eisklima",800)}${t(165,46,"z. B. Reykjavik")}
+   <rect x="10" y="58" width="100" height="100" fill="${KLIMAFARBE.see}"/>${t(60,92,"Seeklima",800)}${t(60,110,"Dublin")}${t(60,124,"Paris")}
+   <rect x="110" y="58" width="100" height="100" fill="${KLIMAFARBE.ueber}"/>${t(160,92,"Übergangs-",800)}${t(160,105,"klima",800)}${t(160,122,"Berlin")}${t(160,136,"Warschau")}
+   <rect x="210" y="58" width="110" height="58" fill="${KLIMAFARBE.kuehl}"/>${t(265,78,"kühles Landklima",800)}${t(265,94,"Moskau")}${t(265,108,"Archangelsk")}
+   <rect x="210" y="116" width="110" height="42" fill="${KLIMAFARBE.heiss}"/><text x="265" y="134" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff" stroke="none">sommerheißes Landkl.</text><text x="265" y="150" text-anchor="middle" font-size="11" fill="#fff" stroke="none">Wolgograd</text>
+   <rect x="10" y="162" width="310" height="44" rx="6" fill="${KLIMAFARBE.sub}"/>${t(165,182,"warme Zone: subtropisches Klima",800)}${t(165,198,"Madrid · Rom · Porto")}
+   <path d="M20 220 H300 M290 214 L300 220 L290 226" stroke="var(--fg)" stroke-width="2"/><text x="160" y="217" text-anchor="middle" font-size="10" font-weight="800" fill="var(--fg)" stroke="none">WESTEN → OSTEN: trockener, Sommer heißer, Winter kälter</text>`,"Klimazonen Europas")}
+/* MUSIK: Klaviatur (2 Oktaven c–h). mark = ["w",index weiße Taste] oder ["s",index schwarze Taste]; namen = Beschriftung zeigen */
+function klavierSVG(mark,namen){
+  const W=["c","d","e","f","g","a","h"],S=[[0,"cis/des"],[1,"dis/es"],[3,"fis/ges"],[4,"gis/as"],[5,"ais/b"]],bw=24,h=110;
+  let weiss="",schwarz="",lab="";
+  for(let i=0;i<14;i++){const an=mark&&mark[0]==="w"&&mark[1]===i;weiss+=`<rect x="${4+i*bw}" y="4" width="${bw}" height="${h}" rx="3" fill="${an?"var(--fach)":"#fff"}" stroke="#1d2433" stroke-width="1.5"/>`;
+    if(namen)lab+=`<text x="${4+i*bw+bw/2}" y="${h-6}" text-anchor="middle" font-size="12" font-weight="800" fill="#1d2433" stroke="none">${W[i%7]}</text>`}
+  let k=0;for(let o=0;o<2;o++)for(const [p] of S){const x=4+(o*7+p)*bw+bw*.68,an=mark&&mark[0]==="s"&&mark[1]===k;schwarz+=`<rect x="${x}" y="4" width="${bw*.64}" height="${h*.6}" rx="2" fill="${an?"var(--fach)":"#1d2433"}" stroke="#1d2433" stroke-width="1.5"/>`;k++}
+  return sv(14*bw+8,h+8,weiss+lab+schwarz,"Klaviatur")}
+const SCHWARZ_NAMEN=[["cis","des"],["dis","es"],["fis","ges"],["gis","as"],["ais","b"]];
+/* MUSIK: Notensystem mit Violinschlüssel. pos 0 = c (Hilfslinie) … 9 = e'' */
+function systemSVG(posListe,namen){
+  const y0=100,ys=p=>y0-p*5,linien=[2,4,6,8,10].map(p=>`<line x1="10" y1="${ys(p)}" x2="${namen?300:150}" y2="${ys(p)}" stroke-width="1.5"/>`).join("");
+  const schl=`<path d="M40 ${ys(-1)} C34 ${ys(-2)} 30 ${ys(1)} 38 ${ys(0)} M38 ${ys(-1.5)} L44 ${ys(12)} C50 ${ys(14)} 54 ${ys(9)} 40 ${ys(6)} C26 ${ys(3.5)} 32 ${ys(1.5)} 44 ${ys(2.5)} C54 ${ys(3.5)} 52 ${ys(6.5)} 42 ${ys(6)}" stroke-width="2.5" fill="none"/>`;
+  const W=["c","d","e","f","g","a","h","c","d","e"];
+  const noten=posListe.map((p,i)=>{const x=(namen?78:100)+i*22,y=ys(p);return `${p===0?`<line x1="${x-11}" y1="${y}" x2="${x+11}" y2="${y}" stroke-width="1.5"/>`:""}<ellipse cx="${x}" cy="${y}" rx="6.5" ry="5" transform="rotate(-20 ${x} ${y})" fill="var(--fg)"/>${namen?`<text x="${x}" y="${y0+22}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--fg)" stroke="none">${W[p].toUpperCase()}</text>`:""}`}).join("");
+  return sv(namen?310:170,namen?130:118,linien+schl+noten,"Notensystem")}
+/* MUSIK: Notenwerte. art: ganze | halbe | viertel | achtel | 16tel | 32tel */
+function noteSVG(art,klein){
+  const offen=art==="ganze"||art==="halbe",hals=art!=="ganze",f={achtel:1,"16tel":2,"32tel":3}[art]||0;
+  const s=klein?.55:1;
+  return `<svg viewBox="0 0 36 64" width="${36*s}" height="${64*s}" role="img" aria-label="${art} Note" style="vertical-align:middle"><ellipse cx="14" cy="52" rx="9" ry="6.5" transform="rotate(-20 14 52)" fill="${offen?"none":"var(--fg)"}" stroke="var(--fg)" stroke-width="2.5"/>
+   ${hals?`<line x1="22" y1="50" x2="22" y2="6" stroke="var(--fg)" stroke-width="2.5"/>`:""}${Array.from({length:f},(_,i)=>`<path d="M22 ${6+i*8} C26 ${12+i*8} 34 ${16+i*8} 30 ${28+i*8}" fill="none" stroke="var(--fg)" stroke-width="2.5"/>`).join("")}</svg>`}
+const zweiBilder=(a,b)=>`<div class="bild bild2"><figure><figcaption>A</figcaption>${a}</figure><figure><figcaption>B</figcaption>${b}</figure></div>`;
 /* Vokabelliste → Karten: Deutsch→Englisch eintippen, Englisch→Deutsch auswählen */
 function vokabeln(liste,richtung="beide"){
   const k=[];liste.forEach(([de,en],i)=>{const ens=[].concat(en);
@@ -284,6 +348,7 @@ const FAECHER=[
  {id:"nt",name:"Natur & Technik",kurz:"NT",farbe:"var(--nt)",papier:"linien"},
  {id:"gpg",name:"GPG",kurz:"GPG",farbe:"var(--gpg)",papier:"linien"},
  {id:"musik",name:"Musik",kurz:"Mu",farbe:"var(--musik)",papier:"linien",neben:true},
+ {id:"info",name:"Informatik",kurz:"Inf",farbe:"var(--info)",papier:"karo",neben:true},
  {id:"wib",name:"Wirtschaft & Beruf",kurz:"WiB",farbe:"var(--wib)",papier:"linien",neben:true},
 ];
 
@@ -332,39 +397,196 @@ function u2Karten(){
   k.push(paare("Ordne zu: Wie oft? Wo? Wann?",[["often","oft"],["usually","normalerweise"],["never","nie"],["opposite","gegenüber"],["before","vor, bevor"]]));
   return k}
 
+/* Deutsch-Daten */
+const ZEITEN=[["Präsens","Gegenwart","es passiert gerade eben","Ich spiele ein Spiel. Ich fahre mit dem Bus."],["Futur 1","Zukunft","eine Vermutung oder Absicht","Ich werde morgen Fußball spielen."],
+ ["Futur 2","vollendete Zukunft","etwas ist in der Zukunft schon passiert","Sie wird mit dem Bus gefahren sein."],["Präteritum","1. Vergangenheit","Erzählzeit beim Schreiben","Ich spielte ein Spiel. Ich fuhr mit dem Bus."],
+ ["Perfekt","2. Vergangenheit","Erzählzeit beim Sprechen","Ich habe ein Spiel gespielt. Ich bin mit dem Bus gefahren."],["Plusquamperfekt","Vorvergangenheit","in der Vergangenheit ist etwas bereits vorher passiert","Sie hatte ein Spiel gespielt, bevor sie Hausaufgaben machte."]];
+// Symbole wie auf Majas Wortarten-Karten
+const wsym=(t,f)=>`<svg viewBox="0 0 40 40" width="34" height="34" role="img" aria-label="Symbol">${t==="dreieck"?`<polygon points="20,4 37,36 3,36" fill="${f}"/>`:t==="kreis"?`<circle cx="20" cy="20" r="16" fill="${f}"/>`:t==="mond"?`<path d="M4 14 Q20 40 36 14 Q20 28 4 14Z" fill="${f}"/>`:t==="balken"?`<rect x="3" y="14" width="34" height="12" fill="${f}"/>`:`<rect x="16" y="4" width="8" height="22" rx="3" fill="${f}"/><circle cx="20" cy="33" r="4" fill="${f}"/>`}</svg>`;
+const WORTARTEN=[
+ {n:"Nomen",d:"Namenwort",sym:"dreieck",farbe:"#1d2433",info:"Menschen, Tiere, Pflanzen, Dinge, Gefühle · wird <b>groß</b> geschrieben · Einzahl/Mehrzahl, Geschlecht (der Mann, die Frau, das Kind) · Fälle: Wer oder was? Wessen? Wem? Wen oder was?"},
+ {n:"Verb",d:"Zeitwort / Tunwort",sym:"kreis",farbe:"#e8553d",info:"gehen, spielen, schlafen · klein · hat Zeitformen: ich male, ich malte, ich habe gemalt, ich werde malen"},
+ {n:"Adjektiv",d:"Wiewort / Eigenschaftswort",sym:"dreieck",farbe:"#2f6fd6",info:"kalt, weich, mutig · klein · Steigerung: leicht – leichter – am leichtesten · Gegenteile: heiß – kalt"},
+ {n:"Konjunktion",d:"Bindewort",sym:"balken",farbe:"#f08a9a",info:"verbinden Sätze und Satzteile: und, aber, wenn, obwohl, weil, da, doch, damit, deshalb, als, dass, bevor"},
+ {n:"Pronomen",d:"Fürwort",sym:"dreieck",farbe:"#7b5ea7",info:"stehen für Nomen: ich, du, er, sie, es, wir, ihr, sie · Höflichkeitsform <b>Sie</b> groß"},
+ {n:"Präposition",d:"Verhältniswort",sym:"mond",farbe:"#2e9e5b",info:"Ort: an, auf, hinter, unter, in, neben · Zeit: von, bis, nach, seit, um, vor · Art: mit, ohne, gegen · Grund: dank, trotz, wegen, aufgrund"},
+ {n:"Adverb",d:"Umstandswort",sym:"kreis",farbe:"#f0a030",info:"sagen, wann oder wie etwas gemacht wird: oft, gerne, bald, gestern, immer, jetzt, nie, sofort, täglich"},
+ {n:"Interjektion",d:"Ausrufewort",sym:"ausruf",farbe:"#e0b000",info:"drücken Laute, Gefühle, Gedanken aus: Hallo! Hey! Puh! Bumm! Aua! Hilfe!"},
+ {n:"Numeral",d:"Zahlwort",sym:"dreieck",farbe:"#7fb6e0",info:"Menge, Anzahl oder Rang: eins, zwei, hundert, erstens, ein Viertel"},
+ {n:"Artikel",d:"Begleiter",sym:"dreieck",farbe:"#9ccbe8",info:"bestimmt: der, die, das · unbestimmt: ein, eine, ein"}];
+const WA_SAETZE=[["Gestern war ich im Kino.","Gestern","Adverb"],["Aua! Das tut weh.","Aua","Interjektion"],["Ich habe drei Katzen.","drei","Numeral"],["Ich bleibe zu Hause, weil ich krank bin.","weil","Konjunktion"],
+ ["Das Wetter ist kalt.","kalt","Adjektiv"],["Die Katze liegt unter dem Tisch.","unter","Präposition"],["Wir gehen oft schwimmen.","oft","Adverb"],["Er ist der Erste im Ziel.","Erste","Numeral"],
+ ["Hilfe! Der Hund ist weg.","Hilfe","Interjektion"],["Sie liest ein Buch.","Sie","Pronomen"],["Sie liest ein Buch.","ein","Artikel"],["Die Freude war groß.","Freude","Nomen"],["Die Freude war groß.","groß","Adjektiv"],
+ ["Lisa malt ein Bild.","malt","Verb"],["Ich komme, aber erst später.","aber","Konjunktion"],["Trotz des Regens spielen wir.","Trotz","Präposition"],["Wir sehen uns bald.","bald","Adverb"],["Das Pferd frisst Heu.","Das","Artikel"]];
+const SDW_WORTARTEN=[["Für","Präposition"],["die","Artikel"],["Johanniter","Nomen"],["Weihnachtspakete","Nomen"],["sammeln","Verb"],["wir","Pronomen"],["Lebensmittel","Nomen"],["und","Konjunktion"],["Hygieneartikel","Nomen"]];
+const SATZGLIEDER=[["Subjekt","Wer oder was?","Der Lehrer"],["Prädikat","Was tut …?","erklärt"],["Objekt im 3. Fall","Wem?","den Kindern"],["Art-Ergänzung","Wie? / Wie sehr?","schnell"],
+ ["Zeit-Ergänzung","Wann? / Wie lange? / Seit wann? / Bis wann?","am Morgen"],["Orts-Ergänzung","Wo? / Wohin? / Woher?","in der Klasse"],["Objekt im 4. Fall","Wen oder was?","die Aufgabe"],["Begründungs-Ergänzung","Wieso? / Weshalb? / Warum?","wegen des Tests"]];
+const FRESCH=[["Sprechen – Hören – Schwingen","👂","Sprich das Wort deutlich. In jeder Silbe ist ein Königsbuchstabe (a e i o u)."],["Ableiten","⚡","Suche ein verwandtes Wort: Nägel → Nagel, Mäuse → Maus, er fällt → fallen"],
+ ["Wort verlängern","↪️","Bilde bei Nomen die Mehrzahl: Hand → Hände. Steigere Adjektive: klug → klüger. Jetzt hörst du den Schluss."],["Merkwörter","Ⓜ️","Schwierige Stellen, die man nicht erklären kann, muss man sich merken: Vater, Tiger"],
+ ["Groß- oder Kleinschreibung","🔠","Nur Nomen schreibt man groß! Setze der/die/das oder ein/eine davor."],["Wortbausteine","🧱","Vorsilben, Endsilben, Wortstämme schreibt man immer gleich: vertauschen, vorlaufen, eifrig, fahren → Fahrzeug"],
+ ["Wörterbuch","📕","Fachbegriffe und schwierige Wörter im Wörterbuch nachschlagen."]];
+
+const CHORES=[{en:"feed my pet",de:"mein Haustier füttern",bild:"feed",alt:["feed my pets"]},{en:"clean my pet's cage",de:"den Käfig meines Haustiers sauber machen",bild:"cage",alt:["clean my pets cage"]},
+ {en:"make my bed",de:"mein Bett machen",bild:"makebed"},{en:"clean the bathroom",de:"das Badezimmer putzen",bild:"bathroom"},{en:"take out the rubbish",de:"den Müll rausbringen",bild:"takeout"},
+ {en:"help with the cooking",de:"beim Kochen helfen",bild:"cook"},{en:"load and empty the dishwasher",de:"die Spülmaschine ein- und ausräumen",bild:"load"},{en:"make breakfast",de:"Frühstück machen",bild:"breakfast"},
+ {en:"hoover the living room",de:"das Wohnzimmer staubsaugen",bild:"hoover"},{en:"tidy my bedroom",de:"mein Zimmer aufräumen",bild:"tidy"}];
+const HAEUFIG=[["always","immer",7],["usually","normalerweise",6],["often","oft",4],["sometimes","manchmal",2],["never","nie",0]];
+
+/* MATHE: Bilder für Brüche */
+function balkenSVG(z,n){const w=Math.min(320,n*40),h=44,st=w/n;let r="";for(let i=0;i<n;i++)r+=`<rect x="${i*st+1}" y="1" width="${st-2}" height="${h-2}" rx="4" fill="${i<z?"var(--fach)":"var(--surface)"}" stroke="var(--fg)" stroke-width="1.5"/>`;
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="Streifen">${r}</svg>`}
+function kreisSVG(z,n,gr=120){const r=gr/2-4,c=gr/2;let t="";for(let i=0;i<n;i++){const a1=-Math.PI/2+i*2*Math.PI/n,a2=a1+2*Math.PI/n;
+  t+=`<path d="M${c} ${c} L${c+r*Math.cos(a1)} ${c+r*Math.sin(a1)} A${r} ${r} 0 0 1 ${c+r*Math.cos(a2)} ${c+r*Math.sin(a2)} Z" fill="${i<z?"var(--fach)":"var(--surface)"}" stroke="var(--fg)" stroke-width="1.5"/>`}
+  return `<svg viewBox="0 0 ${gr} ${gr}" width="${gr}" height="${gr}" role="img" aria-label="Kreis">${t}</svg>`}
+function strahlSVG(z,n){const w=300,x0=20,e=(w-40)/2,step=e/n;let t=`<line x1="${x0}" y1="50" x2="${w-6}" y2="50" stroke="var(--fg)" stroke-width="2"/><path d="M${w-12} 44 L${w-4} 50 L${w-12} 56" fill="none" stroke="var(--fg)" stroke-width="2"/>`;
+  for(let i=0;i<=2*n;i++){const x=x0+i*step,gross=i%n===0;t+=`<line x1="${x}" y1="${gross?40:44}" x2="${x}" y2="${gross?60:56}" stroke="var(--fg)" stroke-width="${gross?2.5:1.5}"/>`;if(gross)t+=`<text x="${x}" y="78" text-anchor="middle" font-size="15" font-weight="800" fill="var(--fg)">${i/n}</text>`}
+  const xp=x0+z*step;t+=`<path d="M${xp} 34 L${xp} 14 M${xp-6} 26 L${xp} 34 L${xp+6} 26" stroke="var(--bad)" stroke-width="3" fill="none"/>`;
+  return `<svg viewBox="0 0 ${w} 86" width="${w}" height="86" role="img" aria-label="Zahlenstrahl">${t}</svg>`}
+function feldSVG(){let t="";for(let r=0;r<6;r++)for(let c=0;c<10;c++){const f=r===0?"#d64545":(r<=3&&c<2)?"#2e9e5b":(r<=3&&c<6)?"#2f6fd6":"var(--surface)";t+=`<rect x="${4+c*24}" y="${4+r*20}" width="24" height="20" fill="${f}" stroke="var(--fg)" stroke-width="1"/>`}
+  return `<svg viewBox="0 0 248 128" width="248" height="128" role="img" aria-label="Erdbeerfeld">${t}</svg>`}
+
 const THEMEN=[
 /* ---------------------------------------------------------------- DEUTSCH */
-{id:"d-praesens",fach:"deutsch",titel:"Das Präsens",quelle:"Beispiel",probe:null,
- merke:`<h2>Das Präsens (Gegenwart)</h2>
- <h3>Wann verwendet man das Präsens?</h3>
- <ul><li>Was <b>gerade jetzt</b> passiert: <i>Maja liest gerade ein Buch.</i></li>
- <li>Was <b>regelmäßig</b> passiert: <i>Ich gehe jeden Tag zur Schule.</i></li>
- <li>Was <b>immer gilt</b>: <i>Die Erde dreht sich um die Sonne.</i></li>
- <li>Mit Zeitangabe auch für die <b>Zukunft</b>: <i>Morgen schreiben wir eine Probe.</i></li></ul>
- <h3>Wie bildet man das Präsens?</h3>
- <div class="merk"><b>Wortstamm + Personalendung</b></div>
- <div class="tabwrap"><table><tr><th>Person</th><th>spielen</th><th>Endung</th></tr>
- <tr><td>ich</td><td>spiel<b>e</b></td><td>-e</td></tr><tr><td>du</td><td>spiel<b>st</b></td><td>-st</td></tr>
- <tr><td>er / sie / es</td><td>spiel<b>t</b></td><td>-t</td></tr><tr><td>wir</td><td>spiel<b>en</b></td><td>-en</td></tr>
- <tr><td>ihr</td><td>spiel<b>t</b></td><td>-t</td></tr><tr><td>sie</td><td>spiel<b>en</b></td><td>-en</td></tr></table></div>
- <p>Achtung: Manche Verben ändern bei <b>du</b> und <b>er/sie/es</b> den Selbstlaut: laufen → du l<b>ä</b>ufst, lesen → er l<b>ie</b>st, essen → du <b>i</b>sst, fahren → du f<b>ä</b>hrst</p>`,
+{id:"d-zeiten",fach:"deutsch",titel:"Die Zeiten",quelle:"Heft 07.10.",probe:null,
+ merke:`<h2>Die Zeiten</h2>
+ <div class="tabwrap"><table><tr><th>Zeitform</th><th>Wann?</th><th>Beispiel</th></tr>
+ ${ZEITEN.map(([n,d,w,b])=>`<tr><td><b>${n}</b><br><span class="muted">${d}</span></td><td>${w}</td><td>${b}</td></tr>`).join("")}</table></div>
+ <div class="merk">Futur 1 = <b>werden</b> + Grundform · Perfekt = <b>haben/sein</b> + ge…t/ge…en · Plusquamperfekt = <b>hatte/war</b> + ge…t/ge…en · Futur 2 = <b>werden</b> + ge…en + <b>sein/haben</b></div>
+ <p class="muted">Achtung: „Morgen sammeln wir …“ ist Präsens mit einer Zeitangabe. Futur 1 heißt: „Wir <b>werden</b> … <b>sammeln</b>.“</p>`,
  karten:[
-  karte("Was ist das Präsens?","Das Präsens ist die <b>Gegenwartsform</b> eines Verbs. Es zeigt, was jetzt passiert, was regelmäßig passiert oder was immer gilt."),
-  mc("Wofür verwendet man das Präsens?","für das, was jetzt passiert oder immer gilt",["nur für Dinge, die gestern passiert sind","nur für Befehle","nur in Gedichten"],"Das Präsens ist die Gegenwart: jetzt, regelmäßig, immer."),
-  karte("Nenne die vier Situationen, in denen man das Präsens verwendet.","1. was gerade passiert<br>2. was regelmäßig passiert<br>3. was immer gilt<br>4. mit Zeitangabe für die Zukunft (<i>Morgen fahren wir …</i>)"),
-  mc("In welchem Satz steht das Präsens?","Maja liest ein Buch.",["Maja las ein Buch.","Maja hat ein Buch gelesen.","Maja wird ein Buch lesen."],"„liest“ ist Gegenwart. Die anderen: Präteritum, Perfekt, Futur."),
-  mc("„Die Erde dreht sich um die Sonne.“ Warum steht dieser Satz im Präsens?","weil es immer gilt",["weil es gestern passiert ist","weil es ein Befehl ist","weil es nur einmal passiert"],"Allgemeine Wahrheiten stehen im Präsens."),
-  mc("„Morgen schreiben wir eine Probe.“ Wann passiert das?","in der Zukunft",["jetzt gerade","in der Vergangenheit","jeden Tag"],"Das Verb steht im Präsens, aber „morgen“ zeigt: Es geht um die Zukunft."),
-  karte("Wie bildet man das Präsens?","<b>Wortstamm + Personalendung</b><br>ich spiel-e, du spiel-st, er spiel-t, wir spiel-en, ihr spiel-t, sie spiel-en"),
-  text(`Setze ins Präsens: du ${L} (laufen)`,["du läufst","läufst"],"laufen → du l<b>ä</b>ufst (a wird zu ä)"),
-  text(`Setze ins Präsens: er ${L} (lesen)`,["er liest","liest"],"lesen → er l<b>ie</b>st"),
-  text(`Setze ins Präsens: ihr ${L} (spielen)`,["ihr spielt","spielt"],"ihr → Endung -t: ihr spielt"),
-  text(`Setze ins Präsens: sie (eine Person) ${L} (essen)`,["sie isst","isst"],"essen → sie <b>i</b>sst (mit ss)"),
-  text(`Setze ins Präsens: du ${L} (fahren)`,["du fährst","fährst"],"fahren → du f<b>ä</b>hrst"),
-  text(`Setze ins Präsens: es ${L} (geben)`,["es gibt","gibt"],"geben → es g<b>i</b>bt"),
-  mc("Setze ins Präsens: „Wir gingen nach Hause.“","Wir gehen nach Hause.",["Wir sind nach Hause gegangen.","Wir werden nach Hause gehen.","Wir gangen nach Hause."],"gingen (Präteritum) → gehen (Präsens)"),
-  mc("Welche Endung hat das Verb bei „du“ im Präsens?","-st",["-t","-e","-en"],"du spiel<b>st</b>, du mach<b>st</b>"),
-  mc("Welches deutsche Wort passt zu „Präsens“?","Gegenwart",["Vergangenheit","Zukunft","Befehlsform"],"Präsens = Gegenwart"),
+  ...ZEITEN.map(([n,d],i)=>mc(`Wie heißt die Zeitform <b>${n}</b> auf Deutsch?`,d,ZEITEN.filter(z=>z[0]!==n).map(z=>z[1]).slice(i%2,i%2+3),`${n} = ${d}`)),
+  ...ZEITEN.map(([n,d,w])=>mc(`Welche Zeitform passt?<br>„${w}“`,n,ZEITEN.filter(z=>z[0]!==n).map(z=>z[0]).slice(0,3),`${w} → ${n} (${d})`)),
+  ...[["Wir sammeln Lebensmittel.","Präsens"],["Wir sammelten Lebensmittel.","Präteritum"],["Wir haben Lebensmittel gesammelt.","Perfekt"],["Wir hatten Lebensmittel gesammelt.","Plusquamperfekt"],
+   ["Wir werden Lebensmittel sammeln.","Futur 1"],["Wir werden Lebensmittel gesammelt haben.","Futur 2"],["Ich fuhr mit dem Bus.","Präteritum"],["Ich bin mit dem Bus gefahren.","Perfekt"],
+   ["Sie wird mit dem Bus gefahren sein.","Futur 2"],["Ich werde morgen Fußball spielen.","Futur 1"],["Er hatte gegessen, bevor er ging.","Plusquamperfekt"],["Ich fahre mit dem Bus.","Präsens"]]
+   .map(([s,z],i)=>mc(`In welcher Zeitform steht der Satz?<br>„${s}“`,z,ZEITEN.map(x=>x[0]).filter(x=>x!==z).slice(i%3,i%3+3),`„${s}“ → ${z}`)),
+  mc("„Morgen sammeln wir Lebensmittel.“ – Welche Zeitform ist das?","Präsens",["Futur 1","Futur 2","Perfekt"],"Das Verb „sammeln“ steht im Präsens. Nur „morgen“ zeigt die Zukunft. Futur 1 wäre: „Wir werden morgen Lebensmittel sammeln.“"),
+  text("Setze ins <b>Perfekt</b>: ich spiele",["ich habe gespielt"],"ich <b>habe</b> ge<b>spielt</b>"),
+  text("Setze ins <b>Präteritum</b>: ich fahre",["ich fuhr"],"ich <b>fuhr</b>"),
+  text("Setze ins <b>Futur 1</b>: wir sammeln",["wir werden sammeln"],"wir <b>werden sammeln</b>"),
+  text("Setze ins <b>Plusquamperfekt</b>: sie spielt",["sie hatte gespielt"],"sie <b>hatte</b> ge<b>spielt</b>"),
+  text("Setze ins <b>Perfekt</b>: ich fahre",["ich bin gefahren"],"ich <b>bin</b> ge<b>fahren</b> (bei Bewegung oft mit „sein“)"),
+  mc("Welche Zeitform ist die Erzählzeit beim <b>Schreiben</b>?","Präteritum",["Perfekt","Präsens","Futur 1"],"Präteritum = Erzählzeit beim Schreiben"),
+  mc("Welche Zeitform ist die Erzählzeit beim <b>Sprechen</b>?","Perfekt",["Präteritum","Plusquamperfekt","Futur 2"],"Perfekt = Erzählzeit beim Sprechen"),
+  satz("Bau den Satz im <b>Futur 1</b>:","Ich werde morgen Fußball spielen."),
+  satz("Bau den Satz im <b>Plusquamperfekt</b>:","Sie hatte ein Spiel gespielt, bevor sie Hausaufgaben machte."),
+  paare("Ordne zu",ZEITEN.slice(0,6).map(([n,d])=>[n,d])),
+ ]},
+{id:"d-wortarten",fach:"deutsch",titel:"Die Wortarten",quelle:"Heft 05.10.",probe:null,
+ merke:`<h2>Die Wortarten</h2>
+ <div class="tabwrap"><table class="vokabeln">${WORTARTEN.map(w=>`<tr><td><span class="mini">${wsym(w.sym,w.farbe)}</span></td><td><b>${w.n}</b><br><span class="muted">${w.d}</span></td><td>${w.info}</td></tr>`).join("")}</table></div>
+ <div class="merk">Nur <b>Nomen</b> schreibt man groß (und die Höflichkeitsform <b>Sie</b>). Alle anderen Wortarten klein.</div>`,
+ karten:[
+  ...WA_SAETZE.map(([s,w,a],i)=>mc(`Welche Wortart ist das markierte Wort?<br>„${s.replace(new RegExp(`(^|[\\s„])${w}(?=[\\s.,!?])`),`$1<span class="wort">${w}</span>`)}“`,a,WORTARTEN.map(x=>x.n).filter(x=>x!==a).sort((p,q)=>((p.length*7+i)%5)-((q.length*7+i)%5)).slice(0,3),`„${w}“ → ${a}`)),
+  ...WORTARTEN.map((w,i)=>mc(`Wie heißt die Wortart <b>${w.n}</b> noch?`,w.d,WORTARTEN.filter(x=>x!==w).map(x=>x.d).slice(i%4,i%4+3),`${w.n} = ${w.d}`)),
+  mc("Was machen Konjunktionen (Bindewörter)?","Sie verbinden Sätze und Satzteile miteinander.",["Sie stehen für ein Nomen.","Sie drücken Gefühle aus.","Sie bezeichnen eine Menge."],"und, aber, weil, dass … verbinden Sätze und Satzteile."),
+  mc("Was machen Präpositionen (Verhältniswörter)?","Sie geben ein Verhältnis an: Ort, Zeit, Art/Weise, Grund.",["Sie verbinden Sätze.","Sie stehen für ein Nomen.","Sie drücken Laute aus."],"z. B. auf, unter, seit, mit, wegen"),
+  mc("Was machen Pronomen (Fürwörter)?","Sie stehen für Nomen.",["Sie verbinden Sätze.","Sie geben eine Anzahl an.","Sie beschreiben, wie etwas ist."],"ich, du, er, sie, es, wir, ihr, sie"),
+  mc("Was drücken Interjektionen (Ausrufewörter) aus?","Laute, Gefühle, Gedanken und Empfindungen",["Orte und Zeiten","Mengen und Zahlen","Tätigkeiten"],"Hallo! Aua! Puh! Hilfe!"),
+  mc("Was bezeichnen Numerale (Zahlwörter)?","die Menge, die Anzahl oder einen Rang",["eine Tätigkeit","ein Gefühl","einen Ort"],"eins, hundert, erstens, ein Viertel"),
+  mc("Was sagen Adverbien (Umstandswörter)?","wann oder wie etwas gemacht wird",["wer etwas macht","wie viele es sind","welches Geschlecht ein Nomen hat"],"oft, gestern, bald, immer, sofort …"),
+  mc("Welche Artikel sind <b>unbestimmt</b>?","ein, eine",["der, die, das","mein, dein","dieser, jener"],"bestimmt: der, die, das · unbestimmt: ein, eine"),
+  mc("Mit welcher Frage fragt man nach dem 3. Fall?","Wem?",["Wer oder was?","Wessen?","Wen oder was?"],"1. Fall: Wer oder was? · 2. Fall: Wessen? · 3. Fall: Wem? · 4. Fall: Wen oder was?"),
+  mc("Mit welcher Frage fragt man nach dem 4. Fall?","Wen oder was?",["Wem?","Wessen?","Wer oder was?"],"4. Fall: Wen oder was?"),
+  mc("Welche Wortart schreibt man groß?","Nomen",["Verben","Adjektive","Präpositionen"],"Nur Nomen werden großgeschrieben."),
+  paare("Ordne zu",WORTARTEN.slice(0,5).map(w=>[w.n,w.d])),
+  paare("Ordne zu",WORTARTEN.slice(5).map(w=>[w.n,w.d])),
+ ]},
+{id:"d-satzglieder",fach:"deutsch",titel:"Satzglieder",quelle:"Arbeitsblatt Satzglieder",probe:null,
+ merke:`<h2>Satzglieder</h2>
+ <p>Ein Satz besteht aus <b>Bausteinen</b>, den <b>Satzgliedern</b>. Jedes Satzglied besteht aus <b>einem oder mehreren Wörtern</b>. Satzglieder bestimmt man mit <b>Fragen</b>.</p>
+ <p class="lp-hinweis">Der Lehrer · erklärt · den Kindern · schnell · am Morgen · in der Klasse · die Aufgabe · wegen des Tests.</p>
+ <div class="tabwrap"><table><tr><th>Satzglied</th><th>Frage</th><th>Beispiel</th></tr>${SATZGLIEDER.map(([n,f,b])=>`<tr><td><b>${n}</b></td><td>${f}</td><td>${b}</td></tr>`).join("")}</table></div>`,
+ karten:[
+  karte("Was sind Satzglieder?","Die <b>Bausteine</b> eines Satzes. Ein Satzglied besteht aus einem oder mehreren Wörtern. Man bestimmt sie mit <b>Fragen</b>."),
+  ...SATZGLIEDER.map(([n,f],i)=>mc(`Mit welcher Frage findest du das <b>${n}</b>?`,f,SATZGLIEDER.filter(x=>x[0]!==n).map(x=>x[1]).slice(i%5,i%5+3),`${n}: ${f}`)),
+  ...SATZGLIEDER.map(([n,f,b],i)=>mc(`„Der Lehrer erklärt den Kindern schnell am Morgen in der Klasse die Aufgabe wegen des Tests.“<br>Welches Satzglied ist <b>„${b}“</b>?`,n,SATZGLIEDER.filter(x=>x[0]!==n).map(x=>x[0]).slice(i%5,i%5+3),`Frage: ${f} → ${b}`)),
+  ...[["Am Freitag schenkt Oma ihrer Enkelin im Garten fröhlich ein Buch.",[["Am Freitag","Zeit-Ergänzung"],["schenkt","Prädikat"],["Oma","Subjekt"],["ihrer Enkelin","Objekt im 3. Fall"],["im Garten","Orts-Ergänzung"],["fröhlich","Art-Ergänzung"],["ein Buch","Objekt im 4. Fall"]]],
+   ["Wegen des Regens bleiben die Kinder heute zu Hause.",[["Wegen des Regens","Begründungs-Ergänzung"],["bleiben","Prädikat"],["die Kinder","Subjekt"],["heute","Zeit-Ergänzung"],["zu Hause","Orts-Ergänzung"]]]]
+   .flatMap(([s,teile])=>teile.map(([t,n],i)=>mc(`„${s}“<br>Welches Satzglied ist <b>„${t}“</b>?`,n,SATZGLIEDER.map(x=>x[0]).filter(x=>x!==n).slice(i%5,i%5+3),`„${t}“ → ${n} (${SATZGLIEDER.find(x=>x[0]===n)[1]})`))),
+  paare("Ordne die Fragen zu",SATZGLIEDER.slice(0,4).map(([n,f])=>[n,f])),
+  paare("Ordne die Fragen zu",SATZGLIEDER.slice(4).map(([n,f])=>[n,f])),
+ ]},
+{id:"d-satzwoche",fach:"deutsch",titel:"Satz der Woche 8",quelle:"Heft 11.11.",probe:null,
+ merke:`<h2>Satz der Woche 8</h2>
+ <p class="lp-hinweis">Für die Johanniter-Weihnachtspakete sammeln wir Lebensmittel und Hygieneartikel.</p>
+ <h3>Großschreibung</h3><p>Für = Satzanfang · Johanniter, Weihnachtspakete, Lebensmittel, Hygieneartikel = Nomen</p>
+ <h3>Wortarten</h3>
+ <div class="tabwrap"><table>${SDW_WORTARTEN.map(([w,a])=>`<tr><td>${w}</td><td><b>${a}</b></td></tr>`).join("")}</table></div>
+ <p class="muted">Achtung: „Für“ ist eine <b>Präposition</b> (Verhältniswort), kein Adjektiv.</p>
+ <h3>Satzglieder</h3>
+ <div class="tabwrap"><table><tr><td>Subjekt (Wer oder was?)</td><td><b>wir</b></td></tr><tr><td>Prädikat (Was tut …?)</td><td><b>sammeln</b></td></tr>
+ <tr><td>Objekt im 4. Fall (Wen oder was sammeln wir?)</td><td><b>Lebensmittel und Hygieneartikel</b></td></tr>
+ <tr><td>Begründungs-Ergänzung (Warum/Wofür sammeln wir?)</td><td><b>für die Johanniter-Weihnachtspakete</b></td></tr></table></div>
+ <h3>Zeiten</h3>
+ <ul><li><b>Präsens:</b> Heute sammeln wir Lebensmittel und Hygieneartikel …</li><li><b>Präteritum:</b> Wir sammelten …</li><li><b>Perfekt:</b> Wir haben … gesammelt.</li>
+ <li><b>Futur 1:</b> Wir <b>werden</b> Lebensmittel und Hygieneartikel für die Johanniter-Weihnachtspakete <b>sammeln</b>.</li></ul>`,
+ karten:[
+  ...SDW_WORTARTEN.map(([w,a],i)=>mc(`„Für die Johanniter-Weihnachtspakete sammeln wir Lebensmittel und Hygieneartikel.“<br>Welche Wortart ist <b>„${w}“</b>?`,a,WORTARTEN.map(x=>x.n).filter(x=>x!==a).slice(i%6,i%6+3),w==="Für"?"„Für“ ist eine Präposition (Verhältniswort) – kein Adjektiv!":`„${w}“ → ${a}`)),
+  mc("Was ist das <b>Subjekt</b>? (Wer oder was sammelt?)","wir",["sammeln","Lebensmittel und Hygieneartikel","für die Johanniter-Weihnachtspakete"],"Wer sammelt? – wir"),
+  mc("Was ist das <b>Prädikat</b>? (Was tun wir?)","sammeln",["wir","Lebensmittel","Für"],"Was tun wir? – sammeln"),
+  mc("Was ist das <b>Objekt im 4. Fall</b>? (Wen oder was sammeln wir?)","Lebensmittel und Hygieneartikel",["für die Johanniter-Weihnachtspakete","wir","die Johanniter"],"Wen oder was sammeln wir? – Lebensmittel und Hygieneartikel"),
+  mc("Welches Satzglied ist „für die Johanniter-Weihnachtspakete“?","Begründungs-Ergänzung (Warum/Wofür?)",["Objekt im 4. Fall","Subjekt","Orts-Ergänzung"],"Warum/Wofür sammeln wir? – für die Weihnachtspakete. Das Objekt im 4. Fall sind die Lebensmittel und Hygieneartikel."),
+  mc("„Morgen sammeln wir Lebensmittel und Hygieneartikel.“ – Ist das Futur 1?","Nein, das ist Präsens mit Zeitangabe.",["Ja, das ist Futur 1.","Nein, das ist Perfekt."],"Futur 1 braucht „werden“: Wir werden … sammeln."),
+  satz("Bau den Satz im <b>Futur 1</b>:","Wir werden Lebensmittel und Hygieneartikel sammeln."),
+  satz("Bau den Satz im <b>Perfekt</b>:","Wir haben Lebensmittel und Hygieneartikel gesammelt."),
+  text("Setze „wir sammeln“ ins <b>Präteritum</b>.",["wir sammelten"],"wir <b>sammelten</b>"),
+ ]},
+{id:"d-tornado",fach:"deutsch",titel:"Sachtext: Tornados",quelle:"Heft 14.10. / 16.10.",probe:null,
+ merke:`<h2>Tornados 🌪️</h2>
+ <h3>Was ist ein Tornado?</h3><p>Ein Tornado ist ein großer <b>Wirbelsturm</b>. Man nennt ihn auch <b>„Windhose“</b>.</p>
+ <h3>Wo gibt es Tornados?</h3><p>Auf dem <b>Festland</b>, am häufigsten im <b>Landesinneren der USA</b> (Texas, Oklahoma, Kansas, Nebraska – die <b>Tornado-Allee</b>): jährlich etwa <b>1 200</b> Tornados. Es gibt sie auch in <b>Deutschland</b>, aber sie sind nicht so groß.</p>
+ <h3>Wie entstehen Tornados?</h3><p>Unter einer großen <b>Gewitterwolke</b> steigt <b>Warmluft spiralförmig</b> nach oben. Die Drehbewegungen werden immer schneller – wie bei der <b>Pirouette eines Eiskunstläufers</b>. An der Unterseite der Wolke wird durch <b>Wasserdampf</b> ein Schlauch sichtbar, der zur Erde führt. Es entsteht ein <b>Sog</b>.</p>
+ <h3>Wie gefährlich sind Tornados?</h3><p>Berührt der Luftschlauch den Boden, reißt er alles in die Höhe, was ihm in den Weg kommt. Schwächt sich der Tornado ab, stürzt alles wieder zu Boden.</p>
+ <h3>Wichtige Begriffe</h3>
+ <ul><li><b>Tornado-Allee:</b> Gebiet in den USA mit besonders vielen Tornados</li><li><b>Festland:</b> Land (nicht Meer)</li><li><b>500 Stundenkilometer:</b> so schnell kann der Wind in einem Tornado werden</li><li><b>Fujita-Skala (F0, F1 …):</b> damit teilt man die Stärke von Tornados ein – je höher die Zahl, desto stärker</li></ul>`,
+ karten:[
+  karte("Was ist ein Tornado?","Ein großer <b>Wirbelsturm</b>. Man nennt ihn auch <b>„Windhose“</b>."),
+  mc("Wie nennt man einen Tornado noch?","Windhose",["Windjacke","Sturmflut","Hagelsturm"],"Tornado = Windhose"),
+  mc("Wo gibt es die meisten Tornados?","im Landesinneren der USA",["auf dem Meer","in Deutschland","am Nordpol"],"z. B. Texas, Oklahoma, Kansas, Nebraska"),
+  zahl("Wie viele Tornados gibt es dort ungefähr jedes Jahr?",1200,"etwa 1 200 Tornados im Jahr"),
+  mc("Gibt es Tornados auch in Deutschland?","Ja, aber sie sind nicht so groß.",["Nein, nie.","Ja, und sie sind größer als in den USA."],"Auch in Deutschland gibt es Tornados, aber kleinere."),
+  mc("Wo entstehen Tornados?","über dem Festland",["über dem Meer","im Weltall","unter der Erde"],"Tornados entstehen über dem Festland."),
+  mc("Unter was entstehen Tornados?","unter einer großen Gewitterwolke",["unter einer Brücke","unter dem Meer","unter einem Regenbogen"],"unter einer großen Gewitterwolke"),
+  mc("Was steigt beim Entstehen spiralförmig nach oben?","Warmluft",["Kaltluft","Wasser","Sand"],"Warmluft steigt spiralförmig nach oben."),
+  mc("Womit vergleicht der Text die schneller werdenden Drehbewegungen?","mit der Pirouette eines Eiskunstläufers",["mit einem Karussell","mit einem Ventilator","mit einem fallenden Blatt"],"wie bei der Pirouette eines Eiskunstläufers"),
+  mc("Wodurch wird der Schlauch an der Wolke sichtbar?","durch Wasserdampf",["durch Rauch","durch Staub","durch Licht"],"Durch Wasserdampf wird der Schlauch sichtbar."),
+  mc("Was passiert, wenn der Luftschlauch den Boden berührt?","Er reißt alles in die Höhe, was ihm in den Weg kommt.",["Er verschwindet sofort.","Es fängt an zu schneien.","Er wird ganz langsam."],"Er reißt alles in die Höhe."),
+  mc("Was passiert, wenn sich der Tornado abschwächt?","Alles stürzt wieder zu Boden.",["Alles bleibt in der Luft.","Er wird stärker.","Es entsteht ein neuer Tornado."],"Alles stürzt wieder zu Boden."),
+  mc("Was ist die Tornado-Allee?","ein Gebiet in den USA mit besonders vielen Tornados",["eine Straße mit Bäumen","ein Tornado-Museum","ein langer Weg"],"Hier ist „Allee“ der Name für das Gebiet mit vielen Tornados."),
+  mc("Was bedeutet „Festland“?","Land, nicht Meer",["viele Dörfer","eine Insel","ein Fest im Freien"],"Festland = das Land (im Gegensatz zum Meer)"),
+  mc("Was ist die Fujita-Skala?","eine Einteilung der Stärke von Tornados",["eine Tonleiter","ein Thermometer","ein Land in Asien"],"Je höher die F-Zahl, desto stärker der Tornado."),
+  zahl("Wie viele Stundenkilometer werden im Text genannt?",500,"500 Stundenkilometer – so schnell kann der Wind werden.","km/h"),
+  karte("Erkläre in eigenen Worten, wie ein Tornado entsteht.","Unter einer großen Gewitterwolke steigt Warmluft spiralförmig nach oben. Die Drehung wird immer schneller. Durch Wasserdampf wird ein Schlauch sichtbar, der zum Boden reicht. Es entsteht ein Sog."),
+ ]},
+{id:"d-rechtschreibung",fach:"deutsch",titel:"Rechtschreib-Trainer",quelle:"Heft 28.09.",probe:null,
+ merke:`<h2>Rechtschreib-Trainer (Fresch)</h2>
+ <div class="tabwrap"><table class="vokabeln">${FRESCH.map(([n,s,e])=>`<tr><td><span class="mini"><span class="emo">${s}</span></span></td><td><b>${n}</b></td><td>${e}</td></tr>`).join("")}</table></div>`,
+ karten:[
+  ...FRESCH.map(([n,s,e],i)=>mc(`Welche Strategie ist das?<br>„${e}“`,n,FRESCH.filter(x=>x[0]!==n).map(x=>x[0]).slice(i%4,i%4+3),`${n}: ${e}`)),
+  ...[["Hand oder Hant?","Hand","Hant","Wort verlängern","die Hände → d"],["Hund oder Hunt?","Hund","Hunt","Wort verlängern","die Hunde → d"],["klug oder kluk?","klug","kluk","Wort verlängern","klüger → g"],
+   ["Berg oder Berk?","Berg","Berk","Wort verlängern","die Berge → g"],["Mäuse oder Meuse?","Mäuse","Meuse","Ableiten","Maus → äu"],["Nägel oder Negel?","Nägel","Negel","Ableiten","Nagel → ä"],
+   ["er fällt oder er fellt?","er fällt","er fellt","Ableiten","fallen → ä"],["Bäume oder Beume?","Bäume","Beume","Ableiten","Baum → äu"],["Vater oder Fater?","Vater","Fater","Merkwörter","Vater muss man sich merken."],
+   ["Tiger oder Tieger?","Tiger","Tieger","Merkwörter","Tiger muss man sich merken (klingt wie langes ie)."],["Fahrzeug oder Farzeug?","Fahrzeug","Farzeug","Wortbausteine","fahren → Fahrzeug, Wortstamm immer gleich"]]
+   .flatMap(([f,r,x,st,e])=>[mc(`Wie schreibt man es richtig?<br><b>${f}</b>`,r,[x],`${r} – ${e}`),mc(`Welche Strategie hilft dir bei <b>„${f}“</b>?`,st,FRESCH.map(x=>x[0]).filter(x=>x!==st).slice(0,3),`${st}: ${e}`)]),
+  mc("Was steckt in jeder Silbe?","ein Königsbuchstabe (a, e, i, o, u)",["ein Großbuchstabe","ein Doppelbuchstabe","ein ß"],"In jeder Silbe ist ein Königsbuchstabe."),
+  zahl("Sprechen – Hören – Schwingen: Wie viele Silben hat „To-ma-te“?",3,"To-ma-te = 3 Silben"),
+  mc("Wie findest du heraus, ob ein Wort ein Nomen ist?","Ich setze der/die/das oder ein/eine davor.",["Ich schaue, ob es lang ist.","Ich setze ein „nicht“ davor.","Ich frage: Wann?"],"Passt ein Artikel davor, ist es ein Nomen → groß."),
+  paare("Ordne zu",[["Wort verlängern","Hand → Hände"],["Ableiten","Mäuse → Maus"],["Merkwörter","Vater"],["Wortbausteine","fahren → Fahrzeug"],["Groß- oder Kleinschreibung","der/die/das davor setzen"]]),
+ ]},
+{id:"d-vorlesen",fach:"deutsch",titel:"Vorlesewettbewerb",quelle:"Heft 09.11.",probe:null,
+ merke:`<h2>Vorlesewettbewerb – Bewertungskriterien 📖</h2>
+ <h3>1) Lesetechnik</h3><ul><li>sicher und flüssig lesen</li><li>deutliche Aussprache</li><li>angemessenes Lesetempo</li><li>Pausen</li><li>sinngemäße Betonung und Stimmlage</li></ul>
+ <h3>2) Interpretation</h3><ul><li>Text inhaltlich und atmosphärisch gut erfasst und umgesetzt</li><li>Stimmung des Geschehens vermitteln</li><li>lebendig und nuancenreich gestaltet, ungekünstelt, ohne übertriebene Theatralik</li><li>Handlung bekommt durch passende Betonung eine eigene Ausdruckskraft und Dynamik</li></ul>
+ <h3>3) Textstellenauswahl</h3><ul><li>Textpassage schlüssig: Anfang, Ende, Zusammenhänge verständlich</li><li>Zeitplanung: <b>3 Minuten</b></li><li>Der Abschnitt weckt Interesse am vorgestellten Buch.</li></ul>`,
+ karten:[
+  karte("Nenne die drei Bereiche, nach denen beim Vorlesewettbewerb bewertet wird.","1) <b>Lesetechnik</b><br>2) <b>Interpretation</b><br>3) <b>Textstellenauswahl</b>"),
+  karte("Was gehört zur Lesetechnik?","sicher und flüssig lesen, deutliche Aussprache, angemessenes Lesetempo, Pausen, sinngemäße Betonung und Stimmlage"),
+  zahl("Wie viele Minuten soll die vorgelesene Textstelle dauern?",3,"Zeitplanung: 3 Minuten","min"),
+  ...[["deutliche Aussprache","Lesetechnik"],["angemessenes Lesetempo","Lesetechnik"],["Pausen","Lesetechnik"],["sicher und flüssig lesen","Lesetechnik"],["Stimmung des Geschehens vermitteln","Interpretation"],
+   ["lebendig, aber ohne übertriebene Theatralik","Interpretation"],["Anfang, Ende und Zusammenhänge sind verständlich","Textstellenauswahl"],["Der Abschnitt weckt Interesse am Buch","Textstellenauswahl"]]
+   .map(([k,b])=>mc(`Zu welchem Bereich gehört: <b>„${k}“</b>?`,b,["Lesetechnik","Interpretation","Textstellenauswahl"].filter(x=>x!==b),`${k} → ${b}`)),
+  mc("Was bedeutet „ohne übertriebene Theatralik“?","natürlich vorlesen, nicht übertrieben schauspielern",["möglichst laut schreien","ganz ohne Betonung lesen","ein Kostüm tragen"],"Lebendig lesen, aber nicht übertreiben."),
  ]},
 
 /* ---------------------------------------------------------------- ENGLISCH */
@@ -466,24 +688,546 @@ const THEMEN=[
   mc(`${L} were they in the classroom? <span class="muted">(Wann …?)</span>`,"When",["What","Where","Why"],"Wann = When"),
  ]},
 
+{id:"e-chores",fach:"englisch",titel:"Housework: Chores",quelle:"Homework 10.11.",probe:null,
+ merke:`<h2>Housework – Hausarbeit</h2>
+ <div class="tabwrap"><table class="vokabeln">${CHORES.map(c=>`<tr><td><span class="mini">${BILD[c.bild]()}</span></td><td><b>${c.en}</b></td><td>${c.de}</td></tr>`).join("")}</table></div>`,
+ karten:[
+  ...CHORES.map((c,i)=>mc(`What is she/he doing?${bild(c.bild)}`,c.en,[1,2,3].map(d=>CHORES[(i+d*3)%CHORES.length].en),`${c.en} = ${c.de}`)),
+  ...CHORES.map(c=>text(`Wie heißt das auf Englisch?<br><b>„${c.de}“</b>`,[c.en,...(c.alt||[])],`${c.de} = <b>${c.en}</b>`,"Achte auf die Schreibweise!")),
+  paare("Ordne zu",CHORES.slice(0,5).map(c=>[c.en,c.de])),
+  paare("Ordne zu",CHORES.slice(5).map(c=>[c.en,c.de])),
+ ]},
+{id:"e-haeufigkeit",fach:"englisch",titel:"Häufigkeitsadverbien",quelle:"Heft 11.11. / Buch S. 142",probe:null,
+ merke:`<h2>Häufigkeitsadverbien</h2>
+ <p>Wenn du ausdrücken willst, wie <b>häufig</b> etwas passiert, verwendest du <b>never, sometimes, often, usually</b> und <b>always</b>.</p>
+ <div class="tabwrap"><table class="vokabeln">${HAEUFIG.map(([en,de,n])=>`<tr><td><span class="mini">${oftSVG(n)}</span></td><td><b>${en}</b></td><td>${de}</td></tr>`).join("")}</table></div>
+ <div class="merk">Diese Wörter stehen <b>vor dem Verb</b>:<br>I <b>always</b> load · Holly <b>sometimes</b> load<b>s</b> · Amber <b>often</b> load<b>s</b> · They <b>never</b> load the dishwasher.</div>
+ <div class="merk">Bei <b>am, is, are</b> (Formen von <b>be</b>) stehen sie <b>nach</b> dem Verb:<br>I am <b>usually</b> tired after sports. · The Richardsons are <b>often</b> happy at home.</div>
+ <p class="muted">Vergiss nicht: he/she/it → <b>s</b> am Verb: Holly usually make<b>s</b> her bed. Jay always hoover<b>s</b> the living room.</p>`,
+ karten:[
+  karte("Wo stehen Häufigkeitsadverbien (always, often …) im Satz?","<b>Vor dem Verb</b>: Holly <b>often</b> loads the dishwasher.<br>Aber bei <b>am / is / are</b>: <b>nach</b> dem Verb: I am <b>usually</b> tired."),
+  paare("Ordne zu",HAEUFIG.map(([en,de])=>[en,de])),
+  ...HAEUFIG.map(([en,de,n],i)=>mc(`Welches Wort passt zum Bild?<div class="bild">${oftSVG(n)}</div>`,en,HAEUFIG.filter(h=>h[0]!==en).map(h=>h[0]).slice(i%2,i%2+3),`${en} = ${de}`)),
+  ...[["Holly ___ her bed in the morning. (usually / make)","usually makes"],["Jay ___ the living room. (always / hoover)","always hoovers"],["Olivia ___ the rubbish. (sometimes / take out)","sometimes takes out"],
+   ["Amber ___ the dishwasher. (often / load)","often loads"],["Luke ___ the living room. (never / tidy)","never tidies"],["Holly ___ her guinea pigs chocolate. (never / feed)","never feeds"],
+   ["Amber ___ her friend on Saturdays. (often / visit)","often visits"],["They ___ the dishwasher. (never / empty)","never empty"]]
+   .map(([s,r])=>text(s.replace("___",L),[r],r.split(" ")[0]==="never"&&s.startsWith("They")?`They → kein s: <b>${r}</b>`:`Adverb vor das Verb, he/she → s: <b>${r}</b>`,"z. B. often loads")),
+  ...[["Mr Richardson ___ happy. (usually)","is usually",["usually is","usually be"]],["Gwen ___ worried about her friend. (never)","is never",["never is","never be"]],
+   ["The students ___ very funny. (sometimes)","are sometimes",["sometimes are","sometimes be"]],["I ___ tired after sports. (usually)","am usually",["usually am","usually be"]]]
+   .map(([s,r,f])=>mc(s.replace("___",L),r,f,`Bei am/is/are steht das Adverb <b>nach</b> dem Verb: ${r}`)),
+  mc("Welcher Satz ist richtig?","Holly usually makes her bed in the morning.",["Holly usually make her bed in the morning.","Holly makes usually her bed in the morning.","Usually Holly make her bed in the morning."],"Adverb vor das Verb – und Holly = she → makes"),
+  mc("Welcher Satz ist richtig?","Mr Richardson is usually happy.",["Mr Richardson usually be happy.","Mr Richardson usually is happy.","Mr Richardson is happy usually."],"Bei is steht usually danach."),
+  satz("Bau den Satz:","Dave always hoovers the living room on Saturdays."),
+  satz("Bau den Satz:","The Richardsons are often happy at home."),
+  satz("Bau den Satz:","Luke never tidies the living room."),
+  mc("„Amber often loads the dishwasher.“ – Was heißt das?","Amber räumt oft die Spülmaschine ein.",["Amber räumt oft die Spülmaschine aus.","Amber räumt nie die Spülmaschine ein.","Amber hat die Spülmaschine eingeräumt."],"load = einräumen · empty = ausräumen"),
+  mc("„Dave sometimes takes out the rubbish.“ – Was heißt das?","Dave bringt manchmal den Müll raus.",["Dave bringt immer den Müll raus.","Dave bringt nie den Müll raus.","Dave hat den Müll rausgebracht."],"sometimes = manchmal"),
+ ]},
+
+/* ---------------------------------------------------------------- NT */
+{id:"nt-reibung",fach:"nt",titel:"Reibungskräfte",quelle:"Arbeitsblatt 12.11.",probe:null,
+ merke:`<h2>Reibungskräfte</h2>
+ <div class="merk"><b>Merke:</b><br>• Bei der Bewegung von Körpern entstehen <b>Reibungskräfte</b>.<br>• Je <b>rauer</b> der Untergrund ist und je <b>größer</b> die Gewichtskraft, desto <b>größer</b> ist die Reibungskraft.</div>
+ <h3>1. Oberflächenbeschaffenheit</h3>
+ <div class="bild bild2"><figure><figcaption>glatt</figcaption>${reibSVG("glatt")}</figure><figure><figcaption>rau</figcaption>${reibSVG("rau")}</figure></div>
+ <p>Die Reibung ist von der <b>Oberflächenbeschaffenheit</b> abhängig. Je <b>rauer</b> die Oberfläche, desto <b>größer</b> ist die Reibungskraft.</p>
+ <h3>2. Anpresskraft</h3>
+ <div class="bild bild2"><figure><figcaption>leicht</figcaption>${reibSVG("glatt")}</figure><figure><figcaption>mit Gewicht</figcaption>${reibSVG("gewicht")}</figure></div>
+ <p>Die Reibung ist von der <b>Anpresskraft</b> abhängig. Je <b>größer</b> die Anpresskraft, desto <b>größer</b> ist die Reibungskraft.</p>
+ <p class="muted">Achtung Schreibweise: An<b>press</b>kraft – von „anpressen“ (der Klotz wird auf den Boden gedrückt).</p>
+ <h3>3. Rollen</h3>
+ <div class="bild bild2"><figure><figcaption>ohne Rollen</figcaption>${reibSVG("glatt")}</figure><figure><figcaption>mit Rollen</figcaption>${reibSVG("rollen")}</figure></div>
+ <p>Verwendet man <b>Rollen</b>, ist die Reibung besonders <b>klein</b>.</p>
+ <h3>4. Der schwere Schrank</h3>
+ <div class="bild bild2"><figure>${schrankSVG(false)}</figure><figure>${schrankSVG(true)}</figure></div>
+ <p>Um die <b>Reibung</b> zu verringern, kann man ein Gestell mit <b>Rollen</b> unter den Schrank legen. Die <b>Rollreibung</b> ist nämlich besonders klein.</p>
+ <p class="muted">Der rote Balken am Kraftmesser zeigt: So viel Kraft braucht man zum Ziehen.</p>`,
+ karten:[
+  karte("Wann entstehen Reibungskräfte?","Bei der <b>Bewegung von Körpern</b> entstehen Reibungskräfte."),
+  karte("Sag den Merksatz auf: Je rauer der Untergrund ist und …","… je größer die <b>Gewichtskraft</b>, desto <b>größer</b> ist die <b>Reibungskraft</b>."),
+  karte("Von welchen Dingen hängt die Reibungskraft ab? (Arbeitsblatt Nr. 1)","1. von der <b>Oberflächenbeschaffenheit</b> (rau oder glatt)<br>2. von der <b>Anpresskraft</b> (wie schwer der Körper ist)<br>3. ob man <b>Rollen</b> verwendet (dann ist sie besonders klein)"),
+  text(`Die Reibung ist von der ${L} abhängig.${zweiBilder(reibSVG("glatt"),reibSVG("rau"))}`,["Oberflächenbeschaffenheit"],"Glatter oder rauer Boden → die <b>Oberflächenbeschaffenheit</b> ist anders.","Ein langes Wort mit „Oberfläche…“"),
+  mc(`Je ${L} die Oberfläche, desto größer ist die Reibungskraft.`,"rauer",["glatter","kleiner","nasser"],"Je rauer die Oberfläche, desto größer die Reibungskraft."),
+  mc(`Je rauer die Oberfläche, desto ${L} ist die Reibungskraft.`,"größer",["kleiner","gleich groß"],"Rau = mehr Reibung."),
+  text(`Die Reibung ist von der ${L} abhängig.${zweiBilder(reibSVG("glatt"),reibSVG("gewicht"))}`,["Anpresskraft"],"Mit Gewicht wird der Klotz stärker auf den Boden gedrückt: <b>Anpresskraft</b> (von anpressen – nicht „Anpasskraft“).","Mit dem Gewicht wird der Klotz auf den Boden ge…"),
+  mc(`Je größer die Anpresskraft, desto ${L} ist die Reibungskraft.`,"größer",["kleiner","gleich groß"],"Mehr Gewicht = mehr Reibung."),
+  mc("Wie schreibt man das Wort richtig?","Anpresskraft",["Anpasskraft","Anpreskraft","Anbresskraft"],"An<b>press</b>kraft kommt von „anpressen“ – der Klotz wird an den Boden gepresst."),
+  text(`Verwendet man ${L}, ist die Reibung besonders klein.${bild("reib_rollen")}`,["Rollen","Räder"],"Mit <b>Rollen</b> ist die Reibung besonders klein."),
+  mc(`Verwendet man Rollen, ist die Reibung besonders ${L}.`,"klein",["groß","rau"],"Rollen machen die Reibung besonders klein."),
+  text("Wie heißt die Reibung bei Rollen und Rädern?",["Rollreibung"],"Das ist die <b>Rollreibung</b>. Sie ist besonders klein."),
+  mc(`Wie könnte man dem Mann helfen, den schweren Schrank zu verschieben?${bild("schrank")}`,"ein Gestell mit Rollen unter den Schrank legen",["noch ein Gewicht auf den Schrank stellen","den Schrank über einen rauen Teppich schieben","den Schrank mit Kleidung füllen"],"Um die Reibung zu verringern, legt man ein Gestell mit Rollen unter den Schrank. Die Rollreibung ist nämlich besonders klein."),
+  text(`Um die ${L} zu verringern, kann man ein Gestell mit Rollen unter den Schrank legen.`,["Reibung","Reibungskraft"],"Um die <b>Reibung</b> zu verringern …"),
+  mc(`Bei welchem Bild braucht man <b>mehr</b> Kraft zum Ziehen?${zweiBilder(reibSVG("glatt"),reibSVG("rau"))}`,"B",["A"],"B: Der Untergrund ist rau → größere Reibungskraft."),
+  mc(`Bei welchem Bild braucht man <b>mehr</b> Kraft zum Ziehen?${zweiBilder(reibSVG("gewicht"),reibSVG("glatt"))}`,"A",["B"],"A: Das Gewicht drückt den Klotz stärker an → größere Anpresskraft → größere Reibung."),
+  mc(`Bei welchem Bild braucht man <b>weniger</b> Kraft zum Ziehen?${zweiBilder(reibSVG("glatt"),reibSVG("rollen"))}`,"B",["A"],"B: Mit Rollen ist die Reibung besonders klein."),
+  mc("Auf welchem Untergrund ist die Reibung am größten?","Schmirgelpapier",["Eis","glatter Tisch"],"Schmirgelpapier ist sehr rau → große Reibung. Auf Eis ist die Reibung sehr klein."),
+  mc("Wann ist die Reibung am kleinsten?","Wagen mit Rollen auf glattem Boden",["schwerer Klotz auf rauem Boden","leichter Klotz auf rauem Boden","Klotz mit Gewicht auf glattem Boden"],"Rollen + glatter Boden = am wenigsten Reibung."),
+  mc("Im Merksatz steht „Gewichtskraft“. Welches Wort vom Arbeitsblatt hängt damit zusammen?","Anpresskraft",["Rollreibung","Oberflächenbeschaffenheit"],"Je schwerer der Körper (Gewichtskraft), desto stärker wird er auf den Boden gedrückt (Anpresskraft)."),
+  paare("Ordne zu",[["Oberflächenbeschaffenheit","wie rau oder glatt der Untergrund ist"],["Anpresskraft","wie stark der Körper auf den Boden drückt"],["Rollreibung","Reibung bei Rollen – besonders klein"],["Reibungskraft","entsteht bei der Bewegung von Körpern"]]),
+ ]},
+
+/* ---------------------------------------------------------------- GPG */
+{id:"g-europa",fach:"gpg",titel:"Europa: Sage, Lage & Grenzen",quelle:"Heft 15.10.",probe:null,
+ merke:`<h2>Europa begegnet uns täglich</h2>
+ <div class="bild"><span class="emo">👸 🐂 🌊 🏝️</span></div>
+ <p>Der Sage nach verliebte sich der Göttervater <b>Zeus</b> in <b>Europa</b>, die Tochter eines Königs in <b>Asien</b>. Er verwandelte sich in einen <b>Stier</b>, nahm sie auf seinen Rücken und schwamm mit ihr bis zur Insel <b>Kreta</b>. Zu Ehren Europas sollte der Kontinent, zu dem Kreta gehört, ihren Namen tragen.</p>
+ <p>Woher der Name wirklich stammt, ist nicht genau geklärt: vielleicht vom griechischen „euris“ (weit) oder von „erobos“ (dunkel), was für das <b>Abendland</b>, also den <b>Westen</b>, steht. <b>Asien</b> bedeutet dagegen <b>Morgenland</b> und meint die Länder im <b>Osten</b>.</p>
+ <h2>Lage und Grenzen Europas</h2>
+ <div class="bild">${grenzSVG(null)}</div>
+ <p>Europa liegt auf der <b>Nordhalbkugel</b> und ist im Osten mit <b>Asien</b> verbunden.</p>
+ <div class="merk">Norden: <b>Europäisches Nordmeer</b><br>Westen: <b>Atlantischer Ozean</b><br>Süden: <b>Mittelmeer</b><br>Osten: <b>Uralgebirge</b> und <b>Fluss Ural</b> (Grenze zu Asien)</div>
+ <p>Das europäische Festland erstreckt sich von Norden nach Süden über etwa <b>3 800 km</b> und von Westen nach Osten über etwa <b>6 000 km</b>.</p>`,
+ karten:[
+  karte("Erzähle die Sage von Europa.","Zeus verliebte sich in Europa, die Tochter eines Königs in Asien. Er verwandelte sich in einen <b>Stier</b> und schwamm mit ihr auf dem Rücken bis nach <b>Kreta</b>. Der Kontinent, zu dem Kreta gehört, sollte ihren Namen tragen."),
+  mc("In wen verliebte sich der Göttervater Zeus?","in Europa, die Tochter eines Königs in Asien",["in eine Göttin aus Rom","in eine Bäuerin aus Kreta","in die Königin von Ägypten"],"Europa war die Tochter eines Königs in Asien."),
+  mc("In welches Tier verwandelte sich Zeus?","in einen Stier",["in einen Adler","in ein Pferd","in einen Delfin"],"Zeus wurde zum Stier und nahm Europa auf seinen Rücken."),
+  mc("Bis zu welcher Insel schwamm Zeus mit Europa?","Kreta",["Sizilien","Island","Korsika"],"Er schwamm bis zur Insel Kreta."),
+  mc("Warum heißt unser Kontinent „Europa“? (laut Sage)","Zu Ehren Europas sollte der Kontinent, zu dem Kreta gehört, ihren Namen tragen.",["Weil Zeus dort geboren wurde.","Weil Europa eine Stadt gegründet hat.","Weil ein Stier so hieß."],"Zu Ehren Europas bekam der Kontinent ihren Namen."),
+  karte("Woher kommt der Name Europa wirklich?","Das ist <b>nicht genau geklärt</b>: vielleicht vom griechischen „euris“ (weit) oder von „erobos“ (dunkel) – das steht für das <b>Abendland</b>, also den Westen."),
+  mc("Was bedeutet „Abendland“?","der Westen",["der Osten","der Norden","der Süden"],"Abendland = Westen (dort geht die Sonne am Abend unter)."),
+  mc("Was bedeutet „Asien“?","Morgenland – die Länder im Osten",["Abendland – die Länder im Westen","das Land im Süden","das kalte Land"],"Asien = Morgenland = Länder im Osten."),
+  mc("Auf welcher Erdhalbkugel liegt Europa?","Nordhalbkugel",["Südhalbkugel"],"Europa liegt auf der Nordhalbkugel."),
+  mc("Mit welchem Kontinent ist Europa im Osten verbunden?","Asien",["Afrika","Amerika","Australien"],"Im Osten hängt Europa mit Asien zusammen."),
+  mc(`Was begrenzt Europa im <b>Norden</b>?${bild("grenze_n")}`,"das Europäische Nordmeer",["das Mittelmeer","der Atlantische Ozean","das Schwarze Meer"],"Norden: Europäisches Nordmeer"),
+  mc(`Was begrenzt Europa im <b>Westen</b>?${bild("grenze_w")}`,"der Atlantische Ozean",["das Mittelmeer","das Europäische Nordmeer","die Ostsee"],"Westen: Atlantischer Ozean"),
+  mc(`Was begrenzt Europa im <b>Süden</b>?${bild("grenze_s")}`,"das Mittelmeer",["die Nordsee","der Atlantische Ozean","das Europäische Nordmeer"],"Süden: Mittelmeer"),
+  mc(`Was bildet im <b>Osten</b> die Grenze zu Asien?${bild("grenze_o")}`,"das Uralgebirge und der Fluss Ural",["die Alpen und der Rhein","die Donau","das Mittelmeer"],"Osten: Uralgebirge und Fluss Ural"),
+  text("Wie heißt das Gebirge, das im Osten die Grenze zwischen Europa und Asien bildet?",["Ural","Uralgebirge"],"Das <b>Uralgebirge</b> (und der Fluss Ural)."),
+  paare("Ordne die Grenzen zu",[["Norden","Europäisches Nordmeer"],["Westen","Atlantischer Ozean"],["Süden","Mittelmeer"],["Osten","Uralgebirge und Fluss Ural"]]),
+  mc("Wie weit ist das europäische Festland von Norden nach Süden?","etwa 3 800 km",["etwa 380 km","etwa 38 000 km","etwa 6 000 km"],"Norden → Süden: etwa 3 800 km"),
+  mc("Wie weit ist das europäische Festland von Westen nach Osten?","etwa 6 000 km",["etwa 600 km","etwa 3 800 km","etwa 60 000 km"],"Westen → Osten: etwa 6 000 km"),
+ ]},
+{id:"g-inseln",fach:"gpg",titel:"Inseln, Halbinseln & Meere",quelle:"Heft 13.10.",probe:null,
+ merke:`<h2>Inseln und Halbinseln</h2>
+ <p>Typisch für Europa sind die vielen <b>Inseln</b> und <b>Halbinseln</b>. Zu den großen Halbinseln gehören <b>Skandinavien</b>, <b>Italien</b> und die <b>Iberische Halbinsel</b> mit Spanien und Portugal.</p>
+ <div class="merk"><b>Insel:</b> rundherum von Wasser umgeben<br><b>Halbinsel:</b> an drei Seiten von Wasser umgeben, an einer Seite mit dem Festland verbunden</div>
+ <div class="tabwrap"><table><tr><th>Halbinseln</th><th>Inseln</th></tr>
+ <tr><td>Skandinavische Halbinsel (Norwegen, Schweden)</td><td>Island</td></tr>
+ <tr><td>Iberische Halbinsel (Spanien, Portugal)</td><td>Irland, Britische Inseln</td></tr>
+ <tr><td>Apenninen-Halbinsel (Italien)</td><td>Korsika, Sardinien, Sizilien</td></tr>
+ <tr><td>Krim (im Schwarzen Meer)</td><td>Kreta</td></tr></table></div>
+ <h3>Meere und Meerengen</h3>
+ <p>Atlantischer Ozean · Europäisches Nordmeer · Nordsee · Ostsee · <b>Straße von Gibraltar</b> (zwischen Spanien und Afrika)</p>`,
+ karten:[
+  karte("Was ist typisch für Europa?","Die vielen <b>Inseln</b> und <b>Halbinseln</b>."),
+  karte("Nenne die drei großen Halbinseln Europas aus dem Heft.","<b>Skandinavien</b>, <b>Italien</b> und die <b>Iberische Halbinsel</b> mit Spanien und Portugal."),
+  mc("Was ist eine Halbinsel?","Land, das an drei Seiten von Wasser umgeben ist",["Land, das rundherum von Wasser umgeben ist","eine halb so große Insel","ein Land ohne Meer"],"Halbinsel: drei Seiten Wasser, eine Seite Festland."),
+  mc("Was ist eine Insel?","Land, das rundherum von Wasser umgeben ist",["Land, das an drei Seiten von Wasser umgeben ist","ein Berg im Meer ohne Land","ein großer See"],"Insel: ringsum Wasser."),
+  mc("Welche Länder liegen auf der Iberischen Halbinsel?","Spanien und Portugal",["Italien und Griechenland","Norwegen und Schweden","Frankreich und Spanien"],"Iberische Halbinsel = Spanien und Portugal."),
+  text(`Die Halbinsel mit Spanien und Portugal heißt ${L} Halbinsel.`,["Iberische"],"<b>Iberische</b> Halbinsel"),
+  mc("Welches Land liegt auf der Apenninen-Halbinsel?","Italien",["Spanien","Griechenland","Dänemark"],"Apenninen-Halbinsel = Italien (sieht aus wie ein Stiefel)."),
+  mc("Wie heißt die große Halbinsel im Norden Europas mit Norwegen und Schweden?","Skandinavische Halbinsel",["Iberische Halbinsel","Apenninen-Halbinsel","Krim"],"Skandinavien liegt im Norden."),
+  mc("Welche Insel liegt ganz im Nordwesten Europas, nahe am Polarkreis?","Island",["Irland","Sizilien","Kreta"],"Island liegt im Nordatlantik."),
+  mc("Die Krim ist eine Halbinsel im …","Schwarzen Meer",["Mittelmeer","Atlantischen Ozean","Nordmeer"],"Die Krim liegt im Schwarzen Meer."),
+  mc("Auf welche Insel brachte Zeus die Europa?","Kreta",["Korsika","Sardinien","Irland"],"Kreta – siehe Sage von Europa."),
+  text("Welche Meerenge trennt Spanien von Afrika? Straße von …",["Gibraltar","Straße von Gibraltar"],"Die <b>Straße von Gibraltar</b>. (Otranto ist eine andere Meerenge zwischen Italien und Albanien.)"),
+  mc("Welches Meer liegt zwischen Großbritannien und Dänemark/Deutschland?","Nordsee",["Ostsee","Mittelmeer","Schwarzes Meer"],"Die Nordsee."),
+  mc("Welches Meer liegt zwischen Deutschland, Polen, Schweden und Finnland?","Ostsee",["Nordsee","Europäisches Nordmeer","Mittelmeer"],"Die Ostsee."),
+  paare("Ordne zu",[["Island","Insel im Nordatlantik"],["Sizilien","Insel vor Italien"],["Iberische Halbinsel","Spanien und Portugal"],["Skandinavische Halbinsel","Norwegen und Schweden"],["Krim","Halbinsel im Schwarzen Meer"]]),
+ ]},
+{id:"g-klima",fach:"gpg",titel:"Klimazonen Europas",quelle:"Arbeitsblatt",probe:null,
+ merke:`<h2>Die Klimazonen Europas</h2>
+ <div class="bild">${klimaSVG()}</div>
+ <div class="tabwrap"><table><tr><th>Zone</th><th>Klima</th><th>Merkmale</th></tr>
+ <tr><td>kalte Zone</td><td>Schnee- und Eisklima</td><td>feucht, Sommer kühl, Winter kalt</td></tr>
+ <tr><td rowspan="4">gemäßigte Zone</td><td>Seeklima</td><td>feucht, Sommer kühl, Winter mild</td></tr>
+ <tr><td>Übergangsklima</td><td>zwischen See- und Landklima</td></tr>
+ <tr><td>kühles Landklima</td><td>trocken, Sommer heiß, Winter kalt</td></tr>
+ <tr><td>sommerheißes Landklima</td><td>Sommer sehr heiß</td></tr>
+ <tr><td>warme Zone</td><td>subtropisches Klima</td><td>Sommer heiß und trocken, Winter feucht und warm</td></tr></table></div>
+ <div class="merk">Je weiter man nach <b>Osten</b> kommt (weg vom Meer), desto <b>trockener</b>, die Sommer <b>heißer</b> und die Winter <b>kälter</b>.</div>
+ <p>Der <b>Golfstrom</b> (warme Meeresströmung, auf der Karte als Pfeil) bringt Wärme an die Westküste Europas.</p>`,
+ karten:[
+  mc("Welche drei Klimazonen gibt es in Europa?","kalte, gemäßigte und warme Zone",["heiße, nasse und trockene Zone","Nord-, Mittel- und Südzone","Eis-, Wald- und Wüstenzone"],"kalte Zone – gemäßigte Zone – warme Zone"),
+  mc("In welcher Klimazone liegt Deutschland?","gemäßigte Zone",["kalte Zone","warme Zone"],"Deutschland liegt in der gemäßigten Zone."),
+  mc("Welches Klima ist <b>feucht</b>, hat <b>kühle Sommer</b> und <b>milde Winter</b>?","Seeklima",["kühles Landklima","subtropisches Klima","Schnee- und Eisklima"],"Seeklima: feucht, Sommer kühl, Winter mild."),
+  mc("Welches Klima ist <b>trocken</b>, hat <b>heiße Sommer</b> und <b>kalte Winter</b>?","kühles Landklima",["Seeklima","subtropisches Klima","Übergangsklima"],"Kühles Landklima: trocken, Sommer heiß, Winter kalt."),
+  mc("Welches Klima hat <b>heiße, trockene Sommer</b> und <b>feuchte, warme Winter</b>?","subtropisches Klima",["Seeklima","kühles Landklima","Schnee- und Eisklima"],"Subtropisches Klima (warme Zone)."),
+  mc("Welches Klima ist <b>feucht</b>, hat <b>kühle Sommer</b> und <b>kalte Winter</b>?","Schnee- und Eisklima",["Seeklima","subtropisches Klima","sommerheißes Landklima"],"Schnee- und Eisklima (kalte Zone)."),
+  ...[["Madrid","subtropisches Klima"],["Rom","subtropisches Klima"],["Paris","Seeklima"],["Dublin","Seeklima"],["Berlin","Übergangsklima"],["Warschau","Übergangsklima"],["Moskau","kühles Landklima"],["Archangelsk","kühles Landklima"],["Wolgograd","sommerheißes Landklima"]]
+   .map(([s,k])=>mc(`Welches Klima hat <b>${s}</b>?`,k,["Seeklima","Übergangsklima","kühles Landklima","sommerheißes Landklima","subtropisches Klima"].filter(x=>x!==k).slice(0,3),`${s}: ${k}`)),
+  ...[["Moskau liegt in der gemäßigten Zone mit Übergangsklima.",false,"Moskau hat kühles Landklima."],["Berlin hat Seeklima.",false,"Berlin hat Übergangsklima."],
+   ["Madrid liegt in der warmen Zone mit subtropischem Klima.",true,"Richtig."],["In Paris sind die Sommer kühl und die Winter mild.",true,"Paris hat Seeklima – Sommer kühl, Winter mild. (Auf deinem Blatt fehlt hier das Kreuz!)"],
+   ["Dublin hat kühles Landklima.",false,"Dublin hat Seeklima."],["Oslo liegt in der gemäßigten Zone mit sommerheißem Landklima.",false,"Sommerheißes Landklima gibt es ganz im Südosten, z. B. Wolgograd."],
+   ["Wolgograd hat sommerheißes Landklima.",true,"Richtig."],["Berlin liegt in der gemäßigten Zone mit Übergangsklima.",true,"Richtig."],["Rom liegt in der gemäßigten Zone.",false,"Rom liegt in der warmen Zone (subtropisches Klima)."],
+   ["Warschau liegt in der gemäßigten Zone mit Übergangsklima.",true,"Richtig."],["Porto liegt in der kalten Zone.",false,"Porto liegt in der warmen Zone."],["Rom hat subtropisches Klima.",true,"Richtig."],
+   ["Reykjavik liegt in der kalten Zone.",true,"Richtig."],["Archangelsk hat kühles Landklima.",true,"Richtig."]]
+   .map(([s,w,e])=>mc(`Stimmt das?<br>„${s}“`,w?"stimmt":"stimmt nicht",[w?"stimmt nicht":"stimmt"],e)),
+  karte("Wie verändert sich das Klima in der gemäßigten Zone von Westen nach Osten?","Seeklima → Übergangsklima → Landklima: Es wird <b>trockener</b>, die Sommer werden <b>heißer</b> und die Winter <b>kälter</b>."),
+  mc("Wie heißt die warme Meeresströmung, die auf der Karte nach Europa zeigt?","Golfstrom",["Nordstrom","Rheinstrom","Polarstrom"],"Der Golfstrom bringt Wärme an die Westküste."),
+ ]},
+{id:"g-vegetation",fach:"gpg",titel:"Vegetationszonen Europas",quelle:"Arbeitsblatt",probe:null,
+ merke:`<h2>Die Vegetationszonen Europas</h2>
+ <p>Von Norden nach Süden:</p>
+ <div class="tabwrap"><table class="vokabeln">
+ <tr><td><span class="mini"><span class="emo">🧊</span></span></td><td><b>polare Kältewüste</b></td><td>fast keine Pflanzen</td></tr>
+ <tr><td><span class="mini"><span class="emo">🌿</span></span></td><td><b>Tundra</b></td><td>Moose, Flechten, niedrige Sträucher</td></tr>
+ <tr><td><span class="mini"><span class="emo">🌲</span></span></td><td><b>nördlicher Nadelwald (Taiga)</b></td><td>fast nur Nadelbäume</td></tr>
+ <tr><td><span class="mini"><span class="emo">🌳🌲</span></span></td><td><b>sommergrüner Laub- und Mischwald</b></td><td>Laub- und Nadelbäume (z. B. Deutschland)</td></tr>
+ <tr><td><span class="mini"><span class="emo">🌾</span></span></td><td><b>Steppe</b></td><td>Grasland, wenig Regen</td></tr>
+ <tr><td><span class="mini"><span class="emo">🫒</span></span></td><td><b>Hartlaubgehölze</b></td><td>Mittelmeerpflanzen, Blätter mit Wachsschicht</td></tr>
+ <tr><td><span class="mini"><span class="emo">🏜️</span></span></td><td><b>Wüste</b></td><td>sehr trocken</td></tr></table></div>
+ <div class="merk">In der <b>kalten</b> Zone gibt es nur wenige Pflanzenarten: fast nur <b>Nadelbäume</b>, niedrige <b>Sträucher</b>, Flechten, <b>Moose</b> und Gras.<br>
+ In der <b>gemäßigten</b> Zone wachsen <b>Laub</b>- und Nadelbäume. In niederschlagsärmeren Regionen haben sich <b>Grasländer</b> (Steppen) gebildet.<br>
+ In der <b>warmen</b> Zone gibt es vor allem <b>Hartlaub</b>gewächse. Ihre Blätter sind oft mit einer <b>Wachsschicht</b> überzogen. Sie verhindert ein <b>Austrocknen</b> der Pflanzen.</div>`,
+ karten:[
+  ...[[`In der ${L} Zone gibt es insgesamt nur wenige Pflanzenarten.`,["kalten"]],[`Hier (kalte Zone) gedeihen fast nur ${L}, niedrige Sträucher, Flechten, Moose und Gras.`,["Nadelbäume"]],
+   [`Hier gedeihen fast nur Nadelbäume, niedrige ${L}, Flechten, Moose und Gras.`,["Sträucher"]],[`Hier gedeihen fast nur Nadelbäume, niedrige Sträucher, Flechten, ${L} und Gras.`,["Moose"]],
+   [`In der ${L} Zone wachsen Laub- und Nadelbäume.`,["gemäßigten"]],[`In der gemäßigten Zone wachsen ${L}- und Nadelbäume.`,["Laub"]],
+   [`In den niederschlagsärmeren Regionen haben sich ${L} (Steppen) gebildet.`,["Grasländer"]],[`In der ${L} Zone gibt es vor allem Hartlaubgewächse.`,["warmen"]],
+   [`In der warmen Zone gibt es vor allem ${L}-gewächse.`,["Hartlaub"]],[`Hartlaubgewächse haben oft Blätter, die mit einer ${L} überzogen sind.`,["Wachsschicht"]],
+   [`Die Wachsschicht verhindert ein ${L} der Pflanzen.`,["Austrocknen"]]].map(([s,a])=>text(`Ergänze den Lückentext:<br>${s}`,a,`Richtig: <b>${a[0]}</b>`)),
+  mc("Was ist die Taiga?","der nördliche Nadelwald",["eine Wüste","ein Grasland","ein Laubwald am Mittelmeer"],"Taiga = nördlicher Nadelwald"),
+  mc("Was ist eine Steppe?","ein Grasland in Gebieten mit wenig Regen",["ein dichter Nadelwald","eine Eiswüste","ein Wald mit Olivenbäumen"],"Steppe = Grasland, wo es wenig regnet."),
+  mc("Wozu haben Hartlaubgewächse eine Wachsschicht auf den Blättern?","Sie verhindert das Austrocknen.",["Damit sie schöner glänzen.","Damit Tiere sie nicht fressen.","Damit sie im Winter nicht frieren."],"Die Wachsschicht schützt vor dem Austrocknen im heißen, trockenen Sommer."),
+  mc("Welche Vegetationszone gibt es rund ums Mittelmeer?","Hartlaubgehölze (Mittelmeerpflanzen)",["Taiga","Tundra","polare Kältewüste"],"Am Mittelmeer: Hartlaubgehölze."),
+  mc("Welche Vegetationszone gibt es in Deutschland?","sommergrüner Laub- und Mischwald",["Taiga","Steppe","Hartlaubgehölze"],"Deutschland: sommergrüner Laub- und Mischwald."),
+  mc("Welche Vegetationszone liegt am weitesten im Norden?","polare Kältewüste",["Taiga","Steppe","Laub- und Mischwald"],"Ganz im Norden: polare Kältewüste, dann Tundra, dann Taiga."),
+  mc(`Welche Vegetationszone passt zum Bild?<div class="bild"><span class="emo">🌲🌲🌲</span></div>`,"nördlicher Nadelwald (Taiga)",["Steppe","Hartlaubgehölze","Tundra"],"Fast nur Nadelbäume → Taiga"),
+  mc(`Welche Vegetationszone passt zum Bild?<div class="bild"><span class="emo">🌾🌾🌾</span></div>`,"Steppe",["Taiga","Hartlaubgehölze","polare Kältewüste"],"Grasland → Steppe"),
+  mc(`Welche Vegetationszone passt zum Bild?<div class="bild"><span class="emo">🫒☀️</span></div>`,"Hartlaubgehölze",["Tundra","Taiga","Steppe"],"Oliven und Sonne → Mittelmeer → Hartlaubgehölze"),
+  paare("Ordne zu: Was wächst wo?",[["Tundra","Moose, Flechten, niedrige Sträucher"],["Taiga","fast nur Nadelbäume"],["Laub- und Mischwald","Laub- und Nadelbäume"],["Steppe","Gras"],["Hartlaubgehölze","Blätter mit Wachsschicht"]]),
+ ]},
+
+/* ---------------------------------------------------------------- MUSIK */
+{id:"mu-klaviatur",fach:"musik",titel:"Die Klaviatur",quelle:"Heft 1.1",probe:null,
+ merke:`<h2>1.1 Die Klaviatur</h2>
+ <div class="bild" style="overflow-x:auto">${klavierSVG(null,true)}</div>
+ <ul><li>Die Klaviatur ist die <b>Anordnung der Tasten</b> bei einem Klavier oder Keyboard.</li>
+ <li>Die weißen Töne heißen <b>C, D, E, F, G, A</b> und <b>H</b>.</li>
+ <li>Die schwarzen Tasten sind die <b>Zwischentöne</b>.</li>
+ <li>Das Muster der schwarzen Tasten wiederholt sich immer: <b>2 schwarze</b> Tasten, <b>3 schwarze</b> Tasten.</li>
+ <li>Der Ton <b>C</b> befindet sich immer <b>direkt links</b> von der Gruppe aus <b>zwei schwarzen</b> Tasten.</li>
+ <li>Die Klaviatur ist nach dem Prinzip <b>Tonleiter</b> aufgebaut: von <b>tiefen</b> (links) zu <b>hohen</b> Tönen (rechts).</li></ul>
+ <div class="merk">Schwarze Tasten haben zwei Namen: cis/des · dis/es · fis/ges · gis/as · ais/b</div>`,
+ karten:[
+  karte("Was ist die Klaviatur?","Die <b>Anordnung der Tasten</b> bei einem Klavier oder Keyboard."),
+  mc("Wie heißen die weißen Töne?","C, D, E, F, G, A, H",["C, D, E, F, G, A, B","A, B, C, D, E, F, G","Do, Re, Mi, Fa, So"],"Die weißen Töne: C D E F G A H"),
+  mc("Was sind die schwarzen Tasten?","die Zwischentöne",["die lauten Töne","die tiefen Töne","Tasten ohne Ton"],"Schwarze Tasten = Zwischentöne"),
+  mc("Wie wiederholt sich das Muster der schwarzen Tasten?","immer 2 schwarze, dann 3 schwarze Tasten",["immer 3 schwarze Tasten","immer 1 schwarze, dann 2 schwarze","immer 4 schwarze Tasten"],"Muster: 2 – 3 – 2 – 3 …"),
+  mc("Wo befindet sich der Ton C?","immer direkt links von der Gruppe aus zwei schwarzen Tasten",["immer direkt rechts von drei schwarzen Tasten","ganz rechts auf der Klaviatur","zwischen zwei schwarzen Tasten"],"C liegt direkt links von den zwei schwarzen Tasten."),
+  mc("Wo sind auf der Klaviatur die tiefen Töne?","links",["rechts","in der Mitte","oben"],"Von tief (links) nach hoch (rechts) – wie eine Tonleiter."),
+  ...[0,1,2,3,4,5,6].map(i=>{const n=["c","d","e","f","g","a","h"][i],w=i%2?i+7:i;return text(`Welcher Ton ist markiert?<div class="bild" style="overflow-x:auto">${klavierSVG(["w",w])}</div>`,[n],`Das ist <b>${n.toUpperCase()}</b>.${n==="c"?" C liegt direkt links von den zwei schwarzen Tasten.":""}`,"Buchstabe eintippen, z. B. g")}),
+  ...[0,1,2,3,4].map(i=>text(`Wie heißt die markierte schwarze Taste?<div class="bild" style="overflow-x:auto">${klavierSVG(["s",i+(i%2?5:0)])}</div>`,SCHWARZ_NAMEN[i],`Diese Taste heißt <b>${SCHWARZ_NAMEN[i][0]}</b> oder <b>${SCHWARZ_NAMEN[i][1]}</b>.`,"Ein Name reicht, z. B. fis")),
+  paare("Ordne die beiden Namen der schwarzen Tasten zu",[["cis","des"],["dis","es"],["fis","ges"],["gis","as"],["ais","b"]]),
+ ]},
+{id:"mu-notensystem",fach:"musik",titel:"Das Notensystem",quelle:"Heft",probe:null,
+ merke:`<h2>Das Notensystem</h2>
+ <h3>Der Violinschlüssel (G-Schlüssel)</h3>
+ <div class="bild" style="overflow-x:auto">${systemSVG([0,1,2,3,4,5,6,7,8,9],true)}</div>
+ <div class="merk"><b>C</b>hristian <b>d</b>ichtet <b>e</b>inen <b>f</b>röhlichen <b>G</b>ruß <b>a</b>n <b>H</b>anna <b>C</b>lever<br>= C D E F G A H C</div>
+ <h3>Der Aufbau der Note</h3>
+ <div class="bild">${noteSVG("achtel")}</div>
+ <ul><li><b>Notenkopf</b>: der runde Teil</li><li><b>Notenhals</b>: der senkrechte Strich</li><li><b>Notenfähnchen</b>: das Fähnchen oben am Hals</li></ul>`,
+ karten:[
+  mc("Wie heißt der Notenschlüssel aus dem Heft noch?","G-Schlüssel",["C-Schlüssel","F-Schlüssel","Bass-Schlüssel"],"Violinschlüssel = G-Schlüssel"),
+  karte("Sag den Merksatz für die Töne auf.","<b>C</b>hristian <b>d</b>ichtet <b>e</b>inen <b>f</b>röhlichen <b>G</b>ruß <b>a</b>n <b>H</b>anna <b>C</b>lever = C D E F G A H C"),
+  mc("Welcher Ton kommt nach G?","A",["H","F","B"],"C D E F G <b>A</b> H"),
+  mc("Welcher Ton kommt nach A?","H",["B","C","G"],"… G A <b>H</b> C – im Deutschen heißt er H!"),
+  ...[0,1,2,3,4,5,6,7,8,9].map(p=>{const n=["c","d","e","f","g","a","h","c","d","e"][p];return text(`Wie heißt die Note?<div class="bild">${systemSVG([p])}</div>`,[n],`Das ist ein <b>${n.toUpperCase()}</b>.${p===0?" Das tiefe C steht auf einer Hilfslinie unter den Notenlinien.":""}`,"Buchstabe eintippen, z. B. f")}),
+  mc(`Wie heißt der runde Teil der Note?${bild("note_achtel")}`,"Notenkopf",["Notenhals","Notenfähnchen","Notenschlüssel"],"Der runde Teil ist der Notenkopf."),
+  mc("Wie heißt der senkrechte Strich an der Note?","Notenhals",["Notenkopf","Notenfähnchen","Taktstrich"],"Der Strich ist der Notenhals."),
+  mc("Wie heißt der kleine Bogen oben am Notenhals?","Notenfähnchen",["Notenkopf","Notenschlüssel","Notenbalken"],"Das ist das Notenfähnchen."),
+  paare("Ordne zu: Aufbau der Note",[["Notenkopf","der runde Teil"],["Notenhals","der senkrechte Strich"],["Notenfähnchen","der Bogen oben am Hals"]]),
+ ]},
+{id:"mu-takt",fach:"musik",titel:"Schläge, Takte & Notenwerte",quelle:"Heft 1.4 / 1.5",probe:null,
+ merke:`<h2>1.4 Schläge und Takte</h2>
+ <p><b>Schläge:</b> Ein Schlag ist ein gleichmäßiger <b>Grundpuls</b> in der Musik. Man kann die Schläge zum Beispiel mitklatschen oder mit dem Fuß mitwippen.</p>
+ <p><b>Takte:</b> Ein Takt fasst <b>mehrere Schläge</b> zusammen. Die einzelnen Takte werden durch <b>Taktstriche</b> voneinander getrennt.</p>
+ <h2>1.5 Notenwerte</h2>
+ <div class="bild bild2">${["ganze","halbe","viertel","achtel","16tel","32tel"].map(a=>`<figure><figcaption style="font-size:.9rem">${a==="16tel"||a==="32tel"?a:a[0].toUpperCase()+a.slice(1)}</figcaption>${noteSVG(a)}</figure>`).join("")}</div>
+ <div class="merk">Ganze Note = <b>4</b> Schläge<br>Halbe Note = <b>2</b> Schläge<br>Viertelnote = <b>1</b> Schlag</div>
+ <p>Wie eine Pizza: 1 Ganze = 2 Halbe = 4 Viertel = 8 Achtel 🍕</p>`,
+ karten:[
+  karte("Was ist ein Schlag?","Ein gleichmäßiger <b>Grundpuls</b> in der Musik. Man kann ihn mitklatschen oder mit dem Fuß mitwippen."),
+  text(`Ein Schlag ist ein gleichmäßiger ${L} in der Musik.`,["Grundpuls"],"Grund<b>puls</b> (nicht „Grundplus“) – wie der Puls am Handgelenk."),
+  mc("Was fasst ein Takt zusammen?","mehrere Schläge",["mehrere Lieder","nur einen Ton","alle Instrumente"],"Ein Takt fasst mehrere Schläge zusammen."),
+  mc("Wodurch werden die einzelnen Takte voneinander getrennt?","durch Taktstriche",["durch Notenköpfe","durch Pausen","durch den Violinschlüssel"],"Taktstriche trennen die Takte."),
+  ...[["ganze","Ganze Note"],["halbe","Halbe Note"],["viertel","Viertelnote"],["achtel","Achtelnote"],["16tel","Sechzehntelnote"]].map(([a,n],i,arr)=>mc(`Welche Note ist das?<div class="bild">${noteSVG(a)}</div>`,n,arr.filter(x=>x[1]!==n).map(x=>x[1]).slice(0,3),`Das ist eine ${n}.`)),
+  zahl("Wie viele Schläge dauert eine <b>ganze</b> Note?",4,"Ganze Note = 4 Schläge"),
+  zahl("Wie viele Schläge dauert eine <b>halbe</b> Note?",2,"Halbe Note = 2 Schläge"),
+  zahl("Wie viele Schläge dauert eine <b>Viertelnote</b>?",1,"Viertelnote = 1 Schlag"),
+  zahl("Wie viele Viertelnoten passen in eine ganze Note?",4,"1 Ganze = 4 Viertel"),
+  zahl("Wie viele halbe Noten passen in eine ganze Note?",2,"1 Ganze = 2 Halbe"),
+  zahl("Wie viele Achtelnoten passen in eine ganze Note?",8,"1 Ganze = 8 Achtel (wie 8 Pizzastücke)"),
+  paare("Ordne zu: Wie viele Schläge?",[["Ganze Note","4 Schläge"],["Halbe Note","2 Schläge"],["Viertelnote","1 Schlag"]]),
+ ]},
+{id:"mu-rhythmus",fach:"musik",titel:"Rhythmus rechnen",quelle:"Arbeitsblatt „This little piggy has rhythm“",probe:null,
+ merke:`<h2>Rhythmus rechnen</h2>
+ <p>Zähle die Schläge der Noten zusammen:</p>
+ <div class="merk">${noteSVG("ganze",1)} = 4 &nbsp;&nbsp; ${noteSVG("halbe",1)} = 2 &nbsp;&nbsp; ${noteSVG("viertel",1)} = 1</div>
+ <p>Beispiel: ${noteSVG("halbe",1)} + ${noteSVG("viertel",1)} = 2 + 1 = <b>3</b></p>`,
+ slots:8,
+ gen(){const W={ganze:4,halbe:2,viertel:1},arten=Object.keys(W),n=R(2,4),ns=Array.from({length:n},()=>pick(arten));
+  const summe=ns.reduce((s,a)=>s+W[a],0);
+  return zahl(`Wie viele Schläge sind das zusammen?<div class="bild" style="font-size:1.6rem;font-weight:800;gap:6px">${ns.map(a=>noteSVG(a)).join(" + ")}</div>`,summe,`${ns.map(a=>W[a]).join(" + ")} = ${summe}`)}},
+
 /* ---------------------------------------------------------------- MATHE */
-{id:"m-brueche",fach:"mathe",titel:"Brüche addieren & subtrahieren",quelle:"Beispiel",probe:null,
- merke:`<h2>Brüche addieren und subtrahieren</h2>
- <h3>Gleicher Nenner (gleichnamig)</h3>
- <div class="merk">Nenner bleibt gleich, nur die <b>Zähler</b> rechnen.</div>
- <p>${F(1,4)} + ${F(1,4)} = ${F(2,4)} = ${F(1,2)} &nbsp;&nbsp; ${F(1,3)} + ${F(1,3)} = ${F(2,3)}</p>
- <h3>Verschiedene Nenner (ungleichnamig)</h3>
- <div class="merk">1. <b>Hauptnenner</b> suchen (kleinste Zahl, in der beide Nenner stecken)<br>2. Beide Brüche darauf <b>erweitern</b><br>3. Zähler rechnen, am Ende <b>kürzen</b></div>
- <p>${F(1,3)} + ${F(1,4)}: Hauptnenner 12 → ${F(4,12)} + ${F(3,12)} = ${F(7,12)}</p>`,
+{id:"m-bruchteile",fach:"mathe",titel:"Bruchteile bestimmen",quelle:"Buch „Brüche“ S. 12–13, 24–29",probe:null,
+ merke:`<h2>Bruchteile bestimmen</h2>
+ <p>${F(3,4)} &nbsp; oben: <b>Zähler</b> (so viele Teile sind gefärbt) – unten: <b>Nenner</b> (in so viele <b>gleich große</b> Teile ist das Ganze geteilt)</p>
+ <div class="bild bild2"><figure><figcaption>${F(3,8)}</figcaption>${kreisSVG(3,8)}</figure><figure><figcaption>${F(2,5)}</figcaption>${balkenSVG(2,5)}</figure></div>
+ <div class="merk">Zähle zuerst <b>alle</b> gleich großen Teile (Nenner), dann die <b>gefärbten</b> Teile (Zähler).</div>
+ <p>Gleich viel wert: ${F(1,2)} = ${F(2,4)} = ${F(3,6)} = ${F(12,24)} &nbsp; (kürzen und erweitern)</p>
+ <p>Fünftel → Zehntel: jedes Fünftel noch einmal <b>halbieren</b> (falten).</p>`,
  slots:8,
  gen(){const art=R(0,3);
-  const kurz=(z,n)=>{if(z%n===0)return ` = ${z/n}`;const g=ggT(z,n);return g>1?` = ${F(z/g,n/g)} (gekürzt)`:""};
-  if(art===0){const n=R(2,12),a=R(1,n-1),b=R(1,n-1);return bruch(`${F(a,n)} + ${F(b,n)} = ?`,a+b,n,"gleich",`Gleicher Nenner: ${a} + ${b} = ${a+b} → ${F(a+b,n)}${kurz(a+b,n)}`)}
-  if(art===1){const n=R(3,12),a=R(2,n),b=R(1,a-1);return bruch(`${F(a,n)} − ${F(b,n)} = ?`,a-b,n,"gleich",`Gleicher Nenner: ${a} − ${b} = ${a-b} → ${F(a-b,n)}${kurz(a-b,n)}`)}
-  let n1,n2,a,b,H;do{n1=R(2,8);n2=R(2,8);a=R(1,n1-1);b=R(1,n2-1);H=kgV(n1,n2)}while(n1===n2||H>24||(art===3&&a*n2<=b*n1));
-  const x=a*H/n1,y=b*H/n2,plus=art===2,erg=plus?x+y:x-y;
-  return bruch(`${F(a,n1)} ${plus?"+":"−"} ${F(b,n2)} = ?`,erg,H,"gleich",`Hauptnenner ${H}: ${F(a,n1)} = ${F(x,H)}, ${F(b,n2)} = ${F(y,H)}. Dann ${x} ${plus?"+":"−"} ${y} = ${erg} → ${F(erg,H)}${kurz(erg,H)}`)}},
+  if(art===0){const n=pick([3,4,5,6,8,10,12]),z=R(1,n-1);return bruch(`Welcher Bruchteil ist gefärbt?<div class="bild">${kreisSVG(z,n)}</div>`,z,n,"gleich",`${n} gleiche Teile, ${z} davon gefärbt → ${F(z,n)}`)}
+  if(art===1){const n=R(2,10),z=R(1,n-1);return bruch(`Welcher Bruchteil ist gefärbt?<div class="bild">${balkenSVG(z,n)}</div>`,z,n,"gleich",`${n} gleiche Teile, ${z} gefärbt → ${F(z,n)}`)}
+  if(art===2){const [z,n]=pick([[1,2],[1,3],[2,3],[1,4],[3,4],[1,6],[5,6],[1,8],[3,8],[1,12],[7,12]]);return zahl(`Ein Streifen hat <b>24 Kästchen</b>. Wie viele Kästchen musst du färben für ${F(z,n)}?`,24/n*z,`24 : ${n} = ${24/n}, mal ${z} = ${24/n*z} Kästchen`)}
+  const ps=shuffle([[1,2],[1,3],[5,6],[3,8],[7,12],[13,24],[2,3],[1,4]]).slice(0,2);const [a,b]=ps[0][0]/ps[0][1]>ps[1][0]/ps[1][1]?ps:[ps[1],ps[0]];
+  return mc(`Welcher Bruch ist größer?<br>Tipp: Denk an ein Rechteck mit 24 Kästchen.`,F(a[0],a[1]),[F(b[0],b[1])],`${F(a[0],a[1])} = ${24/a[1]*a[0]} von 24 Kästchen, ${F(b[0],b[1])} = ${24/b[1]*b[0]} von 24 → ${F(a[0],a[1])} ist größer.`)}},
+{id:"m-anzahlen",fach:"mathe",titel:"Bruchteile von Anzahlen",quelle:"Buch S. 14–15",probe:null,
+ merke:`<h2>Bruchteile von Anzahlen (Mengen)</h2>
+ <div class="merk"><b>${F(3,8)} von 48</b>: erst durch den <b>Nenner</b> teilen, dann mal den <b>Zähler</b>.<br>48 : 8 = 6 &nbsp;→&nbsp; 6 · 3 = <b>18</b></div>
+ <h3>Anteil bestimmen</h3>
+ <p>2 von 9 Äpfeln sind rot → ${F(2,9)} · 35 von 140 Seiten → ${F(35,140)} = ${F(1,4)} · 75 von 100 Teilen → ${F(75,100)} = ${F(3,4)}</p>
+ <p>Der <b>Teil</b> kommt nach oben, das <b>Ganze</b> nach unten. Dann kürzen, wenn es geht.</p>`,
+ slots:8,
+ gen(){const art=R(0,2);
+  if(art<2){const n=pick([2,3,4,5,6,8,10,12]),z=R(1,n-1),k=R(2,12),x=n*k,ding=pick(["Orangen","Äpfel","Schüler","Batterien","Bonbons","Murmeln"]);
+   return zahl(`Wie viel sind ${F(z,n)} von ${x} ${ding}?`,k*z,`${x} : ${n} = ${k} → ${k} · ${z} = <b>${k*z}</b>`)}
+  const n=pick([4,5,6,8,9,10,12,20]),z=R(1,n-1),k=pick([1,1,2,3,5]),[ding,ganz]=pick([["Seiten gelesen","ein Buch hat"],["Plätze besetzt","ein Bus hat"],["Teile gelegt","ein Puzzle hat"],["Kinder haben ein Haustier","eine Klasse hat"]]);
+  const g=ggT(z,n);return bruch(`${z*k} ${ding} – ${ganz} insgesamt ${n*k}. Welcher Bruchteil ist das?`,z*k,n*k,"gleich",`Teil durch Ganzes: ${F(z*k,n*k)}${k>1||g>1?` = ${F(z/g,n/g)} (gekürzt)`:""}`)}},
+{id:"m-groessen",fach:"mathe",titel:"Bruchteile von Größen & Einheiten",quelle:"Buch S. 16–17, 24, 29",probe:null,
+ merke:`<h2>Bruchteile von Größen</h2>
+ <div class="tabwrap"><table><tr><td>1 h = 60 min</td><td>${F(1,4)} h = 15 min</td><td>${F(1,3)} h = 20 min</td><td>${F(1,2)} h = 30 min</td><td>${F(3,4)} h = 45 min</td></tr>
+ <tr><td>1 kg = 1000 g</td><td>${F(1,4)} kg = 250 g</td><td>${F(1,2)} kg = 500 g</td><td>${F(3,4)} kg = 750 g</td><td>${F(1,8)} kg = 125 g</td></tr>
+ <tr><td>1 l = 1000 ml</td><td>${F(1,4)} l = 250 ml</td><td>${F(1,2)} l = 500 ml</td><td>${F(1,10)} l = 100 ml</td><td></td></tr>
+ <tr><td>1 Tag = 24 h</td><td>${F(1,2)} Tag = 12 h</td><td>${F(1,4)} Tag = 6 h</td><td></td><td></td></tr></table></div>
+ <div class="merk">Rechne in die <b>kleinere Einheit</b> um, dann wie bei Anzahlen:<br>${F(2,3)} h = ${F(2,3)} von 60 min → 60 : 3 = 20 → 20 · 2 = <b>40 min</b></div>`,
+ slots:8,
+ gen(){const E=[["h","min",60,[2,3,4,5,6,10,12]],["Tag","h",24,[2,3,4,6,8,12]],["kg","g",1000,[2,4,5,8,10]],["l","ml",1000,[2,4,5,8,10]],["km","m",1000,[2,4,5,10]]];
+  const art=R(0,1);
+  if(art===0){const [g,k,f,ns]=pick(E),n=pick(ns),z=R(1,n+ (n>3?1:0)),wert=f/n*z;
+   return zahl(`Wandle um: ${F(z,n)} ${g} = ? ${k}`,wert,`1 ${g} = ${f} ${k} → ${f} : ${n} = ${f/n} → ${f/n} · ${z} = <b>${wert} ${k}</b>`,k)}
+  const [x,e,n,z]=pick([[12,"min",3,2],[36,"min",6,5],[60,"min",3,2],[60,"min",4,3],[8,"kg",4,3],[20,"kg",5,4],[75,"km",3,2],[100,"km",5,3],[45,"min",3,2],[90,"min",6,5],[900,"l",5,2],[1200,"l",8,5],[60,"kg",5,3],[75,"kg",5,3]]);
+  return zahl(`Berechne: ${F(z,n)} von ${x} ${e}`,x/n*z,`${x} : ${n} = ${x/n} → ${x/n} · ${z} = <b>${x/n*z} ${e}</b>`,e)}},
+{id:"m-ganzes",fach:"mathe",titel:"Das Ganze berechnen",quelle:"Buch S. 15, 25, 29",probe:null,
+ merke:`<h2>Das Ganze berechnen</h2>
+ <p>120 Kinder haben ein Handy. Das sind ${F(5,6)} der Klasse. Wie viele Kinder sind es insgesamt?</p>
+ <div class="merk">Rückwärts rechnen: erst durch den <b>Zähler</b> teilen (= ein Teil), dann mal den <b>Nenner</b> (= alle Teile).<br>120 : 5 = 24 &nbsp;→&nbsp; 24 · 6 = <b>144 Kinder</b></div>`,
+ slots:6,
+ gen(){if(Math.random()<.2)return zahl(`Von allen Kindern in Klasse 6 haben 120 ein Handy. Das sind ${F(5,6)}. Wie viele Kinder sind insgesamt in Klasse 6?`,144,`120 : 5 = 24 → 24 · 6 = <b>144</b>`);
+  const n=pick([3,4,5,6,8,10]),z=R(1,n-1),k=R(2,15),[ding,satz]=pick([["Kinder","fahren mit dem Bus"],["€","sind schon gespart"],["Seiten","sind gelesen"],["Hühner","legen weiße Eier"]]);
+  return zahl(`${z*k} ${ding} ${satz}. Das sind ${F(z,n)} vom Ganzen. Wie viel ist das Ganze?`,n*k,`${z*k} : ${z} = ${k} (ein Teil) → ${k} · ${n} = <b>${n*k}</b>`)}},
+{id:"m-gemischt",fach:"mathe",titel:"Gemischte Zahlen",quelle:"Buch S. 18–19",probe:null,
+ merke:`<h2>Gemischte Zahlen</h2>
+ <p>Ein Bruch, bei dem der Zähler größer ist als der Nenner, ist <b>größer als 1 Ganzes</b>. Man kann ihn als <b>gemischte Zahl</b> schreiben.</p>
+ <div class="bild bild2"><figure><figcaption>2${F(3,4)} = ${F(11,4)}</figcaption><div>${kreisSVG(4,4,46)}${kreisSVG(4,4,46)}${kreisSVG(3,4,46)}</div></figure></div>
+ <div class="merk"><b>Bruch → gemischte Zahl:</b> ${F(17,5)}: 17 : 5 = 3 Rest 2 → <b>3${F(2,5)}</b><br><b>Gemischte Zahl → Bruch:</b> 2${F(5,9)}: 2 · 9 + 5 = 23 → <b>${F(23,9)}</b></div>
+ <p class="muted">So gibst du sie ein: gemischte Zahl mit Leerzeichen, z. B. <b>3 2/5</b></p>`,
+ slots:8,
+ gen(){const n=pick([2,3,4,5,6,7,8,9,10,12]),g=R(1,6),r=R(1,n-1),z=g*n+r,art=R(0,2);
+  if(art===0)return bruch(`Schreibe als <b>gemischte Zahl</b>: ${F(z,n)}`,z,n,"gemischt",`${z} : ${n} = ${g} Rest ${r} → <b>${g} ${r}/${n}</b>`);
+  if(art===1)return bruch(`Schreibe als <b>Bruch</b>: ${g}${F(r,n)}`,z,n,"genau",`${g} · ${n} + ${r} = ${z} → ${F(z,n)}`);
+  const nn=pick([3,4]),gg=R(1,3),rr=R(1,nn-1);return bruch(`Schreibe als <b>gemischte Zahl</b>.<div class="bild">${Array.from({length:gg},()=>kreisSVG(nn,nn,56)).join("")}${kreisSVG(rr,nn,56)}</div>`,gg*nn+rr,nn,"gemischt",`${gg} ganze Kreise und ${rr} von ${nn} Teilen → <b>${gg} ${rr}/${nn}</b> = ${F(gg*nn+rr,nn)}`)}},
+{id:"m-zahlenstrahl",fach:"mathe",titel:"Brüche am Zahlenstrahl",quelle:"Buch S. 20–21",probe:null,
+ merke:`<h2>Brüche am Zahlenstrahl</h2>
+ <div class="bild">${strahlSVG(3,4)}</div>
+ <div class="merk">1. Zähle, in wie viele Teile die Strecke von <b>0 bis 1</b> geteilt ist → <b>Nenner</b>.<br>2. Zähle die Schritte von 0 bis zum Pfeil → <b>Zähler</b>.</div>
+ <p>Hinter der 1 geht es weiter: ${F(5,4)} = 1${F(1,4)}</p>`,
+ slots:6,
+ gen(){const n=pick([2,3,4,5,6,8,10]),z=R(1,2*n-1);return bruch(`Auf welchen Bruch zeigt der Pfeil?<div class="bild">${strahlSVG(z,n)}</div>`,z,n,"gleich",`Von 0 bis 1 sind es ${n} Teile, der Pfeil steht beim ${z}. Strich → ${F(z,n)}${z>n?` = 1 ${z-n}/${n}`:""}`)}},
+{id:"m-sachaufgaben",fach:"mathe",titel:"Sachaufgaben mit Brüchen",quelle:"Buch S. 24–25",probe:null,
+ merke:`<h2>Sachaufgaben mit Brüchen</h2>
+ <ul><li>Lies genau: Ist ein <b>Teil</b> gesucht (${F("z","n")} von …) oder das <b>Ganze</b>?</li><li>Teil: durch Nenner, mal Zähler.</li><li>Rest: Ganzes minus Teil, oder 1 − Bruch.</li><li>Überschlage zuerst und prüfe am Ende, ob das Ergebnis passt.</li></ul>
+ <h3>Erdbeerfeld (60 Teile)</h3><div class="bild">${feldSVG()}</div>`,
+ karten:[
+  bruch(`Erdbeerfeld mit 60 Teilen: Welcher Anteil wird am <b>Montag</b> (rot) geerntet?<div class="bild">${feldSVG()}</div>`,10,60,"gleich","10 von 60 Teilen → <b>1/6</b>"),
+  bruch(`Welcher Anteil wird am <b>Dienstag</b> (grün) geerntet?<div class="bild">${feldSVG()}</div>`,6,60,"gleich","6 von 60 Teilen → <b>1/10</b>"),
+  bruch(`Welcher Anteil wird am <b>Mittwoch</b> (blau) geerntet?<div class="bild">${feldSVG()}</div>`,12,60,"gleich","12 von 60 Teilen → <b>1/5</b>"),
+  zahl(`Am Donnerstag werden ${F(4,30)} des Feldes geerntet. Wie viele der 60 Teile sind das?`,8,"60 : 30 = 2 → 2 · 4 = <b>8 Teile</b>"),
+  zahl(`Am Freitag wird ${F(1,3)} des Feldes geerntet. Wie viele der 60 Teile sind das?`,20,"60 : 3 = <b>20 Teile</b>"),
+  zahl("Montag 10, Dienstag 6, Mittwoch 12, Donnerstag 8, Freitag 20 Teile. Wie viele der 60 Teile bleiben für Samstag?",4,"60 − 10 − 6 − 12 − 8 − 20 = <b>4 Teile</b> (= 1/15)"),
+  zahl("Herr Wurzer kauft eine Packung Käse mit <b>8 Käseecken</b>, insgesamt 360 g. Wie schwer ist eine Käseecke?",45,"360 g : 8 = <b>45 g</b>","g"),
+  zahl(`Der Käse besteht zu ${F(2,5)} aus Fett. Wie viel Gramm Fett hat die ganze Packung (360 g)?`,144,"360 : 5 = 72 → 72 · 2 = <b>144 g</b>","g"),
+  zahl(`Wie viel Gramm Fett hat eine Käseecke (45 g), wenn der Käse zu ${F(2,5)} aus Fett besteht?`,18,"45 : 5 = 9 → 9 · 2 = <b>18 g</b>","g"),
+  zahl(`Ein Fenster kostet 1200 €. Familie Reuter zahlt ${F(1,3)} an. Wie viel Euro sind das?`,400,"1200 : 3 = <b>400 €</b>","€"),
+  zahl(`Das Fenster kostet 1200 €, ${F(1,3)} (400 €) ist angezahlt. Wie viel muss bei Lieferung noch bezahlt werden?`,800,"1200 − 400 = <b>800 €</b> (das sind 2/3)","€"),
+  zahl(`Familie Reuter zahlt ${F(2,5)} von 1200 € an. Wie viel Euro sind das?`,480,"1200 : 5 = 240 → 240 · 2 = <b>480 €</b>","€"),
+  zahl(`Familie Reuter zahlt ${F(3,10)} von 1200 € an. Wie viel ist dann bei Lieferung noch zu zahlen?`,840,"1200 : 10 = 120 → 120 · 3 = 360 € angezahlt → 1200 − 360 = <b>840 €</b>","€"),
+  zahl(`In einen vollen Tank passen 120 l. Die Tankuhr zeigt ${F(1,2)}. Wie viele Liter sind noch im Tank?`,60,"120 : 2 = <b>60 l</b>","l"),
+  zahl(`In einen vollen Tank passen 120 l. Die Tankuhr zeigt ${F(3,4)}. Wie viele Liter sind noch im Tank?`,90,"120 : 4 = 30 → 30 · 3 = <b>90 l</b>","l"),
+  zahl(`Der Mensch besteht zu etwa ${F(3,5)} aus Wasser. Frau Heitmann wiegt 60 kg. Wie viel kg davon sind Wasser?`,36,"60 : 5 = 12 → 12 · 3 = <b>36 kg</b>","kg"),
+  zahl(`Herr Heitmann wiegt 75 kg. Wie viel kg sind Wasser (${F(3,5)})?`,45,"75 : 5 = 15 → 15 · 3 = <b>45 kg</b>","kg"),
+  zahl(`${F(3,4)} der 72 Batterien sind leer. Wie viele sind leer?`,54,"72 : 4 = 18 → 18 · 3 = <b>54</b>"),
+  zahl(`Von 96 Hühnern legen ${F(5,12)} weiße Eier. Wie viele Hühner sind das?`,40,"96 : 12 = 8 → 8 · 5 = <b>40</b>"),
+  mc("Daniel hat ein Blatt in Fünftel gefaltet. Wie bekommt er Zehntel?","Jedes Fünftel noch einmal halbieren (falten).",["Noch zweimal falten.","Das Blatt auseinanderschneiden.","Das geht nicht."],"1/5 halbiert = 1/10, weil 5 · 2 = 10"),
+ ]},
+
 ];
+
+/* ---- GPG-Buch S. 8–17: Ergänzungen (Karten hinten anhängen, damit der Lernstand bleibt) ---- */
+function klimadiagSVG(markiere){
+  const T=[-1,0,4,8,13,16,18,17,13,9,4,0],N=[50,45,50,55,80,100,95,80,60,50,60,55],x0=46,y0=172,M="JFMAMJJASOND";
+  const ty=t=>y0-t*4,ny=n=>y0-n*1.2;
+  const bars=N.map((n,i)=>`<rect x="${x0+i*20+2}" y="${ny(n)}" width="16" height="${y0-ny(n)}" fill="color-mix(in srgb, #2f6fd6 ${markiere==="n"?60:35}%, var(--surface))" stroke="none"/>`).join("");
+  const kurve=`<polyline points="${T.map((t,i)=>`${x0+i*20+10},${ty(t)}`).join(" ")}" stroke="#d64545" stroke-width="${markiere==="t"?5:3}" fill="none"/>`;
+  const achsT=[-10,0,10,20,30].map(t=>`<text x="${x0-6}" y="${ty(t)+4}" text-anchor="end" font-size="10" fill="#d64545" stroke="none">${t}</text>`).join("");
+  const achsN=[0,20,40,60,80,100].map(n=>`<text x="${x0+246}" y="${ny(n)+4}" font-size="10" fill="#2f6fd6" stroke="none">${n}</text>`).join("");
+  return sv(320,230,`<rect x="${x0}" y="40" width="240" height="${y0-40+40}" fill="var(--surface)" stroke-width="1.5"/>${bars}<line x1="${x0}" y1="${y0}" x2="${x0+240}" y2="${y0}" stroke-width="2"/>${kurve}${achsT}${achsN}
+   <text x="${x0-6}" y="34" text-anchor="end" font-size="11" font-weight="800" fill="#d64545" stroke="none">°C</text><text x="${x0+246}" y="34" font-size="11" font-weight="800" fill="#2f6fd6" stroke="none">mm</text>
+   <text x="${x0+6}" y="56" font-size="12" font-weight="800" fill="var(--fg)" stroke="none">Landshut</text><text x="${x0+234}" y="56" text-anchor="end" font-size="11" fill="var(--fg)" stroke="none">48°N/12°O</text>
+   <text x="${x0+6}" y="70" font-size="10" fill="var(--fg)" stroke="none">393 m ü. M.</text>
+   <text x="${x0+6}" y="205" font-size="12" font-weight="800" fill="#d64545" stroke="none">8,5 °C</text><text x="${x0+234}" y="205" text-anchor="end" font-size="12" font-weight="800" fill="#2f6fd6" stroke="none">824 mm</text>
+   ${[...M].map((m,i)=>`<text x="${x0+i*20+10}" y="226" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)" stroke="none">${m}</text>`).join("")}`,"Klimadiagramm Landshut (vereinfacht)")}
+const KINDER=[["Anna","Kazan (Russland)","Winter sehr kalt und lang, oft unter −20 °C; kurzer Sommer bis 20 °C, im Sommer regnet es oft","④ 55°N/50°O · 3,7 °C · 542 mm"],
+ ["Gunar","Vardø (Norwegen)","Polarnacht von November bis Januar, Polartag von Mai bis Ende Juli; Winter −3 bis −5 °C, Juli/August etwa 10 °C","② 70°N/31°O · 2,7 °C · 624 mm"],
+ ["Pierre","Brest (Frankreich, am Atlantik)","Klima vom Atlantik bestimmt: Winter selten unter 0 °C, kein Schnee, Sommer nicht zu heiß, viel Wind und Regen","③ 48°N/4°W · 10,8 °C · 1126 mm"],
+ ["Selina","Athen (Griechenland)","Sommer sehr heiß, im Juli/August über 40 °C, wenig Regen im Sommer; im Herbst und Winter öfter Regen","① 38°N/23°O · 18 °C · 402 mm"]];
+THEMEN.splice(THEMEN.findIndex(t=>t.id==="g-klima"),0,
+{id:"g-gliederung",fach:"gpg",titel:"Gliederung Europas",quelle:"Buch S. 10–12",probe:null,
+ merke:`<h2>Die Gliederung Europas</h2>
+ <p>Europa ist ein relativ kleiner Kontinent, besteht aber aus <b>48 Staaten</b> mit etwa <b>740 Millionen Einwohnern</b>. Es gibt <b>über 100</b> verschiedene Sprachen.</p>
+ <h3>Sechs Großräume</h3>
+ <div class="tabwrap"><table><tr><td><b>Nordeuropa</b></td><td>z. B. Island, Norwegen, Schweden, Finnland, Dänemark</td></tr><tr><td><b>Westeuropa</b></td><td>z. B. Großbritannien, Irland, Frankreich, Niederlande, Belgien</td></tr>
+ <tr><td><b>Mitteleuropa</b></td><td>z. B. Deutschland, Polen, Tschechien, Österreich, Schweiz</td></tr><tr><td><b>Südeuropa</b></td><td>z. B. Spanien, Portugal, Italien</td></tr>
+ <tr><td><b>Südosteuropa</b></td><td>z. B. Rumänien, Bulgarien, Serbien</td></tr><tr><td><b>Osteuropa</b></td><td>z. B. Russland, Ukraine, Belarus</td></tr></table></div>
+ <p>Die Bezeichnungen orientieren sich an den <b>Himmelsrichtungen</b>.</p>
+ <div class="merk"><b>Staat:</b> ein Gebiet mit klaren Grenzen. Er hat einen Namen, eine Nationalhymne und eine Flagge. Er regelt das Leben der Menschen mithilfe von Gesetzen. In einem Staat leben Staatsangehörige, das Volk.</div>
+ <div class="merk"><b>Skandinavien:</b> die Länder Nordeuropas (ohne Island) auf der Skandinavischen Halbinsel (Norwegen, Schweden, Finnland) sowie Dänemark. „Skandinavien“ bedeutet in einer alten Sprache „gefährliche Halbinsel“.</div>
+ <h3>Wie erkennt man Europa?</h3><p>Das Festland Europas hat die Form eines <b>Keils</b>, der nach Asien hin breiter wird. Typisch sind die Formen der großen Halbinseln Italien (wie ein <b>Stiefel</b>), Skandinavien und Spanien/Portugal.</p>
+ <p>Halbinseln und Inseln nehmen etwa <b>ein Drittel</b> der Landfläche Europas ein. Europa lässt sich nur an <b>drei Seiten</b> klar abgrenzen, weil es im Osten mit Asien verbunden ist.</p>`,
+ karten:[
+  zahl("Aus wie vielen Staaten besteht Europa?",48,"Europa besteht aus 48 Staaten."),
+  mc("Wie viele Einwohner hat Europa ungefähr?","etwa 740 Millionen",["etwa 74 Millionen","etwa 7 Milliarden","etwa 7 400"],"etwa 740 Millionen Einwohner"),
+  mc("Wie viele Sprachen gibt es in Europa?","über 100",["genau 48","etwa 10","nur 6"],"Es gibt über 100 verschiedene Sprachen."),
+  zahl("In wie viele Großräume wird Europa gegliedert?",6,"6 Großräume: Nord-, West-, Mittel-, Süd-, Südost- und Osteuropa"),
+  karte("Nenne die sechs Großräume Europas.","Nordeuropa, Westeuropa, Mitteleuropa, Südeuropa, Südosteuropa, Osteuropa"),
+  mc("Woran orientieren sich die Namen der Großräume?","an den Himmelsrichtungen",["an den Sprachen","an den Flüssen","an den Hauptstädten"],"Nord-, West-, Süd-, Osteuropa …"),
+  ...[["Deutschland","Mitteleuropa"],["Frankreich","Westeuropa"],["Norwegen","Nordeuropa"],["Spanien","Südeuropa"],["Italien","Südeuropa"],["Russland","Osteuropa"],["Polen","Mitteleuropa"],["Schweden","Nordeuropa"],["Rumänien","Südosteuropa"],["Großbritannien","Westeuropa"]]
+   .map(([l,r],i)=>mc(`Zu welchem Großraum gehört <b>${l}</b>?`,r,["Nordeuropa","Westeuropa","Mitteleuropa","Südeuropa","Südosteuropa","Osteuropa"].filter(x=>x!==r).slice(i%3,i%3+3),`${l} → ${r}`)),
+  karte("Was ist ein Staat? (Fachbegriff)","Ein Gebiet mit <b>klaren Grenzen</b>. Er hat einen <b>Namen</b>, eine <b>Nationalhymne</b> und eine <b>Flagge</b>. Er regelt das Leben mit <b>Gesetzen</b>. Die Staatsangehörigen sind das <b>Volk</b>."),
+  mc("Was gehört <b>nicht</b> zu einem Staat?","ein eigener Kontinent",["klare Grenzen","eine Flagge","eine Nationalhymne"],"Ein Staat hat Grenzen, Namen, Nationalhymne, Flagge und Gesetze."),
+  mc("Welche Länder gehören zu Skandinavien?","Norwegen, Schweden, Finnland und Dänemark",["Island, Irland und Großbritannien","Spanien und Portugal","Deutschland, Polen und Tschechien"],"Skandinavien: Norwegen, Schweden, Finnland sowie Dänemark (ohne Island)."),
+  mc("Was bedeutet „Skandinavien“ in einer alten Sprache?","gefährliche Halbinsel",["kalte Insel","Land der Wikinger","nördliches Meer"],"„gefährliche Halbinsel“"),
+  mc("Welche Form hat das Festland Europas?","die Form eines Keils, der nach Asien hin breiter wird",["die Form eines Kreises","die Form eines Sterns","die Form eines Stiefels"],"Keilform – nach Osten (Asien) wird es breiter."),
+  mc("Welche Halbinsel sieht aus wie ein Stiefel?","Italien",["Skandinavien","die Iberische Halbinsel","die Krim"],"Italien hat die Form eines Stiefels."),
+  mc("Wie viel der Landfläche Europas nehmen Halbinseln und Inseln ein?","etwa ein Drittel",["etwa die Hälfte","fast alles","etwa ein Zehntel"],"etwa ein Drittel"),
+  mc("Warum lässt sich Europa nur an drei Seiten klar abgrenzen?","Weil es im Osten mit Asien verbunden ist.",["Weil es eine Insel ist.","Weil es keine Meere gibt.","Weil es auf der Südhalbkugel liegt."],"Im Osten hängt Europa mit Asien zusammen."),
+  mc("Was teilt die Erde in eine Nord- und eine Südhalbkugel?","der Äquator",["der Ural","der Polarkreis","das Mittelmeer"],"Der Äquator."),
+ ]},
+{id:"g-klimadiagramm",fach:"gpg",titel:"Klimadiagramm & Klima der Kinder",quelle:"Buch S. 14–15",probe:null,
+ merke:`<h2>Ein Klimadiagramm lesen</h2>
+ <p>Im Klimadiagramm werden <b>Temperatur</b> und <b>Niederschlag</b> eines Ortes dargestellt. Forscher brauchen dafür die Wetterdaten von <b>30 Jahren</b> und rechnen für jeden Monat Durchschnittswerte aus.</p>
+ <div class="bild">${klimadiagSVG()}</div><p class="muted" style="text-align:center">vereinfacht nach Buch S. 14</p>
+ <ul><li><b>rote Kurve</b> = Temperatur (Skala links in °C)</li><li><b>blaue Säulen</b> = Niederschlag (Skala rechts in mm)</li><li>oben: Name, Lage (48°N/12°O) und Höhe über dem Meeresspiegel (393 m ü. M.)</li>
+ <li>unten links: <b>Jahresmitteltemperatur</b> (8,5 °C) · unten rechts: <b>Jahresniederschlag</b> = Summe aller Monate (824 mm)</li><li>unten: Anfangsbuchstaben der Monate J F M A M J J A S O N D</li></ul>
+ <div class="merk"><b>Schritt 1:</b> Lage bestimmen (Längen- und Breitengrad, Küste oder Landesinneres, Höhe).<br><b>Schritt 2:</b> Informationen erfassen: Temperaturkurve beschreiben, kältesten und wärmsten Monat nennen; wann fällt viel, wann wenig Niederschlag?</div>
+ <p><b>Mitteltemperaturen:</b> Tagesmittel = jede Stunde messen, addieren, durch 24 teilen · Monatsmittel = Tagesmittel addieren, durch die Anzahl der Tage teilen · Jahresmittel = Durchschnitt der 12 Monatsmittel.</p>
+ <h3>Menschen leben in allen Klimazonen</h3>
+ <div class="tabwrap"><table>${KINDER.map(([n,o,k,d])=>`<tr><td><b>${n}</b><br>${o}</td><td>${k}</td><td>${d}</td></tr>`).join("")}</table></div>
+ <p><b>Polarnacht:</b> Die Sonne geht nicht auf, es bleibt dunkel. <b>Polartag:</b> Es bleibt auch nachts hell.</p>`,
+ karten:[
+  mc(`Was zeigt die <b>rote Linie</b> im Klimadiagramm?${bild("kd_t")}`,"die Temperatur",["den Niederschlag","die Höhe","die Windstärke"],"Rote Kurve = Temperatur in °C"),
+  mc(`Was zeigen die <b>blauen Säulen</b>?${bild("kd_n")}`,"den Niederschlag",["die Temperatur","die Sonnenstunden","die Einwohner"],"Blaue Säulen = Niederschlag in mm"),
+  mc("In welcher Einheit wird der Niederschlag angegeben?","Millimeter (mm)",["Grad Celsius (°C)","Kilometer (km)","Liter pro Stunde"],"Niederschlag in mm"),
+  zahl("Wetterdaten von wie vielen Jahren braucht man für ein Klimadiagramm?",30,"30 Jahre","Jahre"),
+  mc("Was ist der Jahresniederschlag?","die Summe der Niederschläge aller 12 Monate",["der Niederschlag im regenreichsten Monat","der Durchschnitt der Temperaturen","der Regen an einem Tag"],"Summe der monatlichen Niederschläge"),
+  mc("Wie wird die Jahresmitteltemperatur berechnet?","Durchschnitt der zwölf Monatsmitteltemperaturen",["wärmster Monat minus kältester Monat","Temperatur am 1. Januar","Summe aller Temperaturen"],"Durchschnitt der 12 Monatsmittel"),
+  mc("Wie wird die Tagesmitteltemperatur ermittelt?","jede Stunde messen, addieren und durch 24 teilen",["mittags einmal messen","nur nachts messen","höchste und niedrigste Temperatur addieren"],"jede Stunde messen, addieren, durch 24"),
+  mc("Was machst du bei Schritt 1 „Die Lage bestimmen“?","Längen- und Breitengrad, Küste oder Landesinneres und Höhe ermitteln",["den wärmsten Monat suchen","die Säulen zählen","das Diagramm abmalen"],"Schritt 1: Lage bestimmen"),
+  mc(`Welche Jahresmitteltemperatur hat Landshut?${bild("kd")}`,"8,5 °C",["824 °C","393 °C","12 °C"],"unten links: 8,5 °C"),
+  zahl("Wie viel Niederschlag fällt in Landshut im Jahr? (mm)",824,"824 mm im Jahr","mm"),
+  mc("In welchem Monat ist es in Landshut am wärmsten?","Juli",["Januar","April","Oktober"],"Die rote Kurve ist im Juli am höchsten."),
+  ...KINDER.map(([n,o,k],i)=>mc(`Wer erzählt das?<br>„${k}“`,`${n} aus ${o}`,KINDER.filter(x=>x[0]!==n).map(x=>`${x[0]} aus ${x[1]}`),`${n} aus ${o}`)),
+  ...KINDER.map(([n,o,k,d])=>mc(`Welches Klimadiagramm gehört zu <b>${n}</b> aus ${o}?`,d,KINDER.filter(x=>x[0]!==n).map(x=>x[3]),`${n}: ${d}`)),
+  mc("Was ist die Polarnacht?","Die Sonne geht nicht auf, es bleibt dunkel.",["Es bleibt auch nachts hell.","Eine besonders warme Nacht.","Eine Nacht mit Nordlicht."],"Polarnacht: Es bleibt dunkel (in Vardø von November bis Januar)."),
+  mc("Was ist der Polartag?","Es bleibt auch in der Nacht hell.",["Es ist den ganzen Tag dunkel.","Der kälteste Tag des Jahres.","Ein Feiertag in Norwegen."],"Polartag: auch nachts hell (in Vardø Mai bis Ende Juli)."),
+  mc("Warum sinken in Brest die Temperaturen im Winter selten unter 0 °C?","weil das Klima vom Atlantischen Ozean bestimmt wird",["weil Brest in der Wüste liegt","weil Brest auf einem Berg liegt","weil es dort nie Wind gibt"],"Der Atlantik macht die Winter mild (Seeklima)."),
+ ]});
+(()=>{const t=THEMEN.find(x=>x.id==="g-europa");
+ t.merke+=`<h3>Aus dem Buch (S. 8)</h3><p>Zeus mischte sich als <b>Stier</b> unter die Viehherde des Königs. Am Strand drängten die Freundinnen Europa, sich auf seinen Rücken zu setzen. Der Stier stürzte sich ins Meer und schwamm <b>einen Tag und eine Nacht</b> bis nach <b>Kreta</b>. Dort verwandelte er sich zurück und gestand ihr seine Liebe. Europa und Zeus bekamen <b>drei Söhne</b>.</p>
+ <p>„euris“ heißt <b>weit</b>. „erebos“ heißt <b>dunkel</b> – das steht für das <b>Abendland</b>, also den Ort, wo die Sonne <b>untergeht</b> (Westen). <b>Asien</b> bedeutet <b>Morgenland</b> oder <b>Sonnenaufgang</b> (Osten).</p>`;
+ t.karten.push(
+  mc("Wie kam Zeus als Stier an Europa heran?","Er mischte sich unter die Viehherde ihres Vaters.",["Er flog als Adler zu ihr.","Er kam mit einem Schiff.","Er wartete in einer Höhle."],"Er mischte sich unter die Viehherde des Königs."),
+  mc("Wie lange schwamm der Stier mit Europa bis nach Kreta?","einen Tag und eine Nacht",["eine Woche","eine Stunde","ein Jahr"],"einen Tag und eine Nacht"),
+  zahl("Wie viele Söhne bekamen Europa und Zeus?",3,"drei Söhne"),
+  mc("Was heißt das griechische Wort „euris“?","weit",["dunkel","Westen","Stier"],"euris = weit"),
+  mc("Was heißt „erebos“?","dunkel",["weit","hell","Insel"],"erebos = dunkel → Abendland, wo die Sonne untergeht"),
+  mc("Was bedeutet der Name Asien?","Morgenland oder Sonnenaufgang",["Abendland","dunkel","weit"],"Asien = Morgenland / Sonnenaufgang (Osten)"));})();
+(()=>{const t=THEMEN.find(x=>x.id==="g-klima");
+ t.merke+=`<h3>Aus dem Buch (S. 16)</h3>
+ <p><b>Kalte Zone:</b> im Norden; kurze kühle Sommer, sehr lange kalte Winter; Niederschlag oft als Schnee, der lange liegen bleibt.</p>
+ <p><b>Gemäßigte Zone:</b> weder besonders heiß noch besonders kalt; das Wetter wird durch die Jahreszeiten bestimmt; Niederschlag das ganze Jahr. Im Westen und Nordwesten mildes <b>Seeklima</b> durch den Atlantischen Ozean: geringe Temperaturunterschiede zwischen Sommer und Winter. Der Osten hat <b>Landklima</b>: große Temperaturunterschiede.</p>
+ <p><b>Warme Zone:</b> im Süden; Sommer trocken mit hohen Temperaturen, im Winter regnet es häufiger.</p>
+ <div class="merk"><b>Klimazone:</b> Gebiete mit gleichen oder ähnlichen klimatischen Bedingungen. Sie verlaufen gürtelartig um die Erde.<br><b>Golfstrom:</b> eine warme Meeresströmung, wirkt wie eine <b>Warmwasserheizung</b>. Dadurch ist es in Westeuropa wärmer als in anderen Regionen gleicher Breitenlage. Am Nordkap hat das Wasser noch 5 °C, die Häfen Norwegens frieren im Winter nicht zu.</div>`;
+ t.karten.push(
+  karte("Was ist eine Klimazone? (Fachbegriff)","Gebiete mit <b>gleichen oder ähnlichen klimatischen Bedingungen</b>. Sie verlaufen <b>gürtelartig</b> um die Erde. Die Vegetation ist in jeder Klimazone anders."),
+  karte("Was ist der Golfstrom? (Fachbegriff)","Eine <b>warme Meeresströmung</b>. Sie wirkt wie eine <b>Warmwasserheizung</b>: Westeuropa ist dadurch wärmer als andere Regionen mit gleicher Breitenlage."),
+  mc("Womit vergleicht das Buch den Golfstrom?","mit einer Warmwasserheizung",["mit einem Kühlschrank","mit einem Ventilator","mit einem Staudamm"],"Golfstrom = Warmwasserheizung Europas"),
+  mc("Warum frieren die Häfen an der Küste Norwegens im Winter nicht zu?","dank des warmen Golfstroms",["weil dort Salz gestreut wird","weil Norwegen in der warmen Zone liegt","weil es dort nie Winter gibt"],"Der Golfstrom hält das Wasser warm (am Nordkap noch 5 °C)."),
+  mc("Was würde passieren, wenn es den Golfstrom nicht mehr gäbe?","Westeuropa würde deutlich kälter werden.",["Westeuropa würde heißer werden.","Es würde sich nichts ändern.","Das Mittelmeer würde zufrieren."],"Ohne die „Warmwasserheizung“ würde es im Westen Europas kälter."),
+  mc("Was ist typisch für die <b>kalte Zone</b>?","kurze kühle Sommer und sehr lange kalte Winter",["heiße trockene Sommer","milde Winter mit viel Regen","das ganze Jahr warm"],"Niederschlag fällt oft als Schnee, der lange liegen bleibt."),
+  mc("Was ist typisch für die <b>gemäßigte Zone</b>?","weder besonders heiß noch besonders kalt, Niederschlag das ganze Jahr",["immer Schnee und Eis","sehr heiße, trockene Sommer","kein Regen im ganzen Jahr"],"Das Wetter wird durch die Jahreszeiten bestimmt."),
+  mc("Woher kommt das milde Seeklima im Westen Europas?","vom Einfluss des Atlantischen Ozeans",["vom Uralgebirge","von der Sahara","vom Schwarzen Meer"],"Der Atlantik bestimmt das Seeklima."),
+  mc("Wie sind die Temperaturunterschiede zwischen Sommer und Winter beim <b>Landklima</b> im Osten?","groß",["gering","gar nicht vorhanden"],"Im Landklima: große Unterschiede. Im Seeklima: geringe Unterschiede."),
+  mc("In welcher Klimazone liegt Deutschland?","in der gemäßigten Zone",["in der kalten Zone","in der warmen Zone"],"Deutschland: gemäßigte Zone"));})();
+(()=>{const t=THEMEN.find(x=>x.id==="g-vegetation");
+ t.merke+=`<h3>Aus dem Buch (S. 17)</h3><ul><li>Kalte Zone: Die Anzahl der Nadelbäume <b>nimmt nach Norden hin ab</b>.</li>
+ <li>Gemäßigte Zone: <b>Laubbäume</b> werfen ihre Blätter im Winter ab, denn diese vertragen keinen Frost. Die meisten <b>Nadelbäume</b> tragen ihre Nadeln ganzjährig, sie vertragen tiefe Temperaturen.</li>
+ <li>Warme Zone: Die Wachsschicht verhindert das Austrocknen, denn es ist lange heiß und trocken. Andere Pflanzen <b>speichern Wasser</b> im Stamm oder in den Wurzeln.</li></ul>
+ <p><b>Deutschland</b> liegt in der gemäßigten Zone im Bereich des sommergrünen Laub- und Mischwalds.</p>`;
+ t.karten.push(
+  mc("Warum werfen Laubbäume im Winter ihre Blätter ab?","weil die Blätter keinen Frost vertragen",["weil sie zu schwer werden","weil Tiere sie fressen","weil es zu viel regnet"],"Blätter vertragen keinen Frost."),
+  mc("Warum behalten Nadelbäume ihre Nadeln das ganze Jahr?","weil sie tiefe Temperaturen vertragen",["weil sie nie wachsen","weil es im Norden warm ist","weil sie keine Wurzeln haben"],"Nadeln vertragen tiefe Temperaturen."),
+  mc("Wie verändert sich die Anzahl der Nadelbäume nach Norden hin?","sie nimmt ab",["sie nimmt zu","sie bleibt gleich"],"Je weiter nördlich, desto weniger Nadelbäume."),
+  mc("Wie überstehen manche Pflanzen in der warmen Zone die Trockenheit?","Sie speichern Wasser im Stamm oder in den Wurzeln.",["Sie werfen im Sommer alle Blätter ab und sterben.","Sie wachsen nur im Schnee.","Sie trinken Meerwasser."],"Wasser im Stamm oder in den Wurzeln speichern – oder Blätter mit Wachsschicht."),
+  karte("Stell dir vor, du fährst mit dem Auto von Murmansk nach Rom. Wie ändern sich Klima und Vegetation?","Von der <b>kalten Zone</b> (Tundra, Taiga) durch die <b>gemäßigte Zone</b> (Laub- und Mischwald) bis in die <b>warme Zone</b> (Hartlaubgehölze am Mittelmeer). Es wird immer wärmer, die Winter milder, die Sommer heißer und trockener."));})();
+
+/* ---- Mathe-Hefteinträge (08.10.–20.10.) ---- */
+function streifenSVG(liste){ // liste: [[z,n],...] – Bruchstreifen wie im Heft
+  const w=300,h=34;return `<svg viewBox="0 0 ${w} ${liste.length*(h+6)}" width="${w}" height="${liste.length*(h+6)}" role="img" aria-label="Bruchstreifen">${liste.map(([z,n],r)=>Array.from({length:n},(_,i)=>`<rect x="${2+i*(w-4)/n}" y="${r*(h+6)+2}" width="${(w-4)/n}" height="${h}" fill="${i<z?"var(--fach)":"var(--surface)"}" stroke="var(--fg)" stroke-width="1.5"/>`).join("")+`<text x="${w/2}" y="${r*(h+6)+h/2+8}" text-anchor="middle" font-size="16" font-weight="800" fill="var(--fg)" paint-order="stroke" stroke="var(--surface)" stroke-width="4">${z}/${n}</text>`).join("")}</svg>`}
+THEMEN.splice(THEMEN.findIndex(t=>t.id==="m-bruchteile"),0,
+{id:"m-brucharten",fach:"mathe",titel:"Die Brucharten",quelle:"Hefteintrag",probe:null,
+ merke:`<h2>Die Brucharten</h2>
+ <p>${F(2,7)} &nbsp; Der <b>Zähler</b> zählt die Teile. Der <b>Bruchstrich</b> trennt. Der <b>Nenner</b> nennt, wie viele Teile man für ein Ganzes braucht.</p>
+ <h3>Echte Brüche</h3><p>Zähler <b>kleiner</b> als Nenner → Wert <b>kleiner als ein Ganzes</b>: ${F(1,2)} ${F(2,3)} ${F(3,10)}</p>
+ <h3>Unechte Brüche</h3><p>Zähler <b>größer</b> als Nenner → Wert <b>größer als ein Ganzes</b>: ${F(3,2)} ${F(8,3)} ${F(13,10)}</p>
+ <h3>Gemischte Zahlen</h3><p><b>Größer als ein Ganzes</b>. Sie bestehen aus mindestens einem <b>Ganzen</b> und einem <b>echten Bruch</b>: 1${F(1,2)} („ein Ganzes, ein Halbes“) · 2${F(2,3)} · 1${F(3,10)}</p>`,
+ karten:[
+  karte("Was zählt der Zähler, was nennt der Nenner?","Der <b>Zähler</b> zählt die Teile.<br>Der <b>Nenner</b> nennt, wie viele Teile man für ein Ganzes braucht."),
+  ...[[1,2],[2,3],[3,10],[5,8],[7,12]].map(([z,n])=>mc(`Welche Bruchart ist ${F(z,n)}?`,"echter Bruch",["unechter Bruch","gemischte Zahl"],"Zähler kleiner als Nenner → echter Bruch (kleiner als 1)")),
+  ...[[3,2],[8,3],[13,10],[9,4],[11,6]].map(([z,n])=>mc(`Welche Bruchart ist ${F(z,n)}?`,"unechter Bruch",["echter Bruch","gemischte Zahl"],"Zähler größer als Nenner → unechter Bruch (größer als 1)")),
+  ...[[1,1,2],[2,2,3],[1,3,10],[3,1,4]].map(([g,z,n])=>mc(`Welche Bruchart ist ${g}${F(z,n)}?`,"gemischte Zahl",["echter Bruch","unechter Bruch"],"Ganze + echter Bruch → gemischte Zahl")),
+  mc("Ein echter Bruch ist immer …","kleiner als ein Ganzes",["größer als ein Ganzes","genau ein Ganzes"],"Zähler < Nenner → kleiner als 1"),
+  mc("Ein unechter Bruch ist immer …","größer als ein Ganzes",["kleiner als ein Ganzes","kleiner als ein Halbes"],"Zähler > Nenner → größer als 1"),
+  mc("Wie spricht man 1½ aus?","ein Ganzes, ein Halbes",["eins durch zwei","ein Zweitel","einhalb Ganze"],"„ein Ganzes, ein Halbes“"),
+  paare("Ordne zu",[["Zähler","zählt die Teile"],["Nenner","Teile für ein Ganzes"],["echter Bruch","kleiner als 1"],["unechter Bruch","größer als 1, z. B. 8/3"],["gemischte Zahl","Ganze + echter Bruch"]]),
+ ]},
+{id:"m-erweitern",fach:"mathe",titel:"Vergröbern & Verfeinern",quelle:"Hefteintrag",probe:null,
+ merke:`<h2>Bruchteile vergröbern und verfeinern</h2>
+ <div class="merk">Wenn man den <b>Zähler</b> und den <b>Nenner</b> mit der <b>gleichen Zahl</b> multipliziert oder dividiert, bleibt der Bruch <b>gleich groß</b>.</div>
+ <p><b>Verfeinern</b> (mal): ${F(2,3)} = ${F(6,9)} (·3) · ${F(3,7)} = ${F(6,14)} (·2) · ${F(2,10)} = ${F(6,30)} (·3)</p>
+ <p><b>Vergröbern</b> (geteilt): ${F(3,15)} = ${F(1,5)} (:3) · ${F(4,8)} = ${F(2,4)} (:2) · ${F(7,14)} = ${F(1,2)} (:7)</p>
+ <div class="bild">${streifenSVG([[1,2],[2,4],[4,8]])}</div><p class="muted" style="text-align:center">1/2 = 2/4 = 4/8 – gleich groß!</p>`,
+ slots:8,
+ gen(){let n=R(2,9),z=R(1,n-1);while(ggT(z,n)!==1){n=R(2,9);z=R(1,n-1)}const k=R(2,7),art=R(0,3);
+  if(art===0)return zahl(`Verfeinere: ${F(z,n)} = ${F("?",n*k)}`,z*k,`Nenner ·${k} (${n} → ${n*k}), also auch Zähler ·${k}: ${z} · ${k} = <b>${z*k}</b>`);
+  if(art===1)return zahl(`Vergröbere: ${F(z*k,n*k)} = ${F("?",n)}`,z,`Nenner :${k} (${n*k} → ${n}), also auch Zähler :${k}: ${z*k} : ${k} = <b>${z}</b>`);
+  if(art===2)return bruch(`Vergröbere so weit wie möglich: ${F(z*k,n*k)}`,z,n,"gekuerzt",`Zähler und Nenner durch ${k}: <b>${F(z,n)}</b>`);
+  const f=R(2,5);return mc(`Sind ${F(z,n)} und ${F(z*k,n*k)} gleich groß?`,"ja",["nein"],`Zähler und Nenner wurden beide mit ${k} multipliziert → gleich groß.`)}},
+{id:"m-vergleichen",fach:"mathe",titel:"Brüche vergleichen",quelle:"Hefteintrag Bruchstreifen",probe:null,
+ merke:`<h2>Brüche vergleichen</h2>
+ <div class="bild">${streifenSVG([[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],[1,8],[1,10],[1,12]])}</div>
+ <div class="merk">Je <b>größer der Nenner</b>, desto <b>kleiner</b> die Teile: ${F(1,2)} &gt; ${F(1,3)} &gt; ${F(1,4)} …<br>Gleicher Nenner: Der größere <b>Zähler</b> ist größer: ${F(5,8)} &gt; ${F(3,8)}</div>
+ <p>Am Zahlenstrahl: Was weiter <b>rechts</b> liegt, ist größer: ${F(1,2)} &lt; ${F(5,8)} &lt; ${F(3,4)}</p>`,
+ slots:8,
+ gen(){const N=[2,3,4,5,6,8,10,12];let a,b;do{const n1=pick(N),n2=pick(N);a=[R(1,n1-1),n1];b=[R(1,n2-1),n2]}while(a[0]*b[1]===b[0]*a[1]&&Math.random()<.7);
+  const v=a[0]*b[1]-b[0]*a[1],r=v>0?">":v<0?"<":"=";
+  return mc(`Setze ein: <b>&lt;</b>, <b>&gt;</b> oder <b>=</b><br>${F(a[0],a[1])} ☐ ${F(b[0],b[1])}<div class="bild">${streifenSVG([a,b])}</div>`,r,["<",">","="].filter(x=>x!==r),`${F(a[0],a[1])} ${r} ${F(b[0],b[1])} – schau, welcher Streifen weiter gefärbt ist.`)}});
+(()=>{const t=THEMEN.find(x=>x.id==="m-gemischt");
+ t.merke+=`<h3>Aus dem Heft (12.10. / 13.10.)</h3>
+ <div class="merk"><b>Unechter Bruch → gemischte Zahl:</b> Der <b>Bruchstrich</b> ist das gleiche wie ein <b>Divisionszeichen</b>.<br>Das <b>Ergebnis</b> der Division ist das <b>Ganze</b>. Der <b>Rest</b> ist der <b>Zähler</b>. Der <b>Nenner</b> bleibt gleich.<br>${F(7,3)}: 7 : 3 = 2 Rest 1 → 2${F(1,3)} · ${F(12,5)}: 12 : 5 = 2 Rest 2 → 2${F(2,5)}</div>
+ <div class="merk"><b>Gemischte Zahl → unechter Bruch:</b> Multipliziere den <b>Nenner</b> und das <b>Ganze</b>. Addiere zum Ergebnis den <b>Zähler</b>. Das Ergebnis ist der Zähler, der Nenner bleibt gleich.<br>2${F(3,8)}: 8 · 2 = 16, 16 + 3 = 19 → ${F(19,8)} · 7${F(3,5)}: 5 · 7 = 35, 35 + 3 = 38 → ${F(38,5)}</div>`;
+ t.karten=[karte("Wie wandelst du einen unechten Bruch in eine gemischte Zahl um?","Teile den Zähler durch den Nenner (Bruchstrich = Divisionszeichen). Ergebnis = <b>Ganze</b>, Rest = <b>Zähler</b>, Nenner bleibt gleich.<br>7/3: 7 : 3 = 2 Rest 1 → 2 1/3"),
+  karte("Wie wandelst du eine gemischte Zahl in einen unechten Bruch um?","<b>Nenner · Ganze</b>, dann <b>+ Zähler</b>. Das ist der neue Zähler, der Nenner bleibt.<br>2 3/8: 8 · 2 = 16, 16 + 3 = 19 → 19/8"),
+  mc("Der Bruchstrich ist das gleiche wie ein …","Divisionszeichen (geteilt)",["Malzeichen","Pluszeichen","Gleichheitszeichen"],"7/3 = 7 : 3")];})();
+(()=>{const t=THEMEN.find(x=>x.id==="m-zahlenstrahl");
+ t.merke+=`<h3>Aus dem Heft (20.10.): Brüche am Zahlenstrahl zeichnen</h3>
+ <div class="merk">① Wie lang ist ein Ganzes? (z. B. 8 cm)<br>② In gleiche Teile einteilen: 1 cm = ${F(1,8)}, 4 cm = ${F(1,2)}<br>③ Teile abzählen</div>
+ <p>${F(3,5)}: Ganzes = <b>5 cm</b>, ${F(1,5)} = 1 cm → 3 cm abzählen · ${F(4,7)}: Ganzes = <b>7 cm</b>, ${F(1,7)} = 1 cm → 4 cm abzählen</p>`;})();
 
 /* ================================================================
    PROBENPLAN (aus dem Schulmanager bzw. von den Eltern)
@@ -491,12 +1235,12 @@ const THEMEN=[
    ================================================================ */
 const PROBEN=[
  {fach:"englisch",datum:"2026-11-13",titel:"Englisch-Probe Unit 2",themen:["e-u2-vokabeln","e-u2-where","e-past-aussagen","e-past-fragen"]},
- {fach:"musik",datum:"2026-11-13",stunde:"5.–6. Stunde",titel:"Musik-Probe",themen:[]},
- {fach:"mathe",datum:"2026-11-16",stunde:"1. Stunde",titel:"Mathe-Probe",themen:[]},
- {fach:"gpg",datum:"2026-11-19",stunde:"3. Stunde",titel:"GPG-Probe",themen:[]},
- {fach:"nt",datum:"2026-11-26",stunde:"1. Stunde",titel:"NT-Probe",themen:[]},
+ {fach:"musik",datum:"2026-11-13",stunde:"5.–6. Stunde",titel:"Musik-Probe",themen:["mu-klaviatur","mu-notensystem","mu-takt","mu-rhythmus"]},
+ {fach:"mathe",datum:"2026-11-16",stunde:"1. Stunde",titel:"Mathe-Probe (Brüche)",themen:["m-brucharten","m-erweitern","m-vergleichen","m-bruchteile","m-anzahlen","m-groessen","m-ganzes","m-gemischt","m-zahlenstrahl","m-sachaufgaben"]},
+ {fach:"gpg",datum:"2026-11-19",stunde:"3. Stunde",titel:"GPG-Probe",themen:["g-europa","g-gliederung","g-inseln","g-klima","g-klimadiagramm","g-vegetation"]},
+ {fach:"nt",datum:"2026-11-26",stunde:"1. Stunde",titel:"NT-Probe",themen:["nt-reibung"]},
  {fach:"wib",datum:"2026-12-02",stunde:"3. Stunde",titel:"Wirtschaft & Beruf-Probe",themen:[]},
- {fach:"deutsch",datum:"2026-12-21",stunde:"1. Stunde",titel:"Deutsch-Probe",themen:[]},
+ {fach:"deutsch",datum:"2026-12-21",stunde:"1. Stunde",titel:"Deutsch-Probe",themen:["d-zeiten","d-wortarten","d-satzglieder","d-satzwoche","d-tornado","d-rechtschreibung"]},
 ];
 // Themen bekommen das Datum ihrer nächsten Probe (für die Reihenfolge bei „Heute dran“)
 PROBEN.forEach(p=>p.themen.forEach(id=>{const t=THEMEN.find(x=>x.id===id);if(t&&(!t.probe||p.datum<t.probe))t.probe=p.datum}));
@@ -509,6 +1253,17 @@ const wtag=d=>WOCHENTAG[new Date(d+"T12:00").getDay()];
    gewicht: wie stark die Note zählt (Standard 1). Tendenzen: 2+ = 1,75 · 2- = 2,25 · 2-3 = 2,5
    ================================================================ */
 const NOTEN=[
+ {fach:"deutsch",note:"3",art:"Jahrgangsstufentest",datum:""},
+ {fach:"mathe",note:"4",art:"Jahrgangsstufentest",datum:""},
+ {fach:"englisch",note:"4",art:"Kleiner Leistungsnachweis",thema:"simple past",datum:""},
+ {fach:"info",note:"1",art:"Kleiner Leistungsnachweis",thema:"Regeln",datum:"2026-10-13"},
+ {fach:"deutsch",note:"4",art:"Satz der Woche",datum:"2026-10-13"},
+ {fach:"englisch",note:"3",art:"Vokabeltest",datum:"2026-10-16"},
+ {fach:"mathe",note:"4",art:"Kleiner Leistungsnachweis",datum:"2026-10-19"},
+ {fach:"englisch",note:"4",art:"Großer Leistungsnachweis",datum:"2026-10-26"},
+ {fach:"deutsch",note:"3",art:"Großer Leistungsnachweis",datum:"2026-11-12"},
+ {fach:"nt",note:"2",art:"Kleiner Leistungsnachweis",datum:""},
+ {fach:"nt",note:"2",art:"Kleiner Leistungsnachweis",datum:""},
 ];
 function notenWert(s){s=String(s).trim().replace(",",".");let m=s.match(/^([1-6])\s*-\s*([1-6])$/);if(m)return(+m[1]+ +m[2])/2;
   m=s.match(/^([1-6])\s*([+-]?)$/);if(m)return +m[1]+(m[2]==="+"?-.25:m[2]==="-"?.25:0);m=s.match(/^[1-6](\.\d+)?$/);return m?+s:null}
@@ -536,8 +1291,9 @@ const fach=id=>FAECHER.find(f=>f.id===id);
 const thema=id=>THEMEN.find(t=>t.id===id);
 const themenVon=fid=>THEMEN.filter(t=>t.fach===fid);
 function kartenVon(t){
-  if(t.gen)return Array.from({length:t.slots||6},(_,k)=>({id:`${t.id}~${k}`,t,make:()=>t.gen()}));
-  return t.karten.map((q,i)=>({id:`${t.id}#${i}`,t,make:()=>q}))}
+  const fest=(t.karten||[]).map((q,i)=>({id:`${t.id}#${i}`,t,make:()=>q}));
+  if(t.gen)return Array.from({length:t.slots||6},(_,k)=>({id:`${t.id}~${k}`,t,make:()=>t.gen()})).concat(fest);
+  return fest}
 const alleKarten=()=>THEMEN.flatMap(kartenVon);
 const stand=id=>S.karten[id];
 const istFaellig=k=>{const s=stand(k.id);return !s||s.faellig<=tag()};
@@ -549,7 +1305,7 @@ function bewerte(kid,ok){
   speichern()}
 function heuteDran(){
   // zuerst Themen mit naher Probe, dann schon gelernte (niedrige Box zuerst), dann neue
-  const prio=k=>{const p=k.t.probe?tageBis(k.t.probe):99;const s=stand(k.id);return (p>=0&&p<=14?0:100)+(s?s.box:10)+Math.random()};
+  const prio=k=>{const p=k.t.probe?tageBis(k.t.probe):99;const s=stand(k.id);return (p>=1&&p<=14?p*2:100)+(s?s.box:10)+Math.random()};
   return alleKarten().filter(k=>k.t.quelle!=="Beispiel"&&istFaellig(k)).sort((a,b)=>prio(a)-prio(b))}
 // kurz vor einer Probe gibt es mehr Fragen pro Tag
 // Schwachstellen: Themen, in denen viele schon geübte Fragen zuletzt falsch waren (Box 1)
@@ -576,7 +1332,7 @@ const norm=s=>String(s).toLowerCase().trim().replace(/[’`´]/g,"'").replace(/\
   .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss");
 const ohneArtikel=s=>s.replace(/^(the|a|an) /,"");
 function parseZahl(s){s=String(s).trim().replace(/\s| |\./g,"").replace(",",".");if(!/^-?\d+(\.\d+)?$/.test(s))return null;return parseFloat(s)}
-function parseBruch(s){s=String(s).trim().replace(/\s/g,"");let m=s.match(/^(\d+)\/(\d+)$/);if(m&&+m[2]>0)return[+m[1],+m[2]];m=s.match(/^(\d+)$/);if(m)return[+m[1],1];return null}
+function parseBruch(s){s=String(s).trim();let g=s.match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/);if(g&&+g[3]>0)return[+g[1]*+g[3]+ +g[2],+g[3]];s=s.replace(/\s/g,"");let m=s.match(/^(\d+)\/(\d+)$/);if(m&&+m[2]>0)return[+m[1],+m[2]];m=s.match(/^(\d+)$/);if(m)return[+m[1],1];return null}
 function pruefe(q,antwort){
   if(q.typ==="karte")return antwort===true;
   if(q.typ==="paare")return antwort<=1; // höchstens ein Fehlversuch
@@ -584,13 +1340,14 @@ function pruefe(q,antwort){
   if(q.typ==="mc")return antwort===q.loesung;
   if(q.typ==="zahl"){const v=parseZahl(antwort);return v!==null&&Math.abs(v-q.loesung)<1e-9}
   if(q.typ==="bruch"){const b=parseBruch(antwort);if(!b)return false;const [z,n]=q.loesung;
-    if(q.modus==="genau")return b[0]===z&&b[1]===n;const gleich=b[0]*n===z*b[1];return q.modus==="gekuerzt"?gleich&&ggT(b[0],b[1])===1:gleich}
+    if(q.modus==="genau")return b[0]===z&&b[1]===n;
+    if(q.modus==="gemischt"){const m=String(antwort).trim().match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/);if(!m)return false;return +m[2]<+m[3]&&+m[2]>0&&b[0]*n===z*b[1]}const gleich=b[0]*n===z*b[1];return q.modus==="gekuerzt"?gleich&&ggT(b[0],b[1])===1:gleich}
   const a=norm(antwort);return q.loesung.some(l=>{const x=norm(l);return a===x||ohneArtikel(a)===ohneArtikel(x)})}
 function loesungText(q){
   if(q.typ==="karte")return q.antwort;
   if(q.typ==="paare")return q.paare.map(([a,b])=>`${a} = ${b}`).join(" · ");
   if(q.typ==="satz")return esc(q.loesung);
-  if(q.typ==="bruch"){const [z,n]=q.loesung;if(z%n===0)return String(z/n);const g=ggT(z,n);return g>1&&q.modus==="gleich"?`${F(z,n)} = ${F(z/g,n/g)}`:F(z,n)}
+  if(q.typ==="bruch"){const [z,n]=q.loesung;if(z%n===0)return String(z/n);if(q.modus==="gemischt")return `${Math.floor(z/n)}${F(z%n,n)}`;const g=ggT(z,n);return g>1&&q.modus==="gleich"?`${F(z,n)} = ${F(z/g,n/g)}`:F(z,n)}
   if(q.typ==="zahl")return Z(String(q.loesung).replace(".",","))+(q.einheit?" "+q.einheit:"");
   if(q.typ==="text")return esc(q.loesung[0]);return q.loesung}
 
@@ -634,10 +1391,10 @@ const probeText=t=>{const d=tageBis(t.probe);return d===0?"heute":d===1?"morgen"
 const plain=h=>String(h).replace(/<svg[\s\S]*?<\/svg>/g," ").replace(/<[^>]+>/g," ").replace(/&nbsp;/g," ").replace(/\s+/g," ").trim();
 const datumKurz=d=>`${wtag(d)}, ${datumDE(d).replace(/\d\d$/,"").replace(/\.$/,".")}`;
 function lernplanHTML(){
-  const p=kommendeProben().find(p=>p.themen.length&&tageBis(p.datum)<=14);if(!p)return "";
+  const p=kommendeProben().find(p=>p.themen.length&&tageBis(p.datum)>=1&&tageBis(p.datum)<=14);if(!p)return "";
   const f=fach(p.fach),st=p.themen.map(thema).filter(Boolean).map(themaStand),alle=st.reduce((s,x)=>s+x.alle,0),sitzen=st.reduce((s,x)=>s+x.sitzen,0);
   const gruppe=(lage,titel,leer)=>{const xs=st.filter(x=>x.lage===lage);if(!xs.length&&lage==="mittel")return "";return `<div class="lp-spalte lp-${lage}"><h3>${titel}</h3>${xs.length?`<ul>${xs.map(x=>`<li><b>${x.t.titel}</b><span>${lage==="neu"?`${x.alle-x.ges} Fragen noch offen`:lage==="schwer"?`${x.falsch} von ${x.ges} zuletzt falsch`:`${x.sitzen} von ${x.alle} sitzen`}</span></li>`).join("")}</ul>`:`<p class="muted">${leer}</p>`}</div>`};
-  const fehler=st.flatMap(x=>x.falschKarten).filter(k=>!k.t.gen).slice(0,6);
+  const fehler=st.flatMap(x=>x.falschKarten).filter(k=>!k.id.includes("~")).slice(0,6);
   const idx=PROBEN.indexOf(p),d=tageBis(p.datum);
   return `<section class="lernplan" style="--fach:${f.farbe}">
    <div class="lp-kopf"><div><p class="eyebrow">Nächste Probe · ${datumKurz(p.datum)}</p><h2>${p.titel}</h2></div><div class="lp-tage"><span class="gross">${d}</span><span>${d===1?"Lerntag":"Lerntage"}</span></div></div>
@@ -740,7 +1497,7 @@ function vQuiz(){
       <div class="row"><button class="btn" data-act="satzpruefen" ${Q.bau.length===q.woerter.length?"":"disabled"}>Prüfen</button>${Q.bau.length?`<button class="btn ghost small" data-act="satzleeren">Von vorn</button>`:""}</div>`}`}
   else if(q.typ==="mc"){feld=`<div class="optionen">${q.optionen.map((o,i)=>{let c="opt";if(fertig){if(o===q.loesung)c+=" richtig";else if(o===Q.auswahl)c+=" falsch"}
      return `<button class="${c}" data-opt="${i}" ${fertig?"disabled":""}>${o}</button>`}).join("")}</div>`}
-  else{const tipp=q.typ==="bruch"?"Bruch so eingeben: 3/4":q.typ==="zahl"?"Nur die Zahl eingeben":q.tipp||"";
+  else{const tipp=q.typ==="bruch"?(q.modus==="gemischt"?"Gemischte Zahl mit Leerzeichen eingeben, z. B. 2 3/4":"Bruch so eingeben: 3/4"):q.typ==="zahl"?"Nur die Zahl eingeben":q.tipp||"";
     feld=`<form class="eingabe" id="eform" autocomplete="off"><input id="antwort" autocapitalize="off" autocorrect="off" spellcheck="false" ${fertig?"disabled":""} value="${fertig?esc(Q.auswahl):""}" aria-label="Antwort">
      ${q.einheit?`<span class="einheit">${q.einheit}</span>`:""}${fertig?"":`<button class="btn" type="submit">Prüfen</button>`}</form>${tipp&&!fertig?`<p class="tipp">${tipp}</p>`:""}`}
   const rueck=fertig&&q.typ!=="karte"?`<div class="rueck ${letzte.ok?"ok":"no"} pop"><strong>${letzte.ok?pick(["Richtig!","Super!","Klasse!","Genau!","Stark!"]):q.typ==="paare"?`${Q.pf} Fehlversuche – das üben wir nochmal.`:"Leider falsch."}</strong>
