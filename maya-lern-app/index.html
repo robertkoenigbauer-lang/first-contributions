@@ -128,6 +128,15 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 /* Ergebnis */
 .ergebnis{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;border-top:8px solid var(--fach)}
 .note{font-family:var(--f-display);font-weight:800;font-size:3.4rem;line-height:1;color:var(--fach)}
+.notenblock{display:flex;flex-direction:column;align-items:center;min-width:120px;padding:10px 16px;border-radius:18px;background:color-mix(in srgb,var(--nf) 16%,var(--surface));border:3px solid var(--nf)}
+.notenblock .note{font-size:4rem;color:var(--nf)}
+.nb-label{font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:.85rem}
+.nb-wort{font-weight:800;font-size:.95rem}
+.n1,.n2{--nf:var(--ok)}.n3,.n4{--nf:#d48a00}.n5,.n6{--nf:var(--bad)}
+.schluessel{width:100%;display:flex;flex-direction:column;gap:6px}
+.schluessel table{border-collapse:collapse;width:100%;max-width:420px;font-variant-numeric:tabular-nums}
+.schluessel th,.schluessel td{text-align:left;padding:5px 10px;border-bottom:1px solid var(--line)}
+.schluessel tr.treffer{background:color-mix(in srgb,var(--rose) 18%,transparent);font-weight:800}
 .liste{display:flex;flex-direction:column;gap:10px;width:100%}
 .liste .eintrag{border-left:5px solid var(--bad);background:var(--surface);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
 .liste .eintrag.ok{border-left-color:var(--ok)}
@@ -1672,7 +1681,14 @@ function abschluss(){if(Q.planId){S.plan[Q.planId]=true}
 function ergebnis(){const zaehlt=Q.antworten.filter(a=>!a.q.leicht&&!a.q.wieder);
   if(Q.modus==="probe"){const p=zaehlt.reduce((s,a)=>s+a.p,0),max=zaehlt.reduce((s,a)=>s+a.max,0),pr=max?Math.round(100*p/max):0;return {p,max,prozent:pr,note:note(pr)}}
   const r=zaehlt.filter(a=>a.ok).length,n=zaehlt.length,pr=n?Math.round(100*r/n):0;return {p:r,max:n,prozent:pr,note:note(pr)}}
-const note=p=>p>=92?1:p>=81?2:p>=67?3:p>=50?4:p>=30?5:6;
+// Notenschlüssel (Prozent der Punkte, ab denen die Note gilt). Kann durch den echten Schlüssel der Lehrkraft ersetzt werden.
+const NOTENSCHLUESSEL=[[1,92],[2,81],[3,67],[4,50],[5,30],[6,0]];
+const note=p=>NOTENSCHLUESSEL.find(([,ab])=>p>=ab)[0];
+function noteHTML(n){return `<div class="notenblock n${n}"><span class="nb-label">Note</span><span class="note">${n}</span><span class="nb-wort">${NOTENNAME[n]}</span></div>`}
+function schluesselHTML(max,erreicht,n){const halb=x=>Math.ceil(x*2)/2,k=v=>String(v).replace(".",",");
+  const zeilen=NOTENSCHLUESSEL.map(([g,ab],i)=>{const von=halb(max*ab/100),bis=i?halb(max*NOTENSCHLUESSEL[i-1][1]/100)-.5:max;return [g,von,Math.max(von,bis)]});
+  return `<div class="schluessel"><p class="eyebrow">Notenschlüssel · ${k(max)} Punkte</p><table>${zeilen.map(([g,v,b])=>`<tr class="${g===n?"treffer":""}"><th>Note ${g}</th><td>${v===b?k(v):`${k(v)} – ${k(b)}`} P.</td><td class="muted">${NOTENNAME[g]}</td></tr>`).join("")}</table>
+   <p class="tipp">Du hast <b>${k(erreicht)} Punkte</b>. Der Schlüssel kann bei deiner Lehrkraft etwas anders sein.</p></div>`}
 const NOTENTEXT={1:"Sehr gut! Du bist bestens vorbereitet.",2:"Gut! Nur noch ein paar Kleinigkeiten.",3:"Befriedigend. Schau dir die Fehler nochmal an.",4:"Ausreichend. Lies den Hefteintrag nochmal und übe weiter.",5:"Da geht noch was! Übe die Themen einzeln.",6:"Nicht aufgeben! Fang mit dem Hefteintrag an und übe Schritt für Schritt."};
 const LOB=["Richtig!","Super!","Klasse!","Genau!","Stark!","Prima!","Spitze!"];
 
@@ -1879,7 +1895,7 @@ function vFach(){
      <div class="row"><button class="btn ghost small" data-go="merke" data-thema="${t.id}">Hefteintrag</button><button class="btn small" data-act="ueben" data-thema="${t.id}">Üben</button></div></div>`}).join("")}</section>
    <section class="probe"><h2>Probe-Training</h2><p>Wähle die Themen, die in der Probe drankommen. Du bekommst gemischte Aufgaben ohne Hilfe und am Ende eine Note wie von der Lehrkraft: Bei Rechenaufgaben zählt jeder Schritt im Rechenweg, bei Wörtern die Rechtschreibung.</p>
     <div class="chips">${ts.map(t=>`<label class="chip"><input type="checkbox" id="pt-${t.id}" value="${t.id}" checked> ${t.titel}</label>`).join("")}</div>
-    <div><button class="btn" data-act="probe" data-fach="${f.id}">Probe starten</button></div>${(()=>{const u=S.uebproben.filter(x=>x.fach===f.id).slice(-4);return u.length?`<p class="muted">Deine letzten Übungsproben: ${u.map(x=>`<b>${x.note}</b> (${datumDE(x.datum).replace(/\d\d$/,"")})`).join(" · ")}</p>`:""})()}</section>`
+    <div><button class="btn" data-act="probe" data-fach="${f.id}">Probe starten</button></div>${(()=>{const u=S.uebproben.filter(x=>x.fach===f.id).slice(-4);return u.length?`<p class="muted">Deine letzten Übungsproben: ${u.map(x=>`<b>Note ${x.note}</b> (${datumDE(x.datum).replace(/\d\d$/,"")})`).join(" · ")}</p>`:""})()}</section>`
    :`<section class="leerhinweis"><h3>Hier ist noch nichts eingetragen.</h3><p class="muted">Sobald es Hefteinträge oder Arbeitsblätter aus ${f.name} gibt, kommen hier die passenden Fragen dazu.</p></section>`}</div>`}
 
 function vMerke(){
@@ -1941,10 +1957,10 @@ function vErgebnis(){
   const wieder=Q.antworten.filter(a=>a.q.wieder),wr=wieder.filter(a=>a.ok).length;
   let kopf;
   if(probe){const rw=zaehlt.some(a=>a.q.typ==="weg"&&!a.ok),rs=zaehlt.some(a=>/Rechtschreib|Großschreibung/.test(a.hinweis||""));
-    kopf=`<p class="eyebrow">Probe · ${datumKurz(tag())}</p><div class="row" style="gap:18px;align-items:flex-end"><div class="note">${e.note}</div><p><b>${String(e.p).replace(".",",")} von ${e.max} Punkten</b> (${e.prozent} %)<br>${NOTENNAME[e.note]}</p></div>
+    kopf=`<p class="eyebrow">Probe · ${datumKurz(tag())}</p><div class="row" style="gap:18px;align-items:center">${noteHTML(e.note)}<p><b>${String(e.p).replace(".",",")} von ${e.max} Punkten</b><br>(${e.prozent} %)</p></div>${schluesselHTML(e.max,e.p,e.note)}
      <div class="lehrer"><b>Kommentar der Lehrkraft:</b> ${KOMMENTAR[e.note]}${rw?" Achte auf einen vollständigen <b>Rechenweg</b> – jeder Schritt zählt.":""}${rs?" Achte auf die <b>Rechtschreibung</b>.":""}</div>`}
   else kopf=`<h2>${Q.modus==="heute"?"Geschafft für heute!":Q.modus==="plan"?"Aufgabe aus dem Plan geschafft! ✅":Q.modus==="vorb"?`${PROBEN[Q.probeIdx].titel}: Runde geschafft!`:Q.modus==="fehler"?"Fehler-Runde geschafft!":thema(Q.themaId).titel}</h2>
-     <div class="row" style="gap:18px;align-items:flex-end"><div class="note">${e.note}</div><p><b>${e.p} von ${e.max}</b> beim ersten Versuch richtig (${e.prozent} %)<br>${NOTENTEXT[e.note]}</p></div>
+     <div class="row" style="gap:18px;align-items:center">${noteHTML(e.note)}<p><b>${e.p} von ${e.max}</b> beim ersten Versuch richtig (${e.prozent} %)<br>${NOTENTEXT[e.note]}</p></div>
      ${wieder.length?`<p>🔁 Beim zweiten Versuch: <b>${wr} von ${wieder.length}</b> richtig.${wr===wieder.length?" Super, du hast aus deinen Fehlern gelernt!":""}</p>`:""}
      ${Q.wiederholung?`<p>⭐ Du konntest in diesem Thema schon alles – das war eine Wiederholung zur Sicherheit.</p>`:""}`;
   const fazit=`${kann.length?`<p>✅ <b>Das kannst du schon:</b> ${kann.join(", ")}</p>`:""}${noch.length?`<p>📌 <b>Das üben wir nochmal:</b> ${noch.map(id=>thema(id).titel).join(", ")}</p>`:""}`;
