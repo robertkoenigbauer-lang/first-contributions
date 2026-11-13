@@ -380,6 +380,35 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .hoer{border:2px solid color-mix(in srgb,var(--englisch) 60%,transparent);background:color-mix(in srgb,var(--englisch) 18%,var(--solid));border-radius:12px;font-size:1.3rem;padding:6px 12px;line-height:1}
 .hoer.klein{font-size:.85rem;padding:2px 6px;border-radius:8px;vertical-align:middle}
 .hoerzeile{gap:8px}
+/* Weltraum-Stundenplan (immer dunkel, mit Sternen) */
+.weltraum{position:relative;overflow:hidden;border-radius:24px;padding:20px max(14px,2vw) 24px;color:#fff;display:flex;flex-direction:column;gap:16px;
+  background:radial-gradient(600px 400px at 85% 10%,rgba(255,60,180,.35),transparent 60%),radial-gradient(700px 500px at 10% 90%,rgba(60,120,255,.35),transparent 60%),radial-gradient(500px 300px at 50% 50%,rgba(140,80,255,.25),transparent 70%),linear-gradient(160deg,#070a1f,#160b33 55%,#04040f)}
+.sterne-bg{position:absolute;inset:0;pointer-events:none;opacity:.9;
+  background-image:radial-gradient(1.5px 1.5px at 20px 30px,#fff,transparent),radial-gradient(1px 1px at 80px 120px,#fff,transparent),radial-gradient(2px 2px at 150px 60px,#ffe9a8,transparent),radial-gradient(1px 1px at 200px 190px,#fff,transparent),radial-gradient(1.5px 1.5px at 260px 90px,#bfe0ff,transparent),radial-gradient(1px 1px at 120px 230px,#fff,transparent),radial-gradient(1px 1px at 40px 170px,#ffc4ec,transparent);
+  background-size:280px 260px;animation:funkeln 4s ease-in-out infinite alternate}
+.sterne-bg::after{content:"🪐";position:absolute;right:24px;top:18px;font-size:3rem;filter:drop-shadow(0 0 12px rgba(255,200,120,.6))}
+@keyframes funkeln{from{opacity:.55}to{opacity:1}}
+.weltraum>*{position:relative}
+.wr-kopf h1{font-size:2rem;text-shadow:0 0 18px rgba(170,120,255,.8)}.wr-kopf h1 span{font-size:1.1rem;opacity:.8}
+.wr-kopf p{opacity:.8;font-weight:700}
+.wr-back{color:#d9ccff!important}
+.wr-plan{border-collapse:separate;border-spacing:6px;width:100%;min-width:640px;table-layout:fixed}
+.wr-plan thead th:first-child{width:66px}
+.wr-plan th{color:#fff;font-family:var(--f-display);font-size:1.05rem;padding:6px;text-align:center;background:rgba(255,255,255,.08);border-radius:12px}
+.wr-plan th.heute-sp{background:linear-gradient(135deg,#ff2d95,#7c5cff);box-shadow:0 0 14px rgba(255,45,149,.6)}
+.wr-plan th.zeit{display:flex;flex-direction:column;align-items:center;line-height:1.1;min-width:58px}
+.wr-plan th.zeit small{font-family:var(--f-body);font-size:.75rem;opacity:.8}
+.wr-plan td{padding:0;height:58px}
+.wr-plan td.leer{background:rgba(255,255,255,.04);border-radius:14px;border:1px dashed rgba(255,255,255,.12)}
+.planet{height:100%;min-height:54px;border-radius:14px;background:var(--pc);color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;padding:4px 6px;font-weight:800;text-align:center;
+  box-shadow:0 0 16px color-mix(in srgb,var(--pc) 70%,transparent),inset 0 -4px 0 rgba(0,0,0,.18),inset 0 2px 0 rgba(255,255,255,.35);text-shadow:0 1px 2px rgba(0,0,0,.35);overflow-wrap:anywhere;hyphens:auto}
+.planet.dunkel{color:#1a1030;text-shadow:none}
+.planet.regenbogen{background:linear-gradient(90deg,#ff3b6b,#ff9f1c,#ffe14d,#3ddc84,#2bb7ff,#9d5cff);color:#1a1030;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.p-icon{font-size:1.1rem;text-shadow:none}
+.p-name{font-size:.92rem;line-height:1.15}
+.wr-termine{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.wr-termin{display:flex;gap:12px;flex-wrap:wrap}.wr-termin b{color:#ffd166;min-width:5.5em}
+@media (prefers-reduced-motion:reduce){.sterne-bg{animation:none}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -1862,11 +1891,19 @@ function schultagHTML(){const d=naechsterSchultag(),wd=new Date(d+"T12:00").getD
   return `<section class="schultag"><div class="row" style="justify-content:space-between"><h3>${tagText} in der Schule <span class="muted" style="font-weight:600">· ${WTAG_LANG[wd]}, ${datumDE(d).replace(/\d\d$/,"")}</span></h3><button class="back" data-go="stundenplan">Stundenplan →</button></div>
    <div class="stunden">${plan.map((f,i)=>f?`<span class="stunde ${stdKlasse(f)} ${pr.some(p=>fach(p.fach)&&PLANFACH[f]===p.fach)?"probe-std":""}" style="--fach:${stdFarbe(f)}"><small>${i+1}.</small> ${f}</span>`:"").join("")}</div>
    ${pr.map(p=>`<p class="pp-warn">📝 ${p.titel}${p.stunde?` (${p.stunde})`:""}</p>`).join("")}${te.map(t=>`<p><b>📅 ${t.text}</b></p>`).join("")}</section>`}
+// Kräftige Weltraum-Farben für den Stundenplan (Text: h = hell, d = dunkel)
+const KNALL={Mathe:["#2563eb","h"],Deutsch:["#ef4444","h"],Englisch:["#facc15","d"],GPG:["#a0522d","h"],NT:["#16c45a","h"],Religion:["#94a3b8","d"],Sport:["#06d6c7","d"],
+ Kunst:["bunt","d"],Musik:["#ffffff","d"],WiB:["#ff2d95","h"],Informatik:["#a855f7","h"],WG:["#ff7a00","h"],Förderunterricht:["#7c5cff","h"],Mittagspause:["#475569","h"],EBSU:["#00b4ff","h"]};
+const STD_ICON={Mathe:"➗",Deutsch:"📖",Englisch:"🇬🇧",GPG:"🌍",NT:"🔬",Religion:"🕊️",Sport:"⚽",Kunst:"🎨",Musik:"🎵",WiB:"💼",Informatik:"💻",WG:"🛠️",Förderunterricht:"⭐",Mittagspause:"🍝",EBSU:"🌱"};
 function vStundenplan(){
-  return `<div style="display:flex;flex-direction:column;gap:18px"><button class="back" data-go="start">← Startseite</button><h1>Stundenplan</h1>
-   <div class="tabwrap"><table class="stdplan"><tr><th></th>${[1,2,3,4,5].map(w=>`<th>${WTAG_LANG[w].slice(0,2)}</th>`).join("")}</tr>
-   ${STUNDEN.map((z,i)=>`<tr><th>${i+1}.<br><small>${z}</small></th>${[1,2,3,4,5].map(w=>{const f=STUNDENPLAN[w][i]||"";return `<td style="--fach:${f?stdFarbe(f):"var(--line)"}" class="${f?"voll":""} ${stdKlasse(f)}">${f}</td>`}).join("")}</tr>`).join("")}</table></div>
-   <section class="probenplan"><h3>Termine</h3>${TERMINE.filter(t=>tageBis(t.datum)>=0).map(t=>`<div class="pp-zeile" style="--fach:var(--muted)"><div class="pp-datum"><b>${wtag(t.datum)}</b><span>${datumDE(t.datum).replace(/\d\d$/,"")}</span></div><div class="pp-text"><b>${t.text}</b></div></div>`).join("")||`<p class="muted">Keine Termine.</p>`}</section></div>`}
+  const heuteWd=new Date().getDay();
+  const zelle=f=>{if(!f)return `<td class="leer"></td>`;const [c,t]=KNALL[f]||["#64748b","h"];
+    return `<td><div class="planet ${c==="bunt"?"regenbogen":""} ${t==="d"?"dunkel":""}" style="--pc:${c==="bunt"?"#ff6fa0":c}"><span class="p-icon" aria-hidden="true">${STD_ICON[f]||"✨"}</span><span class="p-name">${f==="Förderunterricht"?"Förder&shy;unterricht":f}</span></div></td>`};
+  return `<div class="weltraum"><div class="sterne-bg" aria-hidden="true"></div>
+   <div class="wr-kopf"><button class="back wr-back" data-go="start">← Startseite</button><h1>🚀 Mein Stundenplan <span>2026/2027</span></h1><p>Klasse 6a · Maja</p></div>
+   <div class="tabwrap"><table class="wr-plan"><thead><tr><th></th>${[1,2,3,4,5].map(w=>`<th class="${w===heuteWd?"heute-sp":""}">${WTAG_LANG[w]}</th>`).join("")}</tr></thead>
+   <tbody>${STUNDEN.map((z,i)=>`<tr><th class="zeit"><b>${i+1}</b><small>${z}</small></th>${[1,2,3,4,5].map(w=>zelle(STUNDENPLAN[w][i]||"")).join("")}</tr>`).join("")}</tbody></table></div>
+   <section class="wr-termine"><h3>🪐 Termine</h3>${TERMINE.filter(t=>tageBis(t.datum)>=0).map(t=>`<div class="wr-termin"><b>${wtag(t.datum)} ${datumDE(t.datum).replace(/\d\d$/,"")}</b><span>${t.text}</span></div>`).join("")||`<p>Keine Termine.</p>`}</section></div>`}
 /* ================================================================
    DASHBOARD, KALENDER, NOTIZBLOCK
    ================================================================ */
