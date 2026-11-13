@@ -2150,7 +2150,7 @@ const SCHULENDE=["8:45","9:30","10:35","11:20","12:20","13:05","14:00","14:45","
 // Feste Termine jede Woche (Wochentag 1 = Montag … 5 = Freitag)
 const WOCHENTERMINE=[
  {tag:3,von:"17:45",bis:"19:00",titel:"Wasserwacht",icon:"🛟",typ:"frei"},
- {tag:4,von:"13:45",bis:"14:15",titel:"Unterricht",icon:"🎵",typ:"frei"},
+ {tag:4,von:"13:45",bis:"14:15",titel:"Gitarrenunterricht",icon:"🎸",typ:"frei"},
  {tag:4,von:"16:00",bis:"18:00",titel:"Volleyball",icon:"🏐",typ:"frei"},
  {tag:5,von:"",bis:"",titel:"Englisch-Vokabeltest",icon:"📝",typ:"probe"},
 ];
@@ -2159,7 +2159,7 @@ function montagVon(versatz=0){const d=new Date();const w=(d.getDay()+6)%7;d.setD
 /* ---------- Bayerischer Ferienkalender 2026/27 ---------- */
 const FERIEN=[
  {von:"2026-11-02",bis:"2026-11-06",name:"Herbstferien",icon:"🍂"},
- {von:"2026-11-18",bis:"2026-11-18",name:"Buß- und Bettag (schulfrei)",icon:"⛪"},
+ {von:"2026-11-18",bis:"2026-11-18",name:"Buß- und Bettag (schulfrei)",icon:"⛪",nurSchule:true},
  {von:"2026-12-24",bis:"2027-01-08",name:"Weihnachtsferien",icon:"🎄"},
  {von:"2027-02-08",bis:"2027-02-12",name:"Faschingsferien",icon:"🎭"},
  {von:"2027-03-22",bis:"2027-04-02",name:"Osterferien",icon:"🐣"},
@@ -2175,9 +2175,12 @@ const ferienAm=iso=>FERIEN.find(f=>iso>=f.von&&iso<=f.bis);
 const feiertagAm=iso=>(FEIERTAGE.find(f=>f[0]===iso)||[])[1];
 const schulfrei=iso=>{const wd=new Date(iso+"T12:00").getDay();return wd===0||wd===6||!!ferienAm(iso)||!!feiertagAm(iso)};
 const SCHUL_AUFGABEN=["brotzeit"];
+// Ferien/Feiertag für Vereine & Gitarre (Buß- und Bettag ist nur schulfrei – da finden sie statt)
+const freizeitFrei=iso=>{const f=ferienAm(iso);return !!(feiertagAm(iso)||(f&&!f.nurSchule))};
+const FREIZEIT_AUFGABEN=["wasserwacht","volleyball"]; // Einpack-Erinnerungen für den nächsten Tag
 const morgenIso=iso=>{const d=new Date(iso+"T12:00");d.setDate(d.getDate()+1);return isoTag(d)};
 // Aufgabe gilt an diesem Tag? (Brotzeit nur an Schultagen, Sportsachen nur wenn morgen Schule ist)
-const aufgabeGilt=(a,iso)=>!((SCHUL_AUFGABEN.includes(a.id)&&schulfrei(iso))||(a.id==="sport-schule"&&schulfrei(morgenIso(iso))));
+const aufgabeGilt=(a,iso)=>!((SCHUL_AUFGABEN.includes(a.id)&&schulfrei(iso))||(a.id==="sport-schule"&&schulfrei(morgenIso(iso)))||(FREIZEIT_AUFGABEN.includes(a.id)&&freizeitFrei(morgenIso(iso))));
 function schultageZwischen(von,bis){let n=0;const d=new Date(von+"T12:00"),e=new Date(bis+"T12:00");while(d<=e){if(!schulfrei(isoTag(d)))n++;d.setDate(d.getDate()+1)}return n}
 function termineAm(iso){
   const d=new Date(iso+"T12:00"),wd=d.getDay(),liste=[];
@@ -2187,7 +2190,7 @@ function termineAm(iso){
   const plan=(fe||ft)?null:STUNDENPLAN[wd];
   if(plan){let letzte=-1;plan.forEach((f,i)=>{if(f)letzte=i});
     liste.push({von:"8:00",bis:SCHULENDE[letzte],titel:"Schule",icon:"🏫",typ:"schule",faecher:plan.filter(Boolean)})}
-  WOCHENTERMINE.filter(t=>t.tag===wd&&!(t.typ==="probe"&&(fe||ft))).forEach(t=>liste.push(Object.assign({},t)));
+  WOCHENTERMINE.filter(t=>t.tag===wd&&!(t.typ==="probe"?(fe||ft):freizeitFrei(iso))).forEach(t=>liste.push(Object.assign({},t)));
   PROBEN.filter(p=>p.datum===iso).forEach(p=>liste.push({von:"",titel:p.titel,icon:"📝",typ:"probe",info:p.stunde,fach:p.fach}));
   TERMINE.filter(t=>t.datum===iso).forEach(t=>liste.push({von:"",titel:t.text,icon:"📅",typ:"termin"}));
   AUFGABEN.filter(a=>a.tage.includes(wd)&&aufgabeGilt(a,iso)).forEach(a=>liste.push({von:"",titel:a.text,icon:a.icon,typ:"notiz"}));
