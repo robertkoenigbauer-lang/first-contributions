@@ -351,6 +351,31 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .lernbalken i{display:block;height:100%;background:linear-gradient(90deg,var(--rose),var(--flieder))}
 .a-info{display:block;font-weight:600;font-size:.82rem;opacity:.85;text-decoration:none}
 .aufgaben>li.erledigt .a-info{display:none}
+/* Ella auf dem Dashboard */
+.ella-buehne{display:flex;gap:14px;align-items:center}
+.ella-figur{border:0;background:none;padding:0;flex:none;cursor:pointer;filter:drop-shadow(0 6px 10px rgba(90,60,120,.18))}
+.ella-figur.hopp .ella-svg{animation:hopp .5s ease-out}
+.ella-koerper{animation:schweben 3.2s ease-in-out infinite;transform-origin:60px 120px}
+.ella-lider{transform-origin:60px 52px;transform:scaleY(0);animation:blinzeln 5s infinite}
+.ella-fluegel-l{transform-origin:28px 82px;animation:winken-l 4s ease-in-out infinite}
+.ella-fluegel-r{transform-origin:92px 82px;animation:winken-r 4s ease-in-out infinite}
+@keyframes schweben{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes blinzeln{0%,92%,100%{transform:scaleY(0)}95%{transform:scaleY(1)}}
+@keyframes winken-l{0%,70%,100%{transform:rotate(0)}80%{transform:rotate(-14deg)}90%{transform:rotate(6deg)}}
+@keyframes winken-r{0%,100%{transform:rotate(0)}}
+@keyframes hopp{0%{transform:translateY(0)}40%{transform:translateY(-10px) rotate(-3deg)}100%{transform:translateY(0)}}
+.sprechblase{position:relative;flex:1;min-width:0;background:var(--solid);border-radius:20px;padding:14px 16px 10px;box-shadow:0 4px 16px rgba(90,60,120,.12);border:2px solid color-mix(in srgb,var(--flieder) 35%,transparent)}
+.sprechblase::before{content:"";position:absolute;left:-12px;top:34px;border:10px solid transparent;border-right-color:color-mix(in srgb,var(--flieder) 35%,transparent);border-left:0}
+.sprechblase::after{content:"";position:absolute;left:-8px;top:36px;border:8px solid transparent;border-right-color:var(--solid);border-left:0}
+.ella-msg{display:none;font-weight:600;line-height:1.45;min-height:3em}
+.ella-msg.an{display:block;animation:einblenden .35s ease-out}
+@keyframes einblenden{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.ella-punkte{display:flex;gap:5px;justify-content:flex-end;margin-top:6px}
+.ella-punkte i{width:7px;height:7px;border-radius:50%;background:var(--line)}.ella-punkte i.an{background:var(--rose)}
+.ella-klein{background:none!important;width:62px;height:62px}
+@media (max-width:520px){.ella-buehne{flex-direction:column;align-items:flex-start}.sprechblase::before{left:40px;top:-12px;border:10px solid transparent;border-bottom-color:color-mix(in srgb,var(--flieder) 35%,transparent);border-top:0}
+ .sprechblase::after{left:42px;top:-8px;border:8px solid transparent;border-bottom-color:var(--solid);border-top:0}}
+@media (prefers-reduced-motion:reduce){.ella-koerper,.ella-lider,.ella-fluegel-l{animation:none}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -1904,11 +1929,57 @@ function kachelSchwer(){
   return `<section class="kachel"><div class="k-kopf"><h3>💪 Fällt dir noch schwer</h3></div>
    <ul class="kliste">${vor.map(x=>`<li style="--fach:${fach(x.t.fach).farbe}"><span class="kl-text"><b>${x.t.titel}</b><small>${fach(x.t.fach).name} · ${x.info}</small></span><button class="btn small" data-act="ueben" data-thema="${x.t.id}">Üben</button></li>`).join("")}</ul>
    ${schw.length?"":`<div class="tipps"><p class="eyebrow">Merk dir das</p><ul>${fehler.map(f=>`<li>${f}</li>`).join("")}</ul></div>`}</section>`}
+/* ---------- Ella, die Lern-Eule (mit runder Brille und Heft) ---------- */
+function ellaSVG(gr=120){
+  return `<svg class="ella-svg" viewBox="0 0 120 130" width="${gr}" height="${Math.round(gr*130/120)}" role="img" aria-label="Eule Ella mit Brille und Heft">
+  <ellipse cx="60" cy="124" rx="34" ry="5" fill="rgba(80,50,100,.15)"/>
+  <g class="ella-koerper">
+   <path d="M30 34 L24 12 L44 26 Z M90 34 L96 12 L76 26 Z" fill="#9b7fd6"/>
+   <ellipse cx="60" cy="72" rx="40" ry="46" fill="#b39ae8"/>
+   <ellipse cx="60" cy="86" rx="27" ry="30" fill="#f6eefc"/>
+   <path d="M44 80 q4 4 8 0 M56 88 q4 4 8 0 M68 80 q4 4 8 0 M50 98 q4 4 8 0 M62 98 q4 4 8 0" stroke="#d9c8f0" stroke-width="2" fill="none" stroke-linecap="round"/>
+   <g class="ella-augen">
+    <circle cx="44" cy="52" r="15" fill="#fff"/><circle cx="76" cy="52" r="15" fill="#fff"/>
+    <circle class="ella-pupille" cx="46" cy="53" r="6.5" fill="#2e2035"/><circle class="ella-pupille" cx="74" cy="53" r="6.5" fill="#2e2035"/>
+    <circle cx="48" cy="50.5" r="2" fill="#fff"/><circle cx="76" cy="50.5" r="2" fill="#fff"/>
+    <g class="ella-lider"><ellipse cx="44" cy="52" rx="15" ry="15" fill="#b39ae8"/><ellipse cx="76" cy="52" rx="15" ry="15" fill="#b39ae8"/></g>
+   </g>
+   <circle cx="44" cy="52" r="16.5" fill="none" stroke="#3a2a45" stroke-width="3.2"/><circle cx="76" cy="52" r="16.5" fill="none" stroke="#3a2a45" stroke-width="3.2"/>
+   <path d="M60.5 51 q0 -3 0 0" stroke="#3a2a45" stroke-width="3.2"/><path d="M57 50 q3 -3 6 0" stroke="#3a2a45" stroke-width="3" fill="none"/>
+   <path d="M55 64 L65 64 L60 72 Z" fill="#f5a623"/>
+   <ellipse cx="34" cy="70" rx="5" ry="3" fill="#f7a6c8" opacity=".7"/><ellipse cx="86" cy="70" rx="5" ry="3" fill="#f7a6c8" opacity=".7"/>
+   <g class="ella-heft"><rect x="40" y="92" width="40" height="28" rx="6" fill="#f472b6" stroke="#c2417f" stroke-width="2"/>
+    <rect x="45" y="97" width="30" height="18" rx="4" fill="#fff6fb"/><path d="M49 102 h22 M49 107 h22 M49 112 h14" stroke="#e7b6cf" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="60" cy="94" r="3" fill="#ffd166"/></g>
+   <path class="ella-fluegel-l" d="M22 78 q-6 18 20 26 q-4 -14 0 -26 z" fill="#9b7fd6"/>
+   <path class="ella-fluegel-r" d="M98 78 q6 18 -20 26 q4 -14 0 -26 z" fill="#9b7fd6"/>
+   <path d="M48 118 l-3 6 M52 118 l0 7 M68 118 l0 7 M72 118 l3 6" stroke="#f5a623" stroke-width="3" stroke-linecap="round"/>
+  </g></svg>`}
+function ellaNachrichten(){
+  const st=new Date().getHours(),gruss=st<11?"Guten Morgen":st<17?"Hallo":"Guten Abend";
+  const ls=aufgabenHeute(),f=S.erledigt[tag()]||{},erl=ls.filter(a=>f[a.id]||(a.lernen&&lernMinuten()>=30)).length;
+  const p=kommendeProben().find(p=>p.themen.length&&tageBis(p.datum)>=1);
+  const m=[`${gruss}, Maja! Ich bin Ella 🦉 Schön, dass du da bist!`];
+  m.push(lobText());
+  if(ls.length)m.push(erl===ls.length?`Du hast heute <b>alle ${ls.length} Aufgaben</b> abgehakt – ich bin stolz auf dich! 🎉`:erl?`Super, schon <b>${erl} von ${ls.length}</b> Aufgaben erledigt! Noch ${ls.length-erl}, dann hast du alles geschafft. 💪`:`Auf deiner Liste stehen heute <b>${ls.length} Aufgaben</b>. Fang mit dem Lernen an – ich helfe dir! 📚`);
+  if(lernMinuten()>0&&lernMinuten()<30)m.push(`Du hast heute schon <b>${lernMinuten()} Minuten</b> gelernt. Nur noch ${30-lernMinuten()} Minuten bis zu deinem Ziel! ⏱️`);
+  if(p)m.push(`In <b>${tageBis(p.datum)} ${tageBis(p.datum)===1?"Tag":"Tagen"}</b> ist die ${fach(p.fach).name}-Probe. Wir schaffen das zusammen – Schritt für Schritt! 🍀`);
+  return m}
+function ellaHTML(){const m=ellaNachrichten();
+  return `<div class="ella-buehne"><button class="ella-figur" data-act="ellaweiter" aria-label="Ella antippen für die nächste Nachricht">${ellaSVG(118)}</button>
+   <div class="sprechblase" aria-live="polite">${m.map((t,i)=>`<p class="ella-msg ${i===ellaIdx%m.length?"an":""}">${t}</p>`).join("")}
+    <div class="ella-punkte" aria-hidden="true">${m.map((_,i)=>`<i class="${i===ellaIdx%m.length?"an":""}"></i>`).join("")}</div></div></div>`}
+let ellaIdx=0;
+function ellaZeige(i){const ms=[...document.querySelectorAll(".ella-msg")],ps=[...document.querySelectorAll(".ella-punkte i")];if(!ms.length)return;
+  ellaIdx=(i+ms.length)%ms.length;ms.forEach((m,k)=>m.classList.toggle("an",k===ellaIdx));ps.forEach((p,k)=>p.classList.toggle("an",k===ellaIdx));
+  const f=document.querySelector(".ella-figur");if(f){f.classList.remove("hopp");void f.offsetWidth;f.classList.add("hopp")}}
+setInterval(()=>{if(!Q&&V.seite==="start"&&document.visibilityState==="visible")ellaZeige(ellaIdx+1)},8000);
+
 function kachelHeute(){
   const dran=heuteDran().length,m=tagesMenge(),alle=alleKarten(),gel=alle.filter(sitzt).length;
-  return `<section class="kachel hero"><div class="hero-text"><p class="eyebrow">${WTAG_LANG[new Date().getDay()]}, ${datumDE(tag()).replace(/\d\d$/,"")}</p><h1>Hallo Maja! 🌸</h1>
-   <p class="muted">${dran?`Heute sind <b>${Math.min(dran,m)} Fragen</b> zum Wiederholen dran.`:"Für heute ist alles erledigt – super!"}</p>
-   ${dran?`<div><button class="btn" data-act="heute">Los geht's</button></div>`:""}</div>
+  return `<section class="kachel hero"><div class="hero-text"><p class="eyebrow">${WTAG_LANG[new Date().getDay()]}, ${datumDE(tag()).replace(/\d\d$/,"")}</p>
+   ${ellaHTML()}
+   <div class="row">${dran?`<button class="btn" data-act="heute">Los geht's – ${Math.min(dran,m)} Fragen</button>`:`<span class="muted">Für heute ist alles wiederholt – super!</span>`}</div></div>
    <div class="hero-stats"><div><b>${S.heute.anzahl}</b><span>heute gelöst</span></div><div><b>${S.serie.letzter>=tag(-1)?S.serie.tage:0}</b><span>Tage in Folge</span></div><div><b>${gel}</b><span>von ${alle.length} sitzen</span></div></div></section>`}
 function kachelCountdown(){
   const p=kommendeProben().find(p=>p.themen.length);if(!p)return "";const f=fach(p.fach),d=tageBis(p.datum);
@@ -1955,7 +2026,6 @@ function lobText(){
   return saetze.join(" ")}
 function kachelFortschritt(){
   return `<section class="kachel breit"><div class="k-kopf"><h3>🌈 Dein Fortschritt</h3><span class="muted">wie gut die Aufgaben schon sitzen</span></div>
-   <div class="ella-lob"><span class="tutor-ava" aria-hidden="true">🦉</span><p>${lobText()}</p></div>
    <div class="ringe">${FORTSCHRITT_FAECHER().map(f=>{const p=fachProzent(f.id),v=vergleich(f.id),zu=FAECHER.length&&!IMMER_WIEDERHOLEN.includes(f.id);
      return `<button class="ring" data-go="fach" data-fach="${f.id}" style="--fach:${f.farbe}">${ringSVG(p)}<b>${f.name}</b>
       ${v&&v.diff?`<span class="ring-diff ${v.diff>0?"plus":"minus"}">${v.diff>0?"▲ +":"▼ "}${v.diff} %</span>`:`<span class="ring-diff">${p>=70?"läuft super":p>=40?"wird besser":"noch üben"}</span>`}</button>`}).join("")}</div>
@@ -2040,7 +2110,7 @@ function vMerke(){
    <div class="row"><button class="btn" data-act="ueben" data-thema="${t.id}">Jetzt üben</button></div></div>`}
 
 function tutorHTML(h){return `<div class="tutor-bg" role="dialog" aria-modal="true" aria-label="Lernhilfe"><div class="tutor">
-  <div class="tutor-kopf"><span class="tutor-ava" aria-hidden="true">🦉</span><div><p class="eyebrow">Eule Ella hilft dir</p><h3>${h.titel}</h3></div></div>
+  <div class="tutor-kopf"><span class="tutor-ava ella-klein" aria-hidden="true">${ellaSVG(56)}</span><div><p class="eyebrow">Eule Ella hilft dir</p><h3>${h.titel}</h3></div></div>
   <div class="tutor-text">${h.text}</div>${h.bild?`<div class="bild">${h.bild}</div>`:""}
   <div class="row">${h.leicht?`<button class="btn" data-act="leichter" id="leichtbtn">Leichtere Übung probieren</button>`:""}<button class="btn ghost" data-act="tutorzu">Verstanden</button></div>
   <p class="tipp">Keine Sorge: Diese Aufgabe kommt am Ende der Runde nochmal dran.</p></div></div>`}
@@ -2146,6 +2216,7 @@ app.addEventListener("click",e=>{
   switch(d.act){
    case"heute":starte("heute");break;
    case"woche":V.woche=+d.w;render();break;
+   case"ellaweiter":ellaZeige(ellaIdx+1);break;
    case"aufgabe":{if(d.a.startsWith("todo-")){const id=d.a.slice(5);S.todo[id]=!S.todo[id];speichern();render();break}
      const iso=tag();const f=S.erledigt[iso]||(S.erledigt[iso]={});f[d.a]=!f[d.a];
      for(const k of Object.keys(S.erledigt))if(tageBis(k)<-14)delete S.erledigt[k];speichern();render();break}
