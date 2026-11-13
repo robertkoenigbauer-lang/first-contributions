@@ -500,6 +500,32 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 [style*="--musik"] .balken i{background:linear-gradient(90deg,#c39bff,#ff8fc8)}
 [style*="--musik"] .fachkopf{border-left-color:#c9b8e0}
 @media (prefers-reduced-motion:reduce){.fr-deko span{animation:none}}
+/* Sparbuch */
+.spar-seite{display:flex;flex-direction:column;gap:16px}
+.spar-hero{flex-direction:row;flex-wrap:wrap;align-items:center;gap:18px;background:linear-gradient(135deg,color-mix(in srgb,#ffa6c9 35%,var(--solid)),color-mix(in srgb,#ffd23f 25%,var(--solid)))}
+.spar-stand{display:flex;flex-direction:column;gap:8px;align-items:flex-start;min-width:0}
+.spar-betrag{font-family:var(--f-display);font-weight:800;font-size:3rem;line-height:1;color:#1f8a4c;font-variant-numeric:tabular-nums}
+.spar-betrag.klein{font-size:1.8rem}.spar-betrag.minus{color:var(--bad)}
+.spar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.prognose{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.prognose div{background:color-mix(in srgb,var(--rose) 10%,var(--solid));border-radius:14px;padding:10px 12px;display:flex;flex-direction:column}
+.prognose span{font-weight:800;font-size:.85rem;color:var(--muted)}
+.prognose b{font-family:var(--f-display);font-size:1.6rem;color:var(--rose);font-variant-numeric:tabular-nums}
+.prognose small{color:var(--muted)}
+.spar-balken{height:12px}.spar-balken i{background:linear-gradient(90deg,#ffa6c9,#ffd23f)}
+.sform{display:flex;flex-direction:column;gap:10px}
+.sp-arten{display:flex;flex-wrap:wrap;gap:6px}
+.sp-arten .chip input{accent-color:var(--rose)}
+.sp-arten .chip:has(input:checked){border-color:var(--rose);background:color-mix(in srgb,var(--rose) 12%,transparent)}
+.nform input.fehler{border-color:var(--bad)}
+.spar-liste{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.spar-liste li{display:flex;gap:10px;align-items:center;background:color-mix(in srgb,var(--solid) 80%,transparent);border-radius:12px;padding:8px 10px}
+.sl-ic{font-size:1.4rem}.sl-text{flex:1;min-width:0;display:flex;flex-direction:column}.sl-text small{color:var(--muted)}
+.sl-betrag{font-weight:800;color:#1f8a4c;font-variant-numeric:tabular-nums;white-space:nowrap}.sl-betrag.minus{color:var(--bad)}
+.schwein .muenze{animation:muenze 2.4s ease-in infinite}
+@keyframes muenze{0%{transform:translateY(-14px);opacity:0}30%{opacity:1}70%{transform:translateY(14px);opacity:1}100%{transform:translateY(16px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.schwein .muenze{animation:none}}
+@media (max-width:480px){.prognose{grid-template-columns:1fr}.spar-betrag{font-size:2.4rem}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -1680,6 +1706,7 @@ const AUFGABEN=[
  {id:"brotzeit",text:"Brotzeitdose ausräumen",icon:"🥪",tage:[1,2,3,4,5]},
  {id:"wasserwacht",text:"Wasserwacht-Sachen für morgen einpacken",icon:"🛟",tage:[2]},
  {id:"sport-schule",text:"Sportsachen für die Schule morgen einpacken",icon:"👟",tage:[2]},
+ {id:"taschengeld",text:"Taschengeld: 5 € von Mama/Papa – abhaken bucht es ins Sparbuch",icon:"💶",tage:[5],taschengeld:true},
  {id:"volleyball",text:"Sportsachen für Volleyball morgen einpacken",icon:"🏐",tage:[3]},
 ];
 // Einmalige To-dos: bleiben jeden Tag stehen, bis sie abgehakt sind
@@ -1735,8 +1762,9 @@ const datumDE=d=>{const [y,m,t]=d.split("-");return `${+t}.${+m}.${y.slice(2)}`}
    Box 1–5: richtig → eine Box weiter (später wieder dran), falsch → zurück in Box 1.
    ================================================================ */
 const KEY="maja-lernheft-v2";
-let S={karten:{},heute:{datum:"",anzahl:0},serie:{letzter:"",tage:0},plan:{},uebproben:[],notizen:[],erledigt:{},todo:{},lernzeit:{},tagStat:{},verlauf:{}};
+let S={karten:{},heute:{datum:"",anzahl:0},serie:{letzter:"",tage:0},plan:{},uebproben:[],notizen:[],erledigt:{},todo:{},lernzeit:{},tagStat:{},verlauf:{},spar:{buchungen:[],ziel:null}};
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
+if(!S.spar||!Array.isArray(S.spar.buchungen))S.spar={buchungen:[],ziel:null};
 const speichern=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const tag=(plus=0)=>{const d=new Date();d.setDate(d.getDate()+plus);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 if(S.heute.datum!==tag())S.heute={datum:tag(),anzahl:0};
@@ -2096,7 +2124,7 @@ function notizblockHTML(){
 function seitenleisteHTML(){
   const akt=V.seite,link=(s,txt,ic,extra="")=>`<button class="nav ${akt===s&&!extra?"aktiv":""}" data-go="${s}" ${extra}>${ic}<span>${txt}</span></button>`;
   return `<aside class="seitenleiste"><div class="marke"><span class="logo" aria-hidden="true">✿</span><div><b>Majas Lernheft</b><small>Klasse 6a</small></div></div>
-   <nav class="navliste">${link("start","Übersicht","🏠")}${link("kalender","Kalender","📅")}${link("noten","Noten","⭐")}${link("stundenplan","Stundenplan","🕒")}</nav>
+   <nav class="navliste">${link("start","Übersicht","🏠")}${link("kalender","Kalender","📅")}${link("noten","Noten","⭐")}${link("stundenplan","Stundenplan","🕒")}${link("sparbuch","Sparbuch","🐷")}</nav>
    <p class="nav-titel">Fächer</p>
    <nav class="navliste">${FAECHER.filter(f=>!f.neben||themenVon(f.id).length).map(f=>{const x=schnitt(f.id);return `<button class="nav fachnav ${akt==="fach"&&V.fach===f.id||akt==="merke"&&thema(V.thema)?.fach===f.id?"aktiv":""}" data-go="fach" data-fach="${f.id}" style="--fach:${f.farbe}"><i class="punkt"></i><span>${f.name}</span>${x!==null?`<em>${komma(x,1)}</em>`:""}</button>`}).join("")}</nav></aside>`}
 
@@ -2176,7 +2204,7 @@ function kachelCountdown(){
    <p><b>${f.name}</b> · ${datumKurz(p.datum)}</p><button class="btn small" data-act="vorb" data-probe="${PROBEN.indexOf(p)}">Jetzt üben</button></section>`}
 
 function aufgabenHeute(){const iso=tag(),wd=new Date(iso+"T12:00").getDay();
-  const liste=AUFGABEN.filter(a=>!a.tage.length||a.tage.includes(wd)).map(a=>({id:a.id,text:a.text,icon:a.icon,lernen:a.lernen}));
+  const liste=AUFGABEN.filter(a=>!a.tage.length||a.tage.includes(wd)).map(a=>({id:a.id,text:a.text,icon:a.icon,lernen:a.lernen,taschengeld:a.taschengeld}));
   ERINNERUNGEN.forEach((e,i)=>{if(e.datum===iso)liste.push({id:"e"+i,text:e.text,icon:"🔔",punkte:e.punkte})});
   TODOS.filter(t=>!S.todo[t.id]).forEach(t=>liste.push({id:"todo-"+t.id,text:t.text,icon:t.icon,todo:true}));
   return liste}
@@ -2219,6 +2247,64 @@ function kachelFortschritt(){
      return `<button class="ring" data-go="fach" data-fach="${f.id}" style="--fach:${f.farbe}">${ringSVG(p)}<b>${f.name}</b>
       ${v&&v.diff?`<span class="ring-diff ${v.diff>0?"plus":"minus"}">${v.diff>0?"▲ +":"▼ "}${v.diff} %</span>`:`<span class="ring-diff">${p>=70?"läuft super":p>=40?"wird besser":"noch üben"}</span>`}</button>`}).join("")}</div>
    <p class="tipp">🟢 ab 70 % sitzt es gut · 🟡 ab 40 % wird es besser · 🔴 darunter noch üben. NT, GPG und Musik werden nach ihrer Probe nicht mehr abgefragt – Mathe, Deutsch und Englisch kommen immer wieder dran, damit sie für die großen Proben sitzen.</p></section>`}
+/* ================================================================
+   SPARBUCH (Taschengeld 5 € jeden Freitag + eigene Einträge)
+   ================================================================ */
+const TASCHENGELD=5, TG_WOCHENTAG=5; // 5 € jeden Freitag
+const SPARARTEN=[["taschengeld","💶","Taschengeld"],["geburtstag","🎂","Geburtstag"],["weihnachten","🎄","Weihnachten"],["ostern","🐣","Ostern"],
+ ["verdient","💪","Selbst verdient"],["geschenk","🎁","Geschenk"],["start","🐷","Startguthaben"],["ausgabe","🛍️","Ausgabe"]];
+const sparArt=k=>SPARARTEN.find(a=>a[0]===k)||SPARARTEN[5];
+const euro=x=>(Math.round(x*100)/100).toFixed(2).replace(".",",")+" €";
+const sparStand=()=>S.spar.buchungen.reduce((a,b)=>a+b.betrag,0);
+function freitageZwischen(vonIso,bisIso){let n=0;const d=new Date(vonIso+"T12:00"),e=new Date(bisIso+"T12:00");while(d<=e){if(d.getDay()===TG_WOCHENTAG)n++;d.setDate(d.getDate()+1)}return n}
+function offeneFreitage(bisIso){const heute=tag();let n=freitageZwischen(heute,bisIso);
+  if(new Date(heute+"T12:00").getDay()===TG_WOCHENTAG&&S.spar.buchungen.some(b=>b.id==="tg-"+heute))n--;return n}
+function sparPrognose(){const jetzt=sparStand(),j=+tag().slice(0,4);
+  const bisJahr=offeneFreitage(`${j}-12-31`),naechstes=freitageZwischen(`${j+1}-01-01`,`${j+1}-12-31`);
+  return {jetzt,jahr:j,bisJahr,endeJahr:jetzt+bisJahr*TASCHENGELD,naechstes,endeNaechstes:jetzt+(bisJahr+naechstes)*TASCHENGELD}}
+function zielInfo(){const z=S.spar.ziel;if(!z||!z.betrag)return null;const st=sparStand(),fehlt=Math.max(0,z.betrag-st);
+  const wochen=Math.ceil(fehlt/TASCHENGELD);let datum=null;if(fehlt>0){const d=new Date();let n=0;while(n<wochen){d.setDate(d.getDate()+1);if(d.getDay()===TG_WOCHENTAG)n++}datum=isoTag(d)}
+  return {name:z.name,betrag:z.betrag,fehlt,prozent:Math.min(100,Math.round(100*st/z.betrag)),wochen,datum}}
+function taschengeldBuchen(an){const id="tg-"+tag();S.spar.buchungen=S.spar.buchungen.filter(b=>b.id!==id);
+  if(an)S.spar.buchungen.push({id,datum:tag(),betrag:TASCHENGELD,art:"taschengeld",text:"Taschengeld"})}
+function schweinSVG(gr=110){return `<svg viewBox="0 0 120 100" width="${gr}" height="${Math.round(gr*100/120)}" class="schwein" role="img" aria-label="Sparschwein">
+ <ellipse cx="60" cy="58" rx="42" ry="32" fill="#ffa6c9"/><circle cx="96" cy="54" r="13" fill="#ff8fbb"/><ellipse cx="99" cy="54" rx="6" ry="5" fill="#ff6fa5"/>
+ <circle cx="97" cy="53" r="1.5" fill="#8a2f55"/><circle cx="101" cy="53" r="1.5" fill="#8a2f55"/><circle cx="82" cy="44" r="3" fill="#3a2a45"/>
+ <path d="M72 28 l6 -12 l6 14 z" fill="#ff8fbb"/><rect x="46" y="26" width="22" height="5" rx="2.5" fill="#c2417f"/>
+ <rect x="30" y="80" width="10" height="14" rx="4" fill="#ff8fbb"/><rect x="74" y="80" width="10" height="14" rx="4" fill="#ff8fbb"/>
+ <path d="M18 56 q-10 -4 -6 -12 q4 6 8 2" fill="none" stroke="#ff8fbb" stroke-width="4" stroke-linecap="round"/>
+ <g class="muenze"><circle cx="57" cy="12" r="9" fill="#ffd23f" stroke="#e0a800" stroke-width="2"/><text x="57" y="16" text-anchor="middle" font-size="11" font-weight="800" fill="#9a7600">€</text></g></svg>`}
+function vSparbuch(){
+  const st=sparStand(),pr=sparPrognose(),z=zielInfo(),bs=S.spar.buchungen.slice().sort((a,b)=>a.datum<b.datum?1:-1);
+  const heuteFr=new Date(tag()+"T12:00").getDay()===TG_WOCHENTAG,tgHeute=S.spar.buchungen.some(b=>b.id==="tg-"+tag());
+  return `<div class="spar-seite">
+   <section class="kachel spar-hero"><div>${schweinSVG(130)}</div><div class="spar-stand"><p class="eyebrow">Mein Sparbuch 🐷</p><div class="spar-betrag ${st<0?"minus":""}">${euro(st)}</div>
+    <p class="muted">Taschengeld: <b>${euro(TASCHENGELD)}</b> jeden Freitag</p>
+    ${heuteFr?`<button class="btn ${tgHeute?"ghost":""}" data-act="tgheute">${tgHeute?"✓ Heutiges Taschengeld ist gebucht":"💶 Heutiges Taschengeld (5 €) eintragen"}</button>`:""}</div></section>
+   <div class="spar-grid">
+    <section class="kachel"><h3>🔮 So viel hast du, wenn du alles sparst</h3>
+     <div class="prognose"><div><span>Ende ${pr.jahr}</span><b>${euro(pr.endeJahr)}</b><small>+ ${pr.bisJahr} Freitage × ${euro(TASCHENGELD)}</small></div>
+     <div><span>Ende ${pr.jahr+1}</span><b>${euro(pr.endeNaechstes)}</b><small>+ ${pr.naechstes} Freitage im ganzen Jahr ${pr.jahr+1}</small></div></div>
+     <p class="tipp">Geschenke zu Geburtstag, Weihnachten oder Ostern kommen noch obendrauf!</p></section>
+    <section class="kachel"><h3>🎯 Mein Sparziel</h3>
+     ${z?`<p><b>${esc(z.name)}</b> · ${euro(z.betrag)}</p><div class="balken spar-balken"><i style="width:${z.prozent}%"></i></div>
+      <p>${z.fehlt>0?`Noch <b>${euro(z.fehlt)}</b> – das sind etwa <b>${z.wochen} Wochen</b> Taschengeld. Geschafft am <b>${wtag(z.datum)}, ${datumDE(z.datum)}</b>! 🚀`:`<b>Ziel erreicht! 🎉</b> Du hast genug gespart.`}</p>`:`<p class="muted">Wofür sparst du? Trag dein Ziel ein!</p>`}
+     <form id="zform" class="nform" autocomplete="off"><input id="zname" placeholder="z. B. Neue Kopfhörer" value="${z?esc(z.name):""}" aria-label="Sparziel"><input id="zbetrag" inputmode="decimal" placeholder="Betrag €" value="${z?String(z.betrag).replace(".",","):""}" aria-label="Betrag in Euro" style="width:110px"><button class="btn small" type="submit">${z?"Ändern":"Ziel setzen"}</button></form></section>
+   </div>
+   <section class="kachel"><h3>✍️ Geld eintragen</h3>
+    <form id="sform" class="sform" autocomplete="off">
+     <div class="sp-arten">${SPARARTEN.map(([k,ic,n],i)=>`<label class="chip"><input type="radio" name="sart" value="${k}" ${i===1?"checked":""}> ${ic} ${n}</label>`).join("")}</div>
+     <div class="nform"><input id="sbetrag" inputmode="decimal" placeholder="Betrag, z. B. 20" aria-label="Betrag in Euro" style="width:150px"><input id="stext" placeholder="Notiz, z. B. von Oma" aria-label="Notiz"><input id="sdatum" type="date" value="${tag()}" aria-label="Datum"><button class="btn" type="submit">Eintragen</button></div>
+     <p class="tipp">Bei „Ausgabe“ wird der Betrag abgezogen. Mit „Startguthaben“ trägst du ein, was schon in deiner Spardose ist.</p></form></section>
+   <section class="kachel"><h3>📒 Meine Einträge</h3>
+    ${bs.length?`<ul class="spar-liste">${bs.map(b=>{const [,ic,n]=sparArt(b.art);return `<li><span class="sl-ic">${ic}</span><span class="sl-text"><b>${esc(b.text||n)}</b><small>${wtag(b.datum)}, ${datumDE(b.datum)} · ${n}</small></span><span class="sl-betrag ${b.betrag<0?"minus":""}">${b.betrag>0?"+":""}${euro(b.betrag)}</span><button class="nweg" data-act="sloeschen" data-s="${b.id}" aria-label="Eintrag löschen">✕</button></li>`}).join("")}</ul>`
+     :`<p class="muted">Noch keine Einträge. Fang mit deinem Startguthaben an – wie viel ist schon in deiner Spardose?</p>`}</section>
+   <p class="fuss">Das Sparbuch wird auf diesem Gerät gespeichert.</p></div>`}
+function kachelSparbuch(){const st=sparStand(),z=zielInfo();
+  return `<section class="kachel spar-kachel"><div class="k-kopf"><h3>🐷 Sparbuch</h3><button class="back" data-go="sparbuch">Öffnen →</button></div>
+   <div class="row" style="gap:12px">${schweinSVG(64)}<div><div class="spar-betrag klein ${st<0?"minus":""}">${euro(st)}</div><small class="muted">+ ${euro(TASCHENGELD)} jeden Freitag</small></div></div>
+   ${z?`<p style="font-size:.9rem">🎯 ${esc(z.name)}: ${z.prozent} %</p><div class="balken spar-balken"><i style="width:${z.prozent}%"></i></div>`:""}</section>`}
+
 function vDashboard(){
   verlaufMerken();
   return `<div class="weltraum dash-raum"><div class="sterne-bg" aria-hidden="true"></div>
@@ -2228,6 +2314,7 @@ function vDashboard(){
    ${kachelHeute()}${kachelCountdown()}
    ${aufgabenblockHTML()}${kachelProben()}${kachelSchwer()}
    ${kachelFortschritt()}
+   ${kachelSparbuch()}
    ${kachelNoten()}
    <section class="kachel">${notizblockHTML()}</section><div class="zwei">${schultagHTML()}</div>
    <section class="kachel breit"><div class="k-kopf"><h3>📅 Diese Woche</h3><button class="back" data-go="kalender">Kalender →</button></div>${wocheHTML(0,true)}</section>
@@ -2398,9 +2485,14 @@ function wochenplanHTML(){
   </section>`}
 
 function render(){
-  let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else if(V.seite==="noten")h=vNoten();else if(V.seite==="stundenplan")h=vStundenplan();else if(V.seite==="kalender")h=vKalender();else h=vDashboard();
+  let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else if(V.seite==="noten")h=vNoten();else if(V.seite==="stundenplan")h=vStundenplan();else if(V.seite==="kalender")h=vKalender();else if(V.seite==="sparbuch")h=vSparbuch();else h=vDashboard();
   const weit=!Q&&(V.seite==="start"||V.seite==="kalender");
   app.innerHTML=Q?`<div class="inhalt">${h}</div>`:`<div class="layout">${seitenleisteHTML()}<main class="inhalt ${weit?"weit":""}">${h}</main></div>`;
+  const sf=document.getElementById("sform");if(sf)sf.addEventListener("submit",e=>{e.preventDefault();const v=parseZahl(document.getElementById("sbetrag").value);const fld=document.getElementById("sbetrag");
+    if(v===null||v<=0){fld.focus();fld.classList.add("fehler");return}const art=(sf.querySelector("input[name=sart]:checked")||{}).value||"geschenk";
+    S.spar.buchungen.push({id:"s"+Date.now().toString(36),datum:document.getElementById("sdatum").value||tag(),betrag:art==="ausgabe"?-v:v,art,text:document.getElementById("stext").value.trim()});speichern();render()});
+  const zf=document.getElementById("zform");if(zf)zf.addEventListener("submit",e=>{e.preventDefault();const n=document.getElementById("zname").value.trim(),v=parseZahl(document.getElementById("zbetrag").value);
+    S.spar.ziel=n&&v>0?{name:n,betrag:v}:null;speichern();render()});
   const nf=document.getElementById("nform");if(nf)nf.addEventListener("submit",e=>{e.preventDefault();const t=document.getElementById("ntext").value.trim();if(!t)return;
     S.notizen.push({id:Date.now().toString(36),text:t,datum:document.getElementById("ndatum").value||"",erledigt:false});speichern();render();const n2=document.getElementById("ntext");if(n2)n2.focus()});
   const inp=document.getElementById("antwort");if(inp&&!inp.disabled)inp.focus({preventScroll:true});
@@ -2423,10 +2515,12 @@ app.addEventListener("click",e=>{
   switch(d.act){
    case"heute":starte("heute");break;
    case"woche":V.woche=+d.w;render();break;
+   case"tgheute":{const an=!S.spar.buchungen.some(b=>b.id==="tg-"+tag());taschengeldBuchen(an);const f=S.erledigt[tag()]||(S.erledigt[tag()]={});f.taschengeld=an;speichern();render();break}
+   case"sloeschen":{S.spar.buchungen=S.spar.buchungen.filter(b=>b.id!==d.s);const m=String(d.s).match(/^tg-(.+)$/);if(m&&S.erledigt[m[1]])S.erledigt[m[1]].taschengeld=false;speichern();render();break}
    case"sprich":if(!sprich(d.t,d.langsam))b.title="Vorlesen geht auf diesem Gerät leider nicht";break;
    case"ellaweiter":ellaZeige(ellaIdx+1);break;
    case"aufgabe":{if(d.a.startsWith("todo-")){const id=d.a.slice(5);S.todo[id]=!S.todo[id];speichern();render();break}
-     const iso=tag();const f=S.erledigt[iso]||(S.erledigt[iso]={});f[d.a]=!f[d.a];
+     const iso=tag();const f=S.erledigt[iso]||(S.erledigt[iso]={});f[d.a]=!f[d.a];if(d.a==="taschengeld")taschengeldBuchen(f[d.a]);
      for(const k of Object.keys(S.erledigt))if(tageBis(k)<-14)delete S.erledigt[k];speichern();render();break}
    case"nerledigt":{const n=S.notizen.find(x=>x.id===d.n);if(n){n.erledigt=!n.erledigt;speichern();render()}break}
    case"nloeschen":S.notizen=S.notizen.filter(x=>x.id!==d.n);speichern();render();break;
