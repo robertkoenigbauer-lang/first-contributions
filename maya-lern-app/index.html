@@ -306,6 +306,8 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .notizen li.erledigt span{text-decoration:line-through;opacity:.6}
 .nhaken{width:24px;height:24px;border-radius:50%;border:2px solid var(--rose);background:transparent;flex:none;padding:0;font-weight:800;color:#fff;font-size:.8rem}
 .nhaken.an{background:var(--rose)}
+.punkte-liste{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:3px;font-weight:600;font-size:.9rem}
+.notizen.erinnerung li .punkte-liste li{background:none;padding:0}
 .notizen.erinnerung li{background:color-mix(in srgb,var(--rose) 16%,var(--surface))}
 .nweg{border:0;background:transparent;color:var(--muted);font-weight:800;padding:4px}
 @media (max-width:1050px){.dash{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{grid-column:1/-1}.woche{grid-template-columns:repeat(4,minmax(0,1fr))}}
@@ -1457,10 +1459,17 @@ const STUNDEN=["8.00","8.45","9.50","10.35","11.35","12.20","13.05","14.00","14.
 const STUNDENPLAN={1:["Mathe","Mathe","GPG","Englisch","Deutsch","Deutsch","Mittagspause","Informatik","EBSU"],2:["Religion","Religion","Englisch","Deutsch","Mathe","Förderunterricht"],
  3:["Mathe","Englisch","Deutsch","WiB","Sport","Sport"],4:["NT","NT","GPG","Englisch","WG","WG"],5:["Englisch","Deutsch","Kunst","Kunst","Musik","Musik"]};
 const PLANFACH={Mathe:"mathe",Deutsch:"deutsch",Englisch:"englisch",NT:"nt",GPG:"gpg",Musik:"musik",Informatik:"info",WiB:"wib"};
-const TERMINE=[{datum:"2026-11-16",text:"Vorlesewettbewerb beginnt 📖"},{datum:"2026-11-17",text:"Elternsprechtag"}];
+const TERMINE=[{datum:"2026-11-16",text:"Vorlesewettbewerb beginnt 📖"},{datum:"2026-11-16",text:"Referat Italien mit Nila 🇮🇹"},{datum:"2026-11-17",text:"Elternsprechtag"}];
 // Feste Erinnerungen (erscheinen im Notizblock und im Kalender)
 const ERINNERUNGEN=[
  {datum:"2026-11-14",text:"Vorlesetext üben: 3 Minuten laut vorlesen 📖"},
+ {datum:"2026-11-14",text:"Nila anrufen: Referat Italien am Montag besprechen 📞🇮🇹",punkte:[
+   "Wer von uns beiden trägt welchen Teil vor?",
+   "Was genau stellen wir vor? (z. B. Lage & Hauptstadt Rom, Essen, Sehenswürdigkeiten, Sprache)",
+   "Was ist schon fertig? (Texte, Bilder, Plakat …)",
+   "Was muss noch gemacht werden – und wer macht es bis wann?",
+   "Was nehmen wir am Montag mit? (Plakat, Bilder, Karteikarten …)",
+   "Einmal zusammen üben: Wie lange dauert das Referat?"]},
  {datum:"2026-11-15",text:"Vorlesetext nochmal üben – vor jemandem vorlesen 📖"},
  {datum:"2026-11-15",text:"Mama und Papa: Geld für die Mittagspause am Montag mitgeben 💶"},
  {datum:"2026-11-16",text:"Heute beginnt der Vorlesewettbewerb – Buch mitnehmen! 📖"}];
@@ -1792,7 +1801,7 @@ function vKalender(){
 function notizblockHTML(){
   const offen=S.notizen.filter(n=>!n.erledigt),fertig=S.notizen.filter(n=>n.erledigt);
   return `<div class="k-kopf"><h3>📒 Notizblock</h3><span class="muted">${offen.length} offen</span></div>
-   ${(()=>{const e=ERINNERUNGEN.filter(x=>tageBis(x.datum)>=0&&tageBis(x.datum)<=3);return e.length?`<ul class="notizen erinnerung">${e.map(x=>`<li><span>🔔 <b>${tageBis(x.datum)===0?"Heute":tageBis(x.datum)===1?"Morgen":wtag(x.datum)+" "+datumDE(x.datum).replace(/\d\d$/,"")}:</b> ${x.text}</span></li>`).join("")}</ul>`:""})()}
+   ${(()=>{const e=ERINNERUNGEN.filter(x=>tageBis(x.datum)>=0&&tageBis(x.datum)<=3);return e.length?`<ul class="notizen erinnerung">${e.map(x=>`<li class="${x.punkte?"mit-punkten":""}"><span>🔔 <b>${tageBis(x.datum)===0?"Heute":tageBis(x.datum)===1?"Morgen":wtag(x.datum)+" "+datumDE(x.datum).replace(/\d\d$/,"")}:</b> ${x.text}${x.punkte?`<ul class="punkte-liste">${x.punkte.map(q=>`<li>☐ ${q}</li>`).join("")}</ul>`:""}</span></li>`).join("")}</ul>`:""})()}
    <form id="nform" class="nform" autocomplete="off"><input id="ntext" placeholder="z. B. Büchereiausweis mitnehmen" aria-label="Neue Notiz" maxlength="140">
     <input id="ndatum" type="date" aria-label="Datum (optional)"><button class="btn small" type="submit">Merken</button></form>
    <ul class="notizen">${offen.map(n=>`<li><button class="nhaken" data-act="nerledigt" data-n="${n.id}" aria-label="Erledigt"></button><span>${esc(n.text)}${n.datum?` <small class="muted">· ${wtag(n.datum)} ${datumDE(n.datum).replace(/\d\d$/,"")}</small>`:""}</span><button class="nweg" data-act="nloeschen" data-n="${n.id}" aria-label="Löschen">✕</button></li>`).join("")}
