@@ -315,6 +315,31 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
  .seitenleiste{position:static;padding:12px;gap:6px}.navliste{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
  .nav{width:auto;white-space:nowrap;padding:7px 12px;background:color-mix(in srgb,var(--surface) 70%,transparent)}.nav-titel{display:none}.marke{padding:0 4px 4px}}
 @media (max-width:620px){.dash{grid-template-columns:minmax(0,1fr)}.woche{grid-template-columns:minmax(0,1fr)}.woche.kurz{grid-template-columns:repeat(2,minmax(0,1fr))}.wtagk{min-height:0}}
+/* Aufgabenblock wie ein Notizblock */
+.dash>.zwei{grid-column:span 2;min-width:0}
+.block{position:relative;padding-top:26px;--papier:#fff8c9;--linie:rgba(110,140,200,.28);color:#3a2c18;
+  background:repeating-linear-gradient(transparent 0 33px,var(--linie) 33px 34px),var(--papier);background-position:0 54px;border:1px solid #f1e3a0}
+.block .k-kopf h3{color:#3a2c18}
+.block-spirale{position:absolute;top:8px;left:18px;right:18px;height:12px;background:radial-gradient(circle at 6px 6px,#cdbfd8 0 4px,transparent 4.5px) 0 0/22px 12px repeat-x}
+.block-zaehler{font-weight:800;font-size:.9rem;padding:2px 10px;border-radius:99px;background:rgba(255,255,255,.7)}
+.block-zaehler.fertig{background:#bfeccf;color:#145c32}
+.aufgaben{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.aufgaben>li{display:flex;gap:10px;align-items:flex-start;min-height:34px;padding:4px 0;font-weight:700;line-height:1.35}
+.aufgaben>li>span{flex:1;min-width:0;padding-top:3px}
+.aufgaben>li.erledigt>span{text-decoration:line-through;text-decoration-thickness:2px;opacity:.55}
+.a-icon{font-style:normal}
+.ahaken{width:28px;height:28px;border-radius:8px;border:2.5px solid #c9a227;background:#fff;flex:none;padding:0;font-weight:900;color:#fff;font-size:1rem;display:grid;place-items:center}
+.ahaken.an{background:#2e9e5b;border-color:#2e9e5b}
+.block .punkte-liste{color:#5a4a2a}
+.block-fertig{font-weight:800;color:#145c32}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .block{--papier:#3b3424;--linie:rgba(255,240,180,.12);color:#f7ecd0;border-color:#5a4c2c}
+ :root:not([data-theme="light"]) .block .k-kopf h3,:root:not([data-theme="light"]) .block .punkte-liste{color:#f7ecd0}
+ :root:not([data-theme="light"]) .block-zaehler{background:rgba(0,0,0,.25)}}
+:root[data-theme="dark"] .block{--papier:#3b3424;--linie:rgba(255,240,180,.12);color:#f7ecd0;border-color:#5a4c2c}
+:root[data-theme="dark"] .block .k-kopf h3,:root[data-theme="dark"] .block .punkte-liste{color:#f7ecd0}
+:root[data-theme="dark"] .block-fertig{color:#8fe3b0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .block-fertig{color:#8fe3b0}}
+@media (max-width:1050px){.dash>.zwei{grid-column:1/-1}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -1475,6 +1500,13 @@ const STUNDENFARBE={Religion:"#9a96a3",Sport:"#14b8b0",Kunst:"#f472b6",Förderun
 const stdFarbe=f=>PLANFACH[f]&&fach(PLANFACH[f])?fach(PLANFACH[f]).farbe:STUNDENFARBE[f]||"var(--muted)";
 const stdKlasse=f=>f==="Kunst"?"bunt":"";
 const TERMINE=[{datum:"2026-11-16",text:"Vorlesewettbewerb beginnt 📖"},{datum:"2026-11-16",text:"Referat Italien mit Nila 🇮🇹"},{datum:"2026-11-17",text:"Elternsprechtag"}];
+// Wiederkehrende Aufgaben zum Abhaken (tage: 0 = So … 6 = Sa; leer = jeden Tag)
+const AUFGABEN=[
+ {id:"gitarre",text:"10 Minuten Gitarre üben",icon:"🎸",tage:[]},
+ {id:"wasserwacht",text:"Wasserwacht-Sachen für morgen einpacken",icon:"🛟",tage:[2]},
+ {id:"sport-schule",text:"Sportsachen für die Schule morgen einpacken",icon:"👟",tage:[2]},
+ {id:"volleyball",text:"Sportsachen für Volleyball morgen einpacken",icon:"🏐",tage:[3]},
+];
 // Feste Erinnerungen (erscheinen im Notizblock und im Kalender)
 const ERINNERUNGEN=[
  {datum:"2026-11-14",text:"Vorlesetext üben: 3 Minuten laut vorlesen 📖"},
@@ -1488,7 +1520,6 @@ const ERINNERUNGEN=[
  {datum:"2026-11-15",text:"Vorlesetext nochmal üben – vor jemandem vorlesen 📖"},
  {datum:"2026-11-15",text:"Mama und Papa: Geld für die Mittagspause am Montag mitgeben 💶"},
  {datum:"2026-11-16",text:"Am Mittwoch ist Sport – Sportsachen bereitlegen 👟"},
- {datum:"2026-11-17",text:"Morgen ist Sport – Sportsachen einpacken! 👟🎒"},
  {datum:"2026-11-16",text:"Heute beginnt der Vorlesewettbewerb – Buch mitnehmen! 📖"}];
 const WTAG_LANG=["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
 
@@ -1525,7 +1556,7 @@ const datumDE=d=>{const [y,m,t]=d.split("-");return `${+t}.${+m}.${y.slice(2)}`}
    Box 1–5: richtig → eine Box weiter (später wieder dran), falsch → zurück in Box 1.
    ================================================================ */
 const KEY="maja-lernheft-v2";
-let S={karten:{},heute:{datum:"",anzahl:0},serie:{letzter:"",tage:0},plan:{},uebproben:[],notizen:[]};
+let S={karten:{},heute:{datum:"",anzahl:0},serie:{letzter:"",tage:0},plan:{},uebproben:[],notizen:[],erledigt:{}};
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
 const speichern=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const tag=(plus=0)=>{const d=new Date();d.setDate(d.getDate()+plus);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
@@ -1793,6 +1824,7 @@ function termineAm(iso){
   WOCHENTERMINE.filter(t=>t.tag===wd).forEach(t=>liste.push(Object.assign({},t)));
   PROBEN.filter(p=>p.datum===iso).forEach(p=>liste.push({von:"",titel:p.titel,icon:"📝",typ:"probe",info:p.stunde,fach:p.fach}));
   TERMINE.filter(t=>t.datum===iso).forEach(t=>liste.push({von:"",titel:t.text,icon:"📅",typ:"termin"}));
+  AUFGABEN.filter(a=>a.tage.includes(wd)).forEach(a=>liste.push({von:"",titel:a.text,icon:a.icon,typ:"notiz"}));
   ERINNERUNGEN.filter(e=>e.datum===iso).forEach(e=>liste.push({von:"",titel:e.text,icon:"🔔",typ:"notiz"}));
   S.notizen.filter(n=>n.datum===iso&&!n.erledigt).forEach(n=>liste.push({von:"",titel:n.text,icon:"📌",typ:"notiz"}));
   const zahl=s=>s?+s.replace(":",".")||0:-1;
@@ -1818,7 +1850,7 @@ function vKalender(){
 function notizblockHTML(){
   const offen=S.notizen.filter(n=>!n.erledigt),fertig=S.notizen.filter(n=>n.erledigt);
   return `<div class="k-kopf"><h3>📒 Notizblock</h3><span class="muted">${offen.length} offen</span></div>
-   ${(()=>{const e=ERINNERUNGEN.filter(x=>tageBis(x.datum)>=0&&tageBis(x.datum)<=3);return e.length?`<ul class="notizen erinnerung">${e.map(x=>`<li class="${x.punkte?"mit-punkten":""}"><span>🔔 <b>${tageBis(x.datum)===0?"Heute":tageBis(x.datum)===1?"Morgen":wtag(x.datum)+" "+datumDE(x.datum).replace(/\d\d$/,"")}:</b> ${x.text}${x.punkte?`<ul class="punkte-liste">${x.punkte.map(q=>`<li>☐ ${q}</li>`).join("")}</ul>`:""}</span></li>`).join("")}</ul>`:""})()}
+   ${(()=>{const e=ERINNERUNGEN.filter(x=>tageBis(x.datum)>=1&&tageBis(x.datum)<=3);return e.length?`<ul class="notizen erinnerung">${e.map(x=>`<li class="${x.punkte?"mit-punkten":""}"><span>🔔 <b>${tageBis(x.datum)===0?"Heute":tageBis(x.datum)===1?"Morgen":wtag(x.datum)+" "+datumDE(x.datum).replace(/\d\d$/,"")}:</b> ${x.text}${x.punkte?`<ul class="punkte-liste">${x.punkte.map(q=>`<li>☐ ${q}</li>`).join("")}</ul>`:""}</span></li>`).join("")}</ul>`:""})()}
    <form id="nform" class="nform" autocomplete="off"><input id="ntext" placeholder="z. B. Büchereiausweis mitnehmen" aria-label="Neue Notiz" maxlength="140">
     <input id="ndatum" type="date" aria-label="Datum (optional)"><button class="btn small" type="submit">Merken</button></form>
    <ul class="notizen">${offen.map(n=>`<li><button class="nhaken" data-act="nerledigt" data-n="${n.id}" aria-label="Erledigt"></button><span>${esc(n.text)}${n.datum?` <small class="muted">· ${wtag(n.datum)} ${datumDE(n.datum).replace(/\d\d$/,"")}</small>`:""}</span><button class="nweg" data-act="nloeschen" data-n="${n.id}" aria-label="Löschen">✕</button></li>`).join("")}
@@ -1861,14 +1893,24 @@ function kachelCountdown(){
   return `<section class="kachel countdown" style="--fach:${f.farbe}"><p class="eyebrow">Nächste Probe</p><div class="cd-zahl">${d}</div><p class="cd-einheit">${d===1?"Tag":"Tage"}</p>
    <p><b>${f.name}</b> · ${datumKurz(p.datum)}</p><button class="btn small" data-act="vorb" data-probe="${PROBEN.indexOf(p)}">Jetzt üben</button></section>`}
 
+function aufgabenHeute(){const iso=tag(),wd=new Date(iso+"T12:00").getDay();
+  const liste=AUFGABEN.filter(a=>!a.tage.length||a.tage.includes(wd)).map(a=>({id:a.id,text:a.text,icon:a.icon}));
+  ERINNERUNGEN.forEach((e,i)=>{if(e.datum===iso)liste.push({id:"e"+i,text:e.text,icon:"🔔",punkte:e.punkte})});
+  return liste}
+function aufgabenblockHTML(){const iso=tag(),fertig=S.erledigt[iso]||{},ls=aufgabenHeute(),n=ls.filter(a=>fertig[a.id]).length;
+  return `<section class="kachel block"><div class="block-spirale" aria-hidden="true"></div>
+   <div class="k-kopf"><h3>📋 Heute erledigen</h3><span class="block-zaehler ${n===ls.length&&ls.length?"fertig":""}">${n} / ${ls.length} ✓</span></div>
+   <ul class="aufgaben">${ls.map(a=>`<li class="${fertig[a.id]?"erledigt":""}"><button class="ahaken ${fertig[a.id]?"an":""}" data-act="aufgabe" data-a="${a.id}" aria-label="${fertig[a.id]?"Wieder öffnen":"Erledigt"}: ${esc(a.text)}">${fertig[a.id]?"✓":""}</button>
+     <span><span class="a-icon">${a.icon}</span> ${a.text}${a.punkte&&!fertig[a.id]?`<ul class="punkte-liste">${a.punkte.map(q=>`<li>☐ ${q}</li>`).join("")}</ul>`:""}</span></li>`).join("")}</ul>
+   ${n===ls.length&&ls.length?`<p class="block-fertig">Alles erledigt! 🎉 Super gemacht, Maja!</p>`:""}</section>`}
 function vDashboard(){
   return `<div class="dash">
    ${kachelHeute()}${kachelCountdown()}
+   ${aufgabenblockHTML()}${kachelProben()}${kachelSchwer()}
    ${kachelNoten()}
-   ${kachelProben()}${kachelSchwer()}<section class="kachel">${notizblockHTML()}</section>
+   <section class="kachel">${notizblockHTML()}</section><div class="zwei">${schultagHTML()}</div>
    <section class="kachel breit"><div class="k-kopf"><h3>📅 Diese Woche</h3><button class="back" data-go="kalender">Kalender →</button></div>${wocheHTML(0,true)}</section>
    ${wochenplanHTML()?`<div class="breit">${wochenplanHTML()}</div>`:""}
-   <div class="breit">${schultagHTML()}</div>
    <div class="breit">${lernplanHTML()}</div>
   </div>`}
 
@@ -2045,6 +2087,8 @@ app.addEventListener("click",e=>{
   switch(d.act){
    case"heute":starte("heute");break;
    case"woche":V.woche=+d.w;render();break;
+   case"aufgabe":{const iso=tag();const f=S.erledigt[iso]||(S.erledigt[iso]={});f[d.a]=!f[d.a];
+     for(const k of Object.keys(S.erledigt))if(tageBis(k)<-14)delete S.erledigt[k];speichern();render();break}
    case"nerledigt":{const n=S.notizen.find(x=>x.id===d.n);if(n){n.erledigt=!n.erledigt;speichern();render()}break}
    case"nloeschen":S.notizen=S.notizen.filter(x=>x.id!==d.n);speichern();render();break;
    case"vorb":starte("vorb",{probeIdx:+d.probe});break;
