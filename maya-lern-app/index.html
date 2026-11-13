@@ -448,6 +448,16 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 @keyframes drehen{to{transform:rotate(360deg)}}
 @media (max-width:620px){.saturn{width:140px;left:auto;right:6px;top:6px}.erde{width:300px;right:-130px;top:-70px}.mars{width:70px;left:52%;top:150px}.kalender-raum .wr-kopf-zeile{min-height:230px}}
 @media (prefers-reduced-motion:reduce){.erde,.saturn,.mars{animation:none}}
+/* Weltraum-Noten */
+.kalender-raum{--bg:rgba(255,255,255,.07);--ok-bg:rgba(61,220,132,.18);--bad-bg:rgba(255,90,90,.18)}
+.noten-raum .wr-kopf-zeile{min-height:200px;align-items:flex-end}
+.noten-raum .saturn{left:auto;right:30%;top:0}
+.noten-raum .mars{left:auto;right:4%;top:46%}
+.noten-raum .erde{width:320px;right:auto;left:-150px;top:auto;bottom:-140px}
+.stern-gross{position:absolute;left:44%;top:150px;font-size:2rem;animation:funkeln 1.6s ease-in-out infinite alternate;filter:drop-shadow(0 0 10px #ffd166)}
+.noten-raum .notenfach,.noten-raum .probe,.noten-raum .stat,.noten-raum .thema,.noten-raum .leerhinweis{background:rgba(22,16,52,.78)}
+.noten-raum .wz-pfeil.besser{color:#5fd394}.noten-raum .wz-pfeil.schlechter{color:#ff8a8a}
+@media (max-width:620px){.noten-raum .saturn{width:130px;right:0;top:40px}.noten-raum .mars{width:70px}.stern-gross{left:auto;right:40%}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2204,10 +2214,11 @@ function vNoten(){
      <div class="wenn"><p><b>Was wäre, wenn${p?` du in der Probe am ${datumKurz(p.datum)}`:" du in der nächsten Probe"} eine … schreibst?</b></p>
       <div class="wenn-grid">${[1,2,3,4,5,6].map(g=>{const y=schnitt(f.id,g),d=y-x;return `<div class="wenn-zelle"><span class="wz-note">${g}</span><span>Ø ${komma(y)}</span><span class="muted">steht auf ${stehtAuf(y)}</span><span class="wz-pfeil ${d<-0.005?"besser":d>0.005?"schlechter":""}">${d<-0.005?"▲ besser":d>0.005?"▼ schlechter":"= gleich"}</span></div>`}).join("")}</div></div>
     </section>`};
-  return `<div style="display:flex;flex-direction:column;gap:18px">
-   <button class="back" data-go="start">← Startseite</button>
-   <div class="kopf"><div><h1>Noten</h1><p class="muted">Alle eingetragenen Noten, der Durchschnitt pro Fach und was eine neue Note verändern würde.</p></div>
-    ${gesamt!==null?`<div class="stat"><b>${komma(gesamt)}</b><span>Ø aller Fächer</span></div>`:""}</div>
+  return `<div class="weltraum kalender-raum noten-raum"><div class="sterne-bg" aria-hidden="true"></div>
+   <div class="planeten" aria-hidden="true">${saturnSVG()}${marsSVG()}${erdeSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r5">🚀</span><span class="komet">☄️</span><span class="stern-gross">⭐</span></div>
+   <button class="back wr-back" data-go="start">← Startseite</button>
+   <div class="wr-kopf-zeile"><div class="kopf" style="flex:1"><div><p class="eyebrow">🌟 Deine Noten im Weltall</p><h1>Noten</h1><p class="muted">Alle eingetragenen Noten, der Durchschnitt pro Fach und was eine neue Note verändern würde.</p></div>
+    ${gesamt!==null?`<div class="stat"><b>${komma(gesamt)}</b><span>Ø aller Fächer</span></div>`:""}</div>${astronautSVG()}</div>
    ${NOTEN.length?"":`<section class="leerhinweis"><h3>Noch keine Noten eingetragen.</h3><p class="muted">Sobald Noten da sind, siehst du hier den Durchschnitt in jedem Fach, auf welcher Note du stehst und was die nächste Probe verändern kann.</p></section>`}
    ${mitNoten.map(fachKarte).join("")}${FAECHER.filter(f=>!notenVon(f.id).length&&(!f.neben||naechsteProbe(f.id))).map(fachKarte).join("")}
    <section class="probe" style="--fach:var(--deutsch)"><h2>Wo du üben solltest</h2>
@@ -2215,7 +2226,7 @@ function vNoten(){
      :`<p class="muted">Gerade gibt es keine auffälligen Schwachstellen. Sobald du öfter übst, zeigt die App hier Themen, in denen noch viel falsch ist.</p>`}
     ${(()=>{const schlecht=mitNoten.filter(f=>schnitt(f.id)>=3.5);return schlecht.length?`<p><b>Achtung bei den Noten:</b> ${schlecht.map(f=>`${f.name} (Ø ${komma(schnitt(f.id))})`).join(", ")}. Hier lohnt sich zusätzliches Üben besonders.</p>`:""})()}
    </section>
-   <p class="fuss">Alle Noten zählen gleich, wenn nichts anderes eingetragen ist. Tendenzen: 2+ = 1,75 · 2− = 2,25.<br>Wie die Lehrkraft die Noten gewichtet, kann davon abweichen. Bei genau x,5 entscheidet die Lehrkraft.</p></div>`}
+   <p class="fuss">Alle Noten zählen gleich, wenn nichts anderes eingetragen ist. Tendenzen: 2+ = 1,75 · 2− = 2,25.<br>Wie die Lehrkraft die Noten gewichtet, kann davon abweichen. Bei genau x,5 entscheidet die Lehrkraft.</p></div></div>`}
 
 function vFach(){
   const f=fach(V.fach),ts=themenVon(f.id);
