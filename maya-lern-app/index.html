@@ -535,6 +535,20 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 @keyframes muenze{0%{transform:translateY(-14px);opacity:0}30%{opacity:1}70%{transform:translateY(14px);opacity:1}100%{transform:translateY(16px);opacity:0}}
 @media (prefers-reduced-motion:reduce){.schwein .muenze{animation:none}}
 @media (max-width:480px){.prognose{grid-template-columns:1fr}.spar-betrag{font-size:2.4rem}}
+/* Sternenfoto auf allen Hauptseiten */
+.noten-raum.foto-himmel .wr-kopf-zeile,.spar-raum .wr-kopf-zeile{min-height:0}
+.noten-raum.foto-himmel{padding-top:24px}
+.noten-raum.foto-himmel>.back{margin-bottom:140px}
+.spar-raum{padding-top:200px}
+.spar-raum .spar-betrag{color:#5fd394}.spar-raum .sl-betrag{color:#5fd394}.spar-raum .spar-betrag.minus,.spar-raum .sl-betrag.minus{color:#ff8a8a}
+.spar-raum .spar-hero{background:linear-gradient(135deg,rgba(255,120,180,.32),rgba(255,210,63,.22))}
+.spar-raum .prognose b{color:#ff9ccc}
+.spar-raum .kachel{background:rgba(14,14,36,.62)}
+.spar-raum .chip{color:#fff}
+.spar-raum .nform input{background:rgba(255,255,255,.08);color:#fff}
+.dash-raum.foto-himmel .dash-himmel{height:260px}
+.weltraum.foto-himmel:not(.kalender-raum):not(.dash-raum)>.tabwrap{margin-top:60px}
+@media (max-width:620px){.spar-raum{padding-top:150px}.noten-raum.foto-himmel>.back{margin-bottom:90px}.dash-raum.foto-himmel .dash-himmel{height:170px}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2044,9 +2058,9 @@ function vStundenplan(){
   const heuteWd=new Date().getDay();
   const zelle=f=>{if(!f)return `<td class="leer"></td>`;const [c,t]=KNALL[f]||["#64748b","h"];
     return `<td><div class="planet ${c==="bunt"?"regenbogen":""} ${t==="d"?"dunkel":""}" style="--pc:${c==="bunt"?"#ff6fa0":c}"><span class="p-icon" aria-hidden="true">${STD_ICON[f]||"✨"}</span><span class="p-name ${f==="Mittagspause"?"ein-wort":""}">${f==="Förderunterricht"?"Förder&shy;unterricht":f}</span></div></td>`};
-  return `<div class="weltraum"><div class="sterne-bg" aria-hidden="true"></div>
-   <div class="raketen" aria-hidden="true"><span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r3">🚀</span><span class="rk r4">🛸</span><span class="rk r5">🚀</span><span class="komet">☄️</span></div>
-   <div class="wr-kopf-zeile"><div class="wr-kopf"><button class="back wr-back" data-go="start">← Startseite</button><h1>🚀 Mein Stundenplan <span>2026/2027</span></h1><p>Klasse 6a · Maja</p></div>${astronautSVG()}</div>
+  return `<div class="weltraum foto-himmel">
+
+   <div class="wr-kopf-zeile"><div class="wr-kopf"><button class="back wr-back" data-go="start">← Startseite</button><h1>🚀 Mein Stundenplan <span>2026/2027</span></h1><p>Klasse 6a · Maja</p></div></div>
    <div class="tabwrap"><table class="wr-plan"><thead><tr><th></th>${[1,2,3,4,5].map(w=>`<th class="${w===heuteWd?"heute-sp":""}">${WTAG_LANG[w]}</th>`).join("")}</tr></thead>
    <tbody>${STUNDEN.map((z,i)=>`<tr><th class="zeit"><b>${i+1}</b><small>${z}</small></th>${[1,2,3,4,5].map(w=>zelle(STUNDENPLAN[w][i]||"")).join("")}</tr>`).join("")}</tbody></table></div>
    <section class="wr-termine"><h3>🪐 Termine</h3>${TERMINE.filter(t=>tageBis(t.datum)>=0).map(t=>`<div class="wr-termin"><b>${wtag(t.datum)} ${datumDE(t.datum).replace(/\d\d$/,"")}</b><span>${t.text}</span></div>`).join("")||`<p>Keine Termine.</p>`}</section></div>`}
@@ -2285,7 +2299,7 @@ function schweinSVG(gr=110){return `<svg viewBox="0 0 120 100" width="${gr}" hei
 function vSparbuch(){
   const st=sparStand(),pr=sparPrognose(),z=zielInfo(),bs=S.spar.buchungen.slice().sort((a,b)=>a.datum<b.datum?1:-1);
   const heuteFr=new Date(tag()+"T12:00").getDay()===TG_WOCHENTAG,tgHeute=S.spar.buchungen.some(b=>b.id==="tg-"+tag());
-  return `<div class="spar-seite">
+  return `<div class="weltraum kalender-raum foto-himmel spar-raum"><div class="spar-seite">
    <section class="kachel spar-hero"><div>${schweinSVG(130)}</div><div class="spar-stand"><p class="eyebrow">Mein Sparbuch 🐷</p><div class="spar-betrag ${st<0?"minus":""}">${euro(st)}</div>
     <p class="muted">Taschengeld: <b>${euro(TASCHENGELD)}</b> jeden Freitag</p>
     ${heuteFr?`<button class="btn ${tgHeute?"ghost":""}" data-act="tgheute">${tgHeute?"✓ Heutiges Taschengeld ist gebucht":"💶 Heutiges Taschengeld (5 €) eintragen"}</button>`:""}</div></section>
@@ -2307,7 +2321,7 @@ function vSparbuch(){
    <section class="kachel"><h3>📒 Meine Einträge</h3>
     ${bs.length?`<ul class="spar-liste">${bs.map(b=>{const [,ic,n]=sparArt(b.art);return `<li><span class="sl-ic">${ic}</span><span class="sl-text"><b>${esc(b.text||n)}</b><small>${wtag(b.datum)}, ${datumDE(b.datum)} · ${n}</small></span><span class="sl-betrag ${b.betrag<0?"minus":""}">${b.betrag>0?"+":""}${euro(b.betrag)}</span><button class="nweg" data-act="sloeschen" data-s="${b.id}" aria-label="Eintrag löschen">✕</button></li>`}).join("")}</ul>`
      :`<p class="muted">Noch keine Einträge. Fang mit deinem Startguthaben an – wie viel ist schon in deiner Spardose?</p>`}</section>
-   <p class="fuss">Das Sparbuch wird auf diesem Gerät gespeichert.</p></div>`}
+   <p class="fuss">Das Sparbuch wird auf diesem Gerät gespeichert.</p></div></div>`}
 function kachelSparbuch(){const st=sparStand(),z=zielInfo();
   return `<section class="kachel spar-kachel"><div class="k-kopf"><h3>🐷 Sparbuch</h3><button class="back" data-go="sparbuch">Öffnen →</button></div>
    <div class="row" style="gap:12px">${schweinSVG(64)}<div><div class="spar-betrag klein ${st<0?"minus":""}">${euro(st)}</div><small class="muted">+ ${euro(TASCHENGELD)} jeden Freitag</small></div></div>
@@ -2315,8 +2329,8 @@ function kachelSparbuch(){const st=sparStand(),z=zielInfo();
 
 function vDashboard(){
   verlaufMerken();
-  return `<div class="weltraum dash-raum"><div class="sterne-bg" aria-hidden="true"></div>
-   <div class="planeten" aria-hidden="true">${sonnensystemSVG()}${erdeSVG()}${saturnSVG()}${marsSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r3">🚀</span><span class="komet">☄️</span><span class="astro2">${astronautSVG()}</span></div>
+  return `<div class="weltraum dash-raum foto-himmel">
+
    <div class="dash-himmel" aria-hidden="true"></div>
    <div class="dash">
    ${kachelHeute()}${kachelCountdown()}
@@ -2362,11 +2376,11 @@ function vNoten(){
      <div class="wenn"><p><b>Was wäre, wenn${p?` du in der Probe am ${datumKurz(p.datum)}`:" du in der nächsten Probe"} eine … schreibst?</b></p>
       <div class="wenn-grid">${[1,2,3,4,5,6].map(g=>{const y=schnitt(f.id,g),d=y-x;return `<div class="wenn-zelle"><span class="wz-note">${g}</span><span>Ø ${komma(y)}</span><span class="muted">steht auf ${stehtAuf(y)}</span><span class="wz-pfeil ${d<-0.005?"besser":d>0.005?"schlechter":""}">${d<-0.005?"▲ besser":d>0.005?"▼ schlechter":"= gleich"}</span></div>`}).join("")}</div></div>
     </section>`};
-  return `<div class="weltraum kalender-raum noten-raum"><div class="sterne-bg" aria-hidden="true"></div>
-   <div class="planeten" aria-hidden="true">${sonnensystemSVG()}${erdeSVG()}${saturnSVG()}${marsSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r5">🚀</span><span class="komet">☄️</span><span class="stern-gross">⭐</span><span class="astro2">${astronautSVG()}</span><span class="astro3">🧑‍🚀</span></div>
+  return `<div class="weltraum kalender-raum noten-raum foto-himmel">
+
    <button class="back wr-back" data-go="start">← Startseite</button>
    <div class="wr-kopf-zeile"><div class="kopf" style="flex:1"><div><p class="eyebrow">🌟 Deine Noten im Weltall</p><h1>Noten</h1><p class="muted">Alle eingetragenen Noten, der Durchschnitt pro Fach und was eine neue Note verändern würde.</p></div>
-    ${gesamt!==null?`<div class="stat"><b>${komma(gesamt)}</b><span>Ø aller Fächer</span></div>`:""}</div>${astronautSVG()}</div>
+    ${gesamt!==null?`<div class="stat"><b>${komma(gesamt)}</b><span>Ø aller Fächer</span></div>`:""}</div></div>
    ${NOTEN.length?"":`<section class="leerhinweis"><h3>Noch keine Noten eingetragen.</h3><p class="muted">Sobald Noten da sind, siehst du hier den Durchschnitt in jedem Fach, auf welcher Note du stehst und was die nächste Probe verändern kann.</p></section>`}
    ${mitNoten.map(fachKarte).join("")}${FAECHER.filter(f=>!notenVon(f.id).length&&(!f.neben||naechsteProbe(f.id))).map(fachKarte).join("")}
    <section class="probe" style="--fach:var(--deutsch)"><h2>Wo du üben solltest</h2>
