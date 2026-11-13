@@ -406,6 +406,8 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .planet.regenbogen{background:linear-gradient(90deg,#ff3b6b,#ff9f1c,#ffe14d,#3ddc84,#2bb7ff,#9d5cff);color:#1a1030;text-shadow:0 1px 0 rgba(255,255,255,.5)}
 .p-icon{font-size:1.1rem;text-shadow:none}
 .p-name{font-size:.92rem;line-height:1.15}
+.planet{flex-wrap:wrap;hyphens:manual}
+.p-name.ein-wort{white-space:nowrap;overflow-wrap:normal;hyphens:none;font-size:.82rem}
 .wr-termine{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
 .wr-termin{display:flex;gap:12px;flex-wrap:wrap}.wr-termin b{color:#ffd166;min-width:5.5em}
 @media (prefers-reduced-motion:reduce){.sterne-bg{animation:none}}
@@ -1898,7 +1900,7 @@ const STD_ICON={Mathe:"➗",Deutsch:"📖",Englisch:"🇬🇧",GPG:"🌍",NT:"�
 function vStundenplan(){
   const heuteWd=new Date().getDay();
   const zelle=f=>{if(!f)return `<td class="leer"></td>`;const [c,t]=KNALL[f]||["#64748b","h"];
-    return `<td><div class="planet ${c==="bunt"?"regenbogen":""} ${t==="d"?"dunkel":""}" style="--pc:${c==="bunt"?"#ff6fa0":c}"><span class="p-icon" aria-hidden="true">${STD_ICON[f]||"✨"}</span><span class="p-name">${f==="Förderunterricht"?"Förder&shy;unterricht":f}</span></div></td>`};
+    return `<td><div class="planet ${c==="bunt"?"regenbogen":""} ${t==="d"?"dunkel":""}" style="--pc:${c==="bunt"?"#ff6fa0":c}"><span class="p-icon" aria-hidden="true">${STD_ICON[f]||"✨"}</span><span class="p-name ${f==="Mittagspause"?"ein-wort":""}">${f==="Förderunterricht"?"Förder&shy;unterricht":f}</span></div></td>`};
   return `<div class="weltraum"><div class="sterne-bg" aria-hidden="true"></div>
    <div class="wr-kopf"><button class="back wr-back" data-go="start">← Startseite</button><h1>🚀 Mein Stundenplan <span>2026/2027</span></h1><p>Klasse 6a · Maja</p></div>
    <div class="tabwrap"><table class="wr-plan"><thead><tr><th></th>${[1,2,3,4,5].map(w=>`<th class="${w===heuteWd?"heute-sp":""}">${WTAG_LANG[w]}</th>`).join("")}</tr></thead>
