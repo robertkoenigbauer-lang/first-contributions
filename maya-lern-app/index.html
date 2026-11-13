@@ -467,6 +467,18 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .noten-raum .wz-pfeil.besser{color:#5fd394}.noten-raum .wz-pfeil.schlechter{color:#ff8a8a}
 @media (max-width:620px){.noten-raum .saturn{width:170px;left:-40px;top:40px}.noten-raum .mars{width:110px;left:-40px}.noten-raum .erde{width:340px;right:-190px;top:-110px}.sonnensystem{width:620px;height:620px;top:-140px}.noten-raum .wr-kopf-zeile{min-height:400px}.noten-raum .wr-kopf-zeile>.astro{display:none}.astro2{bottom:auto;top:250px;right:-40px}.astro2{transform:scale(.6);right:-30px}.stern-gross{left:auto;right:40%}}
 @media (prefers-reduced-motion:reduce){.umlauf,.astro2,.astro3{animation:none}}
+/* Weltraum-Hintergrund der Übersicht (Kacheln bleiben wie sie sind) */
+.dash-raum{color:var(--fg);padding:16px}
+.dash-raum .sterne-bg::after{display:none}
+.dash-raum .kachel,.dash-raum .wplan,.dash-raum .lernplan,.dash-raum .schultag{background:color-mix(in srgb,var(--solid) 82%,transparent)}
+.dash-himmel{height:240px}
+.dash-raum .block{background:repeating-linear-gradient(transparent 0 33px,var(--linie) 33px 34px),var(--papier);background-position:0 54px}
+.dash-raum .sonnensystem{width:900px;height:900px;top:-330px;left:50%;opacity:1}
+.dash-raum .erde{width:420px;right:-170px;top:-150px;bottom:auto;left:auto}
+.dash-raum .saturn{width:250px;left:-30px;right:auto;top:40px}
+.dash-raum .mars{width:120px;left:24%;top:130px;bottom:auto}
+.dash-raum .astro2{right:16%;left:auto;bottom:auto;top:70px;transform:scale(.8)}
+@media (max-width:620px){.dash-raum{padding:10px}.dash-himmel{height:200px}.dash-raum .sonnensystem{width:600px;height:600px;top:-210px}.dash-raum .erde{width:260px;right:-130px;top:-90px}.dash-raum .saturn{width:140px;left:-30px;top:30px}.dash-raum .mars{width:70px;left:8%;top:140px}.dash-raum .astro2{right:-30px;top:60px;transform:scale(.55)}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2188,7 +2200,10 @@ function kachelFortschritt(){
    <p class="tipp">🟢 ab 70 % sitzt es gut · 🟡 ab 40 % wird es besser · 🔴 darunter noch üben. NT, GPG und Musik werden nach ihrer Probe nicht mehr abgefragt – Mathe, Deutsch und Englisch kommen immer wieder dran, damit sie für die großen Proben sitzen.</p></section>`}
 function vDashboard(){
   verlaufMerken();
-  return `<div class="dash">
+  return `<div class="weltraum dash-raum"><div class="sterne-bg" aria-hidden="true"></div>
+   <div class="planeten" aria-hidden="true">${sonnensystemSVG()}${erdeSVG()}${saturnSVG()}${marsSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r3">🚀</span><span class="komet">☄️</span><span class="astro2">${astronautSVG()}</span></div>
+   <div class="dash-himmel" aria-hidden="true"></div>
+   <div class="dash">
    ${kachelHeute()}${kachelCountdown()}
    ${aufgabenblockHTML()}${kachelProben()}${kachelSchwer()}
    ${kachelFortschritt()}
@@ -2197,7 +2212,7 @@ function vDashboard(){
    <section class="kachel breit"><div class="k-kopf"><h3>📅 Diese Woche</h3><button class="back" data-go="kalender">Kalender →</button></div>${wocheHTML(0,true)}</section>
    ${wochenplanHTML()?`<div class="breit">${wochenplanHTML()}</div>`:""}
    <div class="breit">${lernplanHTML()}</div>
-  </div>`}
+  </div></div>`}
 
 function vStart(){
   const dran=heuteDran().length,alle=alleKarten(),gelernt=alle.filter(sitzt).length;
