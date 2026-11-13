@@ -549,6 +549,51 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .dash-raum.foto-himmel .dash-himmel{height:260px}
 .weltraum.foto-himmel:not(.kalender-raum):not(.dash-raum)>.tabwrap{margin-top:60px}
 @media (max-width:620px){.spar-raum{padding-top:150px}.noten-raum.foto-himmel>.back{margin-bottom:90px}.dash-raum.foto-himmel .dash-himmel{height:170px}}
+/* Drucken */
+.fach-symbol{display:inline-block;font-size:1.1em;animation:fr-schweben 3s ease-in-out infinite alternate;--rot:0deg}
+.druckknopf{margin-top:6px}
+.druck-steuer{display:flex;flex-direction:column;gap:10px}
+.druck-vorschau{display:flex;flex-direction:column;gap:18px;align-items:center}
+.druckseite{width:210mm;max-width:100%;min-height:297mm;background:#fff;color:#1d1d1d;padding:10mm;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:4px;font-family:var(--f-body)}
+.druck-vorschau{overflow-x:auto}
+.ds-kopf{font-size:9pt;color:#666;margin-bottom:4mm}
+.dk-raster{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,64mm);border-top:1.5px dashed #999;border-left:1.5px dashed #999}
+.dk{position:relative;border-right:1.5px dashed #999;border-bottom:1.5px dashed #999;padding:5mm;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.dk.rueck{background:#fafafa}
+.dk-inhalt{display:flex;flex-direction:column;align-items:center;gap:2mm;font-size:12pt;line-height:1.3;max-width:100%}
+.dk-inhalt.klein{font-size:10pt}
+.dk-inhalt svg{max-height:26mm;max-width:70mm;height:auto;width:auto}
+.dk-inhalt .bild,.dk-inhalt .bild2{background:none;padding:0;margin:0;min-height:0}
+.dk-inhalt .emo{font-size:26pt}
+.dk-inhalt .bild2{display:flex;flex-wrap:nowrap;gap:3mm;justify-content:center}.dk-inhalt .bild2 figure{margin:0;flex:0 1 auto;font-size:9pt}.dk-inhalt .bild2 svg{max-height:15mm;max-width:36mm}
+.dk-inhalt .vokabeln,.dk-inhalt table{font-size:8pt}
+.dk-wort{font-size:16pt;font-family:var(--f-display)}
+.dk-satz{display:block;font-size:9pt;color:#555;margin-top:1mm}
+.dk-ecke{position:absolute;right:3mm;bottom:2mm;font-size:8pt;color:#999;font-weight:800}
+.dk .lueck{min-width:30px;border-bottom:2px solid #333}
+.dp-kopf{display:flex;justify-content:space-between;gap:6mm;border:2px solid #333;border-radius:3mm;padding:4mm;margin-bottom:5mm;font-size:11pt}
+.dp-note{text-align:center}.dp-note span{display:inline-block;width:16mm;height:12mm;border:2px solid #333;border-radius:2mm;margin-top:1mm}
+.dp-aufgabe{display:flex;gap:4mm;padding:3mm 0;border-bottom:1px solid #ddd;break-inside:avoid;font-size:11pt}
+.dp-nr{font-weight:800;min-width:7mm}
+.dp-text{flex:1;min-width:0}.dp-text svg{max-height:35mm;max-width:90mm;height:auto;width:auto}
+.dp-text .bild,.dp-text .bild2{background:none;padding:0;margin:2mm 0;min-height:0;justify-content:flex-start}
+.dp-pkt{white-space:nowrap;color:#555;font-size:10pt}
+.dp-opt{display:flex;flex-wrap:wrap;gap:2mm 8mm;margin-top:2mm}
+.dp-paare{display:flex;gap:20mm;margin-top:2mm}.dp-paare div{display:flex;flex-direction:column;gap:2mm}
+.dp-woerter{margin:2mm 0;font-weight:700}
+.dp-linie{border-bottom:1px solid #999;height:9mm}
+.dp-weg{display:flex;align-items:center;gap:3mm;margin-top:2mm}.dp-kasten{display:inline-block;width:24mm;height:8mm;border:1.5px solid #999;border-radius:1mm}
+.dp-schluessel{margin-top:5mm;font-size:9pt;color:#444}
+.dp-loesungen{font-size:11pt;line-height:1.6}.dp-loesungen li{margin-bottom:2mm}
+.druckseite .frac>span:first-child{border-bottom-color:#1d1d1d}
+@media print{@page{size:A4;margin:0}
+ body{background:#fff!important;padding:0!important}
+ .seitenleiste,.druck-steuer{display:none!important}
+ .layout{display:block}.inhalt{max-width:none!important}
+ .druck-vorschau{gap:0;overflow:visible}
+ .druckseite{box-shadow:none;border-radius:0;break-after:page;margin:0;min-height:0;height:auto;overflow:visible;padding:10mm}
+ .druckseite:last-child{break-after:auto}
+ .dp-aufgabe{break-inside:avoid}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2327,6 +2372,65 @@ function kachelSparbuch(){const st=sparStand(),z=zielInfo();
    <div class="row" style="gap:12px">${schweinSVG(64)}<div><div class="spar-betrag klein ${st<0?"minus":""}">${euro(st)}</div><small class="muted">+ ${euro(TASCHENGELD)} jeden Freitag</small></div></div>
    ${z?`<p style="font-size:.9rem">🎯 ${esc(z.name)}: ${z.prozent} %</p><div class="balken spar-balken"><i style="width:${z.prozent}%"></i></div>`:""}</section>`}
 
+/* ================================================================
+   DRUCKEN: Lernkarten zum Ausschneiden und Übungsprobe mit Lösungen
+   ================================================================ */
+const druckSauber=h=>String(h).replace(/<div class="tipp"[\s\S]*?<\/div>/g,"").replace(/<span class="muted">([\s\S]*?)<\/span>/g,"<i>$1</i>");
+function druckKarten(fid){
+  const out=[],gesehen=new Set();
+  const add=(v,r,klein)=>{const k=plain(v)+"|"+plain(r);if(gesehen.has(k)||!plain(r))return;gesehen.add(k);out.push({v,r,klein})};
+  if(fid==="englisch"){
+    U2.forEach(w=>add(`<div class="dk-bild">${BILD[w.bild]()}</div><b class="dk-wort">${w.en}</b>`,`<b class="dk-wort">${w.de}</b><span class="dk-satz">${w.satz.replace("___","<u>"+w.form+"</u>")}</span>`));
+    CHORES.forEach(c=>add(`<div class="dk-bild">${BILD[c.bild]()}</div><b class="dk-wort">${c.en}</b>`,`<b class="dk-wort">${c.de}</b>`));
+    HAEUFIG.forEach(([en,de,n])=>add(`<div class="dk-bild">${oftSVG(n)}</div><b class="dk-wort">${en}</b>`,`<b class="dk-wort">${de}</b>`));
+  }
+  themenVon(fid).filter(t=>t.quelle!=="Beispiel"&&!(fid==="englisch"&&["e-u2-vokabeln","e-chores"].includes(t.id))).forEach(t=>{
+    (t.karten||[]).forEach(q=>{
+      if(q.typ==="karte")add(druckSauber(q.frage),q.antwort);
+      else if(q.typ==="paare")q.paare.forEach(([a,b])=>add(`<b class="dk-wort">${a}</b>`,`<b class="dk-wort">${b}</b>`));
+      else if(q.typ==="mc"&&plain(q.loesung).length<70&&!/Setze ein: &lt;/.test(q.frage))add(druckSauber(q.frage),`<b>${q.loesung}</b>${q.erkl?`<span class="dk-satz">${q.erkl}</span>`:""}`,true);
+      else if(q.typ==="text"&&!/Hör gut zu/.test(q.frage))add(druckSauber(q.frage),`<b class="dk-wort">${esc(q.loesung[0])}</b>`,true);
+      else if(q.typ==="zahl"||q.typ==="bruch")add(druckSauber(q.frage),`<b class="dk-wort">${loesungText(q)}</b>${q.erkl?`<span class="dk-satz">${q.erkl}</span>`:""}`,true);
+    });
+    if(t.gen)for(let i=0;i<4;i++){const q=t.gen();add(druckSauber(q.frage),`<b class="dk-wort">${loesungText(q)}</b>${q.erkl?`<span class="dk-satz">${q.erkl}</span>`:""}`,true)}
+  });
+  return out.slice(0,64)}
+function druckKartenHTML(fid){const f=fach(fid),ks=druckKarten(fid),seiten=[];
+  for(let i=0;i<ks.length;i+=8){const s=ks.slice(i,i+8);while(s.length<8)s.push(null);
+    const nr=i/8+1;
+    seiten.push(`<section class="druckseite"><p class="ds-kopf">${f.name} · Lernkarten · Blatt ${nr} · <b>Vorderseite</b> – entlang der gestrichelten Linien ausschneiden</p><div class="dk-raster">${s.map(k=>`<div class="dk">${k?`<div class="dk-inhalt ${k.klein?"klein":""}">${k.v}</div><span class="dk-ecke">${f.kurz} ?</span>`:""}</div>`).join("")}</div></section>`);
+    // Rückseite gespiegelt (beim beidseitigen Drucken über die lange Kante passt jede Antwort hinter ihre Frage)
+    const rueck=[];for(let r=0;r<4;r++)rueck.push(s[r*2+1],s[r*2]);
+    seiten.push(`<section class="druckseite"><p class="ds-kopf">${f.name} · Lernkarten · Blatt ${nr} · <b>Rückseite (Antworten)</b></p><div class="dk-raster">${rueck.map(k=>`<div class="dk rueck">${k?`<div class="dk-inhalt ${k.klein?"klein":""}">${k.r}</div><span class="dk-ecke">${f.kurz} ✓</span>`:""}</div>`).join("")}</div></section>`)}
+  return {html:seiten.join(""),anzahl:ks.length}}
+function druckProbe(fid){
+  const ids=themenVon(fid).filter(t=>t.quelle!=="Beispiel"&&t.id!=="m-heftfehler").map(t=>t.id);if(!ids.length)return [];
+  const ks=runde(ids,14,k=>{const q=k.make();return !["karte"].includes(q.typ)&&!/Hör gut zu/.test(q.frage)});
+  return ks.map(frageAus).map(alsWeg)}
+function probeAufgabeHTML(q,i){
+  const pk=q.typ==="weg"?q.schritte.length:1;let feld="";
+  if(q.typ==="mc")feld=`<div class="dp-opt">${q.optionen.map(o=>`<span>☐ ${o}</span>`).join("")}</div>`;
+  else if(q.typ==="paare")feld=`<div class="dp-paare"><div>${q.links.map(j=>`<span>${q.paare[j][0]} ●</span>`).join("")}</div><div>${q.rechts.map(j=>`<span>● ${q.paare[j][1]}</span>`).join("")}</div></div>`;
+  else if(q.typ==="satz")feld=`<p class="dp-woerter">${q.reihe.map(j=>q.woerter[j]).join(" · ")}</p><div class="dp-linie"></div>`;
+  else if(q.typ==="weg")feld=q.schritte.map(([l])=>`<div class="dp-weg">${l} <span class="dp-kasten"></span></div>`).join("");
+  else feld=`<div class="dp-linie"></div>`;
+  return `<div class="dp-aufgabe"><div class="dp-nr">${i+1}</div><div class="dp-text">${druckSauber(q.frage).replace(/<div class="tipp"[\s\S]*$/,"")}${feld}</div><div class="dp-pkt">/ ${pk} P.</div></div>`}
+function druckProbeHTML(fid){const f=fach(fid),qs=druckProbe(fid);if(!qs.length)return {html:"",max:0};
+  const max=qs.reduce((s,q)=>s+(q.typ==="weg"?q.schritte.length:1),0);
+  const loes=q=>q.typ==="weg"?q.schritte.map(s=>Z(String(s[1]).replace(".",","))).join(" → ")+(q.erkl?` <span class="dk-satz">${q.erkl}</span>`:""):q.typ==="paare"?q.paare.map(([a,b])=>`${a} = ${b}`).join(" · "):loesungText(q);
+  return {max,html:`<section class="druckseite probe-blatt"><div class="dp-kopf"><div><b>Übungsprobe ${f.name}</b><br>Name: Maja · Klasse 6a</div><div>Datum: ____________<br>Punkte: ______ / ${max}</div><div class="dp-note">Note:<br><span></span></div></div>
+   ${qs.map(probeAufgabeHTML).join("")}
+   <div class="dp-schluessel"><b>Notenschlüssel:</b> ${NOTENSCHLUESSEL.map(([g,ab],i)=>{const von=Math.ceil(max*ab/100*2)/2,bis=i?Math.ceil(max*NOTENSCHLUESSEL[i-1][1]/100*2)/2-.5:max;return `Note ${g}: ${String(von).replace(".",",")}–${String(Math.max(von,bis)).replace(".",",")} P.`}).join(" · ")}</div></section>
+   <section class="druckseite"><p class="ds-kopf"><b>Lösungen</b> – Übungsprobe ${f.name} (für Mama &amp; Papa zum Korrigieren)</p><ol class="dp-loesungen">${qs.map(q=>`<li>${loes(q)}</li>`).join("")}</ol></section>`}}
+function vDrucken(){
+  const f=fach(V.fach),art=V.art||"karten",k=art==="karten"?druckKartenHTML(f.id):druckProbeHTML(f.id);
+  return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:16px">
+   <div class="druck-steuer"><button class="back" data-go="fach" data-fach="${f.id}">← ${f.name}</button><h1>🖨️ Drucken: ${f.name}</h1>
+    <div class="row"><button class="btn ${art==="karten"?"":"ghost"} small" data-act="druckart" data-art="karten">🃏 Lernkarten</button><button class="btn ${art==="probe"?"":"ghost"} small" data-act="druckart" data-art="probe">📝 Übungsprobe + Lösungen</button>${art==="probe"?`<button class="btn ghost small" data-act="druckart" data-art="probe">🔄 Neue Aufgaben</button>`:""}</div>
+    <p class="muted">${art==="karten"?`${k.anzahl} Karten. Vorderseite = Frage, Rückseite = Antwort. Beidseitig drucken (über die lange Kante), dann ausschneiden.`:`Eine Probe zum Schreiben mit der Hand, mit ${k.max} Punkten, Notenschlüssel und Lösungsblatt.`}<br>
+    Zum Ausdrucken: Papa hat die fertigen PDF-Dateien bekommen. Hier siehst du die Vorschau.</p></div>
+   <div class="druck-vorschau">${k.html||`<p class="muted">Für dieses Fach gibt es noch keinen Lernstoff.</p>`}</div></div>`}
+
 function vDashboard(){
   verlaufMerken();
   return `<div class="weltraum dash-raum foto-himmel">
@@ -2392,14 +2496,14 @@ function vNoten(){
 
 /* Themen-Hintergrund je Fach */
 const FACHRAUM={
- mathe:{t1:"#dbe8ff",t2:"#b9d0ff",d1:"#13254d",d2:"#1d3a7a",muster:"karo",titel:"Mathe-Welt",deko:["➕","✖️","➗","📐","📏","🔢","½","¾","π","🧮","=","%"]},
- deutsch:{t1:"#ffe1e1",t2:"#ffc7c7",d1:"#3d1418",d2:"#6b2228",muster:"linien",titel:"Bücher-Welt",deko:["📚","✏️","📖","✒️","Aa","📝","🔤","📜","🖍️","💬"]},
- englisch:{t1:"#fff6c7",t2:"#ffe680",d1:"#3a3006",d2:"#5e4c0a",muster:"punkte",titel:"London Calling",deko:["🇬🇧","💂","🎡","☕","🚌","🏰","🕰️","☂️","🫖","👑"]},
- nt:{t1:"#dcf7e3",t2:"#bff0d0",d1:"#0f3320",d2:"#185c38",muster:"zahnrad",titel:"Natur & Technik",deko:["🌱","🌻","🐞","🦋","⚙️","💡","🔬","🧲","🔋","🌳","🐸","🔧","🌍","🧪"]},
- gpg:{t1:"#f3e4d4",t2:"#e2c7a8",d1:"#33210f",d2:"#5a3a1d",muster:"karte",titel:"Entdecker-Welt",deko:["🗺️","🧭","🏔️","🏛️","🌍","⛰️","🏰","⚓","🛶","🗿"]},
- musik:{t1:"#f4ecff",t2:"#ffffff",d1:"#24183a",d2:"#3a2a5c",muster:"noten",titel:"Musik-Bühne",deko:["🎵","🎶","🎹","🎸","🥁","🎼","🎺","🎻","🎤","🎧"]},
- info:{t1:"#f1e2ff",t2:"#dcbcff",d1:"#24123a",d2:"#3e1e66",muster:"punkte",titel:"Computer-Welt",deko:["💻","🖱️","⌨️","🤖","💾","🔌","🧠","📡"]},
- wib:{t1:"#ffe0ef",t2:"#ffc2df",d1:"#3d1029",d2:"#661b45",muster:"punkte",titel:"Arbeits-Welt",deko:["💼","🏭","💶","🛒","🧾","👷","🏦","📈"]}};
+ mathe:{symbol:"📐",t1:"#dbe8ff",t2:"#b9d0ff",d1:"#13254d",d2:"#1d3a7a",muster:"karo",titel:"Mathe-Welt",deko:["➕","✖️","➗","📐","📏","🔢","½","¾","π","🧮","=","%"]},
+ deutsch:{symbol:"📚",t1:"#ffe1e1",t2:"#ffc7c7",d1:"#3d1418",d2:"#6b2228",muster:"linien",titel:"Bücher-Welt",deko:["📚","✏️","📖","✒️","Aa","📝","🔤","📜","🖍️","💬"]},
+ englisch:{symbol:"💂",t1:"#fff6c7",t2:"#ffe680",d1:"#3a3006",d2:"#5e4c0a",muster:"punkte",titel:"London Calling",deko:["🇬🇧","💂","🎡","☕","🚌","🏰","🕰️","☂️","🫖","👑"]},
+ nt:{symbol:"🦊",t1:"#dcf7e3",t2:"#bff0d0",d1:"#0f3320",d2:"#185c38",muster:"zahnrad",titel:"Natur & Technik",deko:["🦊","🌳","🫎","⚙️","🦋","💡","🦌","🔬","🌻","🐿️","🧲","🦉","🔋","🌲","🐞","🔧","🦔","🧪"]},
+ gpg:{symbol:"🧭",t1:"#f3e4d4",t2:"#e2c7a8",d1:"#33210f",d2:"#5a3a1d",muster:"karte",titel:"Entdecker-Welt",deko:["🗺️","🧭","🏔️","🏛️","🌍","⛰️","🏰","⚓","🛶","🗿"]},
+ musik:{symbol:"🎹",t1:"#f4ecff",t2:"#ffffff",d1:"#24183a",d2:"#3a2a5c",muster:"noten",titel:"Musik-Bühne",deko:["🎵","🎶","🎹","🎸","🥁","🎼","🎺","🎻","🎤","🎧"]},
+ info:{symbol:"💻",t1:"#f1e2ff",t2:"#dcbcff",d1:"#24123a",d2:"#3e1e66",muster:"punkte",titel:"Computer-Welt",deko:["💻","🖱️","⌨️","🤖","💾","🔌","🧠","📡"]},
+ wib:{symbol:"💼",t1:"#ffe0ef",t2:"#ffc2df",d1:"#3d1029",d2:"#661b45",muster:"punkte",titel:"Arbeits-Welt",deko:["💼","🏭","💶","🛒","🧾","👷","🏦","📈"]}};
 function fachraumHTML(fid,inhalt){const r=FACHRAUM[fid]||FACHRAUM.nt;
   const deko=r.deko.concat(r.deko).map((e,i)=>{const x=(i*37+11)%96,y=(i*53+7)%94,gr=1.6+((i*7)%5)*.45,rot=((i*29)%50)-25,dauer=6+(i%5);
     return `<span style="left:${x}%;top:${y}%;font-size:${gr}rem;--rot:${rot}deg;animation-duration:${dauer}s;animation-delay:-${i%7}s">${e}</span>`}).join("");
@@ -2408,7 +2512,7 @@ function vFach(){
   const f=fach(V.fach),ts=themenVon(f.id);
   return fachraumHTML(f.id,`<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
    <button class="back" data-go="start">← Startseite</button>
-   <div class="fachkopf"><p class="eyebrow fr-titel">✨ ${(FACHRAUM[f.id]||{}).titel||""}</p><h1>${f.name}</h1>${schnitt(f.id)!==null?`<p><span class="notenpill">Note aktuell: Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span> <button class="back" style="display:inline" data-go="noten">Noten ansehen →</button></p>`:""}${(()=>{const p=kommendeProben().find(p=>p.fach===f.id);return p?`<p><span class="notenpill">Probe ${datumKurz(p.datum)}</span> ${lerntageText(p)}</p>`:""})()}<p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
+   <div class="fachkopf"><p class="eyebrow fr-titel">✨ ${(FACHRAUM[f.id]||{}).titel||""}</p><h1><span class="fach-symbol" aria-hidden="true">${(FACHRAUM[f.id]||{}).symbol||""}</span> ${f.name}</h1><div><button class="btn small ghost druckknopf" data-go="drucken" data-fach="${f.id}">🖨️ Drucken: Lernkarten & Übungsprobe</button></div>${schnitt(f.id)!==null?`<p><span class="notenpill">Note aktuell: Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span> <button class="back" style="display:inline" data-go="noten">Noten ansehen →</button></p>`:""}${(()=>{const p=kommendeProben().find(p=>p.fach===f.id);return p?`<p><span class="notenpill">Probe ${datumKurz(p.datum)}</span> ${lerntageText(p)}</p>`:""})()}<p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
    ${ts.length?`<section class="themen">${ts.map(t=>{const ks=kartenVon(t),s=ks.filter(sitzt).length;return `<div class="thema"><div class="t"><h3>${t.titel}</h3>
      <div class="row">${quelleBadge(t)}${t.probe&&tageBis(t.probe)>=0?`<span class="badge heft-q">Probe ${probeText(t)}</span>`:""}<span class="muted" style="font-size:.85rem">${s} von ${ks.length} sitzen</span></div>
      <div class="balken"><i style="width:${Math.round(100*s/ks.length)}%"></i></div></div>
@@ -2507,8 +2611,8 @@ function wochenplanHTML(){
   </section>`}
 
 function render(){
-  let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else if(V.seite==="noten")h=vNoten();else if(V.seite==="stundenplan")h=vStundenplan();else if(V.seite==="kalender")h=vKalender();else if(V.seite==="sparbuch")h=vSparbuch();else h=vDashboard();
-  const weit=!Q&&(V.seite==="start"||V.seite==="kalender");
+  let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else if(V.seite==="noten")h=vNoten();else if(V.seite==="stundenplan")h=vStundenplan();else if(V.seite==="kalender")h=vKalender();else if(V.seite==="sparbuch")h=vSparbuch();else if(V.seite==="drucken")h=vDrucken();else h=vDashboard();
+  const weit=!Q&&(V.seite==="start"||V.seite==="kalender"||V.seite==="drucken");
   app.innerHTML=Q?`<div class="inhalt">${h}</div>`:`<div class="layout">${seitenleisteHTML()}<main class="inhalt ${weit?"weit":""}">${h}</main></div>`;
   const sf=document.getElementById("sform");if(sf)sf.addEventListener("submit",e=>{e.preventDefault();const v=parseZahl(document.getElementById("sbetrag").value);const fld=document.getElementById("sbetrag");
     if(v===null||v<=0){fld.focus();fld.classList.add("fehler");return}const art=(sf.querySelector("input[name=sart]:checked")||{}).value||"geschenk";
@@ -2537,6 +2641,7 @@ app.addEventListener("click",e=>{
   switch(d.act){
    case"heute":starte("heute");break;
    case"woche":V.woche=+d.w;render();break;
+   case"druckart":V.art=d.art;render();break;
    case"tgheute":{const an=!S.spar.buchungen.some(b=>b.id==="tg-"+tag());taschengeldBuchen(an);const f=S.erledigt[tag()]||(S.erledigt[tag()]={});f.taschengeld=an;speichern();render();break}
    case"sloeschen":{S.spar.buchungen=S.spar.buchungen.filter(b=>b.id!==d.s);const m=String(d.s).match(/^tg-(.+)$/);if(m&&S.erledigt[m[1]])S.erledigt[m[1]].taschengeld=false;speichern();render();break}
    case"sprich":if(!sprich(d.t,d.langsam))b.title="Vorlesen geht auf diesem Gerät leider nicht";break;
