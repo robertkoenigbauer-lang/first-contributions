@@ -594,6 +594,23 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
  .druckseite{box-shadow:none;border-radius:0;break-after:page;margin:0;min-height:0;height:auto;overflow:visible;padding:10mm}
  .druckseite:last-child{break-after:auto}
  .dp-aufgabe{break-inside:avoid}}
+/* Noten-Belohnung */
+.belohnung{grid-column:1/-1}
+.bl-tabelle{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.bl-zelle{display:flex;flex-direction:column;align-items:center;border-radius:12px;padding:6px 4px;background:color-mix(in srgb,var(--nf) 22%,transparent);border:2px solid var(--nf);font-weight:800;font-size:.9rem}
+.bl-zelle b{font-family:var(--f-display);font-size:1.4rem;line-height:1}
+.bl-geld{color:#5fd394;font-family:var(--f-display);font-size:1.3rem}
+.bl-proben{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.bl-proben li{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-left:4px solid var(--fach);padding:4px 10px;border-radius:8px;background:rgba(255,255,255,.05)}
+.bl-szenarien{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.bl-szenarien div{border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14)}
+.bl-szenarien span{font-weight:800;font-size:.85rem}
+.bl-szenarien b{font-family:var(--f-display);font-size:1.5rem;color:#ffd166}
+.bl-szenarien small{color:var(--muted)}
+.nz-geld{font-weight:800;color:#5fd394;font-size:.85rem;white-space:nowrap}
+.wz-geld{font-size:.75rem;font-weight:800;color:#d4a300}
+.noten-raum .wz-geld{color:#ffd166}
+@media (max-width:480px){.bl-tabelle{grid-template-columns:repeat(3,1fr)}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -1833,6 +1850,7 @@ const KEY="maja-lernheft-v2";
 let S={karten:{},heute:{datum:"",anzahl:0},serie:{letzter:"",tage:0},plan:{},uebproben:[],notizen:[],erledigt:{},todo:{},lernzeit:{},tagStat:{},verlauf:{},spar:{buchungen:[],ziel:null}};
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
 if(!S.spar||!Array.isArray(S.spar.buchungen))S.spar={buchungen:[],ziel:null};
+S.spar.notenGebucht=S.spar.notenGebucht||[];
 const speichern=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const tag=(plus=0)=>{const d=new Date();d.setDate(d.getDate()+plus);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 if(S.heute.datum!==tag())S.heute={datum:tag(),anzahl:0};
@@ -2318,7 +2336,7 @@ function kachelFortschritt(){
    SPARBUCH (Taschengeld 5 € jeden Freitag + eigene Einträge)
    ================================================================ */
 const TASCHENGELD=5, TG_WOCHENTAG=5; // 5 € jeden Freitag
-const SPARARTEN=[["taschengeld","💶","Taschengeld"],["geburtstag","🎂","Geburtstag"],["weihnachten","🎄","Weihnachten"],["ostern","🐣","Ostern"],
+const SPARARTEN=[["taschengeld","💶","Taschengeld"],["note","⭐","Noten-Belohnung"],["geburtstag","🎂","Geburtstag"],["weihnachten","🎄","Weihnachten"],["ostern","🐣","Ostern"],
  ["verdient","💪","Selbst verdient"],["geschenk","🎁","Geschenk"],["start","🐷","Startguthaben"],["ausgabe","🛍️","Ausgabe"]];
 const sparArt=k=>SPARARTEN.find(a=>a[0]===k)||SPARARTEN[5];
 const euro=x=>(Math.round(x*100)/100).toFixed(2).replace(".",",")+" €";
@@ -2326,6 +2344,22 @@ const sparStand=()=>S.spar.buchungen.reduce((a,b)=>a+b.betrag,0);
 function freitageZwischen(vonIso,bisIso){let n=0;const d=new Date(vonIso+"T12:00"),e=new Date(bisIso+"T12:00");while(d<=e){if(d.getDay()===TG_WOCHENTAG)n++;d.setDate(d.getDate()+1)}return n}
 function offeneFreitage(bisIso){const heute=tag();let n=freitageZwischen(heute,bisIso);
   if(new Date(heute+"T12:00").getDay()===TG_WOCHENTAG&&S.spar.buchungen.some(b=>b.id==="tg-"+heute))n--;return n}
+/* ---------- Noten-Belohnung ---------- */
+const NOTENGELD={1:5,2:4,3:3,4:2,5:0,6:0};
+const BELOHNUNG_AB="2026-11-13"; // Noten ab diesem Tag werden belohnt
+const ganzeNote=n=>{const w=notenWert(n);return w===null?null:Math.min(6,Math.max(1,Math.floor(w+0.49)))}; // 2- → 2, 2-3 → 2
+const notenGeld=n=>{const g=ganzeNote(n);return g?NOTENGELD[g]:0};
+const noteId=n=>"note-"+n.fach+"-"+n.datum+"-"+(n.art||"")+"-"+n.note;
+const belohnteNoten=()=>NOTEN.filter(n=>n.datum&&n.datum>=BELOHNUNG_AB&&notenWert(n.note)!==null);
+function notenBuchen(){let neu=false;S.spar.notenGebucht=S.spar.notenGebucht||[];
+  belohnteNoten().forEach(n=>{const id=noteId(n);if(S.spar.notenGebucht.includes(id))return;S.spar.notenGebucht.push(id);const b=notenGeld(n.note);
+    if(b>0){S.spar.buchungen.push({id,datum:n.datum,betrag:b,art:"note",text:`Note ${n.note} in ${fach(n.fach)?fach(n.fach).name:n.fach}`});neu=true}});
+  if(neu)speichern()}
+function notenPrognose(){const ende=tag().slice(0,4)+"-12-31";
+  const ps=PROBEN.filter(p=>tageBis(p.datum)>=0&&p.datum<=ende&&!NOTEN.some(n=>n.fach===p.fach&&n.datum===p.datum));
+  const real=p=>{const x=schnitt(p.fach);return x===null?3:Math.min(6,Math.max(1,Math.round(x)))};
+  return {ps,einser:ps.length*NOTENGELD[1],zweier:ps.length*NOTENGELD[2],realistisch:ps.reduce((a,p)=>a+NOTENGELD[real(p)],0),real,
+    verdient:belohnteNoten().reduce((a,n)=>a+notenGeld(n.note),0)}}
 function sparPrognose(){const jetzt=sparStand(),j=+tag().slice(0,4);
   const bisJahr=offeneFreitage(`${j}-12-31`),naechstes=freitageZwischen(`${j+1}-01-01`,`${j+1}-12-31`);
   return {jetzt,jahr:j,bisJahr,endeJahr:jetzt+bisJahr*TASCHENGELD,naechstes,endeNaechstes:jetzt+(bisJahr+naechstes)*TASCHENGELD}}
@@ -2341,7 +2375,18 @@ function schweinSVG(gr=110){return `<svg viewBox="0 0 120 100" width="${gr}" hei
  <rect x="30" y="80" width="10" height="14" rx="4" fill="#ff8fbb"/><rect x="74" y="80" width="10" height="14" rx="4" fill="#ff8fbb"/>
  <path d="M18 56 q-10 -4 -6 -12 q4 6 8 2" fill="none" stroke="#ff8fbb" stroke-width="4" stroke-linecap="round"/>
  <g class="muenze"><circle cx="57" cy="12" r="9" fill="#ffd23f" stroke="#e0a800" stroke-width="2"/><text x="57" y="16" text-anchor="middle" font-size="11" font-weight="800" fill="#9a7600">€</text></g></svg>`}
+function belohnungHTML(pr){const np=notenPrognose(),gesamt=x=>euro(pr.endeJahr+x);
+  return `<section class="kachel belohnung"><h3>⭐ Noten-Belohnung</h3>
+   <div class="bl-tabelle">${[1,2,3,4,5,6].map(g=>`<span class="bl-zelle n${g}"><b>${g}</b>${NOTENGELD[g]?euro(NOTENGELD[g]):"–"}</span>`).join("")}</div>
+   <p>Schon verdient: <b class="bl-geld">${euro(np.verdient)}</b> <span class="muted">(${belohnteNoten().length} Note${belohnteNoten().length===1?"":"n"} seit ${datumDE(BELOHNUNG_AB)})</span></p>
+   <p><b>Noch ${np.ps.length} Probe${np.ps.length===1?"":"n"} bis Jahresende:</b></p>
+   <ul class="bl-proben">${np.ps.map(p=>`<li style="--fach:${fach(p.fach).farbe}"><span>${wtag(p.datum)} ${datumDE(p.datum).replace(/\d\d$/,"")} · <b>${fach(p.fach).name}</b></span><span class="muted">realistisch Note ${np.real(p)} → ${euro(NOTENGELD[np.real(p)])}</span></li>`).join("")}</ul>
+   <div class="bl-szenarien"><div><span>⭐ Nur Einser</span><b>+${euro(np.einser)}</b><small>Ende ${pr.jahr}: ${gesamt(np.einser)}</small></div>
+    <div><span>👍 Nur Zweier</span><b>+${euro(np.zweier)}</b><small>Ende ${pr.jahr}: ${gesamt(np.zweier)}</small></div>
+    <div><span>📊 Realistisch</span><b>+${euro(np.realistisch)}</b><small>Ende ${pr.jahr}: ${gesamt(np.realistisch)}</small></div></div>
+   <p class="tipp">„Ende ${pr.jahr}“ = jetziger Kontostand + Taschengeld bis Silvester + Noten-Geld. „Realistisch“ rechnet mit deinem jetzigen Schnitt im Fach. Neue Noten werden automatisch ins Sparbuch gebucht.</p></section>`}
 function vSparbuch(){
+  notenBuchen();
   const st=sparStand(),pr=sparPrognose(),z=zielInfo(),bs=S.spar.buchungen.slice().sort((a,b)=>a.datum<b.datum?1:-1);
   const heuteFr=new Date(tag()+"T12:00").getDay()===TG_WOCHENTAG,tgHeute=S.spar.buchungen.some(b=>b.id==="tg-"+tag());
   return `<div class="weltraum kalender-raum foto-himmel spar-raum"><div class="spar-seite">
@@ -2358,16 +2403,17 @@ function vSparbuch(){
       <p>${z.fehlt>0?`Noch <b>${euro(z.fehlt)}</b> – das sind etwa <b>${z.wochen} Wochen</b> Taschengeld. Geschafft am <b>${wtag(z.datum)}, ${datumDE(z.datum)}</b>! 🚀`:`<b>Ziel erreicht! 🎉</b> Du hast genug gespart.`}</p>`:`<p class="muted">Wofür sparst du? Trag dein Ziel ein!</p>`}
      <form id="zform" class="nform" autocomplete="off"><input id="zname" placeholder="z. B. Neue Kopfhörer" value="${z?esc(z.name):""}" aria-label="Sparziel"><input id="zbetrag" inputmode="decimal" placeholder="Betrag €" value="${z?String(z.betrag).replace(".",","):""}" aria-label="Betrag in Euro" style="width:110px"><button class="btn small" type="submit">${z?"Ändern":"Ziel setzen"}</button></form></section>
    </div>
+   ${belohnungHTML(pr)}
    <section class="kachel"><h3>✍️ Geld eintragen</h3>
     <form id="sform" class="sform" autocomplete="off">
-     <div class="sp-arten">${SPARARTEN.map(([k,ic,n],i)=>`<label class="chip"><input type="radio" name="sart" value="${k}" ${i===1?"checked":""}> ${ic} ${n}</label>`).join("")}</div>
+     <div class="sp-arten">${SPARARTEN.map(([k,ic,n],i)=>`<label class="chip"><input type="radio" name="sart" value="${k}" ${k==="geburtstag"?"checked":""}> ${ic} ${n}</label>`).join("")}</div>
      <div class="nform"><input id="sbetrag" inputmode="decimal" placeholder="Betrag, z. B. 20" aria-label="Betrag in Euro" style="width:150px"><input id="stext" placeholder="Notiz, z. B. von Oma" aria-label="Notiz"><input id="sdatum" type="date" value="${tag()}" aria-label="Datum"><button class="btn" type="submit">Eintragen</button></div>
      <p class="tipp">Bei „Ausgabe“ wird der Betrag abgezogen. Mit „Startguthaben“ trägst du ein, was schon in deiner Spardose ist.</p></form></section>
    <section class="kachel"><h3>📒 Meine Einträge</h3>
     ${bs.length?`<ul class="spar-liste">${bs.map(b=>{const [,ic,n]=sparArt(b.art);return `<li><span class="sl-ic">${ic}</span><span class="sl-text"><b>${esc(b.text||n)}</b><small>${wtag(b.datum)}, ${datumDE(b.datum)} · ${n}</small></span><span class="sl-betrag ${b.betrag<0?"minus":""}">${b.betrag>0?"+":""}${euro(b.betrag)}</span><button class="nweg" data-act="sloeschen" data-s="${b.id}" aria-label="Eintrag löschen">✕</button></li>`}).join("")}</ul>`
      :`<p class="muted">Noch keine Einträge. Fang mit deinem Startguthaben an – wie viel ist schon in deiner Spardose?</p>`}</section>
    <p class="fuss">Das Sparbuch wird auf diesem Gerät gespeichert.</p></div></div>`}
-function kachelSparbuch(){const st=sparStand(),z=zielInfo();
+function kachelSparbuch(){notenBuchen();const st=sparStand(),z=zielInfo();
   return `<section class="kachel spar-kachel"><div class="k-kopf"><h3>🐷 Sparbuch</h3><button class="back" data-go="sparbuch">Öffnen →</button></div>
    <div class="row" style="gap:12px">${schweinSVG(64)}<div><div class="spar-betrag klein ${st<0?"minus":""}">${euro(st)}</div><small class="muted">+ ${euro(TASCHENGELD)} jeden Freitag</small></div></div>
    ${z?`<p style="font-size:.9rem">🎯 ${esc(z.name)}: ${z.prozent} %</p><div class="balken spar-balken"><i style="width:${z.prozent}%"></i></div>`:""}</section>`}
@@ -2476,9 +2522,9 @@ function vNoten(){
       ${p?`<p class="muted">Nächste Probe: ${datumKurz(p.datum)} · ${lerntageText(p)}</p>`:""}</section>`;
     return `<section class="notenfach" style="--fach:${f.farbe}">
      <div class="nf-kopf"><h3>${f.name}</h3><div class="nf-schnitt"><span class="gross">${komma(x)}</span><span>steht auf <b>${stehtAuf(x)}</b></span></div></div>
-     <div class="notenliste">${ns.map(n=>`<div class="notenzeile"><span class="nz-note">${esc(n.note)}</span><span class="nz-text"><b>${esc(n.art||"Note")}</b>${n.thema?` · ${esc(n.thema)}`:""}${(n.gewicht||1)!==1?` · zählt ${String(n.gewicht).replace(".",",")}-fach`:""}</span><span class="muted nz-datum">${n.datum?datumDE(n.datum):""}</span></div>`).join("")}</div>
+     <div class="notenliste">${ns.map(n=>`<div class="notenzeile"><span class="nz-note">${esc(n.note)}</span><span class="nz-text"><b>${esc(n.art||"Note")}</b>${n.thema?` · ${esc(n.thema)}`:""}${(n.gewicht||1)!==1?` · zählt ${String(n.gewicht).replace(".",",")}-fach`:""}</span><span class="muted nz-datum">${n.datum?datumDE(n.datum):""}</span>${n.datum&&n.datum>=BELOHNUNG_AB&&notenGeld(n.note)?`<span class="nz-geld">+${euro(notenGeld(n.note))}</span>`:""}</div>`).join("")}</div>
      <div class="wenn"><p><b>Was wäre, wenn${p?` du in der Probe am ${datumKurz(p.datum)}`:" du in der nächsten Probe"} eine … schreibst?</b></p>
-      <div class="wenn-grid">${[1,2,3,4,5,6].map(g=>{const y=schnitt(f.id,g),d=y-x;return `<div class="wenn-zelle"><span class="wz-note">${g}</span><span>Ø ${komma(y)}</span><span class="muted">steht auf ${stehtAuf(y)}</span><span class="wz-pfeil ${d<-0.005?"besser":d>0.005?"schlechter":""}">${d<-0.005?"▲ besser":d>0.005?"▼ schlechter":"= gleich"}</span></div>`}).join("")}</div></div>
+      <div class="wenn-grid">${[1,2,3,4,5,6].map(g=>{const y=schnitt(f.id,g),d=y-x;return `<div class="wenn-zelle"><span class="wz-note">${g}</span><span>Ø ${komma(y)}</span><span class="muted">steht auf ${stehtAuf(y)}</span><span class="wz-pfeil ${d<-0.005?"besser":d>0.005?"schlechter":""}">${d<-0.005?"▲ besser":d>0.005?"▼ schlechter":"= gleich"}</span><span class="wz-geld">${NOTENGELD[g]?"💶 +"+euro(NOTENGELD[g]):"💶 –"}</span></div>`}).join("")}</div></div>
     </section>`};
   return `<div class="weltraum kalender-raum noten-raum foto-himmel">
 
