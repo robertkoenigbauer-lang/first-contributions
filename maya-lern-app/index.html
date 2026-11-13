@@ -450,14 +450,23 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 @media (prefers-reduced-motion:reduce){.erde,.saturn,.mars{animation:none}}
 /* Weltraum-Noten */
 .kalender-raum{--bg:rgba(255,255,255,.07);--ok-bg:rgba(61,220,132,.18);--bad-bg:rgba(255,90,90,.18)}
-.noten-raum .wr-kopf-zeile{min-height:200px;align-items:flex-end}
-.noten-raum .saturn{left:auto;right:30%;top:0}
-.noten-raum .mars{left:auto;right:4%;top:46%}
-.noten-raum .erde{width:320px;right:auto;left:-150px;top:auto;bottom:-140px}
+.noten-raum .wr-kopf-zeile{min-height:470px;align-items:flex-end}
+.sonnensystem{position:absolute;width:900px;height:900px;left:50%;top:-180px;transform:translateX(-50%);opacity:.95}
+.umlauf{transform-origin:450px 450px;animation:drehen linear infinite}
+.noten-raum .erde{width:min(560px,90vw);right:-230px;left:auto;top:-160px;bottom:auto;opacity:.95}
+.noten-raum .saturn{width:300px;left:-60px;right:auto;top:30px}
+.noten-raum .mars{width:180px;left:-40px;right:auto;top:auto;bottom:30%}
+.astro2{position:absolute;right:2%;bottom:28%;transform:scale(.9) rotate(-8deg);opacity:.95;animation:schweben 5s ease-in-out infinite}
+.astro2 .astro{max-width:none;filter:drop-shadow(0 0 18px rgba(157,92,255,.6))}
+.astro3{position:absolute;left:6%;top:48%;font-size:3.2rem;animation:treiben 9s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(255,255,255,.5))}
+@keyframes treiben{0%,100%{transform:translate(0,0) rotate(-10deg)}50%{transform:translate(30px,-25px) rotate(15deg)}}
+.noten-raum .notenfach,.noten-raum .probe,.noten-raum .stat,.noten-raum .thema,.noten-raum .leerhinweis{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .stern-gross{position:absolute;left:44%;top:150px;font-size:2rem;animation:funkeln 1.6s ease-in-out infinite alternate;filter:drop-shadow(0 0 10px #ffd166)}
-.noten-raum .notenfach,.noten-raum .probe,.noten-raum .stat,.noten-raum .thema,.noten-raum .leerhinweis{background:rgba(22,16,52,.78)}
+.noten-raum .notenfach,.noten-raum .probe,.noten-raum .stat,.noten-raum .thema,.noten-raum .leerhinweis{background:rgba(22,16,52,.66)}
+.noten-raum .wr-kopf-zeile .kopf{background:rgba(10,8,30,.55);border-radius:18px;padding:12px 14px;align-self:flex-end}
 .noten-raum .wz-pfeil.besser{color:#5fd394}.noten-raum .wz-pfeil.schlechter{color:#ff8a8a}
-@media (max-width:620px){.noten-raum .saturn{width:130px;right:0;top:40px}.noten-raum .mars{width:70px}.stern-gross{left:auto;right:40%}}
+@media (max-width:620px){.noten-raum .saturn{width:170px;left:-40px;top:40px}.noten-raum .mars{width:110px;left:-40px}.noten-raum .erde{width:340px;right:-190px;top:-110px}.sonnensystem{width:620px;height:620px;top:-140px}.noten-raum .wr-kopf-zeile{min-height:400px}.noten-raum .wr-kopf-zeile>.astro{display:none}.astro2{bottom:auto;top:250px;right:-40px}.astro2{transform:scale(.6);right:-30px}.stern-gross{left:auto;right:40%}}
+@media (prefers-reduced-motion:reduce){.umlauf,.astro2,.astro3{animation:none}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2021,6 +2030,14 @@ function saturnSVG(){return `<svg viewBox="0 0 220 140" class="pl saturn" role="
  <path d="M5 70 q105 40 210 0" fill="none" stroke="#f5dca6" stroke-width="10"/></svg>`}
 function marsSVG(){return `<svg viewBox="0 0 140 140" class="pl mars" role="img" aria-label="Mars"><defs><radialGradient id="mg" cx="35%" cy="30%"><stop offset="0" stop-color="#ffab73"/><stop offset=".6" stop-color="#e2502a"/><stop offset="1" stop-color="#7a1f0e"/></radialGradient></defs>
  <circle cx="70" cy="70" r="62" fill="url(#mg)"/><circle cx="50" cy="55" r="9" fill="rgba(120,30,10,.35)"/><circle cx="88" cy="85" r="13" fill="rgba(120,30,10,.3)"/><circle cx="78" cy="40" r="6" fill="rgba(120,30,10,.3)"/><circle cx="45" cy="92" r="5" fill="rgba(120,30,10,.3)"/></svg>`}
+function sonnensystemSVG(){
+  const bahnen=[[70,6,"#b8b0a8",0,14],[105,9,"#f5c27a",1,20],[145,10,"#2f8bff",2,26],[185,8,"#e2502a",3,34],[245,22,"#e0a868",4,50],[310,18,"#f0cf8a",5,64],[365,13,"#7fe0f0",6,80],[415,13,"#4a6cff",7,96]];
+  return `<svg viewBox="0 0 900 900" class="sonnensystem" role="img" aria-label="Sonnensystem"><defs>
+   <radialGradient id="sonne" cx="50%" cy="50%"><stop offset="0" stop-color="#fff6c2"/><stop offset=".45" stop-color="#ffd23f"/><stop offset=".8" stop-color="#ff8c1a"/><stop offset="1" stop-color="rgba(255,120,20,0)"/></radialGradient></defs>
+   ${bahnen.map(([r])=>`<circle cx="450" cy="450" r="${r}" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="1.5" stroke-dasharray="4 6"/>`).join("")}
+   <circle cx="450" cy="450" r="62" fill="url(#sonne)"/><circle cx="450" cy="450" r="34" fill="#ffd23f"/>
+   ${bahnen.map(([r,g,c,i,t])=>`<g class="umlauf" style="animation-duration:${t*3}s;animation-delay:-${i*7}s"><circle cx="${450+r}" cy="450" r="${g}" fill="${c}"/>${i===4?`<ellipse cx="${450+r}" cy="450" rx="${g*1.9}" ry="${g*.45}" fill="none" stroke="#f5dca6" stroke-width="4"/>`:""}</g>`).join("")}
+  </svg>`}
 function vKalender(){
   const v=V.woche||0,mo=montagVon(v),so=new Date(mo);so.setDate(mo.getDate()+6);
   return `<div class="weltraum kalender-raum"><div class="sterne-bg" aria-hidden="true"></div>
@@ -2215,7 +2232,7 @@ function vNoten(){
       <div class="wenn-grid">${[1,2,3,4,5,6].map(g=>{const y=schnitt(f.id,g),d=y-x;return `<div class="wenn-zelle"><span class="wz-note">${g}</span><span>Ø ${komma(y)}</span><span class="muted">steht auf ${stehtAuf(y)}</span><span class="wz-pfeil ${d<-0.005?"besser":d>0.005?"schlechter":""}">${d<-0.005?"▲ besser":d>0.005?"▼ schlechter":"= gleich"}</span></div>`}).join("")}</div></div>
     </section>`};
   return `<div class="weltraum kalender-raum noten-raum"><div class="sterne-bg" aria-hidden="true"></div>
-   <div class="planeten" aria-hidden="true">${saturnSVG()}${marsSVG()}${erdeSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r5">🚀</span><span class="komet">☄️</span><span class="stern-gross">⭐</span></div>
+   <div class="planeten" aria-hidden="true">${sonnensystemSVG()}${erdeSVG()}${saturnSVG()}${marsSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r5">🚀</span><span class="komet">☄️</span><span class="stern-gross">⭐</span><span class="astro2">${astronautSVG()}</span><span class="astro3">🧑‍🚀</span></div>
    <button class="back wr-back" data-go="start">← Startseite</button>
    <div class="wr-kopf-zeile"><div class="kopf" style="flex:1"><div><p class="eyebrow">🌟 Deine Noten im Weltall</p><h1>Noten</h1><p class="muted">Alle eingetragenen Noten, der Durchschnitt pro Fach und was eine neue Note verändern würde.</p></div>
     ${gesamt!==null?`<div class="stat"><b>${komma(gesamt)}</b><span>Ø aller Fächer</span></div>`:""}</div>${astronautSVG()}</div>
