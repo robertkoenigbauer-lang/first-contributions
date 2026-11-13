@@ -614,6 +614,19 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 /* Ferien */
 .ev-ferien{--evf:#f59e0b}
 .wtagk.ferientag{background:linear-gradient(160deg,rgba(245,158,11,.22),rgba(10,12,30,.3))!important}
+/* Zeugnis-Countdown */
+.zeugnis{gap:10px;grid-column:span 2}
+@media (max-width:1050px){.zeugnis{grid-column:1/-1}}
+.zg-balken{height:12px}.zg-balken i{background:linear-gradient(90deg,var(--rose),var(--flieder))}
+.zg-zeile{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--flieder) 10%,var(--solid));border-radius:14px;padding:8px 12px}
+.zg-icon{font-size:1.6rem}
+.zg-text{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.2}.zg-text small{color:var(--muted)}
+.zg-zahl{display:flex;flex-direction:column;align-items:center;min-width:62px;line-height:1}
+.zg-zahl b{font-family:var(--f-display);font-size:1.7rem;color:var(--rose);font-variant-numeric:tabular-nums}
+.zg-zahl.schule b{color:var(--flieder)}
+.zg-zahl small{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.zg-ferien{font-weight:600}
+@media (max-width:520px){.zg-zeile{flex-wrap:wrap}.zg-text{flex:1 1 calc(100% - 50px)}.zg-zahl{flex:1}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2156,6 +2169,8 @@ const FEIERTAGE=[["2026-12-25","1. Weihnachtsfeiertag"],["2026-12-26","2. Weihna
  ["2027-03-26","Karfreitag"],["2027-03-29","Ostermontag"],["2027-05-01","Tag der Arbeit"],["2027-05-06","Christi Himmelfahrt"],["2027-05-17","Pfingstmontag"],
  ["2027-05-27","Fronleichnam"],["2027-08-15","Mariä Himmelfahrt"],["2027-10-03","Tag der Deutschen Einheit"],["2027-11-01","Allerheiligen"]];
 const SCHULJAHR_ENDE="2027-07-30"; // letzter Schultag vor den Sommerferien
+const SCHULJAHR_START="2026-09-15";
+const ZEUGNISSE=[{datum:"2027-02-05",name:"Halbjahreszeugnis",icon:"📄"},{datum:"2027-07-30",name:"Jahreszeugnis",icon:"🎓"}];
 const ferienAm=iso=>FERIEN.find(f=>iso>=f.von&&iso<=f.bis);
 const feiertagAm=iso=>(FEIERTAGE.find(f=>f[0]===iso)||[])[1];
 const schulfrei=iso=>{const wd=new Date(iso+"T12:00").getDay();return wd===0||wd===6||!!ferienAm(iso)||!!feiertagAm(iso)};
@@ -2518,6 +2533,18 @@ function vDrucken(){
     Zum Ausdrucken: Papa hat die fertigen PDF-Dateien bekommen. Hier siehst du die Vorschau.</p></div>
    <div class="druck-vorschau">${k.html||`<p class="muted">Für dieses Fach gibt es noch keinen Lernstoff.</p>`}</div></div>`}
 
+function kachelZeugnis(){
+  const gesamt=schultageZwischen(SCHULJAHR_START,SCHULJAHR_ENDE),geschafft=schultageZwischen(SCHULJAHR_START,tag())-(schulfrei(tag())?0:1);
+  const pz=Math.max(0,Math.min(100,Math.round(100*geschafft/gesamt)));
+  const nf=FERIEN.filter(f=>f.von>tag()&&f.bis>f.von).sort((a,b)=>a.von<b.von?-1:1)[0];
+  const zeile=z=>{const d=tageBis(z.datum);if(d<0)return "";const st=schultageZwischen(tag(),z.datum)-(schulfrei(tag())?0:1)+0;
+    return `<div class="zg-zeile"><span class="zg-icon" aria-hidden="true">${z.icon}</span><div class="zg-text"><b>${z.name}</b><small>${wtag(z.datum)}, ${datumDE(z.datum)}</small></div>
+     <div class="zg-zahl"><b>${d}</b><small>Tage</small></div><div class="zg-zahl schule"><b>${Math.max(0,st)}</b><small>Schultage</small></div></div>`};
+  return `<section class="kachel zeugnis"><div class="k-kopf"><h3>⏳ Countdown</h3><span class="muted">${pz} % vom Schuljahr geschafft</span></div>
+   <div class="balken zg-balken"><i style="width:${pz}%"></i></div>
+   ${ZEUGNISSE.map(zeile).join("")}
+   ${nf?`<p class="zg-ferien">${nf.icon} Noch <b>${tageBis(nf.von)} Tage</b> bis zu den <b>${nf.name}</b> (${schultageZwischen(tag(),nf.von)-(schulfrei(tag())?0:1)} Schultage)</p>`:""}
+   <p class="tipp">Schultage = ohne Wochenenden, Ferien und Feiertage. Der heutige Tag zählt nicht mehr mit.</p></section>`}
 function vDashboard(){
   verlaufMerken();
   return `<div class="weltraum dash-raum foto-himmel">
@@ -2527,7 +2554,7 @@ function vDashboard(){
    ${kachelHeute()}${kachelCountdown()}
    ${aufgabenblockHTML()}${kachelProben()}${kachelSchwer()}
    ${kachelFortschritt()}
-   ${kachelSparbuch()}
+   ${kachelZeugnis()}${kachelSparbuch()}
    ${kachelNoten()}
    <section class="kachel">${notizblockHTML()}</section><div class="zwei">${schultagHTML()}</div>
    <section class="kachel breit"><div class="k-kopf"><h3>📅 Diese Woche</h3><button class="back" data-go="kalender">Kalender →</button></div>${wocheHTML(0,true)}</section>
