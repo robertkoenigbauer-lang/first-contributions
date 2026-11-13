@@ -1894,7 +1894,7 @@ function schultagHTML(){const d=naechsterSchultag(),wd=new Date(d+"T12:00").getD
 // Kräftige Weltraum-Farben für den Stundenplan (Text: h = hell, d = dunkel)
 const KNALL={Mathe:["#2563eb","h"],Deutsch:["#ef4444","h"],Englisch:["#facc15","d"],GPG:["#a0522d","h"],NT:["#16c45a","h"],Religion:["#94a3b8","d"],Sport:["#06d6c7","d"],
  Kunst:["bunt","d"],Musik:["#ffffff","d"],WiB:["#ff2d95","h"],Informatik:["#a855f7","h"],WG:["#ff7a00","h"],Förderunterricht:["#7c5cff","h"],Mittagspause:["#475569","h"],EBSU:["#00b4ff","h"]};
-const STD_ICON={Mathe:"➗",Deutsch:"📖",Englisch:"🇬🇧",GPG:"🌍",NT:"🔬",Religion:"🕊️",Sport:"⚽",Kunst:"🎨",Musik:"🎵",WiB:"💼",Informatik:"💻",WG:"🛠️",Förderunterricht:"⭐",Mittagspause:"🍝",EBSU:"🤹"};
+const STD_ICON={Mathe:"➗",Deutsch:"📖",Englisch:"🇬🇧",GPG:"🌍",NT:"🔬",Religion:"🕊️",Sport:"⚽",Kunst:"🎨",Musik:"🎵",WiB:"💼",Informatik:"💻",WG:"🛠️",Förderunterricht:"⭐",Mittagspause:"🍝",EBSU:"🏀"};
 function vStundenplan(){
   const heuteWd=new Date().getDay();
   const zelle=f=>{if(!f)return `<td class="leer"></td>`;const [c,t]=KNALL[f]||["#64748b","h"];
