@@ -479,6 +479,27 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .dash-raum .mars{width:120px;left:24%;top:130px;bottom:auto}
 .dash-raum .astro2{right:16%;left:auto;bottom:auto;top:70px;transform:scale(.8)}
 @media (max-width:620px){.dash-raum{padding:10px}.dash-himmel{height:200px}.dash-raum .sonnensystem{width:600px;height:600px;top:-210px}.dash-raum .erde{width:260px;right:-130px;top:-90px}.dash-raum .saturn{width:140px;left:-30px;top:30px}.dash-raum .mars{width:70px;left:8%;top:140px}.dash-raum .astro2{right:-30px;top:60px;transform:scale(.55)}}
+/* Themen-Hintergrund der Fachseiten */
+.fachraum{position:relative;overflow:hidden;border-radius:24px;padding:18px max(14px,2vw) 24px;background:linear-gradient(160deg,var(--t1),var(--t2))}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fachraum{background:linear-gradient(160deg,var(--d1),var(--d2))}}
+:root[data-theme="dark"] .fachraum{background:linear-gradient(160deg,var(--d1),var(--d2))}
+.fachraum::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35}
+.muster-karo::before{background-image:linear-gradient(rgba(40,80,160,.25) 1px,transparent 1px),linear-gradient(90deg,rgba(40,80,160,.25) 1px,transparent 1px);background-size:22px 22px}
+.muster-linien::before{background-image:repeating-linear-gradient(transparent 0 30px,rgba(160,40,40,.25) 30px 31px)}
+.muster-punkte::before{background-image:radial-gradient(rgba(0,0,0,.18) 1.5px,transparent 2px);background-size:22px 22px}
+.muster-zahnrad::before{background-image:radial-gradient(circle at 20% 30%,rgba(30,120,60,.25) 0 60px,transparent 61px),radial-gradient(circle at 85% 70%,rgba(30,120,60,.2) 0 90px,transparent 91px),radial-gradient(rgba(0,0,0,.12) 1.5px,transparent 2px);background-size:auto,auto,24px 24px}
+.muster-karte::before{background-image:repeating-linear-gradient(0deg,transparent 0 40px,rgba(120,70,20,.2) 40px 41px),repeating-linear-gradient(90deg,transparent 0 40px,rgba(120,70,20,.2) 40px 41px)}
+.muster-noten::before{background-image:repeating-linear-gradient(transparent 0 8px,rgba(90,60,140,.28) 8px 9px,transparent 9px 16px,rgba(90,60,140,.28) 16px 17px,transparent 17px 24px,rgba(90,60,140,.28) 24px 25px,transparent 25px 32px,rgba(90,60,140,.28) 32px 33px,transparent 33px 40px,rgba(90,60,140,.28) 40px 41px,transparent 41px 90px)}
+.fr-deko{position:absolute;inset:0;pointer-events:none}
+.fr-deko span{position:absolute;opacity:.42;transform:rotate(var(--rot));animation:fr-schweben ease-in-out infinite alternate;filter:saturate(1.2)}
+@keyframes fr-schweben{from{transform:translateY(0) rotate(var(--rot))}to{transform:translateY(-12px) rotate(calc(var(--rot) + 8deg))}}
+.fr-inhalt{position:relative}
+.fachraum .thema,.fachraum .probe,.fachraum .leerhinweis{background:color-mix(in srgb,var(--solid) 90%,transparent)}
+.fr-titel{margin-bottom:2px}
+[style*="--musik"] .badge.heft-q{border-color:#b7a6c9;color:#6b5a7a}
+[style*="--musik"] .balken i{background:linear-gradient(90deg,#c39bff,#ff8fc8)}
+[style*="--musik"] .fachkopf{border-left-color:#c9b8e0}
+@media (prefers-reduced-motion:reduce){.fr-deko span{animation:none}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2260,11 +2281,25 @@ function vNoten(){
    </section>
    <p class="fuss">Alle Noten zählen gleich, wenn nichts anderes eingetragen ist. Tendenzen: 2+ = 1,75 · 2− = 2,25.<br>Wie die Lehrkraft die Noten gewichtet, kann davon abweichen. Bei genau x,5 entscheidet die Lehrkraft.</p></div></div>`}
 
+/* Themen-Hintergrund je Fach */
+const FACHRAUM={
+ mathe:{t1:"#dbe8ff",t2:"#b9d0ff",d1:"#13254d",d2:"#1d3a7a",muster:"karo",titel:"Mathe-Welt",deko:["➕","✖️","➗","📐","📏","🔢","½","¾","π","🧮","=","%"]},
+ deutsch:{t1:"#ffe1e1",t2:"#ffc7c7",d1:"#3d1418",d2:"#6b2228",muster:"linien",titel:"Bücher-Welt",deko:["📚","✏️","📖","✒️","Aa","📝","🔤","📜","🖍️","💬"]},
+ englisch:{t1:"#fff6c7",t2:"#ffe680",d1:"#3a3006",d2:"#5e4c0a",muster:"punkte",titel:"London Calling",deko:["🇬🇧","💂","🎡","☕","🚌","🏰","🕰️","☂️","🫖","👑"]},
+ nt:{t1:"#dcf7e3",t2:"#bff0d0",d1:"#0f3320",d2:"#185c38",muster:"zahnrad",titel:"Natur & Technik",deko:["🌱","🌻","🐞","🦋","⚙️","💡","🔬","🧲","🔋","🌳","🐸","🔧","🌍","🧪"]},
+ gpg:{t1:"#f3e4d4",t2:"#e2c7a8",d1:"#33210f",d2:"#5a3a1d",muster:"karte",titel:"Entdecker-Welt",deko:["🗺️","🧭","🏔️","🏛️","🌍","⛰️","🏰","⚓","🛶","🗿"]},
+ musik:{t1:"#f4ecff",t2:"#ffffff",d1:"#24183a",d2:"#3a2a5c",muster:"noten",titel:"Musik-Bühne",deko:["🎵","🎶","🎹","🎸","🥁","🎼","🎺","🎻","🎤","🎧"]},
+ info:{t1:"#f1e2ff",t2:"#dcbcff",d1:"#24123a",d2:"#3e1e66",muster:"punkte",titel:"Computer-Welt",deko:["💻","🖱️","⌨️","🤖","💾","🔌","🧠","📡"]},
+ wib:{t1:"#ffe0ef",t2:"#ffc2df",d1:"#3d1029",d2:"#661b45",muster:"punkte",titel:"Arbeits-Welt",deko:["💼","🏭","💶","🛒","🧾","👷","🏦","📈"]}};
+function fachraumHTML(fid,inhalt){const r=FACHRAUM[fid]||FACHRAUM.nt;
+  const deko=r.deko.concat(r.deko).map((e,i)=>{const x=(i*37+11)%96,y=(i*53+7)%94,gr=1.6+((i*7)%5)*.45,rot=((i*29)%50)-25,dauer=6+(i%5);
+    return `<span style="left:${x}%;top:${y}%;font-size:${gr}rem;--rot:${rot}deg;animation-duration:${dauer}s;animation-delay:-${i%7}s">${e}</span>`}).join("");
+  return `<div class="fachraum muster-${r.muster}" style="--t1:${r.t1};--t2:${r.t2};--d1:${r.d1};--d2:${r.d2}"><div class="fr-deko" aria-hidden="true">${deko}</div><div class="fr-inhalt">${inhalt}</div></div>`}
 function vFach(){
   const f=fach(V.fach),ts=themenVon(f.id);
-  return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
+  return fachraumHTML(f.id,`<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
    <button class="back" data-go="start">← Startseite</button>
-   <div class="fachkopf"><h1>${f.name}</h1>${schnitt(f.id)!==null?`<p><span class="notenpill">Note aktuell: Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span> <button class="back" style="display:inline" data-go="noten">Noten ansehen →</button></p>`:""}${(()=>{const p=kommendeProben().find(p=>p.fach===f.id);return p?`<p><span class="notenpill">Probe ${datumKurz(p.datum)}</span> ${lerntageText(p)}</p>`:""})()}<p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
+   <div class="fachkopf"><p class="eyebrow fr-titel">✨ ${(FACHRAUM[f.id]||{}).titel||""}</p><h1>${f.name}</h1>${schnitt(f.id)!==null?`<p><span class="notenpill">Note aktuell: Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span> <button class="back" style="display:inline" data-go="noten">Noten ansehen →</button></p>`:""}${(()=>{const p=kommendeProben().find(p=>p.fach===f.id);return p?`<p><span class="notenpill">Probe ${datumKurz(p.datum)}</span> ${lerntageText(p)}</p>`:""})()}<p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
    ${ts.length?`<section class="themen">${ts.map(t=>{const ks=kartenVon(t),s=ks.filter(sitzt).length;return `<div class="thema"><div class="t"><h3>${t.titel}</h3>
      <div class="row">${quelleBadge(t)}${t.probe&&tageBis(t.probe)>=0?`<span class="badge heft-q">Probe ${probeText(t)}</span>`:""}<span class="muted" style="font-size:.85rem">${s} von ${ks.length} sitzen</span></div>
      <div class="balken"><i style="width:${Math.round(100*s/ks.length)}%"></i></div></div>
@@ -2272,14 +2307,14 @@ function vFach(){
    <section class="probe"><h2>Probe-Training</h2><p>Wähle die Themen, die in der Probe drankommen. Du bekommst gemischte Aufgaben ohne Hilfe und am Ende eine Note wie von der Lehrkraft: Bei Rechenaufgaben zählt jeder Schritt im Rechenweg, bei Wörtern die Rechtschreibung.</p>
     <div class="chips">${ts.map(t=>`<label class="chip"><input type="checkbox" id="pt-${t.id}" value="${t.id}" checked> ${t.titel}</label>`).join("")}</div>
     <div><button class="btn" data-act="probe" data-fach="${f.id}">Probe starten</button></div>${(()=>{const u=S.uebproben.filter(x=>x.fach===f.id).slice(-4);return u.length?`<p class="muted">Deine letzten Übungsproben: ${u.map(x=>`<b>Note ${x.note}</b> (${datumDE(x.datum).replace(/\d\d$/,"")})`).join(" · ")}</p>`:""})()}</section>`
-   :`<section class="leerhinweis"><h3>Hier ist noch nichts eingetragen.</h3><p class="muted">Sobald es Hefteinträge oder Arbeitsblätter aus ${f.name} gibt, kommen hier die passenden Fragen dazu.</p></section>`}</div>`}
+   :`<section class="leerhinweis"><h3>Hier ist noch nichts eingetragen.</h3><p class="muted">Sobald es Hefteinträge oder Arbeitsblätter aus ${f.name} gibt, kommen hier die passenden Fragen dazu.</p></section>`}</div>`)}
 
 function vMerke(){
   const t=thema(V.thema),f=fach(t.fach);
-  return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
+  return fachraumHTML(f.id,`<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
    <button class="back" data-go="fach" data-fach="${f.id}">← ${f.name}</button>
    <article class="papier ${f.papier==="karo"?"karo":""}">${t.merke}</article>
-   <div class="row"><button class="btn" data-act="ueben" data-thema="${t.id}">Jetzt üben</button></div></div>`}
+   <div class="row"><button class="btn" data-act="ueben" data-thema="${t.id}">Jetzt üben</button></div></div>`)}
 
 function tutorHTML(h){return `<div class="tutor-bg" role="dialog" aria-modal="true" aria-label="Lernhilfe"><div class="tutor">
   <div class="tutor-kopf"><span class="tutor-ava ella-klein" aria-hidden="true">${ellaSVG(56)}</span><div><p class="eyebrow">Eule Ella hilft dir</p><h3>${h.titel}</h3></div></div>
