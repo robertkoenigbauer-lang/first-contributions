@@ -676,6 +676,21 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .lern-raum .fb-linie{background:repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0 10px,transparent 10px 16px)}
 @media (max-width:620px){.lern-raum .saturn{width:140px;top:auto;bottom:30%}.lern-raum .astro2{transform:scale(.5);right:-30px;top:auto;bottom:40%}.lern-raum .erde{width:320px;right:-140px;bottom:-130px}}
 @media (prefers-reduced-motion:reduce){.astro4{animation:none}}
+/* Astronauten mit ganzem Körper + Rakete mit Fenster */
+.astro3,.astro4{font-size:0}
+.astro-ganz{display:block;filter:drop-shadow(0 0 14px rgba(160,180,255,.45))}
+.astro4 .astro-ganz{width:76px;height:auto;transform:scaleX(-1)}
+.ag-arm-r{transform-origin:86px 62px;animation:ag-winken 2.4s ease-in-out infinite}
+@keyframes ag-winken{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
+.rf-flug svg{width:170px;height:auto}
+.rf-flug{position:absolute;left:40%;top:52%;animation:rf-schweben 6s ease-in-out infinite;filter:drop-shadow(0 0 18px rgba(255,140,60,.45));transform:rotate(18deg)}
+@keyframes rf-schweben{0%,100%{transform:translateY(0) rotate(18deg)}50%{transform:translateY(-18px) rotate(14deg)}}
+.rf-flamme{transform-origin:70px 196px;animation:rf-flackern .25s ease-in-out infinite alternate}
+@keyframes rf-flackern{from{transform:scaleY(.85)}to{transform:scaleY(1.12)}}
+.rf-winken{transform-origin:78px 116px;animation:rf-wink 1s ease-in-out infinite}
+@keyframes rf-wink{0%,100%{transform:rotate(0)}50%{transform:rotate(-28deg)}}
+@media (max-width:620px){.rf-flug{left:auto;right:4%;top:auto;bottom:6%}.rf-flug svg{width:80px;height:auto}.astro3 .astro-ganz{width:70px;height:auto}}
+@media (prefers-reduced-motion:reduce){.ag-arm-r,.rf-flug,.rf-flamme,.rf-winken{animation:none}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2182,6 +2197,39 @@ function astronautSVG(){return `<svg class="astro" viewBox="0 0 200 170" width="
   <rect x="83" y="136" width="16" height="7" rx="3" fill="#9aa3b8"/><rect x="99" y="136" width="16" height="7" rx="3" fill="#9aa3b8"/>
   <circle cx="99" cy="68" r="22" fill="#fff"/><ellipse cx="101" cy="68" rx="15" ry="12" fill="#1b2a5e"/><path d="M93 62 q5 -4 12 -2" stroke="#8fd3ff" stroke-width="3" stroke-linecap="round" fill="none"/>
  </g></svg>`}
+// Astronaut mit ganzem Körper (schwebend)
+function astronautGanzSVG(farbe="#ff2d95"){return `<svg viewBox="0 0 120 160" width="96" height="128" class="astro-ganz" role="img" aria-label="Astronaut">
+ <rect x="30" y="52" width="60" height="44" rx="12" fill="#cfd6e6"/>
+ <g class="ag-arm-l"><path d="M34 62 q-20 4 -26 24" stroke="#fff" stroke-width="15" stroke-linecap="round" fill="none"/><circle cx="8" cy="87" r="8" fill="#d9dee9"/></g>
+ <g class="ag-arm-r"><path d="M86 62 q20 -6 26 -26" stroke="#fff" stroke-width="15" stroke-linecap="round" fill="none"/><circle cx="113" cy="35" r="8" fill="#d9dee9"/></g>
+ <rect x="36" y="50" width="48" height="56" rx="16" fill="#fff"/>
+ <rect x="47" y="64" width="26" height="16" rx="4" fill="${farbe}"/><circle cx="54" cy="72" r="2.6" fill="#ffd166"/><circle cx="62" cy="72" r="2.6" fill="#06d6c7"/><circle cx="69" cy="72" r="2" fill="#fff"/>
+ <rect x="36" y="92" width="48" height="8" fill="#e6e9f2"/>
+ <path d="M46 100 q-4 22 -12 42" stroke="#fff" stroke-width="16" stroke-linecap="round" fill="none"/>
+ <path d="M74 100 q6 20 16 38" stroke="#fff" stroke-width="16" stroke-linecap="round" fill="none"/>
+ <rect x="22" y="138" width="24" height="12" rx="5" fill="#9aa3b8" transform="rotate(10 34 144)"/><rect x="80" y="134" width="24" height="12" rx="5" fill="#9aa3b8" transform="rotate(-20 92 140)"/>
+ <circle cx="60" cy="32" r="28" fill="#fff"/><circle cx="60" cy="32" r="28" fill="none" stroke="#dfe3ec" stroke-width="3"/>
+ <ellipse cx="62" cy="33" rx="19" ry="16" fill="#1b2a5e"/><ellipse cx="62" cy="33" rx="19" ry="16" fill="url(#visier)"/>
+ <path d="M50 26 q6 -6 16 -3" stroke="#8fd3ff" stroke-width="3.5" stroke-linecap="round" fill="none"/><circle cx="73" cy="40" r="2.5" fill="#8fd3ff" opacity=".7"/>
+ <defs><linearGradient id="visier" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b5bdb" stop-opacity=".6"/><stop offset="1" stop-color="#ff6fa0" stop-opacity=".35"/></linearGradient></defs></svg>`}
+// Rakete mit rundem Fenster, aus dem ein Astronaut winkt
+function raketeFensterSVG(){return `<svg viewBox="0 0 140 230" width="120" height="197" class="rakete-fenster" role="img" aria-label="Rakete, aus deren Fenster ein Astronaut winkt">
+ <g class="rf-flamme"><path d="M52 196 q18 44 36 0 q-6 18 -18 34 q-12 -16 -18 -34z" fill="#ff8c1a"/><path d="M60 196 q10 26 20 0 q-4 12 -10 22 q-6 -10 -10 -22z" fill="#ffe14d"/></g>
+ <path d="M38 150 L8 196 L40 186 Z" fill="#e63946"/><path d="M102 150 L132 196 L100 186 Z" fill="#e63946"/>
+ <path d="M70 6 C110 40 112 120 104 186 H36 C28 120 30 40 70 6 Z" fill="#f4f6fb"/>
+ <path d="M70 6 C88 22 98 40 102 60 H38 C42 40 52 22 70 6 Z" fill="#e63946"/>
+ <path d="M36 176 H104 V188 H36 Z" fill="#cfd6e6"/><rect x="62" y="176" width="16" height="16" fill="#e63946"/>
+ <path d="M104 186 C112 120 110 40 70 6" fill="none" stroke="#c9cfdc" stroke-width="4"/>
+ <circle cx="70" cy="104" r="28" fill="#9aa3b8"/><circle cx="70" cy="104" r="23" fill="#7cc8ff"/>
+ <clipPath id="fenster"><circle cx="70" cy="104" r="23"/></clipPath>
+ <g clip-path="url(#fenster)">
+  <rect x="47" y="81" width="46" height="46" fill="#2b4c8c"/><circle cx="54" cy="87" r="1.2" fill="#fff"/><circle cx="88" cy="92" r="1" fill="#fff"/>
+  <rect x="52" y="113" width="30" height="20" rx="8" fill="#fff"/>
+  <circle cx="66" cy="103" r="12" fill="#fff"/><ellipse cx="67" cy="104" rx="8.5" ry="7" fill="#1b2a5e"/><path d="M62 100 q3 -3 7 -2" stroke="#8fd3ff" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <g class="rf-winken"><path d="M78 116 q8 -4 9 -16" stroke="#fff" stroke-width="7" stroke-linecap="round" fill="none"/><circle cx="87" cy="97" r="5" fill="#ffe1ec" stroke="#fff" stroke-width="1.5"/></g>
+ </g>
+ <circle cx="70" cy="104" r="23" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"/><path d="M54 92 q8 -10 20 -10" stroke="rgba(255,255,255,.7)" stroke-width="3" stroke-linecap="round" fill="none"/>
+ </svg>`}
 function vStundenplan(){
   const heuteWd=new Date().getDay();
   const zelle=f=>{if(!f)return `<td class="leer"></td>`;const [c,t]=KNALL[f]||["#64748b","h"];
@@ -2785,7 +2833,7 @@ function wochenplanHTML(){
 function render(){
   let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else if(V.seite==="noten")h=vNoten();else if(V.seite==="stundenplan")h=vStundenplan();else if(V.seite==="kalender")h=vKalender();else if(V.seite==="sparbuch")h=vSparbuch();else if(V.seite==="drucken")h=vDrucken();else h=vDashboard();
   const weit=!Q&&(V.seite==="start"||V.seite==="kalender"||V.seite==="drucken");
-  app.innerHTML=Q?`<div class="weltraum lern-raum"><div class="sterne-bg" aria-hidden="true"></div><div class="planeten" aria-hidden="true">${erdeSVG()}${saturnSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r3">🚀</span><span class="komet">☄️</span><span class="astro2">${astronautSVG()}</span><span class="astro3">🧑‍🚀</span><span class="astro4">👩‍🚀</span></div><div class="inhalt lern-inhalt">${h}</div></div>`:`<div class="layout">${seitenleisteHTML()}<main class="inhalt ${weit?"weit":""}">${h}</main></div>`;
+  app.innerHTML=Q?`<div class="weltraum lern-raum"><div class="sterne-bg" aria-hidden="true"></div><div class="planeten" aria-hidden="true">${erdeSVG()}${saturnSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r3">🚀</span><span class="komet">☄️</span><span class="astro2">${astronautSVG()}</span><span class="astro3">${astronautGanzSVG("#ff2d95")}</span><span class="astro4">${astronautGanzSVG("#7c5cff")}</span><span class="rf-flug">${raketeFensterSVG()}</span></div><div class="inhalt lern-inhalt">${h}</div></div>`:`<div class="layout">${seitenleisteHTML()}<main class="inhalt ${weit?"weit":""}">${h}</main></div>`;
   const sf=document.getElementById("sform");if(sf)sf.addEventListener("submit",e=>{e.preventDefault();const v=parseZahl(document.getElementById("sbetrag").value);const fld=document.getElementById("sbetrag");
     if(v===null||v<=0){fld.focus();fld.classList.add("fehler");return}const art=(sf.querySelector("input[name=sart]:checked")||{}).value||"geschenk";
     S.spar.buchungen.push({id:"s"+Date.now().toString(36),datum:document.getElementById("sdatum").value||tag(),betrag:art==="ausgabe"?-v:v,art,text:document.getElementById("stext").value.trim()});speichern();render()});
