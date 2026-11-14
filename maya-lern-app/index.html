@@ -648,6 +648,16 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 :root[data-theme="dark"] .dash-raum .woche .wtagk{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.18)}
 :root[data-theme="dark"] .dash-raum .woche .wtagk .wtk-kopf b{color:#fff}
 :root[data-theme="dark"] .dash-raum .woche .ev{background:color-mix(in srgb,var(--evf) 30%,#fff)}
+/* Rakete auf der Fortschrittslinie */
+.flugbahn{position:relative;padding:18px 36px 6px 20px}
+.fb-linie{height:8px;border-radius:99px;background:repeating-linear-gradient(90deg,var(--line) 0 10px,transparent 10px 16px);overflow:hidden}
+.fb-linie i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ffd166,#ff8c42,var(--fach,var(--rose)));transition:width .6s ease-out;box-shadow:0 0 10px rgba(255,140,66,.6)}
+.fb-rakete{position:absolute;top:22px;transform:translate(-50%,-50%);transition:left .6s ease-out;font-size:1.9rem;line-height:1;filter:drop-shadow(0 0 6px rgba(255,170,60,.7))}
+.fb-rakete span{display:inline-block;transform:rotate(45deg);animation:rakete-wackeln 1.2s ease-in-out infinite}
+@keyframes rakete-wackeln{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(-2px)}}
+.fb-ziel{position:absolute;right:0;top:22px;transform:translateY(-50%);font-size:1.7rem}
+.fb-text{display:block;text-align:right;font-size:.8rem;font-weight:800;color:var(--muted);margin-top:6px;padding-right:0}
+@media (prefers-reduced-motion:reduce){.fb-rakete,.fb-linie i{transition:none}.fb-rakete span{animation:none}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2708,7 +2718,10 @@ function vQuiz(){
   const marke=q.leicht?`<span class="badge heft-q">Leichtere Übung</span>`:q.wieder?`<span class="badge heft-q">Nochmal probieren</span>`:"";
   return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:16px">
    <div class="quizkopf"><button class="back" data-act="abbrechen">✕ Beenden</button><span class="muted" style="font-weight:700">${titel} · ${Q.i+1} / ${Q.fragen.length}</span></div>
-   <div class="balken"><i style="width:${Math.round(100*Q.i/Q.fragen.length)}%"></i></div>
+   <div class="flugbahn" role="progressbar" aria-valuemin="0" aria-valuemax="${Q.fragen.length}" aria-valuenow="${Q.i}" aria-label="${Q.i} von ${Q.fragen.length} geschafft">
+    <div class="fb-linie"><i style="width:${Math.round(100*Q.i/Q.fragen.length)}%"></i></div>
+    <span class="fb-rakete" style="left:calc(20px + (100% - 56px) * ${(Q.i/Q.fragen.length).toFixed(3)})"><span>🚀</span></span><span class="fb-ziel" aria-hidden="true">🪐</span>
+    <span class="fb-text">${Q.i} von ${Q.fragen.length} geschafft</span></div>
    ${Q.modus==="probe"?`<p class="tipp">Probe-Modus: keine Hilfe, keine Lösungen. Am Ende bekommst du eine Note wie von deiner Lehrkraft.</p>`:""}
    <section class="karte"><div class="row" style="justify-content:space-between"><span class="fachzeile">${f.name} · ${t.titel}</span>${marke}</div><div class="frage">${q.frage}</div>${q.sprich&&(q.sprichVorher||fertig)?`<div class="row hoerzeile">${hoerKnopf(q.sprich)}<button class="hoer" type="button" data-act="sprich" data-langsam="1" data-t="${esc(q.sprich)}" aria-label="Langsam anhören">🐢</button><span class="tipp">${fertig?"So spricht man es aus – sprich es laut nach!":"Anhören"}</span></div>`:""}${feld}${rueck}</section>
    ${Q.helfer?tutorHTML(Q.helfer):""}</div>`}
