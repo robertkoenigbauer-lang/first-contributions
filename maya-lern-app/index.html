@@ -627,6 +627,13 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .zg-zahl small{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .zg-ferien{font-weight:600}
 @media (max-width:520px){.zg-zeile{flex-wrap:wrap}.zg-text{flex:1 1 calc(100% - 50px)}.zg-zahl{flex:1}}
+/* Fach-Hintergründe: kräftiger und mit gezeichneten Bildern */
+.fr-deko span{opacity:.5}
+.fr-deko span svg{display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2))}
+.fr-rechnung{font-family:"Segoe Print","Comic Sans MS",var(--f-body);font-weight:700;font-size:1.1rem!important;color:#1d3a7a;white-space:nowrap}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fr-rechnung{color:#b9d0ff}}
+:root[data-theme="dark"] .fr-rechnung{color:#b9d0ff}
+.muster-karo::before{opacity:.6}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2612,19 +2619,22 @@ function vNoten(){
    <p class="fuss">Alle Noten zählen gleich, wenn nichts anderes eingetragen ist. Tendenzen: 2+ = 1,75 · 2− = 2,25.<br>Wie die Lehrkraft die Noten gewichtet, kann davon abweichen. Bei genau x,5 entscheidet die Lehrkraft.</p></div></div>`}
 
 /* Themen-Hintergrund je Fach */
+const BIGBEN_GROSS=`<svg viewBox="0 0 24 40" width="34" height="56"><path d="M12 0 L15 9 H9 Z" fill="#3a2a10"/><rect x="8" y="9" width="8" height="3" fill="#8a6a2a"/><rect x="7" y="12" width="10" height="11" fill="#c99a3a" stroke="#5a3f12" stroke-width="1"/><circle cx="12" cy="17.5" r="3.6" fill="#fff8e1" stroke="#3a2a10" stroke-width="1"/><path d="M12 17.5 V15.4 M12 17.5 H13.8" stroke="#3a2a10" stroke-width="1"/><rect x="7.5" y="23" width="9" height="16" fill="#b8862e" stroke="#5a3f12" stroke-width="1"/><path d="M10 26 v10 M14 26 v10" stroke="#5a3f12" stroke-width="1"/></svg>`;
+const DOPPELBUS=`<svg viewBox="0 0 60 44" width="66" height="48"><rect x="2" y="2" width="56" height="34" rx="5" fill="#d2232a"/><rect x="2" y="18" width="56" height="2" fill="#a51a20"/>${[6,17,28,39,50].map(x=>`<rect x="${x}" y="6" width="8" height="8" rx="1.5" fill="#cfe8ff"/>`).join("")}${[6,17,28,39].map(x=>`<rect x="${x}" y="23" width="8" height="8" rx="1.5" fill="#cfe8ff"/>`).join("")}<rect x="50" y="22" width="6" height="14" fill="#7a1015"/><circle cx="14" cy="37" r="5" fill="#222"/><circle cx="46" cy="37" r="5" fill="#222"/><circle cx="14" cy="37" r="2" fill="#999"/><circle cx="46" cy="37" r="2" fill="#999"/></svg>`;
+const RECHNUNG=t=>`<span class="fr-rechnung">${t}</span>`;
 const FACHRAUM={
- mathe:{symbol:"📐",t1:"#dbe8ff",t2:"#b9d0ff",d1:"#13254d",d2:"#1d3a7a",muster:"karo",titel:"Mathe-Welt",deko:["➕","✖️","➗","📐","📏","🔢","½","¾","π","🧮","=","%"]},
- deutsch:{symbol:"📚",t1:"#ffe1e1",t2:"#ffc7c7",d1:"#3d1418",d2:"#6b2228",muster:"linien",titel:"Bücher-Welt",deko:["📚","✏️","📖","✒️","Aa","📝","🔤","📜","🖍️","💬"]},
- englisch:{symbol:"💂",t1:"#fff6c7",t2:"#ffe680",d1:"#3a3006",d2:"#5e4c0a",muster:"punkte",titel:"London Calling",deko:["🇬🇧","💂","🎡","☕","🚌","🏰","🕰️","☂️","🫖","👑"]},
- nt:{symbol:"🦊",t1:"#dcf7e3",t2:"#bff0d0",d1:"#0f3320",d2:"#185c38",muster:"zahnrad",titel:"Natur & Technik",deko:["🦊","🌳","🫎","⚙️","🦋","💡","🦌","🔬","🌻","🐿️","🧲","🦉","🔋","🌲","🐞","🔧","🦔","🧪"]},
- gpg:{symbol:"🧭",t1:"#f3e4d4",t2:"#e2c7a8",d1:"#33210f",d2:"#5a3a1d",muster:"karte",titel:"Entdecker-Welt",deko:["🗺️","🧭","🏔️","🏛️","🌍","⛰️","🏰","⚓","🛶","🗿"]},
- musik:{symbol:"🎹",t1:"#f4ecff",t2:"#ffffff",d1:"#24183a",d2:"#3a2a5c",muster:"noten",titel:"Musik-Bühne",deko:["🎵","🎶","🎹","🎸","🥁","🎼","🎺","🎻","🎤","🎧"]},
+ mathe:{symbol:"📐",t1:"#dbe8ff",t2:"#b9d0ff",d1:"#13254d",d2:"#1d3a7a",muster:"karo",titel:"Mathe-Welt",deko:["📓","✏️","📏","📐",RECHNUNG("7 · 8 = 56"),"📒","🖊️",RECHNUNG("¾ + ¼ = 1"),"✏️","🧮",RECHNUNG("√81 = 9"),"📏",RECHNUNG("12 : 4 = 3"),"📓",RECHNUNG("π ≈ 3,14")]},
+ deutsch:{symbol:"📚",t1:"#ffe1e1",t2:"#ffc7c7",d1:"#3d1418",d2:"#6b2228",muster:"linien",titel:"Bücher-Welt",deko:["📚","🐭","📖","📕","🐁","📗","📘","✒️","📚","🐭","📙","🖋️"]},
+ englisch:{symbol:"💂",t1:"#fff6c7",t2:"#ffe680",d1:"#3a3006",d2:"#5e4c0a",muster:"punkte",titel:"London Calling",deko:[BIGBEN_GROSS,"💂",DOPPELBUS,"🚆",BIGBEN_GROSS,"💂",DOPPELBUS,"🇬🇧","🚂","☂️"]},
+ nt:{symbol:"🦊",t1:"#dcf7e3",t2:"#bff0d0",d1:"#0f3320",d2:"#185c38",muster:"zahnrad",titel:"Natur & Technik",deko:["🌳","🦊","🔬","🌱","🫎","🧪","🌻","🦌","🔥","⚗️","🐿️","🌲","🦉","🧲","🦋","💡","🦔","🍃"]},
+ gpg:{symbol:"🧭",t1:"#f3e4d4",t2:"#e2c7a8",d1:"#33210f",d2:"#5a3a1d",muster:"karte",titel:"Entdecker-Welt",deko:["🧭","⛵","🔍","📖","🚢","🗺️","🧭","⚓","🔍","🌍","⛵","📜"]},
+ musik:{symbol:"🎹",t1:"#f4ecff",t2:"#ffffff",d1:"#24183a",d2:"#3a2a5c",muster:"noten",titel:"Musik-Bühne",deko:["🎼","🎵","🎻","🎶","🎹","🎼","🎸","🎵","🎺","🎶","🥁","🎼"]},
  info:{symbol:"💻",t1:"#f1e2ff",t2:"#dcbcff",d1:"#24123a",d2:"#3e1e66",muster:"punkte",titel:"Computer-Welt",deko:["💻","🖱️","⌨️","🤖","💾","🔌","🧠","📡"]},
  wib:{symbol:"💼",t1:"#ffe0ef",t2:"#ffc2df",d1:"#3d1029",d2:"#661b45",muster:"punkte",titel:"Arbeits-Welt",deko:["💼","🏭","💶","🛒","🧾","👷","🏦","📈"]}};
 function fachraumHTML(fid,inhalt){const r=FACHRAUM[fid]||FACHRAUM.nt;
   const deko=r.deko.concat(r.deko).map((e,i)=>{const x=(i*37+11)%96,y=(i*53+7)%94,gr=1.6+((i*7)%5)*.45,rot=((i*29)%50)-25,dauer=6+(i%5);
     return `<span style="left:${x}%;top:${y}%;font-size:${gr}rem;--rot:${rot}deg;animation-duration:${dauer}s;animation-delay:-${i%7}s">${e}</span>`}).join("");
-  return `<div class="fr-inhalt">${inhalt}</div>`} // Themen-Hintergrund entfernt (Wunsch 14.11.)
+  return `<div class="fachraum muster-${r.muster}" style="--t1:${r.t1};--t2:${r.t2};--d1:${r.d1};--d2:${r.d2}"><div class="fr-deko" aria-hidden="true">${deko}</div><div class="fr-inhalt">${inhalt}</div></div>`}
 function vFach(){
   const f=fach(V.fach),ts=themenVon(f.id);
   return fachraumHTML(f.id,`<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
