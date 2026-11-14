@@ -634,6 +634,20 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fr-rechnung{color:#b9d0ff}}
 :root[data-theme="dark"] .fr-rechnung{color:#b9d0ff}
 .muster-karo::before{opacity:.6}
+/* Übersicht „Diese Woche“: helle Pastellfarben, Emojis leuchten */
+.dash-raum .woche .wtagk{background:rgba(255,255,255,.78);-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid rgba(255,255,255,.9)}
+.dash-raum .woche .wtagk.we{background:rgba(255,255,255,.6)}
+.dash-raum .woche .wtagk .wtk-kopf b{color:#2e2035}.dash-raum .woche .wtagk .wtk-kopf span{color:#7a6585}
+.dash-raum .woche .ev{background:color-mix(in srgb,var(--evf) 18%,#fff);color:#2e2035;border-left-color:var(--evf)}
+.dash-raum .woche .ev .ev-zeit{color:#7a6585}
+.dash-raum .woche .ev-leer{color:#7a6585}
+.dash-raum .woche .ev-titel{filter:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .dash-raum .woche .wtagk{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.18)}
+ :root:not([data-theme="light"]) .dash-raum .woche .wtagk .wtk-kopf b{color:#fff}:root:not([data-theme="light"]) .dash-raum .woche .wtagk .wtk-kopf span{color:#d9cce6}
+ :root:not([data-theme="light"]) .dash-raum .woche .ev{background:color-mix(in srgb,var(--evf) 30%,#fff)}}
+:root[data-theme="dark"] .dash-raum .woche .wtagk{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.18)}
+:root[data-theme="dark"] .dash-raum .woche .wtagk .wtk-kopf b{color:#fff}
+:root[data-theme="dark"] .dash-raum .woche .ev{background:color-mix(in srgb,var(--evf) 30%,#fff)}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
