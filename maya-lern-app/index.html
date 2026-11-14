@@ -2624,7 +2624,7 @@ const FACHRAUM={
 function fachraumHTML(fid,inhalt){const r=FACHRAUM[fid]||FACHRAUM.nt;
   const deko=r.deko.concat(r.deko).map((e,i)=>{const x=(i*37+11)%96,y=(i*53+7)%94,gr=1.6+((i*7)%5)*.45,rot=((i*29)%50)-25,dauer=6+(i%5);
     return `<span style="left:${x}%;top:${y}%;font-size:${gr}rem;--rot:${rot}deg;animation-duration:${dauer}s;animation-delay:-${i%7}s">${e}</span>`}).join("");
-  return `<div class="fachraum muster-${r.muster}" style="--t1:${r.t1};--t2:${r.t2};--d1:${r.d1};--d2:${r.d2}"><div class="fr-deko" aria-hidden="true">${deko}</div><div class="fr-inhalt">${inhalt}</div></div>`}
+  return `<div class="fr-inhalt">${inhalt}</div>`} // Themen-Hintergrund entfernt (Wunsch 14.11.)
 function vFach(){
   const f=fach(V.fach),ts=themenVon(f.id);
   return fachraumHTML(f.id,`<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
