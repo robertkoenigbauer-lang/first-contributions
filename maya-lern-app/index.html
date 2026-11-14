@@ -693,8 +693,9 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 @media (prefers-reduced-motion:reduce){.ag-arm-r,.rf-flug,.rf-flamme,.rf-winken{animation:none}}
 /* Fachseiten: Weltkugel + Sonnensystem im Sternenhimmel */
 .fach-raum{padding:18px max(14px,2vw) 26px;min-height:70vh}
-.fach-raum .sonnensystem{width:820px;height:820px;left:auto;right:-220px;top:-260px;transform:none;opacity:.85}
-.fach-raum .erde{width:min(460px,70vw);left:-170px;right:auto;top:auto;bottom:-170px}
+.fach-raum .sonnensystem{width:760px;height:760px;left:40%;right:auto;top:-300px;transform:translateX(-50%);opacity:1}
+.fach-raum .erde{width:min(400px,60vw);left:auto;right:-110px;top:-120px;bottom:auto}
+.fach-raum>.fr-inhalt{padding-top:190px}
 .fr-inhalt{position:relative;z-index:1}
 .fach-raum .fachkopf h1,.fach-raum .fachkopf p,.fach-raum .back{color:#fff}
 .fach-raum .fachkopf .muted{color:#d9ccff}
@@ -703,7 +704,7 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .fach-raum .thema .muted,.fach-raum .probe .muted{color:var(--muted)}
 .fach-raum .druckknopf{color:#fff;border-color:rgba(255,255,255,.4)}
 .fach-raum .fachkopf .notenpill{color:#fff;background:rgba(255,255,255,.18)}
-@media (max-width:620px){.fach-raum .sonnensystem{width:560px;height:560px;right:-220px;top:-180px}.fach-raum .erde{width:300px;left:-140px;bottom:-120px}}
+@media (max-width:620px){.fach-raum .sonnensystem{width:520px;height:520px;top:-200px}.fach-raum .erde{width:240px;right:-100px;top:-70px}.fach-raum>.fr-inhalt{padding-top:150px}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
