@@ -658,6 +658,24 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .fb-ziel{position:absolute;right:0;top:22px;transform:translateY(-50%);font-size:1.7rem}
 .fb-text{display:block;text-align:right;font-size:.8rem;font-weight:800;color:var(--muted);margin-top:6px;padding-right:0}
 @media (prefers-reduced-motion:reduce){.fb-rakete,.fb-linie i{transition:none}.fb-rakete span{animation:none}}
+/* Weltall-Hintergrund beim Lernen */
+.lern-raum{min-height:calc(100vh - 40px);padding:18px max(12px,2vw) 30px;border-radius:24px}
+.lern-raum .sterne-bg::after{display:none}
+.lern-raum .erde{width:min(520px,70vw);right:-170px;left:auto;top:auto;bottom:-170px}
+.lern-raum .saturn{width:240px;left:-40px;right:auto;top:110px}
+.lern-raum .astro2{right:3%;left:auto;top:120px;bottom:auto;transform:scale(.7)}
+.lern-raum .astro3{left:4%;top:auto;bottom:18%}
+.astro4{position:absolute;right:22%;bottom:8%;font-size:2.8rem;animation:treiben 11s ease-in-out infinite reverse;filter:drop-shadow(0 0 12px rgba(255,255,255,.5))}
+.lern-inhalt{position:relative;z-index:1}
+.lern-raum .quizkopf .back,.lern-raum .quizkopf .muted,.lern-raum .fb-text,.lern-raum>.inhalt>div>.tipp,.lern-raum .tipp{color:#e6dcff}
+.lern-raum .ergebnis,.lern-raum .karte{background:var(--solid);color:var(--fg)}
+.lern-raum .liste .eintrag,.lern-raum .tutor{color:var(--fg)}
+.lern-raum .karte .tipp,.lern-raum .tutor .tipp,.lern-raum .ergebnis .tipp{color:var(--muted)}
+.lern-raum .liste .eintrag{background:var(--solid)}
+.lern-raum .liste h3{color:#fff}
+.lern-raum .fb-linie{background:repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0 10px,transparent 10px 16px)}
+@media (max-width:620px){.lern-raum .saturn{width:140px;top:auto;bottom:30%}.lern-raum .astro2{transform:scale(.5);right:-30px;top:auto;bottom:40%}.lern-raum .erde{width:320px;right:-140px;bottom:-130px}}
+@media (prefers-reduced-motion:reduce){.astro4{animation:none}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2767,7 +2785,7 @@ function wochenplanHTML(){
 function render(){
   let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else if(V.seite==="noten")h=vNoten();else if(V.seite==="stundenplan")h=vStundenplan();else if(V.seite==="kalender")h=vKalender();else if(V.seite==="sparbuch")h=vSparbuch();else if(V.seite==="drucken")h=vDrucken();else h=vDashboard();
   const weit=!Q&&(V.seite==="start"||V.seite==="kalender"||V.seite==="drucken");
-  app.innerHTML=Q?`<div class="inhalt">${h}</div>`:`<div class="layout">${seitenleisteHTML()}<main class="inhalt ${weit?"weit":""}">${h}</main></div>`;
+  app.innerHTML=Q?`<div class="weltraum lern-raum"><div class="sterne-bg" aria-hidden="true"></div><div class="planeten" aria-hidden="true">${erdeSVG()}${saturnSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r3">🚀</span><span class="komet">☄️</span><span class="astro2">${astronautSVG()}</span><span class="astro3">🧑‍🚀</span><span class="astro4">👩‍🚀</span></div><div class="inhalt lern-inhalt">${h}</div></div>`:`<div class="layout">${seitenleisteHTML()}<main class="inhalt ${weit?"weit":""}">${h}</main></div>`;
   const sf=document.getElementById("sform");if(sf)sf.addEventListener("submit",e=>{e.preventDefault();const v=parseZahl(document.getElementById("sbetrag").value);const fld=document.getElementById("sbetrag");
     if(v===null||v<=0){fld.focus();fld.classList.add("fehler");return}const art=(sf.querySelector("input[name=sart]:checked")||{}).value||"geschenk";
     S.spar.buchungen.push({id:"s"+Date.now().toString(36),datum:document.getElementById("sdatum").value||tag(),betrag:art==="ausgabe"?-v:v,art,text:document.getElementById("stext").value.trim()});speichern();render()});
