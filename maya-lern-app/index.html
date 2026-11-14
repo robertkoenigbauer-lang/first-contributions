@@ -705,6 +705,37 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .fach-raum .druckknopf{color:#fff;border-color:rgba(255,255,255,.4)}
 .fach-raum .fachkopf .notenpill{color:#fff;background:rgba(255,255,255,.18)}
 @media (max-width:620px){.fach-raum .sonnensystem{width:520px;height:520px;top:-200px}.fach-raum .erde{width:240px;right:-100px;top:-70px}.fach-raum>.fr-inhalt{padding-top:150px}}
+/* Bild-Erklärungen */
+.ek-knopf{background:linear-gradient(135deg,var(--rose),var(--flieder))}
+.tutor.ek{max-width:680px}
+.ek-schritte{display:flex;gap:6px}.ek-schritte i{flex:1;height:6px;border-radius:99px;background:var(--line)}.ek-schritte i.an{background:linear-gradient(90deg,var(--rose),var(--flieder))}
+.ek-bild{min-height:170px;flex-direction:column;gap:10px;overflow-x:auto}
+.ek-text{font-size:1.1rem;line-height:1.55;font-weight:600}
+.ek-reihe{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
+.ek-reihe figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:800}
+.ek-stueck svg{display:block}
+.ek-zeichen{font-family:var(--f-display);font-size:3rem;color:var(--rose)}
+.ek-gross{font-size:3.2rem;font-weight:800;color:var(--rose)}
+.ek-stapel{display:flex;flex-direction:column;gap:10px;align-items:center}
+.ek-teile{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.ek-teile span{min-width:54px;height:54px;border-radius:12px;border:2.5px solid var(--fg);display:grid;place-items:center;font-family:var(--f-display);font-size:1.3rem;font-weight:800;background:var(--surface)}
+.ek-teile span.an{background:color-mix(in srgb,var(--fach) 30%,var(--surface));border-color:var(--fach)}
+.ek-satz{font-size:1.3rem;font-weight:700;text-align:center;line-height:1.6}
+.ek-mark{background:color-mix(in srgb,var(--rose) 30%,transparent);border-radius:6px;padding:0 5px;color:var(--rose);font-weight:800}
+.ek-wortart{display:flex;flex-direction:column;align-items:center;gap:4px}.ek-wortart b{font-size:1.6rem}.ek-wortart span{color:var(--muted);font-weight:700}
+.ek-bausteine{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.ek-bausteine span{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 12px;border-radius:12px;font-weight:800;font-size:1.1rem;color:#fff}
+.ek-bausteine small{font-size:.75rem;font-weight:700;opacity:.95;text-align:center}
+.sg0{background:#2f6fd6}.sg1{background:#d64545}.sg2{background:#2e9e5b}.sg3{background:#e07a1f}
+.ek-liste{display:flex;flex-direction:column;gap:6px}.ek-liste div{display:flex;align-items:center;gap:10px}.ek-liste b{min-width:80px}.ek-liste svg{width:180px;height:auto}
+.pop-in{animation:popin .45s cubic-bezier(.2,.8,.3,1.3) both;transform-box:fill-box;transform-origin:center}
+@keyframes popin{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}
+.ek-bild svg rect[stroke-width="3"]{animation:puls 1.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes puls{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.zs-an circle{animation:puls 1.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.ek-bild path[fill="var(--fach)"]{animation:einfaerben .6s ease-out both}
+@keyframes einfaerben{from{opacity:.15}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.pop-in,.ek-bild svg rect,.zs-an circle,.ek-bild path{animation:none!important}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2024,13 +2055,139 @@ function loesungText(q){
    modus: heute (Wiederholen) | ueben (ein Thema) | probe (ohne Hilfe, mit Note)
    ================================================================ */
 let Q=null;
+/* ================================================================
+   BILD-ERKLÄRUNGEN (nur beim Üben): Schritt für Schritt mit Animation
+   ================================================================ */
+function punkteSVG(x,farbe,an){const proReihe=Math.min(12,Math.max(4,Math.ceil(Math.sqrt(x*2)))),r=9,gap=24,rows=Math.ceil(x/proReihe);
+  const w=proReihe*gap+8,h=rows*gap+8;let t="";
+  for(let i=0;i<x;i++)t+=`<circle class="pop-in" style="animation-delay:${Math.min(i*0.035,1.6)}s" cx="${14+(i%proReihe)*gap}" cy="${14+Math.floor(i/proReihe)*gap}" r="${r}" fill="${an===undefined||i<an?(farbe||"var(--fach)"):"var(--line)"}"/>`;
+  return `<svg viewBox="0 0 ${w} ${h}" width="${Math.min(w,320)}" role="img" aria-label="${x} Punkte">${t}</svg>`}
+function pizzaReiheSVG(ganze,rest,n,geschnitten){let t="";
+  for(let i=0;i<ganze;i++)t+=`<span class="pop-in" style="animation-delay:${i*0.25}s">${kreisSVG(n,geschnitten?n:1,76)}</span>`;
+  if(rest)t+=`<span class="pop-in" style="animation-delay:${ganze*0.25}s">${kreisSVG(rest,n,76)}</span>`;
+  return `<div class="ek-reihe">${t}</div>`}
+const fracsAus=h=>[...String(h).matchAll(/<span class="frac"><span>([^<]*)<\/span><span>([^<]*)<\/span><\/span>/g)].map(m=>[m[1],m[2]]);
+const ZEIT_POS={"Plusquamperfekt":.08,"Präteritum":.3,"Perfekt":.38,"Präsens":.6,"Futur 1":.8,"Futur 2":.92};
+function zeitstrahlSVG(markiert){const w=340,y=70,x=p=>20+p*(w-40);
+  return `<svg viewBox="0 0 ${w} 130" width="${w}" role="img" aria-label="Zeitstrahl">
+   <line x1="14" y1="${y}" x2="${w-10}" y2="${y}" stroke="var(--fg)" stroke-width="3"/><path d="M${w-18} ${y-7} L${w-8} ${y} L${w-18} ${y+7}" fill="none" stroke="var(--fg)" stroke-width="3"/>
+   <rect x="${x(.55)}" y="${y-30}" width="${x(.65)-x(.55)}" height="60" rx="8" fill="color-mix(in srgb,var(--ok) 25%,transparent)"/>
+   <text x="${x(.18)}" y="${y+40}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--muted)">⏪ VERGANGENHEIT</text>
+   <text x="${x(.6)}" y="${y+40}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--ok)">JETZT</text>
+   <text x="${x(.86)}" y="${y+40}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--muted)">ZUKUNFT ⏩</text>
+   ${Object.entries(ZEIT_POS).map(([n,p])=>`<g class="${n===markiert?"zs-an":"zs-aus"}"><circle cx="${x(p)}" cy="${y}" r="${n===markiert?11:6}" fill="${n===markiert?"var(--rose)":"var(--muted)"}"/>${n===markiert?`<text x="${x(p)}" y="${y-20}" text-anchor="${p<.2?"start":p>.85?"end":"middle"}" font-size="14" font-weight="800" fill="var(--rose)">${n}</text>`:""}</g>`).join("")}
+  </svg>`}
+function bildErklaerung(q){try{
+  const m=q.meta||{},tid=q.themaId||"",F2=(a,b)=>F(a,b);
+  // ---------- MATHE ----------
+  let mv=m;
+  if(!mv.art&&q.typ==="zahl"){const fr=fracsAus(q.frage).filter(f=>/^\d+$/.test(f[0])&&/^\d+$/.test(f[1]));
+    if(fr.length===1){const [z,n]=fr[0].map(Number),zahlen=(plain(q.frage).replace(/\u202F/g,"").match(/\d+/g)||[]).map(Number);
+      const x=zahlen.find(x=>x!==z&&x!==n&&x%n===0&&x/n*z===q.loesung);if(x)mv={art:"von",z,n,x}}}
+  if((mv.art==="von"||mv.art==="groesse")&&mv.x>120){const {z,n,x}=mv,k=x/n;if(!Number.isInteger(k)||n>12)return null;
+    const kaest=an=>`<div class="ek-teile">${Array.from({length:n},(_,i)=>`<span class="pop-in ${i<an?"an":""}" style="animation-delay:${i*0.15}s">${Z(k)}</span>`).join("")}</div>`;
+    return {titel:`So rechnest du ${F2(z,n)} von ${Z(x)}`,schritte:[
+     {bild:`<div class="ek-teile"><span class="pop-in an" style="min-width:260px">${Z(x)}${mv.k?" "+mv.k:""}</span></div>`,text:`Das ist das <b>Ganze</b>: ${Z(x)}${mv.k?` ${mv.k} (= 1 ${mv.g})`:""}.`},
+     {bild:kaest(0),text:`Der <b>Nenner ${n}</b> sagt: Teile es in <b>${n} gleiche Teile</b>.<br>${Z(x)} : ${n} = <b>${Z(k)}</b> in jedem Teil.`},
+     {bild:kaest(z),text:`Der <b>Zähler ${z}</b> sagt: Nimm <b>${z} Teil${z>1?"e":""}</b>.<br>${z} · ${Z(k)} = <b>${Z(z*k)}</b> 🎉`}]}}
+  if(mv.art==="von"||mv.art==="groesse"){const {z,n,x}=mv,k=x/n;if(!Number.isInteger(k))return null;m.art=m.art||"von";Object.assign(m,mv);
+    return {titel:`So rechnest du ${F2(z,n)} von ${x}`,schritte:[
+     {bild:punkteSVG(x),text:`Das sind <b>${x}</b> ${m.art==="groesse"?`(${x} ${m.k} = 1 ${m.g})`:"Dinge"}. Stell sie dir als Punkte vor.`},
+     {bild:teilSVG(x,n,0),text:`Der <b>Nenner ${n}</b> sagt: Teile alles in <b>${n} gleich große Gruppen</b>.<br>${x} : ${n} = <b>${k}</b> in jeder Gruppe.`},
+     {bild:teilSVG(x,n,z),text:`Der <b>Zähler ${z}</b> sagt: Nimm <b>${z} Gruppe${z>1?"n":""}</b>.<br>${z} · ${k} = <b>${z*k}</b> – das ist dein Ergebnis! 🎉`}]}}
+  if(m.art==="ganzes"){const {z,n,teil}=m,k=teil/z;
+    return {titel:`So findest du das Ganze`,schritte:[
+     {bild:balkenSVG(z,n),text:`Gefärbt sind <b>${z} von ${n}</b> Teilen. Zusammen sind das <b>${teil}</b>.`},
+     {bild:`<div class="ek-teile">${Array.from({length:n},(_,i)=>`<span class="pop-in ${i<z?"an":""}" style="animation-delay:${i*0.15}s">${i<z?k:"?"}</span>`).join("")}</div>`,text:`Ein Teil ist also ${teil} : ${z} = <b>${k}</b>.`},
+     {bild:`<div class="ek-teile">${Array.from({length:n},(_,i)=>`<span class="pop-in an" style="animation-delay:${i*0.15}s">${k}</span>`).join("")}</div>`,text:`Alle <b>${n} Teile</b> sind gleich groß: ${k} · ${n} = <b>${k*n}</b> – das ist das Ganze! 🎉 Es ist <b>größer</b> als ${teil}.`}]}}
+  if(m.art==="bruch"){const {g,r,n}=m;if(g>5)return null;
+    return {titel:`Gemischte Zahl → Bruch`,schritte:[
+     {bild:pizzaReiheSVG(g,r,n,false),text:`${g}${F2(r,n)} heißt: <b>${g} ganze Pizza${g>1?"s":""}</b> und noch <b>${r} Stück</b> von einer Pizza mit ${n} Stücken.`},
+     {bild:pizzaReiheSVG(g,r,n,true),text:`Schneide jede ganze Pizza in <b>${n} Stücke</b>: ${g} · ${n} = <b>${g*n} Stücke</b>.`},
+     {bild:pizzaReiheSVG(g,r,n,true),text:`Dazu kommen die <b>${r} Stücke</b>: ${g*n} + ${r} = <b>${g*n+r}</b>.<br>Also ${g}${F2(r,n)} = ${F2(g*n+r,n)} 🍕`}]}}
+  if(m.art==="gemischt"){const {z,n}=m,g=Math.floor(z/n),r=z%n;if(g>5)return null;
+    return {titel:`Bruch → gemischte Zahl`,schritte:[
+     {bild:`<div class="ek-reihe">${Array.from({length:z},(_,i)=>`<span class="pop-in ek-stueck" style="animation-delay:${i*0.06}s">${kreisSVG(1,n,34)}</span>`).join("")}</div>`,text:`${F2(z,n)} sind <b>${z} Stücke</b>. Jedes Stück ist ${F2(1,n)} von einer Pizza.`},
+     {bild:pizzaReiheSVG(g,r,n,true),text:`Leg immer <b>${n} Stücke</b> zu einer ganzen Pizza zusammen: Das ergibt <b>${g} ganze Pizza${g>1?"s":""}</b>.`},
+     {bild:pizzaReiheSVG(g,r,n,true),text:`Übrig bleiben <b>${r} Stück${r>1?"e":""}</b>. Also ${F2(z,n)} = <b>${g}${F2(r,n)}</b> 🍕`}]}}
+  if(m.art==="vergleich"){const {a,b}=m,v=a[0]*b[1]-b[0]*a[1],r=v>0?">":v<0?"<":"=";
+    return {titel:`Welcher Bruch ist größer?`,schritte:[
+     {bild:`<div class="ek-reihe"><figure>${F2(a[0],a[1])}${kreisSVG(0,a[1],100)}</figure><figure>${F2(b[0],b[1])}${kreisSVG(0,b[1],100)}</figure></div>`,text:`Links wird die Pizza in <b>${a[1]}</b> Stücke geschnitten, rechts in <b>${b[1]}</b>. ${a[1]<b[1]?"Weniger Stücke = <b>größere</b> Stücke!":a[1]>b[1]?"Mehr Stücke = <b>kleinere</b> Stücke!":"Gleich große Stücke."}`},
+     {bild:`<div class="ek-reihe"><figure>${F2(a[0],a[1])}${kreisSVG(a[0],a[1],100)}</figure><figure>${F2(b[0],b[1])}${kreisSVG(b[0],b[1],100)}</figure></div>`,text:`Jetzt färben wir: links <b>${a[0]}</b>, rechts <b>${b[0]}</b> Stücke.`},
+     {bild:`<div class="ek-reihe"><figure>${F2(a[0],a[1])}${kreisSVG(a[0],a[1],100)}</figure><b class="ek-zeichen">${r}</b><figure>${F2(b[0],b[1])}${kreisSVG(b[0],b[1],100)}</figure></div>`,text:`Wo ist mehr Pizza gefärbt? ${F2(a[0],a[1])} <b>${r}</b> ${F2(b[0],b[1])} 🍕`}]}}
+  if(tid==="m-anzahlen"&&q.typ==="bruch"&&q.loesung[1]<=40){const [z,n]=q.loesung,g=ggT(z,n);
+    return {titel:`Welcher Anteil ist das?`,schritte:[
+     {bild:punkteSVG(n,null,0),text:`Das sind <b>alle ${n}</b> – das Ganze. Das kommt <b>unten</b> hin (Nenner).`},
+     {bild:punkteSVG(n,null,z),text:`Davon sind <b>${z}</b> gemeint. Das kommt <b>oben</b> hin (Zähler).`},
+     {bild:`<div class="ek-gross">${F2(z,n)}${g>1?` = ${F2(z/g,n/g)}`:""}</div>`,text:`${z} von ${n} → <b>${F2(z,n)}</b>${g>1?`. Gekürzt: <b>${F2(z/g,n/g)}</b>`:""} 🎉`}]}}
+  if(tid==="m-brucharten"){const fr=fracsAus(q.frage).filter(f=>/^\d+$/.test(f[0])&&/^\d+$/.test(f[1]));
+    if(fr.length===1){const [z,n]=fr[0].map(Number),gm=/\d<span class="frac">/.test(q.frage),G=gm?+plain(q.frage).match(/(\d+)\s*\d+\s*\d+\s*\?/)?.[1]||0:0;
+      const ganze=gm?(+(q.frage.match(/(\d+)<span class="frac">/)||[0,0])[1]):Math.floor(z/n),rest=gm?z:z%n;
+      const art=gm?"gemischte Zahl":z<n?"echter Bruch":"unechter Bruch";if(ganze>4)return null;
+      return {titel:`Welche Bruchart?`,schritte:[
+       {bild:pizzaReiheSVG(ganze,rest,n,true),text:gm?`${ganze}${F2(z,n)}: <b>${ganze} ganze Pizza${ganze>1?"s":""}</b> und noch ${z} Stück.`:`${F2(z,n)}: <b>${z} Stücke</b>, eine Pizza hat ${n} Stücke.`},
+       {bild:`<div class="ek-gross" style="font-size:1.6rem">${art==="echter Bruch"?"weniger als 1 Pizza 🍕":art==="unechter Bruch"?"mehr als 1 Pizza 🍕🍕":"Ganze + Rest 🍕+🍕"}</div>`,
+        text:art==="echter Bruch"?`Zähler <b>kleiner</b> als Nenner (${z} < ${n}) → weniger als ein Ganzes → <b>echter Bruch</b>.`:art==="unechter Bruch"?`Zähler <b>größer</b> als Nenner (${z} > ${n}) → mehr als ein Ganzes → <b>unechter Bruch</b>.`:`Ganze Zahl <b>und</b> ein echter Bruch → <b>gemischte Zahl</b>.`}]}}}
+  if(tid==="m-bruchteile"&&q.typ==="bruch"){const [z,n]=q.loesung;
+    return {titel:`Bruchteile ablesen`,schritte:[
+     {bild:kreisSVG(0,n,140),text:`Zähle zuerst <b>alle</b> Stücke: Es sind <b>${n}</b>. Das ist der <b>Nenner</b> (unten).`},
+     {bild:kreisSVG(z,n,140),text:`Jetzt zähle die <b>gefärbten</b> Stücke: <b>${z}</b>. Das ist der <b>Zähler</b> (oben).`},
+     {bild:`<div class="ek-gross">${F2(z,n)}</div>`,text:`${z} von ${n} Stücken → <b>${F2(z,n)}</b> 🎉`}]}}
+  if(tid==="m-zahlenstrahl"&&q.typ==="bruch"){const [z,n]=q.loesung;
+    return {titel:`Brüche am Zahlenstrahl`,schritte:[
+     {bild:strahlSVG(0,n).replace(/<path d="M[^"]*" stroke="var\(--bad\)"[^>]*\/>/,""),text:`Schau nur von <b>0 bis 1</b>: Wie viele gleich lange Teile sind es? <b>${n}</b> → Nenner.`},
+     {bild:strahlSVG(z,n),text:`Zähle die Schritte von 0 bis zum Pfeil: <b>${z}</b> → Zähler.`},
+     {bild:`<div class="ek-gross">${F2(z,n)}</div>`,text:`Der Pfeil zeigt auf <b>${F2(z,n)}</b>${z>n?` – das ist mehr als 1 Ganzes!`:""} 🎉`}]}}
+  if(tid==="m-erweitern"||tid==="m-kuerzen"){const fr=fracsAus(q.frage).filter(f=>/^\d+$/.test(f[0])&&/^\d+$/.test(f[1]));
+    if(fr.length&&q.loesung!==undefined){let a=fr[0].map(Number),b;
+      if(q.typ==="bruch")b=q.loesung;else if(q.typ==="zahl"){const n2=+(fracsAus(q.frage).find(f=>f[0]==="?")||[0,0])[1];b=[q.loesung,n2]}
+      if(b&&b[1]&&b[1]<=40&&a[1]<=40){const [g,k]=a[1]<b[1]?[a,b]:[b,a];
+        return {titel:`Erweitern & Kürzen: gleich viel!`,schritte:[
+         {bild:balkenSVG(g[0],g[1]),text:`${F2(g[0],g[1])}: Der Streifen hat <b>${g[1]} Teile</b>, ${g[0]} sind gefärbt.`},
+         {bild:balkenSVG(k[0],k[1]),text:`Jetzt schneiden wir jedes Teil in <b>${k[1]/g[1]} kleinere</b> Teile: ${k[1]} Teile, ${k[0]} gefärbt.`},
+         {bild:`<div class="ek-stapel">${balkenSVG(g[0],g[1])}${balkenSVG(k[0],k[1])}</div>`,text:`Siehst du? Es ist <b>genau gleich viel</b> gefärbt! ${F2(g[0],g[1])} = ${F2(k[0],k[1])} (Zähler und Nenner · ${k[1]/g[1]})`}]}}}}
+  // ---------- DEUTSCH ----------
+  if(tid==="d-zeiten"||tid==="d-satzwoche"){const namen=Object.keys(ZEIT_POS);
+    const name=namen.find(n=>String(q.loesung)===n)||namen.find(n=>new RegExp("<b>"+n+"</b>").test(q.frage))||namen.find(n=>String(q.frage).includes(n));
+    if(name){const z=ZEITEN.find(x=>x[0]===name);
+      return {titel:`Wo ist das ${name}?`,schritte:[
+       {bild:zeitstrahlSVG(""),text:`Der Zeitstrahl: links ist die <b>Vergangenheit</b>, in der Mitte <b>jetzt</b>, rechts die <b>Zukunft</b>.`},
+       {bild:zeitstrahlSVG(name),text:`Das <b>${name}</b> (${z?z[1]:""}) liegt hier.<br>${z?z[2]:""}`},
+       {bild:`<div class="ek-satz">${z?z[3]:""}</div>`,text:`Beispiel: <b>${z?z[3]:""}</b>`}]}}}
+  if(tid==="d-wortarten"||tid==="d-satzwoche"){const w=WORTARTEN.find(x=>x.n===q.loesung);
+    if(w)return {titel:`Die Wortart: ${w.n}`,schritte:[
+     {bild:`<div class="ek-wortart">${wsym(w.sym,w.farbe).replace('width="34" height="34"','width="80" height="80"')}<b>${w.n}</b><span>${w.d}</span></div>`,text:`So sieht das Symbol für <b>${w.n}</b> aus.`},
+     {bild:`<div class="ek-satz">${w.info}</div>`,text:`Daran erkennst du ein ${w.n}.`}]}}
+  if(tid==="d-satzglieder"){const teile=[["Der Lehrer","Subjekt","Wer?"],["erklärt","Prädikat","Was tut er?"],["den Kindern","Objekt im 3. Fall","Wem?"],["die Aufgabe","Objekt im 4. Fall","Wen oder was?"]];
+    return {titel:`Satzglieder sind Bausteine`,schritte:[
+     {bild:`<div class="ek-satz">Der Lehrer erklärt den Kindern die Aufgabe.</div>`,text:`Ein Satz besteht aus <b>Bausteinen</b>.`},
+     {bild:`<div class="ek-bausteine">${teile.map(([t],i)=>`<span class="pop-in sg${i}" style="animation-delay:${i*0.3}s">${t}</span>`).join("")}</div>`,text:`Jeder Baustein bleibt beim Umstellen zusammen.`},
+     {bild:`<div class="ek-bausteine">${teile.map(([t,n,f],i)=>`<span class="pop-in sg${i}" style="animation-delay:${i*0.3}s">${t}<small>${f}<br><b>${n}</b></small></span>`).join("")}</div>`,text:`Mit einer <b>Frage</b> findest du heraus, welcher Baustein es ist.`}]}}
+  // ---------- ENGLISCH ----------
+  if(tid==="e-haeufigkeit"){return {titel:`Wie oft?`,schritte:[
+     {bild:`<div class="ek-liste">${HAEUFIG.map(([en,de,n],i)=>`<div class="pop-in" style="animation-delay:${i*0.2}s"><b>${en}</b> ${oftSVG(n)} <span>${de}</span></div>`).join("")}</div>`,text:`Die grünen Tage zeigen, <b>wie oft</b> etwas passiert.`},
+     {bild:`<div class="ek-satz">Holly <span class="ek-mark">often</span> load<b>s</b> the dishwasher.</div>`,text:`Das Wort steht <b>vor dem Verb</b>. Bei he/she/it kommt ein <b>s</b> ans Verb!`}]}}
+  if(tid==="e-past-aussagen"||tid==="e-past-fragen"){const l=q.typ==="text"?q.loesung[0]:String(q.loesung);const reg=/ed$/.test(l)&&q.typ==="text";
+    return {titel:`Simple past = Vergangenheit`,schritte:[
+     {bild:`<svg viewBox="0 0 340 90" width="340"><line x1="10" y1="45" x2="325" y2="45" stroke="var(--fg)" stroke-width="3"/><path d="M318 38 L330 45 L318 52" fill="none" stroke="var(--fg)" stroke-width="3"/><circle cx="90" cy="45" r="11" fill="var(--rose)"/><text x="90" y="25" text-anchor="middle" font-size="14" font-weight="800" fill="var(--rose)">yesterday</text><circle cx="260" cy="45" r="8" fill="var(--ok)"/><text x="260" y="78" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ok)">now</text></svg>`,text:`Das simple past ist für Dinge, die <b>schon vorbei</b> sind – gestern, letzte Woche …`},
+     {bild:`<div class="ek-satz">${reg?`${l.replace(/i?ed$/,"")}<span class="ek-mark">${/ied$/.test(l)?"ied":"ed"}</span>`:"play → play<span class=\"ek-mark\">ed</span> · go → <span class=\"ek-mark\">went</span>"}</div>`,text:reg?`An das Verb kommt einfach <b>-ed</b> dran!`:`Meist kommt <b>-ed</b> ans Verb. Manche Verben sind <b>unregelmäßig</b> – die muss man sich merken.`},
+     {bild:`<div class="ek-satz">I <span class="ek-mark">didn't</span> play. · <span class="ek-mark">Did</span> you play?</div>`,text:`Bei <b>nicht</b> und bei <b>Fragen</b> hilft <b>did</b> – das Verb bleibt dann in der Grundform.`}]}}
+  return null}catch(e){return null}}
+function bildHTML(e){const s=e.schritte[e.i];
+  return `<div class="tutor-bg" role="dialog" aria-modal="true" aria-label="Bild-Erklärung"><div class="tutor ek">
+   <div class="tutor-kopf"><span class="tutor-ava ella-klein" aria-hidden="true">${ellaSVG(56)}</span><div><p class="eyebrow">🎬 Ella zeigt es dir · Schritt ${e.i+1} von ${e.schritte.length}</p><h3>${e.titel}</h3></div></div>
+   <div class="ek-schritte">${e.schritte.map((_,j)=>`<i class="${j<=e.i?"an":""}"></i>`).join("")}</div>
+   <div class="ek-bild bild" data-schritt="${e.i}">${s.bild}</div>
+   <p class="ek-text">${s.text}</p>
+   <div class="row">${e.i>0?`<button class="btn ghost small" data-act="ekzurueck">← Zurück</button>`:""}${e.i<e.schritte.length-1?`<button class="btn" data-act="ekweiter" id="ekweiter">Weiter →</button>`:`<button class="btn" data-act="ekzu" id="ekweiter">Verstanden! Jetzt probiere ich es 💪</button>`}</div></div></div>`}
+
 const KEINE_HILFE=["karte","paare"];
 function frageAus(k){const q=Object.assign({},k.make(),{kid:k.id,themaId:k.t.id});return mischen(q)}
 function mischen(q){if(q.typ==="mc")q.optionen=shuffle(q.optionen);
   if(q.typ==="paare"){q.links=shuffle(q.paare.map((_,i)=>i));q.rechts=shuffle(q.paare.map((_,i)=>i))}
   if(q.typ==="satz"){q.woerter=q.loesung.split(" ");let o;do{o=shuffle(q.woerter.map((_,i)=>i))}while(q.woerter.length>2&&o.every((x,i)=>x===i));q.reihe=o}
   return q}
-const neueFrage=()=>Object.assign(Q,{beantwortet:false,aufgedeckt:false,auswahl:null,sel:null,fertigPaare:[],fehlPaar:null,pf:0,bau:[],helfer:null});
+const neueFrage=()=>Object.assign(Q,{bildEk:null,beantwortet:false,aufgedeckt:false,auswahl:null,sel:null,fertigPaare:[],fehlPaar:null,pf:0,bau:[],helfer:null});
 // Runde zusammenstellen: Themen abwechselnd, zuletzt falsche und neue Fragen zuerst
 function runde(ids,n,filter=()=>true){const prio=k=>{const s=stand(k.id);return (!s?1:s.f?0:2)+Math.random()};
   const listen=ids.map(thema).filter(Boolean).map(t=>kartenVon(t).filter(filter).sort((a,b)=>prio(a)-prio(b)));
@@ -2118,7 +2275,7 @@ function helfer(q,w){
   else{if(fastRichtig(q,w)){titel="Ganz knapp!";text=`Nur <b>ein Buchstabe</b> ist anders. Richtig geschrieben: <b>${esc(q.loesung[0])}</b>. Schreib es dir einmal auf!`}
     else text=`Richtig ist: <b>${loesungText(q)}</b>${q.erkl?`<br>${q.erkl}`:""}`}
   if(!text.includes("Richtig ist")&&!q.meta&&q.typ!=="text")text=`Richtig ist: <b>${loesungText(q)}</b><br>`+text;
-  return {titel,text,bild,leicht:q.leicht?null:leichterAus(q)}}
+  return {titel,text,bild,ek:!!bildErklaerung(q),leicht:q.leicht?null:leichterAus(q)}}
 
 function antworten(wert){
   if(!Q||Q.beantwortet)return;const q=Q.fragen[Q.i],ok=q.typ==="weg"?q.schritte.every((s,i)=>wegOk(s,wert[i])):pruefe(q,wert);
@@ -2763,7 +2920,7 @@ function vMerke(){
 function tutorHTML(h){return `<div class="tutor-bg" role="dialog" aria-modal="true" aria-label="Lernhilfe"><div class="tutor">
   <div class="tutor-kopf"><span class="tutor-ava ella-klein" aria-hidden="true">${ellaSVG(56)}</span><div><p class="eyebrow">Eule Ella hilft dir</p><h3>${h.titel}</h3></div></div>
   <div class="tutor-text">${h.text}</div>${h.bild?`<div class="bild">${h.bild}</div>`:""}
-  <div class="row">${h.leicht?`<button class="btn" data-act="leichter" id="leichtbtn">Leichtere Übung probieren</button>`:""}<button class="btn ghost" data-act="tutorzu">Verstanden</button></div>
+  <div class="row">${h.ek?`<button class="btn" data-act="ekauf">🎬 Als Bild erklären</button>`:""}${h.leicht?`<button class="btn ${h.ek?"ghost":""}" data-act="leichter" id="leichtbtn">Leichtere Übung probieren</button>`:""}<button class="btn ghost" data-act="tutorzu">Verstanden</button></div>
   <p class="tipp">Keine Sorge: Diese Aufgabe kommt am Ende der Runde nochmal dran.</p></div></div>`}
 function vQuiz(){
   if(Q.fertig)return vErgebnis();
@@ -2803,8 +2960,8 @@ function vQuiz(){
     <span class="fb-rakete" style="left:calc(20px + (100% - 56px) * ${(Q.i/Q.fragen.length).toFixed(3)})"><span>🚀</span></span><span class="fb-ziel" aria-hidden="true">🪐</span>
     <span class="fb-text">${Q.i} von ${Q.fragen.length} geschafft</span></div>
    ${Q.modus==="probe"?`<p class="tipp">Probe-Modus: keine Hilfe, keine Lösungen. Am Ende bekommst du eine Note wie von deiner Lehrkraft.</p>`:""}
-   <section class="karte"><div class="row" style="justify-content:space-between"><span class="fachzeile">${f.name} · ${t.titel}</span>${marke}</div><div class="frage">${q.frage}</div>${q.sprich&&(q.sprichVorher||fertig)?`<div class="row hoerzeile">${hoerKnopf(q.sprich)}<button class="hoer" type="button" data-act="sprich" data-langsam="1" data-t="${esc(q.sprich)}" aria-label="Langsam anhören">🐢</button><span class="tipp">${fertig?"So spricht man es aus – sprich es laut nach!":"Anhören"}</span></div>`:""}${feld}${rueck}</section>
-   ${Q.helfer?tutorHTML(Q.helfer):""}</div>`}
+   <section class="karte"><div class="row" style="justify-content:space-between"><span class="fachzeile">${f.name} · ${t.titel}</span>${marke}</div><div class="frage">${q.frage}</div>${Q.modus!=="probe"&&!fertig&&bildErklaerung(q)?`<div><button class="btn small ek-knopf" data-act="ekauf">🎬 Zeig's mir als Bild</button></div>`:""}${q.sprich&&(q.sprichVorher||fertig)?`<div class="row hoerzeile">${hoerKnopf(q.sprich)}<button class="hoer" type="button" data-act="sprich" data-langsam="1" data-t="${esc(q.sprich)}" aria-label="Langsam anhören">🐢</button><span class="tipp">${fertig?"So spricht man es aus – sprich es laut nach!":"Anhören"}</span></div>`:""}${feld}${rueck}</section>
+   ${Q.helfer?tutorHTML(Q.helfer):""}${Q.bildEk?bildHTML(Q.bildEk):""}</div>`}
 
 const KOMMENTAR={1:"Hervorragend! So kannst du in die Probe gehen.",2:"Sehr ordentlich! Mit ein bisschen Wiederholung wird es eine Eins.",3:"Solide Arbeit. Einige Dinge sitzen noch nicht ganz – schau sie dir nochmal an.",4:"Da fehlt noch einiges. Übe die markierten Themen nochmal Schritt für Schritt.",5:"Hier musst du noch viel üben. Fang mit den Hefteinträgen an und mach dann die leichteren Übungen.",6:"Nicht aufgeben! Wir gehen alles nochmal in Ruhe durch."};
 function vErgebnis(){
@@ -2856,7 +3013,8 @@ function render(){
   const nf=document.getElementById("nform");if(nf)nf.addEventListener("submit",e=>{e.preventDefault();const t=document.getElementById("ntext").value.trim();if(!t)return;
     S.notizen.push({id:Date.now().toString(36),text:t,datum:document.getElementById("ndatum").value||"",erledigt:false});speichern();render();const n2=document.getElementById("ntext");if(n2)n2.focus()});
   const inp=document.getElementById("antwort");if(inp&&!inp.disabled)inp.focus({preventScroll:true});
-  if(!Q||!Q.helfer)for(const id of["weiterbtn","aufdeckbtn"]){const b=document.getElementById(id);if(b)b.focus({preventScroll:true})}
+  if(Q&&Q.bildEk){const b=document.getElementById("ekweiter");if(b)b.focus({preventScroll:true})}
+  if(!Q||!Q.helfer&&!Q.bildEk)for(const id of["weiterbtn","aufdeckbtn"]){const b=document.getElementById(id);if(b)b.focus({preventScroll:true})}
   const form=document.getElementById("eform");if(form)form.addEventListener("submit",e=>{e.preventDefault();if(inp.value.trim())antworten(inp.value)});
   const wf=document.getElementById("wform");if(wf){const ins=[...wf.querySelectorAll("input")];if(ins[0]&&!ins[0].disabled&&!Q.helfer)ins[0].focus({preventScroll:true});
     wf.addEventListener("submit",e=>{e.preventDefault();const w=ins.map(i=>i.value.trim());const leer=ins.find(i=>!i.value.trim());if(leer){leer.focus();return}antworten(w)})}
@@ -2890,6 +3048,10 @@ app.addEventListener("click",e=>{
    case"plan":{const a=WOCHENPLAN.flatMap(x=>x.aufgaben).find(x=>x.id===d.plan);if(a.probe)starte("probe",{themaIds:a.themen,fachId:a.fach,planId:a.id});else starte("plan",{themaIds:a.themen,n:a.n,planId:a.id});break}
    case"leichter":{const h=Q.helfer,q=Q.fragen[Q.i];const l=leichtMark(Object.assign({},h.leicht,{themaId:q.themaId},q.sprichVorher&&!h.leicht.meta?{sprich:q.sprich,sprichVorher:true}:{}));Q.fragen.splice(Q.i+1,0,l);Q.helfer=null;weiter();break}
    case"tutorzu":Q.helfer=null;render();break;
+   case"ekauf":{const e=bildErklaerung(Q.fragen[Q.i]);if(e){Q.helfer=null;Q.bildEk=Object.assign(e,{i:0});render()}break}
+   case"ekweiter":Q.bildEk.i++;render();break;
+   case"ekzurueck":Q.bildEk.i--;render();break;
+   case"ekzu":Q.bildEk=null;render();break;
    case"hilfeauf":{const a=Q.antworten[Q.antworten.length-1];Q.helfer=helfer(a.q,a.wert);render();break}
    case"fehlerueben":{const kids=Q.falschKids;starte("fehler",{kids});break}
    case"ueben":starte("ueben",{themaId:d.thema});break;
