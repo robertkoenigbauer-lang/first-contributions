@@ -691,6 +691,19 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 @keyframes rf-wink{0%,100%{transform:rotate(0)}50%{transform:rotate(-28deg)}}
 @media (max-width:620px){.rf-flug{left:auto;right:4%;top:auto;bottom:6%}.rf-flug svg{width:80px;height:auto}.astro3 .astro-ganz{width:70px;height:auto}}
 @media (prefers-reduced-motion:reduce){.ag-arm-r,.rf-flug,.rf-flamme,.rf-winken{animation:none}}
+/* Fachseiten: Weltkugel + Sonnensystem im Sternenhimmel */
+.fach-raum{padding:18px max(14px,2vw) 26px;min-height:70vh}
+.fach-raum .sonnensystem{width:820px;height:820px;left:auto;right:-220px;top:-260px;transform:none;opacity:.85}
+.fach-raum .erde{width:min(460px,70vw);left:-170px;right:auto;top:auto;bottom:-170px}
+.fr-inhalt{position:relative;z-index:1}
+.fach-raum .fachkopf h1,.fach-raum .fachkopf p,.fach-raum .back{color:#fff}
+.fach-raum .fachkopf .muted{color:#d9ccff}
+.fach-raum .fachkopf{background:rgba(10,8,30,.5);border-radius:14px;padding:10px 14px}
+.fach-raum .thema,.fach-raum .probe,.fach-raum .leerhinweis,.fach-raum .papier{background:var(--solid);color:var(--fg)}
+.fach-raum .thema .muted,.fach-raum .probe .muted{color:var(--muted)}
+.fach-raum .druckknopf{color:#fff;border-color:rgba(255,255,255,.4)}
+.fach-raum .fachkopf .notenpill{color:#fff;background:rgba(255,255,255,.18)}
+@media (max-width:620px){.fach-raum .sonnensystem{width:560px;height:560px;right:-220px;top:-180px}.fach-raum .erde{width:300px;left:-140px;bottom:-120px}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2724,7 +2737,7 @@ const FACHRAUM={
 function fachraumHTML(fid,inhalt){const r=FACHRAUM[fid]||FACHRAUM.nt;
   const deko=r.deko.concat(r.deko).map((e,i)=>{const x=(i*37+11)%96,y=(i*53+7)%94,gr=1.6+((i*7)%5)*.45,rot=((i*29)%50)-25,dauer=6+(i%5);
     return `<span style="left:${x}%;top:${y}%;font-size:${gr}rem;--rot:${rot}deg;animation-duration:${dauer}s;animation-delay:-${i%7}s">${e}</span>`}).join("");
-  return `<div class="fachraum muster-${r.muster}" style="--t1:${r.t1};--t2:${r.t2};--d1:${r.d1};--d2:${r.d2}"><div class="fr-deko" aria-hidden="true">${deko}</div><div class="fr-inhalt">${inhalt}</div></div>`}
+  return `<div class="weltraum foto-himmel fach-raum"><div class="planeten" aria-hidden="true">${sonnensystemSVG()}${erdeSVG()}</div><div class="fr-inhalt">${inhalt}</div></div>`}
 function vFach(){
   const f=fach(V.fach),ts=themenVon(f.id);
   return fachraumHTML(f.id,`<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
