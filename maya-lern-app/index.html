@@ -736,6 +736,14 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .ek-bild path[fill="var(--fach)"]{animation:einfaerben .6s ease-out both}
 @keyframes einfaerben{from{opacity:.15}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.pop-in,.ek-bild svg rect,.zs-an circle,.ek-bild path{animation:none!important}}
+/* Fachseiten: Astronaut mit Flagge auf der Weltkugel */
+.ea-wrap{position:absolute;right:-120px;top:110px;width:380px}
+.ea-wrap .erde{position:static;display:block;width:100%;height:auto}
+.ea-astro{position:absolute;left:calc(50% - 46px);top:-86px;filter:drop-shadow(0 0 14px rgba(160,180,255,.5))}
+.astro-steht .flagge{transform-origin:85px 14px;animation:wehen 1.6s ease-in-out infinite}
+.fach-raum>.fr-inhalt{padding-top:230px}
+@media (max-width:620px){.ea-wrap{width:240px;right:-70px;top:100px}.ea-astro{left:calc(50% - 34px);top:-70px}.ea-astro svg{width:68px;height:auto}.fach-raum>.fr-inhalt{padding-top:190px}}
+@media (prefers-reduced-motion:reduce){.astro-steht .flagge{animation:none}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2401,6 +2409,20 @@ function raketeFensterSVG(){return `<svg viewBox="0 0 140 230" width="120" heigh
  </g>
  <circle cx="70" cy="104" r="23" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2"/><path d="M54 92 q8 -10 20 -10" stroke="rgba(255,255,255,.7)" stroke-width="3" stroke-linecap="round" fill="none"/>
  </svg>`}
+// Ganzer Astronaut, stehend, mit Flagge (für die Weltkugel)
+function astronautStehtSVG(){return `<svg viewBox="0 0 110 130" width="92" height="109" class="astro-steht" role="img" aria-label="Astronaut mit Flagge auf der Weltkugel">
+ <line x1="84" y1="126" x2="84" y2="10" stroke="#e6e6f0" stroke-width="3.5" stroke-linecap="round"/>
+ <path class="flagge" d="M85 12 q14 -5 24 2 q-2 9 0 19 q-12 -7 -24 -2 z" fill="#ff2d95"/><text x="97" y="30" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">M</text>
+ <rect x="24" y="52" width="14" height="30" rx="5" fill="#cfd6e6"/>
+ <path d="M34 60 q-12 8 -12 24" stroke="#fff" stroke-width="12" stroke-linecap="round" fill="none"/><circle cx="22" cy="86" r="6.5" fill="#d9dee9"/>
+ <rect x="32" y="48" width="42" height="48" rx="14" fill="#fff"/>
+ <rect x="42" y="60" width="22" height="14" rx="3.5" fill="#7c5cff"/><circle cx="48" cy="67" r="2.3" fill="#ffd166"/><circle cx="56" cy="67" r="2.3" fill="#06d6c7"/>
+ <path d="M70 60 q10 0 14 -6" stroke="#fff" stroke-width="12" stroke-linecap="round" fill="none"/><circle cx="84" cy="54" r="6.5" fill="#d9dee9"/>
+ <rect x="35" y="90" width="14" height="30" rx="6" fill="#fff"/><rect x="57" y="90" width="14" height="30" rx="6" fill="#fff"/>
+ <rect x="32" y="116" width="20" height="10" rx="4" fill="#9aa3b8"/><rect x="55" y="116" width="20" height="10" rx="4" fill="#9aa3b8"/>
+ <circle cx="53" cy="30" r="24" fill="#fff"/><circle cx="53" cy="30" r="24" fill="none" stroke="#dfe3ec" stroke-width="3"/>
+ <ellipse cx="55" cy="31" rx="16" ry="13.5" fill="#1b2a5e"/><path d="M45 25 q6 -5 14 -3" stroke="#8fd3ff" stroke-width="3" stroke-linecap="round" fill="none"/>
+ </svg>`}
 function vStundenplan(){
   const heuteWd=new Date().getDay();
   const zelle=f=>{if(!f)return `<td class="leer"></td>`;const [c,t]=KNALL[f]||["#64748b","h"];
@@ -2895,7 +2917,7 @@ const FACHRAUM={
 function fachraumHTML(fid,inhalt){const r=FACHRAUM[fid]||FACHRAUM.nt;
   const deko=r.deko.concat(r.deko).map((e,i)=>{const x=(i*37+11)%96,y=(i*53+7)%94,gr=1.6+((i*7)%5)*.45,rot=((i*29)%50)-25,dauer=6+(i%5);
     return `<span style="left:${x}%;top:${y}%;font-size:${gr}rem;--rot:${rot}deg;animation-duration:${dauer}s;animation-delay:-${i%7}s">${e}</span>`}).join("");
-  return `<div class="weltraum foto-himmel fach-raum"><div class="planeten" aria-hidden="true">${sonnensystemSVG()}${erdeSVG()}</div><div class="fr-inhalt">${inhalt}</div></div>`}
+  return `<div class="weltraum foto-himmel fach-raum"><div class="planeten" aria-hidden="true">${sonnensystemSVG()}<div class="ea-wrap">${erdeSVG()}<span class="ea-astro">${astronautStehtSVG()}</span></div></div><div class="fr-inhalt">${inhalt}</div></div>`}
 function vFach(){
   const f=fach(V.fach),ts=themenVon(f.id);
   return fachraumHTML(f.id,`<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
