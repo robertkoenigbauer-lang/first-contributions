@@ -780,6 +780,8 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .bk-balken{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .bk-text{font-size:1.05rem;line-height:1.5;max-width:620px}
 .bf-skizze{display:flex;flex-direction:column;gap:6px;align-items:flex-start;width:100%;font-weight:600}
+/* In Proben keine Hilfsbilder */
+.probe-modus .hilfsbild,.probe-blatt .hilfsbild{display:none!important}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -1607,7 +1609,7 @@ const THEMEN=[
   if(art===1){const n=R(2,10),z=R(1,n-1);return bruch(`Welcher Bruchteil ist gefärbt?<div class="bild">${balkenSVG(z,n)}</div>`,z,n,"gleich",`${n} gleiche Teile, ${z} gefärbt → ${F(z,n)}`)}
   if(art===2){const [z,n]=pick([[1,2],[1,3],[2,3],[1,4],[3,4],[1,6],[5,6],[1,8],[3,8],[1,12],[7,12]]);return zahl(`Ein Streifen hat <b>24 Kästchen</b>. Wie viele Kästchen musst du färben für ${F(z,n)}?`,24/n*z,`24 : ${n} = ${24/n}, mal ${z} = ${24/n*z} Kästchen`)}
   const ps=shuffle([[1,2],[1,3],[5,6],[3,8],[7,12],[13,24],[2,3],[1,4]]).slice(0,2);const [a,b]=ps[0][0]/ps[0][1]>ps[1][0]/ps[1][1]?ps:[ps[1],ps[0]];
-  return mc(`Welcher Bruch ist größer?<br>Tipp: Denk an ein Rechteck mit 24 Kästchen.`,F(a[0],a[1]),[F(b[0],b[1])],`${F(a[0],a[1])} = ${24/a[1]*a[0]} von 24 Kästchen, ${F(b[0],b[1])} = ${24/b[1]*b[0]} von 24 → ${F(a[0],a[1])} ist größer.`)}},
+  return mc(`Welcher Bruch ist größer?<span class="hilfsbild"><br>Tipp: Denk an ein Rechteck mit 24 Kästchen.</span>`,F(a[0],a[1]),[F(b[0],b[1])],`${F(a[0],a[1])} = ${24/a[1]*a[0]} von 24 Kästchen, ${F(b[0],b[1])} = ${24/b[1]*b[0]} von 24 → ${F(a[0],a[1])} ist größer.`)}},
 {id:"m-anzahlen",fach:"mathe",titel:"Bruchteile von Anzahlen",quelle:"Buch S. 14–15",probe:null,
  merke:`<h2>Bruchteile von Anzahlen (Mengen)</h2>
  <div class="merk"><b>${F(3,8)} von 48</b>: erst durch den <b>Nenner</b> teilen, dann mal den <b>Zähler</b>.<br>48 : 8 = 6 &nbsp;→&nbsp; 6 · 3 = <b>18</b></div>
@@ -1847,7 +1849,7 @@ THEMEN.splice(THEMEN.findIndex(t=>t.id==="m-bruchteile"),0,
  slots:8,
  gen(){const N=[2,3,4,5,6,8,10,12];let a,b;if(Math.random()<.45){const z=R(1,7);let n1=pick(N.filter(x=>x>z)),n2=pick(N.filter(x=>x>z&&x!==n1)||[n1+1]);if(!n2)n2=n1+2;a=[z,n1];b=[z,n2]}else do{const n1=pick(N),n2=pick(N);a=[R(1,n1-1),n1];b=[R(1,n2-1),n2]}while(a[0]*b[1]===b[0]*a[1]&&Math.random()<.7);
   const v=a[0]*b[1]-b[0]*a[1],r=v>0?">":v<0?"<":"=";
-  return M(mc(`Setze ein: <b>&lt;</b>, <b>&gt;</b> oder <b>=</b><br>${F(a[0],a[1])} ☐ ${F(b[0],b[1])}<div class="bild">${streifenSVG([a,b])}</div>`,r,["<",">","="].filter(x=>x!==r),`${F(a[0],a[1])} ${r} ${F(b[0],b[1])} – schau, welcher Streifen weiter gefärbt ist.`),{art:"vergleich",a,b})}});
+  return M(mc(`Setze ein: <b>&lt;</b>, <b>&gt;</b> oder <b>=</b><br>${F(a[0],a[1])} ☐ ${F(b[0],b[1])}<div class="bild hilfsbild">${streifenSVG([a,b])}</div>`,r,["<",">","="].filter(x=>x!==r),`${F(a[0],a[1])} ${r} ${F(b[0],b[1])} – schau, welcher Streifen weiter gefärbt ist.`),{art:"vergleich",a,b})}});
 (()=>{const t=THEMEN.find(x=>x.id==="m-gemischt");
  t.merke+=`<h3>Aus dem Heft (12.10. / 13.10.)</h3>
  <div class="merk"><b>Unechter Bruch → gemischte Zahl:</b> Der <b>Bruchstrich</b> ist das gleiche wie ein <b>Divisionszeichen</b>.<br>Das <b>Ergebnis</b> der Division ist das <b>Ganze</b>. Der <b>Rest</b> ist der <b>Zähler</b>. Der <b>Nenner</b> bleibt gleich.<br>${F(7,3)}: 7 : 3 = 2 Rest 1 → 2${F(1,3)} · ${F(12,5)}: 12 : 5 = 2 Rest 2 → 2${F(2,5)}</div>
@@ -3104,7 +3106,7 @@ function vQuiz(){
      <div class="row"><button class="btn" data-act="weiter" id="weiterbtn">${Q.i+1<Q.fragen.length?"Weiter":"Auswertung"}</button>${!letzte.ok&&!KEINE_HILFE.includes(q.typ)?`<button class="btn ghost small" data-act="hilfeauf">🦉 Hilfe</button>`:""}</div>`:"";
   const titel=Q.modus==="probe"?"Probe":Q.modus==="heute"?"Heute dran":Q.modus==="vorb"?"Probe vorbereiten":Q.modus==="plan"?"Wochenend-Plan":Q.modus==="fehler"?"Fehler üben":t.titel;
   const marke=q.leicht?`<span class="badge heft-q">Leichtere Übung</span>`:q.wieder?`<span class="badge heft-q">Nochmal probieren</span>`:"";
-  return `<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:16px">
+  return `<div class="${Q.modus==="probe"?"probe-modus":""}" style="--fach:${f.farbe};display:flex;flex-direction:column;gap:16px">
    <div class="quizkopf"><button class="back" data-act="abbrechen">✕ Beenden</button><span class="muted" style="font-weight:700">${titel} · ${Q.i+1} / ${Q.fragen.length}</span></div>
    <div class="flugbahn" role="progressbar" aria-valuemin="0" aria-valuemax="${Q.fragen.length}" aria-valuenow="${Q.i}" aria-label="${Q.i} von ${Q.fragen.length} geschafft">
     <div class="fb-linie"><i style="width:${Math.round(100*Q.i/Q.fragen.length)}%"></i></div>
