@@ -1938,6 +1938,44 @@ const WOCHENPLAN=[
  {datum:"2026-11-16",titel:"Montag früh: Aufwärmen",aufgaben:[
   {id:"mo1",text:"10 Fragen zum Wachwerden",themen:["m-heftfehler","m-anzahlen","e-u2-vokabeln","e-chores"],n:10}]},
 ];
+/* ---- Textaufgaben (normal + Brüche) ---- */
+THEMEN.splice(THEMEN.findIndex(t=>t.id==="m-heftfehler"),0,
+{id:"m-text-normal",fach:"mathe",titel:"Textaufgaben (normal)",quelle:"Übung für die Probe",probe:null,
+ merke:`<h2>Der Textaufgaben-Fahrplan 🚦</h2>
+ <ol><li><b>Zweimal lesen</b> – langsam!</li><li><b>Zahlen markieren</b> (anmalen oder unterstreichen)</li><li><b>Frage unterstreichen</b>: Was will man wissen?</li>
+ <li><b>Bild malen</b> (Streifen, Pizza, Kästchen …)</li><li><b>Rechnen</b></li><li><b>Antwortsatz</b> schreiben – mit der Frage im Satz!</li></ol>
+ <div class="merk"><b>Signalwörter:</b><br>„zusammen, insgesamt, dazu“ → <b>+</b><br>„übrig, weniger, ausgeben, verlieren“ → <b>−</b><br>„je, jeder, pro, … mal“ → <b>·</b><br>„verteilen, aufteilen, gleichmäßig“ → <b>:</b></div>`,
+ karten:[
+  zahl("Maja hat 24 € gespart. Sie kauft ein Buch für 9 € und Stifte für 4 €. Wie viel Geld bleibt ihr übrig?",11,"„übrig“ → minus: 24 − 9 − 4 = <b>11 €</b>","€"),
+  zahl("In Majas Klasse sind 28 Kinder. Für den Ausflug werden Gruppen mit je 4 Kindern gebildet. Wie viele Gruppen gibt es?",7,"„aufteilen in Gruppen“ → geteilt: 28 : 4 = <b>7 Gruppen</b>"),
+  zahl("Ein Kinoticket kostet 7 €. Maja geht mit 3 Freundinnen ins Kino. Wie viel kosten alle Tickets zusammen?",28,"Maja + 3 Freundinnen = <b>4 Kinder</b> (Maja nicht vergessen!) → 4 · 7 = <b>28 €</b>","€"),
+  zahl("Das Wasserwacht-Training dauert jede Woche 75 Minuten. Wie viele Minuten sind das in 4 Wochen?",300,"„jede Woche … in 4 Wochen“ → mal: 4 · 75 = <b>300 Minuten</b> (= 5 Stunden)","min"),
+  zahl("Im Volleyballverein gibt es 3 Mannschaften. Jede hat 6 Spielerinnen und 2 Ersatzspielerinnen. Wie viele Mädchen sind es insgesamt?",24,"Eine Mannschaft: 6 + 2 = 8 → 3 · 8 = <b>24</b>"),
+  zahl("Maja bekommt jede Woche 5 € Taschengeld. Neue Kopfhörer kosten 45 €. Wie viele Wochen muss sie sparen?",9,"45 : 5 = <b>9 Wochen</b>"),
+  zahl("Ein Buch hat 120 Seiten. Maja liest jeden Tag 15 Seiten. Nach wie vielen Tagen ist sie fertig?",8,"120 : 15 = <b>8 Tage</b>"),
+  karte("Wie schreibst du einen Antwortsatz?","Du nimmst die <b>Frage</b> und machst daraus einen Satz mit dem Ergebnis.<br>Frage: „Wie viele Gruppen gibt es?“<br>Antwort: „<b>Es gibt 7 Gruppen.</b>“"),
+ ]},
+{id:"m-text-brueche",fach:"mathe",titel:"Bruch-Textaufgaben",quelle:"Übung für die Probe",probe:null,
+ merke:`<h2>Bruch-Textaufgaben 🍕</h2>
+ <ol><li><b>Zweimal lesen</b> und Zahlen markieren</li><li>Steht da „<b>… von …</b>“? → Erst <b>: Nenner</b>, dann <b>· Zähler</b></li>
+ <li>Ist nur ein <b>Teil</b> gegeben und das <b>Ganze</b> gesucht? → Erst <b>: Zähler</b> (ein Teil), dann <b>· Nenner</b> (alle Teile)</li>
+ <li>Fragt man nach dem <b>Rest</b>? → Ganzes minus Teil</li><li><b>Bild malen</b> – Streifen oder Pizza!</li><li><b>Antwortsatz</b> schreiben</li></ol>
+ <div class="merk">${F(3,4)} von 24 → 24 : 4 = 6 → 6 · 3 = <b>18</b><br>15 sind ${F(3,5)} → 15 : 3 = 5 → 5 · 5 = <b>25</b> (das Ganze ist größer!)</div>`,
+ karten:[
+  bruch("Eine Pizza ist in 8 gleiche Stücke geschnitten. Maja isst 3 Stücke. Welchen Bruchteil der Pizza hat sie gegessen?",3,8,"gleich","3 von 8 Stücken → <b>3/8</b>"),
+  bruch("Eine Pizza hat 8 Stücke. Maja isst 3 Stücke. Welcher Bruchteil der Pizza ist noch übrig?",5,8,"gleich","8 − 3 = 5 Stücke übrig → <b>5/8</b>"),
+  M(zahl(`In Majas Klasse sind 24 Kinder. ${F(3,4)} der Kinder fahren mit dem Bus. Wie viele Kinder fahren mit dem Bus?`,18,"24 : 4 = 6 → 6 · 3 = <b>18 Kinder</b>"),{art:"von",z:3,n:4,x:24}),
+  M(zahl(`Maja hat 30 € gespart. Sie gibt ${F(1,3)} davon für ein Geschenk aus. Wie viel Euro gibt sie aus?`,10,"30 : 3 = <b>10 €</b>","€"),{art:"von",z:1,n:3,x:30}),
+  zahl(`Maja hat 30 € gespart und gibt ${F(1,3)} davon aus. Wie viel Euro bleiben übrig?`,20,"⅓ von 30 = 10 € ausgegeben → 30 − 10 = <b>20 €</b> übrig (das sind ⅔)","€"),
+  M(zahl(`Eine Schokolade hat 12 Stückchen. Maja isst ${F(1,4)} der Schokolade. Wie viele Stückchen sind das?`,3,"12 : 4 = <b>3 Stückchen</b>"),{art:"von",z:1,n:4,x:12}),
+  M(zahl(`Eine Schokolade hat 12 Stückchen. Nila isst ${F(1,3)} der Schokolade. Wie viele Stückchen sind das?`,4,"12 : 3 = <b>4 Stückchen</b>"),{art:"von",z:1,n:3,x:12}),
+  bruch(`Schokolade mit 12 Stückchen: Maja isst 3, Nila isst 4 Stückchen. Welcher Bruchteil ist noch übrig?`,5,12,"gleich","12 − 3 − 4 = 5 übrig → <b>5/12</b>"),
+  M(zahl(`Majas Schulweg ist ${F(3,4)} km lang. Wie viele Meter sind das?`,750,"1 km = 1000 m → 1000 : 4 = 250 → 250 · 3 = <b>750 m</b>","m"),{art:"groesse",z:3,n:4,x:1000,g:"km",k:"m"}),
+  M(zahl(`15 Kinder aus Majas Klasse haben ein Haustier. Das sind ${F(3,5)} der Klasse. Wie viele Kinder sind in der Klasse?`,25,"15 : 3 = 5 (ein Fünftel) → 5 · 5 = <b>25 Kinder</b>"),{art:"ganzes",z:3,n:5,teil:15}),
+  M(zahl(`Maja übt ${F(3,4)} Stunde Gitarre. Wie viele Minuten sind das?`,45,"1 h = 60 min → 60 : 4 = 15 → 15 · 3 = <b>45 min</b>","min"),{art:"groesse",z:3,n:4,x:60,g:"h",k:"min"}),
+  M(zahl(`Von 32 Kindern im Volleyballverein sind ${F(5,8)} Mädchen. Wie viele Mädchen sind es?`,20,"32 : 8 = 4 → 4 · 5 = <b>20 Mädchen</b>"),{art:"von",z:5,n:8,x:32}),
+ ]});
+
 /* ================================================================
    PROBENPLAN (aus dem Schulmanager bzw. von den Eltern)
    themen: welche App-Themen in der Probe drankommen
