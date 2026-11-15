@@ -782,6 +782,19 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .bf-skizze{display:flex;flex-direction:column;gap:6px;align-items:flex-start;width:100%;font-weight:600}
 /* In Proben keine Hilfsbilder */
 .probe-modus .hilfsbild,.probe-blatt .hilfsbild{display:none!important}
+/* Hüpf-Frosch */
+.fr-box{display:flex;flex-direction:column;gap:12px;align-items:center;width:100%}
+.fr-strahl{position:relative;width:100%;max-width:620px}
+.fr-strahl svg{display:block;width:100%;height:auto}
+.frosch{position:absolute;top:44%;transform:translate(-50%,-50%);font-size:2.4rem;animation:froschhupf .55s ease-out;pointer-events:none;filter:drop-shadow(0 3px 3px rgba(0,0,0,.25))}
+@keyframes froschhupf{0%{left:var(--von);transform:translate(-50%,-50%)}50%{transform:translate(-50%,-150%)}100%{left:var(--nach);transform:translate(-50%,-50%)}}
+.fr-text{font-size:1.1rem;line-height:1.6;text-align:center;max-width:620px}
+.fr-zahl{font-family:var(--f-display);font-size:1.8rem;color:var(--ok)}
+.fr-eingabe{display:flex;flex-direction:column;align-items:center;gap:4px;margin:10px auto}
+.fr-eingabe label{display:flex;align-items:center;gap:8px;font-weight:800}
+.fr-eingabe input{width:70px;font:inherit;font-size:1.6rem;font-weight:800;text-align:center;padding:4px;border-radius:10px;border:2px solid var(--line);background:var(--surface);color:var(--fg)}
+.fr-strich{width:90px;height:5px;background:var(--fg);border-radius:3px;margin-left:58px}
+@media (prefers-reduced-motion:reduce){.frosch{animation:none}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2630,11 +2643,42 @@ function baukastenHTML(){const b=V.bk||(V.bk={z:3,n:8}),{z,n}=b,ganze=Math.floor
    <div class="bk-balken">${Array.from({length:Math.max(1,Math.ceil(z/n))},(_,g)=>balkenSVG(Math.min(n,Math.max(0,z-g*n)),n)).join("")}</div>
    ${zsErklaerSVG(n,{bis:Math.max(1,Math.ceil(z/n)),pfeil:z,labels:n<=8})}
    <p class="bk-text">Die Pizza ist in <b>${n} Stücke</b> geschnitten, du hast <b>${z}</b> davon. ${art==="echter Bruch"?`Das ist <b>weniger als 1 Ganzes</b> → echter Bruch.`:art==="genau 1 Ganzes"?`Das ist <b>genau 1 ganze Pizza</b>!`:art==="unechter Bruch"?`Das ist <b>mehr als 1 Ganzes</b>: ${ganze}${F(rest,n)} → unechter Bruch.`:art==="ganze Zahl"?`Das sind genau <b>${ganze} ganze Pizzas</b>!`:""} Ein Stück ist ${F(1,n)} – je <b>mehr Stücke</b>, desto <b>kleiner</b> ist jedes Stück.</p></div>`}
+/* ---------- 🐸 Hüpf-Frosch am Zahlenstrahl ---------- */
+function froschNeu(selbst){const n=pick([2,3,4,5,6,8]),z=R(1,2*n-1);V.fr={n,z,bis:z>n?2:1,phase:selbst?"selbst":"nenner",pos:0,von:0,msg:"",ok:null};}
+function froschHTML(){if(!V.fr)froschNeu(false);const f=V.fr,{n,z,bis}=f;
+  const W=Math.min(620,140+bis*360),x0=30,x1=W-30,st=(x1-x0)/(n*bis),y=110,X=i=>x0+i*st;
+  const zaehlenBis=f.phase==="nenner"?n:f.phase==="zaehler"?z:0;
+  let t=`<line x1="${x0-10}" y1="${y}" x2="${x1+16}" y2="${y}" stroke="var(--fg)" stroke-width="3"/><path d="M${x1+10} ${y-7} L${x1+20} ${y} L${x1+10} ${y+7}" fill="none" stroke="var(--fg)" stroke-width="3"/>`;
+  for(let i=0;i<=n*bis;i++){const ganz=i%n===0;t+=`<line x1="${X(i)}" y1="${y-(ganz?16:10)}" x2="${X(i)}" y2="${y+(ganz?16:10)}" stroke="var(--fg)" stroke-width="${ganz?3.5:2}"/>`;
+    if(ganz)t+=`<text x="${X(i)}" y="${y+42}" text-anchor="middle" font-size="22" font-weight="800" fill="${i/n===1&&f.phase==="nenner"?"var(--rose)":"var(--fg)"}">${i/n}</text>`}
+  if(f.phase==="nenner")t+=`<rect x="${X(n)-18}" y="${y+22}" width="36" height="28" rx="8" fill="none" stroke="var(--rose)" stroke-width="3"/><text x="${X(n)}" y="${y+68}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--rose)">STOPP hier!</text>`;
+  t+=`<path d="M${X(z)} ${y-62} V${y-20} M${X(z)-9} ${y-30} L${X(z)} ${y-20} L${X(z)+9} ${y-30}" stroke="var(--rose)" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  for(let i=0;i<f.pos;i++)t+=`<path d="M${X(i)+3} ${y-4} Q${X(i)+st/2} ${y-46} ${X(i+1)-3} ${y-4}" fill="none" stroke="var(--ok)" stroke-width="3" stroke-dasharray="5 4"/><circle cx="${X(i)+st/2}" cy="${y-34}" r="11" fill="var(--ok)"/><text x="${X(i)+st/2}" y="${y-29.5}" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">${i+1}</text>`;
+  const pct=i=>(X(i)/W*100).toFixed(2)+"%";
+  const frosch=f.phase==="selbst"?"":`<span class="frosch" style="--von:${pct(f.von)};--nach:${pct(f.pos)};left:${pct(f.pos)}">🐸</span>`;
+  const bild=`<div class="fr-strahl"><svg viewBox="0 0 ${W} 190" width="${W}" role="img" aria-label="Zahlenstrahl mit Frosch">${t}</svg>${frosch}</div>`;
+  let text="",knoepfe="";
+  if(f.phase==="nenner"){text=f.pos<n?`<b>Schritt 1 – der NENNER:</b> Lass den Frosch von der <b>0</b> bis zur <b>1</b> hüpfen. Er springt immer von Strich zu Strich. <b>Zähl die Sprünge!</b><br>Sprünge bis jetzt: <b class="fr-zahl">${f.pos}</b>`
+      :`🎉 <b>Stopp! Der Frosch ist bei der 1.</b> Er hat <b class="fr-zahl">${n}</b> Sprünge gemacht.<br>➜ Der <b>Nenner ist ${n}</b>. (Wir zählen <b>nur bis zur 1</b>, nie weiter!)`;
+    knoepfe=f.pos<n?`<button class="btn" data-act="fr-hupf" id="frbtn">🐸 Hüpf!</button>`:`<button class="btn" data-act="fr-weiter" id="frbtn">Weiter zu Schritt 2 →</button>`}
+  else if(f.phase==="zaehler"){text=f.pos<z?`<b>Schritt 2 – der ZÄHLER:</b> Jetzt hüpft der Frosch wieder von der <b>0</b> los – diesmal bis zum <b>Pfeil</b>${z>n?" (er darf über die 1 drüber!)":""}. <b>Zähl die Sprünge!</b><br>Sprünge bis jetzt: <b class="fr-zahl">${f.pos}</b>`
+      :`🎉 <b>Der Frosch ist beim Pfeil!</b> Er hat <b class="fr-zahl">${z}</b> Sprünge gemacht.<br>➜ Der <b>Zähler ist ${z}</b>.`;
+    knoepfe=f.pos<z?`<button class="btn" data-act="fr-hupf" id="frbtn">🐸 Hüpf!</button>`:`<button class="btn" data-act="fr-weiter" id="frbtn">Ergebnis zeigen →</button>`}
+  else if(f.phase==="fertig"){const g=Math.floor(z/n),r=z%n;text=`<div class="bk-bruch">${F(z,n)}${z>n?` = ${r?`${g}${F(r,n)}`:g}`:""}</div>Der Pfeil zeigt auf <b>${F(z,n)}</b>. 🎉<br><span class="muted">Nenner = Sprünge von 0 bis 1 · Zähler = Sprünge von 0 bis zum Pfeil</span>`;
+    knoepfe=`<button class="btn" data-act="fr-neu" id="frbtn">🐸 Noch eine mit dem Frosch</button><button class="btn ghost" data-act="fr-selbst">✏️ Jetzt allein probieren</button>`}
+  else{const sicher=f.ok===true;text=`<b>Jetzt du allein!</b> Auf welchen Bruch zeigt der Pfeil?<br><span class="muted">Denk an den Frosch: Sprünge bis zur 1 = Nenner (unten), Sprünge bis zum Pfeil = Zähler (oben).</span>`+
+      `<div class="fr-eingabe"><label>Zähler <input id="fr-z" inputmode="numeric" ${sicher?"disabled":""} value="${f.az??""}"></label><span class="fr-strich"></span><label>Nenner <input id="fr-n" inputmode="numeric" ${sicher?"disabled":""} value="${f.an??""}"></label></div>`+
+      (f.msg?`<div class="rueck ${f.ok?"ok":"no"}"><span>${f.msg}</span></div>`:"");
+    knoepfe=sicher?`<button class="btn" data-act="fr-selbst" id="frbtn">Nächste Aufgabe →</button>`:`<button class="btn" data-act="fr-pruef" id="frbtn">Prüfen</button><button class="btn ghost" data-act="fr-hilfe">🐸 Frosch soll helfen</button>`}
+  return `<div class="fr-box">${bild}<div class="fr-text">${text}</div><div class="row">${knoepfe}</div>${f.phase==="selbst"?`<p class="muted">Richtig allein gelöst: <b>${V.frRichtig||0}</b> 🌟</p>`:""}</div>`}
 function vBrueche(){
   const ueb=(id,txt)=>`<button class="btn small" data-act="ueben" data-thema="${id}">${txt}</button>`;
   return `<div class="bf-seite" style="--fach:var(--mathe)">
    <button class="back" data-go="fach" data-fach="mathe">← Mathe</button>
    <div class="bf-kopf">${ellaSVG(90)}<div><p class="eyebrow">Mit Bildern erklärt</p><h1>Brüche verstehen 🍕</h1><p>Lies dir jede Karte in Ruhe durch und schau dir die Bilder genau an. Unten kannst du gleich üben!</p></div></div>
+
+   ${bfKarte("🐸 Der Hüpf-Frosch – so liest du den Zahlenstrahl ab",froschHTML(),`<p><b>Zähl nie die Striche – zähl die SPRÜNGE!</b> Der Frosch springt von Strich zu Strich.</p>
+     <p>1️⃣ <b>Nenner (unten):</b> Sprünge von <b>0 bis zur 1</b> – bei der 1 ist STOPP!<br>2️⃣ <b>Zähler (oben):</b> Sprünge von <b>0 bis zum Pfeil</b>.</p>`,"var(--ok)")}
 
    <h2 class="bf-h">⭐ Wie viel ist eigentlich ein Achtel, ein Drittel …?</h2>
    ${bfKarte("Die Bruch-Wand",bruchwandSVG(),`<p>Jede Reihe ist <b>gleich lang</b> – immer <b>1 Ganzes</b>. Sie ist nur in verschieden viele Stücke geschnitten.</p>
@@ -3186,6 +3230,16 @@ app.addEventListener("click",e=>{
   switch(d.act){
    case"heute":starte("heute");break;
    case"woche":V.woche=+d.w;render();break;
+   case"fr-hupf":{const f=V.fr;f.von=f.pos;f.pos++;render();break}
+   case"fr-weiter":{const f=V.fr;if(f.phase==="nenner"){f.phase="zaehler";f.pos=0;f.von=0}else f.phase="fertig";render();break}
+   case"fr-neu":froschNeu(false);render();break;
+   case"fr-selbst":froschNeu(true);render();break;
+   case"fr-hilfe":{const f=V.fr;f.phase="nenner";f.pos=0;f.von=0;f.msg="";render();break}
+   case"fr-pruef":{const f=V.fr,zz=+document.getElementById("fr-z").value,nn=+document.getElementById("fr-n").value;f.az=zz||"";f.an=nn||"";
+     if(zz===f.z&&nn===f.n){f.ok=true;f.msg=pick(["Super!","Richtig!","Klasse!","Genau!"])+" 🎉 Der Pfeil zeigt auf "+f.z+"/"+f.n+".";V.frRichtig=(V.frRichtig||0)+1}
+     else{f.ok=false;f.msg=nn!==f.n?(nn===f.n-1?"Fast! Beim Nenner hast du wohl die <b>Striche</b> gezählt statt die <b>Sprünge</b>. Es ist immer 1 mehr!":nn===f.n*f.bis||nn===f.n+1?"Beim Nenner: Zähl nur die Sprünge von <b>0 bis zur 1</b> – nicht weiter!":"Der Nenner stimmt noch nicht. Zähl die Sprünge von 0 bis zur 1.")
+       :(zz===f.z-1||zz===f.z+1?"Der Nenner stimmt! 👍 Beim Zähler bist du um 1 daneben – fang bei der <b>0</b> an und zähl jeden <b>Sprung</b> bis zum Pfeil.":"Der Nenner stimmt! 👍 Zähl jetzt die Sprünge von der 0 bis zum Pfeil.")}
+     render();break}
    case"bk":{const b=V.bk||(V.bk={z:3,n:8});if(d.t==="z")b.z=Math.max(0,Math.min(b.n*3,b.z+(+d.v)));else{b.n=Math.max(1,Math.min(12,b.n+(+d.v)));b.z=Math.min(b.z,b.n*3)}render();break}
    case"probenwoche":S.spar.probenProWoche=+d.n;speichern();render();break;
    case"druckart":V.art=d.art;render();break;
