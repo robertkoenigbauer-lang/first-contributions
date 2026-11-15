@@ -744,6 +744,30 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .fach-raum>.fr-inhalt{padding-top:230px}
 @media (max-width:620px){.ea-wrap{width:240px;right:-70px;top:100px}.ea-astro{left:calc(50% - 34px);top:-70px}.ea-astro svg{width:68px;height:auto}.fach-raum>.fr-inhalt{padding-top:190px}}
 @media (prefers-reduced-motion:reduce){.astro-steht .flagge{animation:none}}
+/* Brüche verstehen */
+.bf-seite{display:flex;flex-direction:column;gap:16px}
+.bf-kopf{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--solid);border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+.bf-kopf>div{flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.bf-h{margin-top:8px}
+.bf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
+.bf-grid.zwei{grid-template-columns:repeat(2,minmax(0,1fr))}
+.bf-karte{background:var(--solid);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow);border-top:6px solid var(--bf);display:flex;flex-direction:column;gap:10px;min-width:0}
+.bf-karte h3{color:var(--bf)}
+.bf-bild{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:130px;background:var(--bg);border-radius:14px;padding:10px;overflow-x:auto}
+.bf-text{display:flex;flex-direction:column;gap:6px;font-size:1.05rem;line-height:1.5}
+.bf-bruch{display:flex;flex-direction:column;align-items:center;font-family:var(--f-display);font-weight:800;font-size:3.4rem;line-height:1}
+.bf-z{color:var(--rose)}.bf-n{color:var(--mathe)}.bf-strich{width:70px;height:6px;background:var(--fg);border-radius:3px;margin:4px 0}
+.bf-pfeile{display:flex;flex-direction:column;gap:20px;font-size:.95rem}.bf-pfeile span:first-child b{color:var(--rose)}.bf-pfeile span:last-child b{color:var(--mathe)}
+.bf-karte:first-child .bf-bild{flex-direction:row;gap:18px}
+.bf-gross{font-size:2.4rem;font-weight:800}
+.bf-gleich{font-size:2rem;font-weight:800;color:var(--muted)}
+.bf-merk{background:color-mix(in srgb,var(--star) 22%,var(--solid));border-radius:14px;padding:12px 14px;font-size:1.1rem;font-weight:600}
+.bf-lineal{display:flex;width:min(420px,100%);border:2px solid var(--fg);border-radius:4px;background:#fff7d6}
+.bf-lineal span{flex:1;font-size:.75rem;font-weight:800;padding:2px 4px;border-right:1.5px solid var(--fg);color:#3a2c18}
+.bf-ueben{background:var(--solid);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.bf-link{display:flex;align-items:center;gap:10px;border:2px solid var(--mathe);border-radius:14px;background:color-mix(in srgb,var(--mathe) 12%,var(--solid));padding:10px 12px;text-align:left;width:100%}
+.bf-link>span:nth-child(2){flex:1;display:flex;flex-direction:column}.bf-link small{color:var(--muted)}.bf-link-ic{font-size:1.8rem}
+@media (max-width:480px){.bf-grid.zwei{grid-template-columns:1fr}}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -2559,11 +2583,77 @@ function kachelProben(){
   return `<section class="kachel"><div class="k-kopf"><h3>📝 Proben</h3><span class="muted">${ps.length} anstehend</span></div>
    <ul class="kliste">${ps.map(p=>{const d=tageBis(p.datum),f=fach(p.fach);return `<li style="--fach:${f.farbe}"><span class="kl-datum"><b>${wtag(p.datum)}</b>${datumDE(p.datum).replace(/\d\d$/,"")}</span><span class="kl-text"><b>${f.name}</b><small>${p.themen.length?`${p.themen.map(thema).filter(Boolean).flatMap(kartenVon).filter(sitzt).length} von ${p.themen.map(thema).filter(Boolean).flatMap(kartenVon).length} sitzen`:"noch keine Unterlagen"}</small></span><span class="kl-tage ${d<=3?"knapp":""}">${d===0?"heute":d===1?"morgen":`${d} Tage`}</span></li>`}).join("")}
    <li style="--fach:var(--englisch)"><span class="kl-datum"><b>Fr</b>jede Woche</span><span class="kl-text"><b>Englisch-Vokabeltest</b><small>jeden Freitag</small></span><span class="kl-tage">📝</span></li></ul></section>`}
+/* ================================================================
+   BRÜCHE VERSTEHEN – Bilder-Seite (Zähler/Nenner, Brucharten, Zahlenstrahl)
+   ================================================================ */
+// Zahlenstrahl zum Erklären: n Teile pro Ganzes, bis "bis" Ganze; abst = Abstände nummerieren; pfeil = Position
+function zsErklaerSVG(n,{bis=1,abst=false,pfeil=null,schritte=false,striche=false,labels=null}={}){
+  const W=Math.min(620,140+bis*360),x0=30,x1=W-30,st=(x1-x0)/(n*bis),y=70;let t="";
+  t+=`<line x1="${x0-10}" y1="${y}" x2="${x1+16}" y2="${y}" stroke="var(--fg)" stroke-width="3"/><path d="M${x1+10} ${y-7} L${x1+20} ${y} L${x1+10} ${y+7}" fill="none" stroke="var(--fg)" stroke-width="3"/>`;
+  if(pfeil!==null&&schritte)for(let i=0;i<pfeil;i++)t+=`<rect class="pop-in" style="animation-delay:${i*0.25}s" x="${x0+i*st+2}" y="${y-9}" width="${st-4}" height="18" rx="6" fill="color-mix(in srgb,var(--rose) 45%,transparent)"/>`;
+  for(let i=0;i<=n*bis;i++){const x=x0+i*st,ganz=i%n===0;
+    t+=`<line x1="${x}" y1="${y-(ganz?16:10)}" x2="${x}" y2="${y+(ganz?16:10)}" stroke="${striche&&!ganz?"var(--bad)":"var(--fg)"}" stroke-width="${ganz?3.5:striche?3:2}"/>`;
+    if(ganz)t+=`<text x="${x}" y="${y+42}" text-anchor="middle" font-size="22" font-weight="800" fill="var(--fg)">${i/n}</text>`;
+    else if(labels)t+=`<text x="${x}" y="${y+38}" text-anchor="middle" font-size="14" font-weight="800" fill="var(--muted)">${i}/${n}</text>`}
+  if(abst)for(let i=0;i<n*bis;i++)t+=`<g class="pop-in" style="animation-delay:${i*0.25}s"><circle cx="${x0+(i+.5)*st}" cy="${y-30}" r="12" fill="var(--flieder)"/><text x="${x0+(i+.5)*st}" y="${y-25}" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">${i+1}</text></g>`;
+  if(pfeil!==null){const x=x0+pfeil*st;t+=`<g class="pop-in" style="animation-delay:${schritte?pfeil*0.25:0}s"><path d="M${x} ${y-50} V${y-18} M${x-8} ${y-28} L${x} ${y-18} L${x+8} ${y-28}" stroke="var(--rose)" stroke-width="4" fill="none" stroke-linecap="round"/></g>`}
+  return `<svg viewBox="0 0 ${W} 125" width="${W}" style="max-width:100%;height:auto" role="img" aria-label="Zahlenstrahl">${t}</svg>`}
+const bfKarte=(titel,bild,text,farbe="var(--mathe)")=>`<div class="bf-karte" style="--bf:${farbe}"><h3>${titel}</h3><div class="bf-bild">${bild}</div><div class="bf-text">${text}</div></div>`;
+function vBrueche(){
+  const ueb=(id,txt)=>`<button class="btn small" data-act="ueben" data-thema="${id}">${txt}</button>`;
+  return `<div class="bf-seite" style="--fach:var(--mathe)">
+   <button class="back" data-go="fach" data-fach="mathe">← Mathe</button>
+   <div class="bf-kopf">${ellaSVG(90)}<div><p class="eyebrow">Mit Bildern erklärt</p><h1>Brüche verstehen 🍕</h1><p>Lies dir jede Karte in Ruhe durch und schau dir die Bilder genau an. Unten kannst du gleich üben!</p></div></div>
+
+   <h2 class="bf-h">1️⃣ Zähler und Nenner</h2>
+   <div class="bf-grid">
+    ${bfKarte("So sieht ein Bruch aus",`<div class="bf-bruch"><span class="bf-z">3</span><span class="bf-strich"></span><span class="bf-n">4</span></div><div class="bf-pfeile"><span>⬅ <b>ZÄHLER</b> (oben)</span><span>⬅ <b>NENNER</b> (unten)</span></div>`,
+      `<p><b>Der Zähler zählt, der Nenner nennt!</b></p><p>🔽 <b>N</b>enner = <b>N</b>ach unten, wie der Boden.</p>`)}
+    ${bfKarte("Die Pizza zeigt es",`<div class="ek-reihe">${kreisSVG(0,4,120)}<span class="bf-gleich">➜</span>${kreisSVG(3,4,120)}</div>`,
+      `<p>Der <b>Nenner 4</b> sagt: Die Pizza wird in <b>4 gleich große Stücke</b> geschnitten.</p><p>Der <b>Zähler 3</b> sagt: Du hast <b>3 Stücke</b> davon. → ${F(3,4)}</p>`)}
+    ${bfKarte("Noch ein Beispiel",`<div class="ek-reihe">${kreisSVG(3,8,120)}<span class="bf-gross">${F(3,8)}</span></div>`,
+      `<p>Zähl <b>alle Stücke</b>: 8 → das ist der <b>Nenner</b> (unten).</p><p>Zähl die <b>bunten Stücke</b>: 3 → das ist der <b>Zähler</b> (oben).</p>`)}
+   </div>
+
+   <h2 class="bf-h">2️⃣ Die Brucharten</h2>
+   <div class="bf-grid">
+    ${bfKarte("Echter Bruch",`<div class="ek-reihe">${kreisSVG(3,4,110)}</div><div class="bf-gross">${F(3,4)}</div>`,
+      `<p>Zähler <b>kleiner</b> als Nenner (3 &lt; 4).</p><p>➜ <b>weniger als 1 ganze Pizza</b></p><p class="muted">Beispiele: ${F(1,2)} ${F(2,3)} ${F(5,8)}</p>`,"var(--ok)")}
+    ${bfKarte("Unechter Bruch",`<div class="ek-reihe">${kreisSVG(4,4,96)}${kreisSVG(1,4,96)}</div><div class="bf-gross">${F(5,4)}</div>`,
+      `<p>Zähler <b>größer</b> als Nenner (5 &gt; 4).</p><p>➜ <b>mehr als 1 ganze Pizza</b></p><p class="muted">Beispiele: ${F(3,2)} ${F(7,4)} ${F(9,5)}</p>`,"var(--gpg)")}
+    ${bfKarte("Gemischte Zahl",`<div class="ek-reihe">${kreisSVG(4,4,96)}${kreisSVG(1,4,96)}</div><div class="bf-gross">1${F(1,4)}</div>`,
+      `<p>Eine <b>ganze Zahl</b> und ein <b>echter Bruch</b> zusammen.</p><p>➜ <b>1 ganze Pizza und noch ¼</b></p><p class="muted">Gleich viel Pizza wie ${F(5,4)}!</p>`,"var(--rose)")}
+   </div>
+   <div class="bf-merk">🧠 <b>Umwandeln:</b> ${F(5,4)} → 5 : 4 = <b>1</b> Rest <b>1</b> → <b>1${F(1,4)}</b> &nbsp;·&nbsp; 1${F(1,4)} → 4 · 1 + 1 = 5 → <b>${F(5,4)}</b></div>
+
+   <h2 class="bf-h">3️⃣ Brüche am Zahlenstrahl – in 3 Schritten</h2>
+   <div class="bf-grid zwei">
+    ${bfKarte("Schritt 1: Finde 0 und 1",zsErklaerSVG(4,{}),`<p>Von <b>0 bis 1</b> ist <b>ein Ganzes</b> – wie eine lange Pizza.</p>`)}
+    ${bfKarte("Schritt 2: Zähle die ABSTÄNDE",zsErklaerSVG(4,{abst:true}),`<p>Zähle die <b>Lücken</b> zwischen 0 und 1: <b>4</b> → das ist der <b>Nenner</b>. Es sind Viertel!</p>`)}
+    ${bfKarte("⚠️ Achtung, Falle!",zsErklaerSVG(4,{striche:true}),`<p>Dazwischen sind nur <b style="color:var(--bad)">3 rote Striche</b>, aber <b>4 Abstände</b>!</p><p>👉 <b>Immer die Abstände zählen, nie die Striche!</b> (Abstände = Striche + 1)</p>`,"var(--bad)")}
+    ${bfKarte("Schritt 3: Zähle bis zum Pfeil",zsErklaerSVG(4,{pfeil:3,schritte:true}),`<p>Geh von der <b>0</b> aus bis zum Pfeil: <b>3 Schritte</b> → das ist der <b>Zähler</b>.</p><p>Der Pfeil zeigt auf <b>${F(3,4)}</b> 🎉</p>`)}
+   </div>
+   <div class="bf-grid zwei">
+    ${bfKarte("Hinter der 1 einfach weiterzählen!",zsErklaerSVG(4,{bis:2,pfeil:5,schritte:true}),`<p>Der Pfeil ist <b>hinter der 1</b>. Zähl einfach weiter: <b>5 Schritte</b> → ${F(5,4)}</p><p>Das ist ein <b>unechter Bruch</b> = <b>1${F(1,4)}</b></p>`,"var(--gpg)")}
+    ${bfKarte("Weiter rechts = größer",zsErklaerSVG(4,{labels:true}),`<p>Je weiter <b>rechts</b>, desto <b>größer</b> ist der Bruch.</p><p>${F(1,4)} &lt; ${F(2,4)} &lt; ${F(3,4)} &lt; 1</p>`,"var(--ok)")}
+   </div>
+   <div class="bf-grid zwei">
+    ${bfKarte("Gleiche Stelle = gleich groß",`<div class="ek-stapel">${zsErklaerSVG(2,{labels:true,pfeil:1})}${zsErklaerSVG(4,{labels:true,pfeil:2})}</div>`,`<p>${F(1,2)} und ${F(2,4)} liegen an der <b>gleichen Stelle</b>. Sie sind <b>gleich groß</b>!</p>`,"var(--flieder)")}
+    ${bfKarte("Selbst einzeichnen",`<div class="bf-lineal">${Array.from({length:6},(_,i)=>`<span>${i} cm</span>`).join("")}</div>${zsErklaerSVG(5,{pfeil:3,schritte:true})}`,
+      `<p>${F(3,5)} einzeichnen: Nenner <b>5</b> → nimm <b>5 cm</b> für ein Ganzes, dann ist <b>1 cm = ${F(1,5)}</b>.</p><p>Zähler <b>3</b> → geh <b>3 cm</b> von der 0. Fertig! ✏️</p>`)}
+   </div>
+
+   <h2 class="bf-h">💪 Jetzt üben!</h2>
+   <div class="bf-ueben"><div class="row">${ueb("m-zahlenstrahl","📏 Zahlenstrahl üben")}${ueb("m-brucharten","🍕 Brucharten üben")}${ueb("m-bruchteile","🔢 Zähler & Nenner üben")}${ueb("m-gemischt","➗ Umwandeln üben")}${ueb("m-vergleichen","⚖️ Vergleichen üben")}</div>
+    <p class="tipp">Bei jeder Aufgabe kannst du auf <b>„🎬 Zeig's mir als Bild“</b> tippen. Dann erklärt dir Ella die Aufgabe mit Bildern.</p></div>
+  </div>`}
+
 function kachelSchwer(){
   const schw=schwachstellen().slice(0,4),heftT=thema("m-heftfehler");
   const vor=schw.length?schw.map(x=>({t:x.t,info:`${x.falsch} von ${x.ges} zuletzt falsch`})):[{t:heftT,info:"aus deinen Hausaufgaben"}];
   const fehler=["„3/4 von 8“: erst : Nenner, dann · Zähler","Gleicher Zähler: kleiner Nenner = größeres Stück","Das Ganze ist größer als der Teil","Gemischte Zahl zu Ende schreiben (+ Zähler!)"];
   return `<section class="kachel"><div class="k-kopf"><h3>💪 Fällt dir noch schwer</h3></div>
+   <button class="bf-link" data-go="brueche"><span class="bf-link-ic">🍕</span><span><b>Brüche mit Bildern verstehen</b><small>Zähler & Nenner · Brucharten · Zahlenstrahl</small></span><span>→</span></button>
    <ul class="kliste">${vor.map(x=>`<li style="--fach:${fach(x.t.fach).farbe}"><span class="kl-text"><b>${x.t.titel}</b><small>${fach(x.t.fach).name} · ${x.info}</small></span><button class="btn small" data-act="ueben" data-thema="${x.t.id}">Üben</button></li>`).join("")}</ul>
    ${schw.length?"":`<div class="tipps"><p class="eyebrow">Merk dir das</p><ul>${fehler.map(f=>`<li>${f}</li>`).join("")}</ul></div>`}</section>`}
 /* ---------- Ella, die Lern-Eule (mit runder Brille und Heft) ---------- */
@@ -2922,7 +3012,7 @@ function vFach(){
   const f=fach(V.fach),ts=themenVon(f.id);
   return fachraumHTML(f.id,`<div style="--fach:${f.farbe};display:flex;flex-direction:column;gap:18px">
    <button class="back" data-go="start">← Startseite</button>
-   <div class="fachkopf"><p class="eyebrow fr-titel">✨ ${(FACHRAUM[f.id]||{}).titel||""}</p><h1><span class="fach-symbol" aria-hidden="true">${(FACHRAUM[f.id]||{}).symbol||""}</span> ${f.name}</h1><div><button class="btn small ghost druckknopf" data-go="drucken" data-fach="${f.id}">🖨️ Drucken: Lernkarten & Übungsprobe</button></div>${schnitt(f.id)!==null?`<p><span class="notenpill">Note aktuell: Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span> <button class="back" style="display:inline" data-go="noten">Noten ansehen →</button></p>`:""}${(()=>{const p=kommendeProben().find(p=>p.fach===f.id);return p?`<p><span class="notenpill">Probe ${datumKurz(p.datum)}</span> ${lerntageText(p)}</p>`:""})()}<p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
+   <div class="fachkopf"><p class="eyebrow fr-titel">✨ ${(FACHRAUM[f.id]||{}).titel||""}</p><h1><span class="fach-symbol" aria-hidden="true">${(FACHRAUM[f.id]||{}).symbol||""}</span> ${f.name}</h1><div class="row">${f.id==="mathe"?`<button class="btn small" data-go="brueche">🍕 Brüche mit Bildern verstehen</button>`:""}<button class="btn small ghost druckknopf" data-go="drucken" data-fach="${f.id}">🖨️ Drucken: Lernkarten & Übungsprobe</button></div>${schnitt(f.id)!==null?`<p><span class="notenpill">Note aktuell: Ø ${komma(schnitt(f.id))} · steht auf ${stehtAuf(schnitt(f.id))}</span> <button class="back" style="display:inline" data-go="noten">Noten ansehen →</button></p>`:""}${(()=>{const p=kommendeProben().find(p=>p.fach===f.id);return p?`<p><span class="notenpill">Probe ${datumKurz(p.datum)}</span> ${lerntageText(p)}</p>`:""})()}<p class="muted">Lies zuerst den Hefteintrag, dann übe.</p></div>
    ${ts.length?`<section class="themen">${ts.map(t=>{const ks=kartenVon(t),s=ks.filter(sitzt).length;return `<div class="thema"><div class="t"><h3>${t.titel}</h3>
      <div class="row">${quelleBadge(t)}${t.probe&&tageBis(t.probe)>=0?`<span class="badge heft-q">Probe ${probeText(t)}</span>`:""}<span class="muted" style="font-size:.85rem">${s} von ${ks.length} sitzen</span></div>
      <div class="balken"><i style="width:${Math.round(100*s/ks.length)}%"></i></div></div>
@@ -3024,7 +3114,7 @@ function wochenplanHTML(){
   </section>`}
 
 function render(){
-  let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else if(V.seite==="noten")h=vNoten();else if(V.seite==="stundenplan")h=vStundenplan();else if(V.seite==="kalender")h=vKalender();else if(V.seite==="sparbuch")h=vSparbuch();else if(V.seite==="drucken")h=vDrucken();else h=vDashboard();
+  let h;if(Q)h=vQuiz();else if(V.seite==="fach")h=vFach();else if(V.seite==="merke")h=vMerke();else if(V.seite==="noten")h=vNoten();else if(V.seite==="stundenplan")h=vStundenplan();else if(V.seite==="kalender")h=vKalender();else if(V.seite==="sparbuch")h=vSparbuch();else if(V.seite==="brueche")h=vBrueche();else if(V.seite==="drucken")h=vDrucken();else h=vDashboard();
   const weit=!Q&&(V.seite==="start"||V.seite==="kalender"||V.seite==="drucken");
   app.innerHTML=Q?`<div class="weltraum lern-raum"><div class="sterne-bg" aria-hidden="true"></div><div class="planeten" aria-hidden="true">${erdeSVG()}${saturnSVG()}<span class="rk r1">🚀</span><span class="rk r2">🚀</span><span class="rk r3">🚀</span><span class="komet">☄️</span><span class="astro2">${astronautSVG()}</span><span class="astro3">${astronautGanzSVG("#ff2d95")}</span><span class="astro4">${astronautGanzSVG("#7c5cff")}</span><span class="rf-flug">${raketeFensterSVG()}</span></div><div class="inhalt lern-inhalt">${h}</div></div>`:`<div class="layout">${seitenleisteHTML()}<main class="inhalt ${weit?"weit":""}">${h}</main></div>`;
   const sf=document.getElementById("sform");if(sf)sf.addEventListener("submit",e=>{e.preventDefault();const v=parseZahl(document.getElementById("sbetrag").value);const fld=document.getElementById("sbetrag");
