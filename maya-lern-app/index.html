@@ -2955,7 +2955,7 @@ function kachelFortschritt(){
    ================================================================ */
 const TASCHENGELD=5, TG_WOCHENTAG=5; // 5 € jeden Freitag
 const SPARARTEN=[["taschengeld","💶","Taschengeld"],["note","⭐","Noten-Belohnung"],["geburtstag","🎂","Geburtstag"],["weihnachten","🎄","Weihnachten"],["ostern","🐣","Ostern"],
- ["verdient","💪","Selbst verdient"],["geschenk","🎁","Geschenk"],["start","🐷","Startguthaben"],["ausgabe","🛍️","Ausgabe"]];
+ ["verdient","💪","Selbst verdient"],["geschenk","🎁","Geschenk"],["start","🐷","Startguthaben"],["schulgeld","🎒","Schulgeld (Geldbeutel)"],["ausgabe","🛍️","Ausgabe"]];
 const sparArt=k=>SPARARTEN.find(a=>a[0]===k)||SPARARTEN[5];
 const euro=x=>(Math.round(x*100)/100).toFixed(2).replace(".",",")+" €";
 const sparStand=()=>S.spar.buchungen.reduce((a,b)=>a+b.betrag,0);
@@ -2969,7 +2969,12 @@ const ganzeNote=n=>{const w=notenWert(n);return w===null?null:Math.min(6,Math.ma
 const notenGeld=n=>{const g=ganzeNote(n);return g?NOTENGELD[g]:0};
 const noteId=n=>"note-"+n.fach+"-"+n.datum+"-"+(n.art||"")+"-"+n.note;
 const belohnteNoten=()=>NOTEN.filter(n=>n.datum&&n.datum>=BELOHNUNG_AB&&notenWert(n.note)!==null);
-function notenBuchen(){let neu=false;S.spar.notenGebucht=S.spar.notenGebucht||[];
+// Feste Einträge von Mama/Papa (werden einmal ins Sparbuch übernommen)
+const FESTE_BUCHUNGEN=[{id:"fest-schulgeld-2026-11-16",datum:"2026-11-16",betrag:22.28,art:"schulgeld",text:"Schulgeld im Geldbeutel"}];
+function festeBuchen(){S.spar.festGebucht=S.spar.festGebucht||[];let neu=false;
+  FESTE_BUCHUNGEN.forEach(b=>{if(S.spar.festGebucht.includes(b.id))return;S.spar.festGebucht.push(b.id);if(!S.spar.buchungen.some(x=>x.id===b.id)){S.spar.buchungen.push(Object.assign({},b));neu=true}});
+  if(neu)speichern()}
+function notenBuchen(){festeBuchen();let neu=false;S.spar.notenGebucht=S.spar.notenGebucht||[];
   belohnteNoten().forEach(n=>{const id=noteId(n);if(S.spar.notenGebucht.includes(id))return;S.spar.notenGebucht.push(id);const b=notenGeld(n.note);
     if(b>0){S.spar.buchungen.push({id,datum:n.datum,betrag:b,art:"note",text:`Note ${n.note} in ${fach(n.fach)?fach(n.fach).name:n.fach}`});neu=true}});
   if(neu)speichern()}
