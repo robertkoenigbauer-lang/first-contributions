@@ -1075,6 +1075,7 @@ const CHORES=[{en:"feed my pet",de:"mein Haustier füttern",bild:"feed",alt:["fe
  {en:"help with the cooking",de:"beim Kochen helfen",bild:"cook"},{en:"load and empty the dishwasher",de:"die Spülmaschine ein- und ausräumen",bild:"load"},{en:"make breakfast",de:"Frühstück machen",bild:"breakfast"},
  {en:"hoover the living room",de:"das Wohnzimmer staubsaugen",bild:"hoover"},{en:"tidy my bedroom",de:"mein Zimmer aufräumen",bild:"tidy"}];
 const HAEUFIG=[["always","immer",7],["usually","normalerweise",6],["often","oft",4],["sometimes","manchmal",2],["never","nie",0]];
+const HAEUFIG6=[["always","immer (100 %)",7],["usually","für gewöhnlich, normalerweise",6],["often","oft",4],["sometimes","manchmal",2],["rarely","kaum, selten",1],["never","nie (0 %)",0]];
 
 /* MATHE: Bilder für Brüche */
 function balkenSVG(z,n){const w=Math.min(320,n*40),h=44,st=w/n;let r="";for(let i=0;i<n;i++)r+=`<rect x="${i*st+1}" y="1" width="${st-2}" height="${h-2}" rx="4" fill="${i<z?"var(--fach)":"var(--surface)"}" stroke="var(--fg)" stroke-width="1.5"/>`;
@@ -1088,6 +1089,48 @@ function strahlSVG(z,n){const w=300,x0=20,e=(w-40)/2,step=e/n;let t=`<line x1="$
   return `<svg viewBox="0 0 ${w} 86" width="${w}" height="86" role="img" aria-label="Zahlenstrahl">${t}</svg>`}
 function feldSVG(){let t="";for(let r=0;r<6;r++)for(let c=0;c<10;c++){const f=r===0?"#d64545":(r<=3&&c<2)?"#2e9e5b":(r<=3&&c<6)?"#2f6fd6":"var(--surface)";t+=`<rect x="${4+c*24}" y="${4+r*20}" width="24" height="20" fill="${f}" stroke="var(--fg)" stroke-width="1"/>`}
   return `<svg viewBox="0 0 248 128" width="248" height="128" role="img" aria-label="Erdbeerfeld">${t}</svg>`}
+
+/* Englisch Unit 2 – Topic 2 – Vokabelblatt S. 33 (Sätze vom Blatt; ergänzte Sätze für Wörter ohne Satz) */
+const T2SVG={
+ wardrobe:()=>sv(70,90,`<rect x="8" y="6" width="54" height="80" rx="4" fill="#c68a4a"/><line x1="35" y1="10" x2="35" y2="82" stroke="#7a4e22"/><circle cx="31" cy="46" r="2.5" fill="#3a2a10"/><circle cx="39" cy="46" r="2.5" fill="#3a2a10"/><rect x="8" y="80" width="54" height="6" fill="#7a4e22"/>`,"wardrobe"),
+ shelf:()=>sv(90,70,`<rect x="6" y="26" width="78" height="5" fill="#7a4e22"/><rect x="6" y="58" width="78" height="5" fill="#7a4e22"/><rect x="12" y="8" width="8" height="18" fill="#e63946"/><rect x="22" y="10" width="8" height="16" fill="#2f6fd6"/><rect x="32" y="6" width="7" height="20" fill="#2e9e5b"/><rect x="50" y="40" width="9" height="18" fill="#f4a261"/><rect x="61" y="42" width="8" height="16" fill="#8338ec"/>`,"shelf"),
+ above:()=>sv(100,80,`<rect x="20" y="10" width="60" height="5" fill="#7a4e22"/><rect x="26" y="0" width="7" height="10" fill="#e63946"/><rect x="35" y="2" width="7" height="8" fill="#2f6fd6"/><path d="M50 22 V40 M44 34 L50 40 L56 34" stroke="var(--rose)" stroke-width="3" fill="none"/><rect x="10" y="52" width="80" height="16" rx="4" fill="#9ccbe8"/><rect x="12" y="46" width="22" height="10" rx="4" fill="#fff"/><rect x="10" y="66" width="5" height="10" fill="#7a4e22"/><rect x="85" y="66" width="5" height="10" fill="#7a4e22"/>`,"above"),
+ desk:()=>sv(100,70,`<rect x="8" y="30" width="84" height="7" fill="#c68a4a"/><rect x="12" y="37" width="6" height="30" fill="#7a4e22"/><rect x="62" y="37" width="26" height="30" fill="#b07a40"/><line x1="62" y1="52" x2="88" y2="52" stroke="#7a4e22"/><rect x="24" y="22" width="22" height="8" fill="#fff" stroke="#999"/><path d="M50 28 l14 -10" stroke="#e9c46a" stroke-width="3"/>`,"desk"),
+ carpet:()=>sv(100,60,`<rect x="10" y="12" width="80" height="36" rx="5" fill="#d64545"/><rect x="18" y="18" width="64" height="24" rx="3" fill="none" stroke="#ffd166" stroke-width="3"/><path d="M10 14 h-6 M10 22 h-6 M10 30 h-6 M10 38 h-6 M10 46 h-6 M90 14 h6 M90 22 h6 M90 30 h6 M90 38 h6 M90 46 h6" stroke="#d64545" stroke-width="2"/>`,"carpet"),
+ table:()=>sv(100,70,`<ellipse cx="50" cy="22" rx="42" ry="10" fill="#c68a4a"/><rect x="16" y="24" width="6" height="40" fill="#7a4e22"/><rect x="78" y="24" width="6" height="40" fill="#7a4e22"/><rect x="47" y="28" width="6" height="36" fill="#7a4e22"/>`,"table")};
+const U2T2=[
+ {en:"to change",de:"verändern, ändern, wechseln",e:"🔄🛏️",satz:"Luke ___ things in his bedroom.",form:"changed",warum:"Vergangenheit: change → changed"},
+ {en:"wardrobe",de:"der Kleiderschrank",s:"wardrobe",satz:"Put your clothes in the ___.",form:"wardrobe"},
+ {en:"shelf",de:"das Regal, das Regalbrett",s:"shelf",satz:"I put my books on the ___.",form:"shelf",alt:["shelves"],tipp:"Mehrzahl: shelves"},
+ {en:"above",de:"über, oberhalb",s:"above",satz:"The shelf is ___ the bed.",form:"above"},
+ {en:"wall",de:"die Wand, die Mauer",e:"🧱",satz:"My bedroom ___ is now yellow.",form:"wall"},
+ {en:"desk",de:"der Schreibtisch",s:"desk",satz:"I do my homework at my ___.",form:"desk"},
+ {en:"lamp",de:"die Lampe",e:"💡",satz:"The ___ is on my desk.",form:"lamp"},
+ {en:"poster",de:"das Poster",e:"🖼️⚽",satz:"I like your new football ___.",form:"poster"},
+ {en:"to think",de:"denken, glauben",e:"🤔",satz:"I ___ your old posters are good too.",form:"think",alt:["think"],tipp:"Vergangenheit: thought"},
+ {en:"best",de:"am besten, beste, am liebsten",e:"🥇",satz:"The poster here is ___.",form:"best"},
+ {en:"comic",de:"der Comic, das Comicheft",e:"📖💥",satz:"I read a ___ in bed.",form:"comic"},
+ {en:"carpet",de:"der Teppich",s:"carpet",satz:"The ___ is new, too.",form:"carpet"},
+ {en:"better",de:"besser",e:"👍⬆️",satz:"My new desk is ___ than my old desk.",form:"better"},
+ {en:"sports shop",de:"das Sportgeschäft",e:"🏪⚽",satz:"Let's go to the ___, I need a ball.",form:"sports shop"},
+ {en:"table",de:"der Tisch",s:"table",satz:"We eat at the ___.",form:"table"},
+ {en:"TV",de:"der Fernseher",e:"📺",satz:"We watch ___ in the living room.",form:"TV"},
+ {en:"chair",de:"der Stuhl",e:"🪑",satz:"I sit on my ___.",form:"chair"}];
+const t2Bild=w=>w.s?T2SVG[w.s]():`<span class="emo">${w.e}</span>`;
+function u2t2Karten(){
+  const k=[],n=U2T2.length,ohneTo=e=>e.replace(/^to /,"");
+  U2T2.forEach(w=>k.push(hoer(text(`Wie heißt das auf Englisch?<div class="bild">${t2Bild(w)}</div><div style="margin-top:8px">„${w.de}“</div>`,[w.en,ohneTo(w.en),...(w.alt||[])],`${w.de} = <b>${w.en}</b>${w.tipp?` · ${w.tipp}`:""}`,"Achte auf die Schreibweise!"),w.en)));
+  U2T2.forEach((w,i)=>k.push(hoer(mc(`Was passt zum Bild?<div class="bild">${t2Bild(w)}</div>`,w.en,[1,2,3].map(d=>U2T2[(i+d*5)%n].en),`${w.en} = ${w.de}`),w.en)));
+  U2T2.forEach((w,i)=>k.push(hoer(mc(`Was heißt <b>„${w.en}“</b> auf Deutsch?`,w.de,[1,2,3].map(d=>U2T2[(i+d*4)%n].de),`${w.en} = ${w.de}`),w.en,true)));
+  U2T2.forEach(w=>k.push(hoer(text(`Setze ein:<br>${w.satz.replace("___",L)}<div class="tipp">(${w.de})</div>`,[w.form],`${w.satz.replace("___","<b>"+w.form+"</b>")}${w.warum?"<br>"+w.warum:""}`),w.satz.replace("___",w.form))));
+  k.push(paare("Ordne zu: Möbel",[["wardrobe","Kleiderschrank"],["desk","Schreibtisch"],["chair","Stuhl"],["table","Tisch"],["shelf","Regal"]]));
+  k.push(paare("Ordne zu: Im Zimmer",[["wall","Wand"],["carpet","Teppich"],["lamp","Lampe"],["poster","Poster"],["TV","Fernseher"]]));
+  k.push(paare("Ordne zu",[["to change","verändern"],["to think","denken"],["above","über"],["better","besser"],["best","am besten"]]));
+  k.push(mc("Was ist die Mehrzahl von <b>shelf</b>?","shelves",["shelfs","shelfes","shelve"],"one shelf → two <b>shelves</b> (f wird zu v!)"));
+  k.push(mc("Was ist die Vergangenheit (simple past) von <b>think</b>?","thought",["thinked","thank","thinkt"],"think → <b>thought</b> (unregelmäßig)"));
+  k.push(mc(`good – <b>${L}</b> – best`,"better",["gooder","more good","bestest"],"good – <b>better</b> – best"));
+  U2T2.forEach(w=>k.push(hoer(text(`🎧 <b>Hör gut zu</b> und schreib das englische Wort auf.<div class="tipp">Tippe auf 🔊 – so oft du willst. Mit 🐢 hörst du es langsam.</div>`,[w.en,ohneTo(w.en),...(w.alt||[])],`Du hast gehört: <b>${w.en}</b> = ${w.de}`,"Achte auf jeden Buchstaben!"),w.en,true)));
+  return k}
 
 const THEMEN=[
 /* ---------------------------------------------------------------- DEUTSCH */
@@ -1234,6 +1277,11 @@ const THEMEN=[
  ]},
 
 /* ---------------------------------------------------------------- ENGLISCH */
+{id:"e-u2-t2",fach:"englisch",titel:"Unit 2, Topic 2 – Vokabeln (S. 33)",quelle:"Vokabelblatt S. 33",probe:null,
+ merke:`<h2>Unit 2 – Topic 2 · Seite 33</h2>
+ <div class="tabwrap"><table class="vokabeln">${U2T2.map(w=>`<tr><td><span class="mini">${t2Bild(w)}</span></td><td>${hoerKnopf(w.en,true)} <b>${w.en}</b><span class="satz">${w.satz.replace("___","<b>"+w.form+"</b>")}</span></td><td>${w.de}</td></tr>`).join("")}</table></div>
+ <div class="merk">Achtung: one <b>shelf</b> → two <b>shelves</b> · think → <b>thought</b> · good → <b>better</b> → <b>best</b></div>`,
+ karten:u2t2Karten()},
 {id:"e-u2-vokabeln",fach:"englisch",titel:"Unit 2 – Vokabeln",quelle:"Vokabelblatt S. 28–30",probe:null,
  merke:`<h2>Unit 2 – Vokabeln</h2><p>Buch S. 28–30 · Intro / Topic 1</p>
  <div class="tabwrap"><table class="vokabeln">${U2.map(w=>`<tr><td><span class="mini">${BILD[w.bild]()}</span></td><td>${hoerKnopf(w.en,true)} <b>${w.en}</b><span class="satz">${w.satz.replace("___","<b>"+w.form+"</b>")}</span></td><td>${w.de}</td></tr>`).join("")}</table></div>
@@ -1346,7 +1394,8 @@ const THEMEN=[
 {id:"e-haeufigkeit",fach:"englisch",titel:"Häufigkeitsadverbien",quelle:"Heft 11.11. / Buch S. 142",probe:null,
  merke:`<h2>Häufigkeitsadverbien</h2>
  <p>Wenn du ausdrücken willst, wie <b>häufig</b> etwas passiert, verwendest du <b>never, sometimes, often, usually</b> und <b>always</b>.</p>
- <div class="tabwrap"><table class="vokabeln">${HAEUFIG.map(([en,de,n])=>`<tr><td><span class="mini">${oftSVG(n)}</span></td><td><b>${en}</b></td><td>${de}</td></tr>`).join("")}</table></div>
+ <div class="tabwrap"><table class="vokabeln">${HAEUFIG6.map(([en,de,n])=>`<tr><td><span class="mini">${oftSVG(n)}</span></td><td>${hoerKnopf(en,true)} <b>${en}</b></td><td>${de}</td></tr>`).join("")}</table></div>
+ <p>Frage: <b>How often do you</b> play tennis? – I <b>sometimes</b> play tennis. · <b>How often are you</b> happy? – I am <b>always</b> happy.</p>
  <div class="merk">Diese Wörter stehen <b>vor dem Verb</b>:<br>I <b>always</b> load · Holly <b>sometimes</b> load<b>s</b> · Amber <b>often</b> load<b>s</b> · They <b>never</b> load the dishwasher.</div>
  <div class="merk">Bei <b>am, is, are</b> (Formen von <b>be</b>) stehen sie <b>nach</b> dem Verb:<br>I am <b>usually</b> tired after sports. · The Richardsons are <b>often</b> happy at home.</div>
  <p class="muted">Vergiss nicht: he/she/it → <b>s</b> am Verb: Holly usually make<b>s</b> her bed. Jay always hoover<b>s</b> the living room.</p>`,
@@ -1368,6 +1417,25 @@ const THEMEN=[
   satz("Bau den Satz:","Luke never tidies the living room."),
   mc("„Amber often loads the dishwasher.“ – Was heißt das?","Amber räumt oft die Spülmaschine ein.",["Amber räumt oft die Spülmaschine aus.","Amber räumt nie die Spülmaschine ein.","Amber hat die Spülmaschine eingeräumt."],"load = einräumen · empty = ausräumen"),
   mc("„Dave sometimes takes out the rubbish.“ – Was heißt das?","Dave bringt manchmal den Müll raus.",["Dave bringt immer den Müll raus.","Dave bringt nie den Müll raus.","Dave hat den Müll rausgebracht."],"sometimes = manchmal"),
+  mc("Was heißt <b>rarely</b>?","kaum, selten",["immer","oft","manchmal"],"rarely = kaum / selten – fast nie, aber eben nicht ganz nie."),
+  paare("Ordne zu: alle 6 Häufigkeitswörter",[["always","immer"],["usually","für gewöhnlich"],["often","oft"],["sometimes","manchmal"],["rarely","kaum"]]),
+  mc("Was kommt öfter vor?","often",["rarely"],"Von oft nach selten: always – usually – often – sometimes – rarely – never"),
+  mc("Was kommt seltener vor?","rarely",["sometimes"],"rarely (kaum) ist seltener als sometimes (manchmal)."),
+  karte("Sag die 6 Häufigkeitswörter von 100 % bis 0 % auf.","<b>always</b> (immer) → <b>usually</b> (für gewöhnlich) → <b>often</b> (oft) → <b>sometimes</b> (manchmal) → <b>rarely</b> (kaum) → <b>never</b> (nie)"),
+  karte("Wo steht das Häufigkeitswort im Satz? (2 Regeln)","<b>Regel 1:</b> zwischen <b>Subjekt</b> und <b>Verb</b>: Ants <b>sometimes</b> eat berries.<br><b>Regel 2:</b> <b>nach</b> „to be“ (am/is/are): Willy is <b>never</b> sad."),
+  ...[["is / Sandy / always / happy","Sandy is always happy."],["football / often / in the afternoon / plays / John","John often plays football in the afternoon."],
+   ["never / my sister / spinach / eats","My sister never eats spinach."],["catches / my cat / sometimes / a mouse","My cat sometimes catches a mouse."],
+   ["Jonathan / late / is / at school / never","Jonathan is never late at school."],["in the afternoon / am / often / I / tired","I am often tired in the afternoon."],
+   ["rarely / we / our neighbours / see","We rarely see our neighbours."],["does / my brother / after school / his homework / usually","My brother usually does his homework after school."],
+   ["never / you / listen to me","You never listen to me."],["are / friendly / always / you","You are always friendly."],
+   ["Tom / rarely / his room / tidies","Tom rarely tidies his room."],["sometimes / I / the piano / play","I sometimes play the piano."],
+   ["never / Sarah / the dishes / washes","Sarah never washes the dishes."]].map(([w,r])=>satz(`Put the words in the correct order:<br><span class="muted">${w}</span>`,r,/ (is|am|are) /.test(r)?"Bei <b>am/is/are</b> steht das Häufigkeitswort <b>danach</b>.":"Das Häufigkeitswort steht <b>zwischen Subjekt und Verb</b>.")),
+  ...[["David never drinks coffee.","David never drink coffee.","David = he → <b>drinks</b> mit s!"],["David often plays computer games.","David often play computer games.","he → <b>plays</b> mit s!"],
+   ["David is sometimes ill.","David sometimes ill.","Bei „ill“ braucht man <b>is</b>: David <b>is</b> sometimes ill."],["David sometimes does the homework.","David sometimes do the homework.","he → <b>does</b>"],
+   ["David is sometimes happy.","David sometimes happy.","Bei „happy“ braucht man <b>is</b> – und das Wort steht danach: David <b>is sometimes</b> happy."],["David never plays an instrument.","David never play an instrument.","he → <b>plays</b> mit s!"]]
+   .map(([r,f,e])=>mc("Welcher Satz ist richtig?",r,[f],e)),
+  text(`How often ${L} you play tennis?`,["do"],"How often <b>do</b> you play tennis? (bei normalen Verben: do)"),
+  text(`How often ${L} you happy?`,["are"],"How often <b>are</b> you happy? (bei happy, ill, late … : are)"),
  ]},
 
 /* ---------------------------------------------------------------- NT */
@@ -1981,6 +2049,7 @@ THEMEN.splice(THEMEN.findIndex(t=>t.id==="m-heftfehler"),0,
    themen: welche App-Themen in der Probe drankommen
    ================================================================ */
 const PROBEN=[
+ {fach:"englisch",datum:"2026-11-20",stunde:"",titel:"Englisch-Vokabeltest (Unit 2, Topic 2)",themen:["e-u2-t2"]},
  {fach:"englisch",datum:"2026-11-16",stunde:"",titel:"Englisch-Vokabeltest (Nachholtermin)",themen:["e-u2-vokabeln","e-chores"]},
  {fach:"musik",datum:"2026-11-20",stunde:"nächste Woche · Nachholtermin noch offen",titel:"Musik-Probe",themen:["mu-klaviatur","mu-notensystem","mu-takt","mu-rhythmus"]},
  {fach:"mathe",datum:"2026-11-16",stunde:"1. Stunde",titel:"Mathe-Probe (Brüche)",themen:["m-heftfehler","m-brucharten","m-erweitern","m-vergleichen","m-bruchteile","m-anzahlen","m-groessen","m-ganzes","m-gemischt","m-zahlenstrahl","m-sachaufgaben"]},
@@ -2988,11 +3057,12 @@ function druckKarten(fid){
   const out=[],gesehen=new Set();
   const add=(v,r,klein)=>{const k=plain(v)+"|"+plain(r);if(gesehen.has(k)||!plain(r))return;gesehen.add(k);out.push({v,r,klein})};
   if(fid==="englisch"){
+    U2T2.forEach(w=>add(`<div class="dk-bild">${t2Bild(w)}</div><b class="dk-wort">${w.en}</b>`,`<b class="dk-wort">${w.de}</b><span class="dk-satz">${w.satz.replace("___","<u>"+w.form+"</u>")}</span>`));
     U2.forEach(w=>add(`<div class="dk-bild">${BILD[w.bild]()}</div><b class="dk-wort">${w.en}</b>`,`<b class="dk-wort">${w.de}</b><span class="dk-satz">${w.satz.replace("___","<u>"+w.form+"</u>")}</span>`));
     CHORES.forEach(c=>add(`<div class="dk-bild">${BILD[c.bild]()}</div><b class="dk-wort">${c.en}</b>`,`<b class="dk-wort">${c.de}</b>`));
     HAEUFIG.forEach(([en,de,n])=>add(`<div class="dk-bild">${oftSVG(n)}</div><b class="dk-wort">${en}</b>`,`<b class="dk-wort">${de}</b>`));
   }
-  themenVon(fid).filter(t=>t.quelle!=="Beispiel"&&!(fid==="englisch"&&["e-u2-vokabeln","e-chores"].includes(t.id))).forEach(t=>{
+  themenVon(fid).filter(t=>t.quelle!=="Beispiel"&&!(fid==="englisch"&&["e-u2-vokabeln","e-chores","e-u2-t2"].includes(t.id))).forEach(t=>{
     (t.karten||[]).forEach(q=>{
       if(q.typ==="karte")add(druckSauber(q.frage),q.antwort);
       else if(q.typ==="paare")q.paare.forEach(([a,b])=>add(`<b class="dk-wort">${a}</b>`,`<b class="dk-wort">${b}</b>`));
