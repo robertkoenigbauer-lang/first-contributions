@@ -199,6 +199,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:6px solid var(--blau);cursor:grab}
 input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(59,180,240,.5)}
 .zwei-regler{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.inkl-text{margin:0;color:var(--grau-hell);font-size:.95rem}
 .umfang-liste{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .umfang-liste span{font-size:.82rem;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.06);color:#cfd5dd;border:1px solid var(--linie-dunkel)}
 .umfang-liste span.neu{background:rgba(0,141,210,.18);border-color:rgba(0,141,210,.5);color:#fff}
@@ -384,7 +385,7 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
         <span class="zeile"><span>Räume, die man</span></span>
         <span class="zeile"><span class="glanz">sauber sieht.</span></span>
       </h1>
-      <p class="sub">Büro-, Praxis- und Objektreinigung für Unternehmen und Hausverwaltungen im Landkreis Freising und Münchner Norden. Mit Profi-Technik, festen Reinigungskräften – und dem Inhaber als direktem Ansprechpartner.</p>
+      <p class="sub">Büro-, Praxis- und Objektreinigung für Unternehmen und Hausverwaltungen im Landkreis Freising und Münchner Norden. Mit Markenprodukten, Profi-Technik, festen Reinigungskräften – und dem Inhaber als direktem Ansprechpartner.</p>
       <div class="hero-cta">
         <a class="btn" href="#rechner">Preis in 60 Sekunden berechnen
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -494,18 +495,14 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
         <div class="opt" id="haeufigkeit"></div>
       </fieldset>
 
-      <fieldset class="schritt-r">
-        <legend class="label"><i>4</i>Wie gründlich?</legend>
-        <div class="opt drei">
-          <label><input type="radio" name="umfang" value="basis"><span class="kachel"><b>Basis</b><small>Böden &amp; Müll</small></span></label>
-          <label><input type="radio" name="umfang" value="standard" checked><span class="kachel"><b>Standard</b><small>+ Sanitär, Küche, Oberflächen</small></span></label>
-          <label><input type="radio" name="umfang" value="komfort"><span class="kachel"><b>Komfort</b><small>+ Glastüren, Kontaktflächen, Nachfüllen</small></span></label>
-        </div>
+      <div class="schritt-r">
+        <div class="label"><i>4</i>Immer inklusive</div>
+        <p class="inkl-text">Bei uns gibt es keine abgespeckten Pakete. Ihre Unterhaltsreinigung ist immer komplett:</p>
         <div class="umfang-liste" id="umfang-liste" aria-live="polite"></div>
-      </fieldset>
+      </div>
 
       <fieldset class="schritt-r">
-        <legend class="label"><i>5</i>Zusätzlich interessant? <span class="zusatz">(Preis nach Besichtigung)</span></legend>
+        <legend class="label"><i>5</i>Zusätzlich gewünscht? <span class="zusatz">(separates Angebot, eigene Rechnung)</span></legend>
         <div class="extras">
           <label><input type="checkbox" name="extra" value="Fensterreinigung"> Fensterreinigung</label>
           <label><input type="checkbox" name="extra" value="Teppich-Tiefenreinigung"> Teppich-Tiefenreinigung</label>
@@ -572,7 +569,7 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
       <li class="rein"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Ein fester Ansprechpartner</b><span>Robert Königbauer kümmert sich persönlich – vom Angebot bis zur Reklamation.</span></div></li>
       <li class="rein v1"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Feste Reinigungskräfte</b><span>Immer dieselben Gesichter in Ihrem Objekt – keine wechselnden Aushilfen.</span></div></li>
       <li class="rein v2"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Profi-Technik</b><span>Teppich-Tiefenreinigung, Einscheibenmaschine und Arbeitsbühne für Glasflächen in großer Höhe.</span></div></li>
-      <li class="rein v3"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Markenprodukte</b><span>Wir arbeiten mit Markenherstellern wie TASKI und Dr. Schnell – für saubere Ergebnisse und schonende Pflege Ihrer Oberflächen.</span></div></li>
+      <li class="rein v3"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Markenprodukte</b><span>Maschinen und Mittel von Markenherstellern wie TASKI, BISSELL BigGreen und Dr. Schnell – für saubere Ergebnisse und schonende Pflege Ihrer Oberflächen.</span></div></li>
       <li class="rein"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Alle Mitarbeiter angemeldet</b><span>Ordnungsgemäß beschäftigt und versichert – keine Schwarzarbeit, keine Subunternehmer-Ketten.</span></div></li>
       <li class="rein v1"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Betriebshaftpflichtversichert</b><span>Ihr Objekt ist bei uns abgesichert.</span></div></li>
     </ul>
@@ -624,7 +621,7 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
   <h2 class="rein" style="margin-bottom:24px">Häufige Fragen</h2>
   <details class="rein"><summary>Wie genau ist der Preisrechner?</summary><p>Er zeigt einen Richtwert für Ihren monatlichen Pauschalpreis auf Basis von Erfahrungswerten für Fläche, Häufigkeit und Leistungsumfang. Der tatsächliche Aufwand hängt von Bodenbelägen, Möblierung und Verschmutzung ab – deshalb erhalten Sie nach der kostenlosen Besichtigung einen verbindlichen Festpreis.</p></details>
   <details class="rein"><summary>Was bedeutet Pauschalpreis?</summary><p>Sie zahlen jeden Monat denselben festen Betrag – egal, ob wir mal länger brauchen. Kleine Sonderwünsche sind inklusive, Material und Anfahrt ebenfalls. So wissen Sie schon zu Beginn, was die Reinigung im ganzen Jahr kostet.</p></details>
-  <details class="rein"><summary>Welche Reinigungsmittel und Geräte verwenden Sie?</summary><p>Wir arbeiten mit Markenprodukten, zum Beispiel von TASKI und Dr. Schnell, und mit Profi-Geräten wie Sprühextraktion, Einscheibenmaschine und Arbeitsbühne.</p></details>
+  <details class="rein"><summary>Welche Reinigungsmittel und Geräte verwenden Sie?</summary><p>Wir arbeiten mit Markenprodukten, zum Beispiel von TASKI, BISSELL BigGreen und Dr. Schnell, und mit Profi-Geräten wie Sprühextraktion, Einscheibenmaschine und Arbeitsbühne.</p></details>
   <details class="rein"><summary>Reinigen Sie auch früh morgens oder abends?</summary><p>Nach Absprache ja – wir stimmen die Reinigungszeiten mit Ihnen ab, damit Ihr Betrieb möglichst wenig gestört wird.</p></details>
   <details class="rein"><summary>Arbeiten Sie auch für Hausverwaltungen?</summary><p>Ja – Treppenhaus- und Objektreinigung für Hausverwaltungen und WEGs, inklusive Reinigungsnachweis.</p></details>
   <details class="rein"><summary>Wie schnell können Sie starten?</summary><p>In der Regel innerhalb von 1–2 Wochen nach Auftragserteilung, bei Sonderreinigungen oft schneller.</p></details>
@@ -688,7 +685,7 @@ var PREISE = {
   mindestStundenEinsatz: 1.0, // Mindestzeit pro Einsatz (Büro, Praxis, Laden)
   leistung: { buero: 150, praxis: 110, laden: 170 },   // gereinigte m² pro Stunde im Standard-Umfang
   treppe: { minutenProEtage: 10, ruestMinuten: 15, mindestStundenEinsatz: 0.5 },
-  umfang: { basis: 0.8, standard: 1.0, komfort: 1.25 },
+  umfang: { komplett: 1.0 },   // ein Paket für alle – Faktor bei Bedarf anpassen
   wochenProMonat: 4.33,
   mwst: 0.19
 };
@@ -700,14 +697,10 @@ var HAEUFIGKEIT = {
 };
 var UMFANG = {
   flaeche: {
-    basis: ['Böden saugen & wischen','Papierkörbe & Müll'],
-    standard: ['Böden saugen & wischen','Papierkörbe & Müll','Sanitärräume','Teeküche','Tische & Oberflächen'],
-    komfort: ['Böden saugen & wischen','Papierkörbe & Müll','Sanitärräume','Teeküche','Tische & Oberflächen','Glastüren & Spiegel','Kontaktflächen desinfizieren','Verbrauchsmaterial auffüllen']
+    komplett: ['Böden saugen & wischen','Papierkörbe & Müll','Sanitärräume','Teeküche','Tische & Oberflächen','Glastüren & Spiegel','Kontaktflächen desinfizieren','Verbrauchsmaterial auffüllen']
   },
   treppe: {
-    basis: ['Stufen kehren','Podeste wischen'],
-    standard: ['Stufen kehren & wischen','Handläufe & Geländer','Eingangsbereich','Briefkastenanlage'],
-    komfort: ['Stufen kehren & wischen','Handläufe & Geländer','Eingangsbereich','Briefkastenanlage','Glas der Haustür','Kellerflur','Aufzugskabine']
+    komplett: ['Stufen kehren & wischen','Handläufe & Geländer','Eingangsbereich','Briefkastenanlage','Glas der Haustür','Kellerflur','Aufzugskabine']
   }
 };
 
@@ -739,7 +732,7 @@ var UMFANG = {
     (function f(t){var k=Math.min(1,(t-t0)/600);k=1-Math.pow(1-k,3);el.textContent=eur(start+(ziel-start)*k);if(k<1)requestAnimationFrame(f)})(t0);
   }
   function rechnen(){
-    var art=wert('art'), umfang=wert('umfang'), freq=parseFloat(wert('freq'))||1, P=PREISE, stunden, beschreibung, treppe=art==='treppe';
+    var art=wert('art'), umfang='komplett', freq=parseFloat(wert('freq'))||1, P=PREISE, stunden, beschreibung, treppe=art==='treppe';
     $('#regler-flaeche').hidden=treppe; $('#regler-treppe').hidden=!treppe;
     $('#groesse-titel').textContent=treppe?'Wie groß ist die Anlage?':'Wie groß ist die Fläche?';
     if(treppe){
@@ -759,16 +752,16 @@ var UMFANG = {
     $('#r-jahr').textContent='ca. '+eur(monat*12);
     $('#r-einsatz').textContent='ca. '+eur2(proEinsatz);
     var tab=UMFANG[treppe?'treppe':'flaeche'];
-    $('#umfang-liste').innerHTML=tab[umfang].map(function(x){return '<span'+(tab.basis.indexOf(x)<0?' class="neu"':'')+'>✓ '+x+'</span>'}).join('');
+    $('#umfang-liste').innerHTML=tab.komplett.map(function(x){return '<span class="neu">✓ '+x+'</span>'}).join('');
     var extras=$$('input[name="extra"]:checked').map(function(e){return e.value});
     $$('.extras label').forEach(function(l){l.classList.toggle('an',l.querySelector('input').checked)});
-    var ex=$('#r-extras'); ex.hidden=!extras.length; ex.textContent=extras.length?'Zusätzlich: '+extras.join(', ')+' – Preis nach Besichtigung.':'';
+    var ex=$('#r-extras'); ex.hidden=!extras.length; ex.textContent=extras.length?'Zusätzlich gewünscht: '+extras.join(', ')+' – dafür erhalten Sie ein eigenes Angebot.':'';
     var fText=$('input[name="freq"]:checked').parentNode.querySelector('b').textContent;
-    letzterText=beschreibung+', '+fText+', Umfang '+umfang.charAt(0).toUpperCase()+umfang.slice(1)+' – Pauschalpreis-Richtwert ca. '+eur(monat)+' netto pro Monat (Spanne '+eur(lo)+' bis '+eur(hi)+')'+(extras.length?'. Zusätzlich: '+extras.join(', '):'');
+    letzterText=beschreibung+', '+fText+' – Pauschalpreis-Richtwert ca. '+eur(monat)+' netto pro Monat (Spanne '+eur(lo)+' bis '+eur(hi)+')'+(extras.length?'. Zusätzlich: '+extras.join(', '):'');
     $$('input[type=range]').forEach(reglerFarbe);
   }
   $$('input[name="art"]').forEach(function(i){i.addEventListener('change',function(){haeufigkeitAufbauen(wert('art'));rechnen()})});
-  $$('input[name="umfang"],input[name="extra"]').forEach(function(i){i.addEventListener('change',rechnen)});
+  $$('input[name="extra"]').forEach(function(i){i.addEventListener('change',rechnen)});
   $$('input[type=range]').forEach(function(i){i.addEventListener('input',rechnen)});
   haeufigkeitAufbauen('buero'); rechnen();
   // "Treppenhaus-Preis berechnen" wählt direkt Treppenhaus
