@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Königbauer Team-App</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0E141D">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+@font-face{font-family:"Archivo";src:url(../fonts/archivo-latin-900-normal.woff2) format("woff2");font-weight:900;font-display:swap}
+@font-face{font-family:"Manrope";src:url(../fonts/manrope-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Manrope";src:url(../fonts/manrope-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"Manrope";src:url(../fonts/manrope-latin-800-normal.woff2) format("woff2");font-weight:800;font-display:swap}
+:root{--dark:#0E141D;--bg:#F4F6F8;--card:#fff;--ink:#0C0D10;--muted:#5B6573;--line:#E2E6EB;--blau:#008DD2;--blau-t:#0077B3;--eis:#E6F4FB;--rot:#C62828;--rot-l:#FDECEC;--gruen:#1E8E5A;--gruen-l:#E5F5EC;
+--display:"Archivo","Arial Black",system-ui,sans-serif;--body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);font-size:16px;line-height:1.45;padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:10;background:var(--dark);color:#fff;display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));border-bottom:3px solid var(--blau)}
+header img{height:36px}
+header .t b{display:block;font:900 17px/1 var(--display)}
+header .t span{display:block;font-size:10px;letter-spacing:.28em;color:#3BB4F0;margin-top:3px;font-weight:800}
+header .wer{margin-left:auto;text-align:right;font-size:13px;color:#C9D1DB}
+main{max-width:640px;margin:0 auto;padding:16px max(16px,env(safe-area-inset-right)) 16px max(16px,env(safe-area-inset-left))}
+h1{font:900 26px/1.1 var(--display);margin:4px 0 14px;letter-spacing:-.02em}
+h2{font:900 19px/1.2 var(--display);margin:22px 0 10px}
+.muted{color:var(--muted);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat b{display:block;font:900 22px/1 var(--display);color:var(--blau-t);font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.monat{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.monat b{font:900 20px var(--display)}
+.rund{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:20px;cursor:pointer}
+.tage{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.tag{display:flex;align-items:center;gap:12px;padding:10px 12px;border-top:1px solid var(--line);cursor:pointer;width:100%;background:none;border-left:0;border-right:0;border-bottom:0;font:inherit;text-align:left;color:inherit}
+.tag:first-child{border-top:0}
+.tag.we{background:#F8FAFC}
+.tag .d{width:44px;height:44px;border-radius:12px;background:var(--bg);display:grid;place-items:center;text-align:center;font:900 16px/1 var(--display);flex:none}
+.tag .d small{display:block;font:700 10px var(--body);color:var(--muted)}
+.tag.voll .d{background:var(--blau);color:#fff}.tag.voll .d small{color:#D5EEFA}
+.tag.heute .d{outline:2px solid var(--blau);outline-offset:2px}
+.tag .info{flex:1;min-width:0;font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tag .h{font-weight:800;color:var(--blau-t);font-variant-numeric:tabular-nums}
+.tag .plus{font-size:22px;color:var(--muted)}
+label{display:block;font-weight:800;font-size:14px;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:13px 12px;border:1.5px solid var(--line);border-radius:12px;font:inherit;background:var(--bg);color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--blau);background:#fff}
+.zwei{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;border:0;border-radius:999px;background:var(--blau);color:#fff;font:800 16px var(--body);cursor:pointer;text-decoration:none;margin-top:12px}
+.btn.zweit{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.rot{background:var(--rot-l);color:var(--rot)}
+.btn.wa{background:#1FA855}
+.btn:disabled{opacity:.5}
+.reihe{display:flex;gap:10px}.reihe .btn{margin-top:12px}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:800;background:var(--eis);color:var(--blau-t)}
+.pill.ok{background:var(--gruen-l);color:var(--gruen)}
+.artikel{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.artikel:first-child{border-top:0}
+.artikel span{flex:1}
+.menge{display:flex;align-items:center;gap:8px}
+.menge button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:20px;cursor:pointer}
+.menge b{min-width:22px;text-align:center;font-variant-numeric:tabular-nums}
+.sig{width:100%;height:190px;border:2px dashed var(--blau);border-radius:12px;background:#fff;touch-action:none;display:block}
+.vorschau{max-width:100%;border-radius:12px;margin-top:10px}
+.hinweis{background:var(--eis);border-radius:12px;padding:12px;font-size:14px;margin:12px 0}
+.hinweis.warn{background:#FFF6E0}
+nav{position:fixed;inset:auto 0 0 0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:10}
+nav button{flex:1;border:0;background:none;padding:8px 2px 10px;font:700 12px var(--body);color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+nav button i{font-style:normal;font-size:22px}
+nav button.an{color:var(--blau-t)}
+.modal{position:fixed;inset:0;background:rgba(14,20,29,.55);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.modal-box{background:#fff;width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--dark);color:#fff;padding:10px 16px;border-radius:12px;z-index:30;font-size:14px;max-width:90vw;text-align:center}
+.start{background:var(--dark);color:#fff;border-radius:20px;padding:26px 18px;text-align:center;margin-bottom:14px}
+.start img{height:80px;margin:0 auto 10px;display:block}
+</style>
+</head>
+<body>
+<header><img src="../img/logo-rk-dunkel.png" alt=""><div class="t"><b>Königbauer</b><span>TEAM-APP</span></div><div class="wer" id="wer"></div></header>
+<main id="main"></main>
+<nav id="nav" hidden>
+  <button data-s="stunden"><i>🕒</i>Stunden</button>
+  <button data-s="bestellen"><i>🛒</i>Bestellen</button>
+  <button data-s="melden"><i>📷</i>Melden</button>
+  <button data-s="mehr"><i>⚙️</i>Mehr</button>
+</nav>
+<div class="modal" id="modal" hidden><div class="modal-box" id="mbox"></div></div>
+<div class="toast" id="toast" hidden></div>
+<script src="jspdf.min.js"></script>
+<script>
+/* ============================================================
+   Königbauer Team-App – läuft komplett auf dem Handy.
+   Alle Einträge bleiben auf diesem Gerät (localStorage).
+   Versand an den Chef per Teilen (WhatsApp/Mail) oder Download.
+   ============================================================ */
+var CHEF = { name: 'Robert Königbauer', mail: 'info@koenigbauer-gebaeudereinigung.de', wa: '491721083808', firma: 'Königbauer Gebäudereinigung' };
+var ARTIKEL = ['Müllbeutel 120 L','Müllbeutel 35 L','Bio-Müllbeutel 10 L','Glasreiniger','Sanitärreiniger','Urinsteinentferner','Allzweck-/Unterhaltsreiniger','Mikrofasertücher','Einweghandschuhe Nitril','Staubtücher (Nachfüll)','Staubsaugerbeutel','Wischmopp-Bezüge','Schwämme / Pads'];
+var KEY = 'koenigbauer-team-app-v1';
+var WT = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+var MON = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+
+var D = laden();
+var S = { seite: 'stunden', monat: heuteMonat(), bestellung: {} };
+function laden(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {} }catch(e){ return {} } }
+function speichern(){ try{ localStorage.setItem(KEY, JSON.stringify(D)) }catch(e){ toast('Speichern nicht möglich – privater Modus?') } }
+D.eintraege = D.eintraege || {}; D.signaturen = D.signaturen || {}; D.objekte = D.objekte || [];
+
+var $ = function(s){ return document.querySelector(s) };
+function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}) }
+function heuteMonat(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0') }
+function heuteIso(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0') }
+function monatName(m){ var p=m.split('-'); return MON[+p[1]-1]+' '+p[0] }
+function minuten(e){ if(!e||!e.von||!e.bis)return 0; var a=e.von.split(':'),b=e.bis.split(':'); var m=(+b[0]*60+ +b[1])-(+a[0]*60+ +a[1]); if(m<0)m+=1440; return Math.max(0,m-(+e.pause||0)) }
+function std(m){ return (m/60).toFixed(2).replace('.',',') }
+function tageImMonat(m){ var p=m.split('-'); var n=new Date(+p[0],+p[1],0).getDate(), out=[]; for(var i=1;i<=n;i++){ out.push(p[0]+'-'+p[1]+'-'+String(i).padStart(2,'0')) } return out }
+function datumDe(iso){ var p=iso.split('-'); var d=new Date(+p[0],+p[1]-1,+p[2]); return WT[d.getDay()]+', '+p[2]+'.'+p[1]+'.'+p[0] }
+function toast(t){ var el=$('#toast'); el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(function(){el.hidden=true},2600) }
+function modal(html){ $('#mbox').innerHTML=html; $('#modal').hidden=false }
+function zu(){ $('#modal').hidden=true }
+$('#modal').addEventListener('click',function(e){ if(e.target.id==='modal')zu() });
+
+/* ---------- Teilen: Datei an WhatsApp/Mail, sonst Download ---------- */
+function teilen(blob, dateiname, titel, text){
+  var file = new File([blob], dateiname, { type: blob.type });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    return navigator.share({ files: [file], title: titel, text: text }).then(function(){ toast('Geteilt ✓') }).catch(function(e){ if(e.name!=='AbortError')herunterladen(blob,dateiname) });
+  }
+  herunterladen(blob, dateiname);
+  toast('Datei gespeichert – bitte per Mail oder WhatsApp an den Chef schicken.');
+  return Promise.resolve();
+}
+function herunterladen(blob, dateiname){ var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=dateiname; document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000) }
+function whatsapp(text){ location.href='https://wa.me/'+CHEF.wa+'?text='+encodeURIComponent(text) }
+function mail(betreff,text){ location.href='mailto:'+CHEF.mail+'?subject='+encodeURIComponent(betreff)+'&body='+encodeURIComponent(text) }
+
+/* ---------- Start / Name ---------- */
+function render(){
+  $('#wer').textContent = D.name || '';
+  $('#nav').hidden = !D.name;
+  document.querySelectorAll('nav button').forEach(function(b){ b.classList.toggle('an', b.dataset.s===S.seite) });
+  if(!D.name) return startseite();
+  ({stunden:stunden, bestellen:bestellen, melden:melden, mehr:mehr})[S.seite]();
+  scrollTo(0,0);
+}
+function startseite(){
+  $('#main').innerHTML = '<div class="start"><img src="../img/logo-rk-dunkel.png" alt=""><h1 style="margin:0">Willkommen!</h1><p style="color:#C9D1DB;margin:6px 0 0">Die Team-App der Königbauer Gebäudereinigung</p></div>'+
+    '<div class="card"><label for="n">Dein Vor- und Nachname</label><input id="n" autocomplete="name" placeholder="z. B. Anna Beispiel">'+
+    '<div class="hinweis">Deine Stunden werden <b>nur auf diesem Handy</b> gespeichert. Am Monatsende schickst du den Stundenzettel an Robert. Tipp: Die App über „Teilen“ → <b>„Zum Startbildschirm“</b> hinzufügen.</div>'+
+    '<button class="btn" id="los">Los geht\'s</button></div>';
+  $('#los').onclick=function(){ var n=$('#n').value.trim(); if(n.length<3)return toast('Bitte deinen Namen eintragen.'); D.name=n; speichern(); render() };
+}
+document.querySelectorAll('nav button').forEach(function(b){ b.onclick=function(){ S.seite=b.dataset.s; render() } });
+
+/* ---------- Stunden ---------- */
+function stunden(){
+  var m=S.monat, tage=tageImMonat(m), summe=0, anzahl=0;
+  tage.forEach(function(t){ var mm=minuten(D.eintraege[t]); if(mm){summe+=mm;anzahl++} });
+  var sig=D.signaturen[m], heute=heuteIso();
+  var h='<h1>Mein Stundenzettel</h1>'+
+    '<div class="monat"><button class="rund" id="zur" aria-label="Vormonat">‹</button><b>'+monatName(m)+'</b><button class="rund" id="vor" aria-label="Nächster Monat">›</button></div>'+
+    '<div class="stats"><div class="stat"><b>'+std(summe)+'</b><span>Stunden</span></div><div class="stat"><b>'+anzahl+'</b><span>Tage</span></div><div class="stat"><b>'+(sig?'✓':'–')+'</b><span>'+(sig?'unterschrieben':'offen')+'</span></div></div>';
+  if(sig){
+    h+='<div class="card"><span class="pill ok">Unterschrieben</span><p class="muted">Der Monat ist abgeschlossen.</p>'+
+       '<button class="btn" id="senden">📤 An Robert senden</button><button class="btn zweit" id="pdf">🖨️ PDF ansehen / drucken</button><button class="btn rot" id="oeffnen">Unterschrift zurücknehmen</button></div>';
+  } else if(anzahl){
+    h+='<button class="btn" id="unter" style="margin:0 0 14px">✍️ Monat unterschreiben</button>';
+  }
+  if(!sig) h+='<p class="muted">Tippe auf einen Tag und trage ein, von wann bis wann du gearbeitet hast – am besten gleich am selben Tag.</p>';
+  h+='<div class="tage">';
+  tage.forEach(function(t){
+    var e=D.eintraege[t], mm=minuten(e), d=new Date(t+'T12:00'), we=d.getDay()===0||d.getDay()===6;
+    h+='<button class="tag'+(mm?' voll':'')+(we?' we':'')+(t===heute?' heute':'')+'" data-t="'+t+'"'+(sig?' disabled':'')+'>'+
+       '<span class="d">'+(+t.slice(8))+'<small>'+WT[d.getDay()]+'</small></span>'+
+       '<span class="info">'+(mm?esc(e.von+'–'+e.bis+(e.pause?' ('+e.pause+' min Pause)':'')+(e.objekt?' · '+e.objekt:'')):'–')+'</span>'+
+       (mm?'<span class="h">'+std(mm)+' h</span>':(sig?'':'<span class="plus">＋</span>'))+'</button>';
+  });
+  h+='</div>';
+  $('#main').innerHTML=h;
+  $('#zur').onclick=function(){ S.monat=monatPlus(m,-1); render() };
+  $('#vor').onclick=function(){ S.monat=monatPlus(m,1); render() };
+  document.querySelectorAll('.tag').forEach(function(b){ b.onclick=function(){ if(!sig)tagBearbeiten(b.dataset.t) } });
+  if($('#unter')) $('#unter').onclick=function(){ unterschreiben(m) };
+  if($('#senden')) $('#senden').onclick=function(){ pdfErstellen(m).then(function(blob){ teilen(blob,'Stundenzettel_'+D.name.replace(/\s+/g,'_')+'_'+m+'.pdf','Stundenzettel '+monatName(m),'Stundenzettel '+monatName(m)+' – '+D.name) }) };
+  if($('#pdf')) $('#pdf').onclick=function(){ pdfErstellen(m).then(function(blob){ var u=URL.createObjectURL(blob); var w=window.open(u,'_blank'); if(!w)herunterladen(blob,'Stundenzettel_'+m+'.pdf') }) };
+  if($('#oeffnen')) $('#oeffnen').onclick=function(){ modal('<h2>Unterschrift zurücknehmen?</h2><p class="muted">Danach kannst du den Monat wieder bearbeiten und musst neu unterschreiben.</p><div class="reihe"><button class="btn zweit" id="nein">Abbrechen</button><button class="btn rot" id="ja">Zurücknehmen</button></div>'); $('#nein').onclick=zu; $('#ja').onclick=function(){ delete D.signaturen[m]; speichern(); zu(); render() } };
+}
+function monatPlus(m,n){ var p=m.split('-'), d=new Date(+p[0],+p[1]-1+n,1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0') }
+function letzterEintrag(){ var ks=Object.keys(D.eintraege).sort(); return ks.length?D.eintraege[ks[ks.length-1]]:null }
+function tagBearbeiten(t){
+  var e=D.eintraege[t]||letzterEintrag()||{von:'',bis:'',pause:0,objekt:''}, neu=!D.eintraege[t];
+  var opts=D.objekte.map(function(o){return '<option>'+esc(o)+'</option>'}).join('');
+  modal('<h2>'+datumDe(t)+'</h2>'+(neu&&letzterEintrag()?'<p class="muted">Vorschlag vom letzten Eintrag – bitte prüfen.</p>':'')+
+    '<div class="zwei"><div><label for="von">Von</label><input id="von" type="time" value="'+esc(e.von)+'"></div><div><label for="bis">Bis</label><input id="bis" type="time" value="'+esc(e.bis)+'"></div></div>'+
+    '<label for="pause">Pause (Minuten)</label><select id="pause">'+[0,15,30,45,60].map(function(p){return '<option'+(+e.pause===p?' selected':'')+'>'+p+'</option>'}).join('')+'</select>'+
+    '<label for="obj">Objekt / Bemerkung</label><input id="obj" list="objliste" value="'+esc(e.objekt)+'" placeholder="z. B. Büro Schmidt, Treppenhaus …"><datalist id="objliste">'+opts+'</datalist>'+
+    '<button class="btn" id="ok">Speichern</button>'+(neu?'':'<button class="btn rot" id="del">Tag löschen</button>')+'<button class="btn zweit" id="abb">Abbrechen</button>');
+  $('#abb').onclick=zu;
+  if($('#del')) $('#del').onclick=function(){ delete D.eintraege[t]; speichern(); zu(); render() };
+  $('#ok').onclick=function(){
+    var n={von:$('#von').value,bis:$('#bis').value,pause:+$('#pause').value,objekt:$('#obj').value.trim()};
+    if(!n.von||!n.bis) return toast('Bitte Von und Bis eintragen.');
+    if(!minuten(n)) return toast('Die Zeiten passen nicht zusammen.');
+    D.eintraege[t]=n; if(n.objekt&&D.objekte.indexOf(n.objekt)<0){D.objekte.push(n.objekt);D.objekte=D.objekte.slice(-30)}
+    speichern(); zu(); render(); toast('Gespeichert ✓');
+  };
+}
+function unterschreiben(m){
+  modal('<h2>Monat unterschreiben</h2><p class="muted">'+monatName(m)+' – mit dem Finger im Feld unterschreiben. Damit bestätigst du die Richtigkeit deiner Angaben.</p><canvas class="sig" id="sig"></canvas>'+
+    '<div class="reihe"><button class="btn zweit" id="leer">Löschen</button><button class="btn" id="fertig">Unterschreiben</button></div><button class="btn zweit" id="abb">Abbrechen</button>');
+  var c=$('#sig'), r=c.getBoundingClientRect(), x=c.getContext('2d'), dpr=window.devicePixelRatio||1, mal=false, leer=true;
+  c.width=r.width*dpr; c.height=r.height*dpr; x.scale(dpr,dpr); x.lineWidth=2.4; x.lineCap='round'; x.strokeStyle='#0b2a6b';
+  function pos(e){ var b=c.getBoundingClientRect(); return [e.clientX-b.left,e.clientY-b.top] }
+  c.onpointerdown=function(e){ mal=true; leer=false; c.setPointerCapture(e.pointerId); var p=pos(e); x.beginPath(); x.moveTo(p[0],p[1]) };
+  c.onpointermove=function(e){ if(!mal)return; var p=pos(e); x.lineTo(p[0],p[1]); x.stroke() };
+  c.onpointerup=c.onpointercancel=function(){ mal=false };
+  $('#leer').onclick=function(){ x.clearRect(0,0,c.width,c.height); leer=true };
+  $('#abb').onclick=zu;
+  $('#fertig').onclick=function(){ if(leer)return toast('Bitte unterschreiben.'); D.signaturen[m]={bild:c.toDataURL('image/png'),am:new Date().toLocaleString('de-DE')}; speichern(); zu(); render(); toast('Unterschrieben ✓ – jetzt an Robert senden.') };
+}
+
+/* ---------- PDF ---------- */
+var logoDaten=null;
+function logoLaden(){ if(logoDaten)return Promise.resolve(logoDaten); return fetch('../img/logo-rk.png').then(function(r){return r.blob()}).then(function(b){return new Promise(function(ok){var fr=new FileReader();fr.onload=function(){logoDaten=fr.result;ok(logoDaten)};fr.readAsDataURL(b)})}).catch(function(){return null}) }
+function pdfErstellen(m){
+  return logoLaden().then(function(logo){
+    var doc=new jspdf.jsPDF({unit:'mm',format:'a4'}), L=15, W=180, y=15, blau=[0,141,210];
+    if(logo) doc.addImage(logo,'PNG',L,y,25,15.7);
+    doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.text(CHEF.firma,L+30,y+6);
+    doc.setFontSize(12); doc.setFont('helvetica','normal'); doc.text('Stundenzettel '+monatName(m),L+30,y+12);
+    y+=22; doc.setFillColor.apply(doc,blau); doc.rect(L,y,W,1,'F'); y+=7;
+    doc.setFontSize(10); doc.text('Mitarbeiter/in: '+D.name,L,y); doc.text('Erstellt: '+new Date().toLocaleString('de-DE'),L+W,y,{align:'right'}); y+=8;
+    var sp=[['Datum',32],['Von',18],['Bis',18],['Pause',18],['Stunden',20],['Objekt / Bemerkung',74]];
+    function kopf(){ doc.setFillColor.apply(doc,blau); doc.rect(L,y,W,7,'F'); doc.setTextColor(255); doc.setFont('helvetica','bold'); var xx=L; sp.forEach(function(s){doc.text(s[0],xx+2,y+4.8); xx+=s[1]}); doc.setTextColor(0); doc.setFont('helvetica','normal'); y+=7 }
+    kopf(); var summe=0, tage=0, i=0;
+    tageImMonat(m).forEach(function(t){
+      var e=D.eintraege[t], mm=minuten(e); if(!mm)return;
+      if(y>255){ doc.addPage(); y=15; kopf() }
+      if(i++%2){ doc.setFillColor(238,246,251); doc.rect(L,y,W,6.5,'F') }
+      var werte=[datumDe(t),e.von,e.bis,(e.pause||0)+' min',std(mm),doc.splitTextToSize(e.objekt||'',72)[0]||''], xx=L;
+      werte.forEach(function(v,k){ doc.text(String(v),xx+2,y+4.5); xx+=sp[k][1] }); y+=6.5; summe+=mm; tage++;
+    });
+    y+=3; doc.setDrawColor(150); doc.line(L,y,L+W,y); y+=6; doc.setFont('helvetica','bold');
+    doc.text('Arbeitstage: '+tage,L,y); doc.text('Stunden gesamt: '+std(summe)+' h',L+W,y,{align:'right'}); doc.setFont('helvetica','normal');
+    y=Math.max(y+18,245); doc.setFontSize(9); doc.text('Ich bestätige die Richtigkeit der Angaben.',L,y-28);
+    var sig=D.signaturen[m]; if(sig&&sig.bild){ doc.addImage(sig.bild,'PNG',L,y-22,60,20) }
+    doc.line(L,y,L+80,y); doc.line(L+100,y,L+W,y);
+    doc.text('Datum, Unterschrift Mitarbeiter/in'+(sig?' ('+sig.am+')':''),L,y+4); doc.text('Datum, Unterschrift Arbeitgeber',L+100,y+4);
+    return doc.output('blob');
+  });
+}
+
+/* ---------- Bestellen ---------- */
+function bestellen(){
+  var h='<h1>Material bestellen</h1><p class="muted">Menge wählen und an Robert schicken.</p><div class="card">';
+  ARTIKEL.forEach(function(a,i){ var n=S.bestellung[a]||0; h+='<div class="artikel"><span>'+esc(a)+'</span><div class="menge"><button data-i="'+i+'" data-d="-1" aria-label="weniger">−</button><b>'+n+'</b><button data-i="'+i+'" data-d="1" aria-label="mehr">＋</button></div></div>' });
+  h+='</div><label for="frei">Sonstiges / eigene Wünsche</label><textarea id="frei" rows="3" placeholder="z. B. Staubsaugerbeutel Typ XY">'+esc(S.frei||'')+'</textarea>'+
+     '<label for="ort">Für welches Objekt?</label><input id="ort" value="'+esc(S.ort||'')+'" placeholder="optional">'+
+     '<label style="display:flex;gap:10px;align-items:center;font-weight:600"><input type="checkbox" id="dring" style="width:auto"'+(S.dring?' checked':'')+'> Dringend – fehlt schon</label>'+
+     '<button class="btn wa" id="wa">WhatsApp an Robert</button><button class="btn zweit" id="ml">Per E-Mail</button>';
+  $('#main').innerHTML=h;
+  document.querySelectorAll('.menge button').forEach(function(b){ b.onclick=function(){ var a=ARTIKEL[+b.dataset.i]; S.bestellung[a]=Math.max(0,(S.bestellung[a]||0)+ +b.dataset.d); merk(); bestellen() } });
+  function merk(){ S.frei=$('#frei').value; S.ort=$('#ort').value; S.dring=$('#dring').checked }
+  function text(){ merk(); var z=Object.keys(S.bestellung).filter(function(a){return S.bestellung[a]>0}).map(function(a){return '• '+S.bestellung[a]+' × '+a});
+    if(S.frei.trim())z.push('• '+S.frei.trim()); if(!z.length){toast('Bitte etwas auswählen.');return null}
+    return (S.dring?'🔴 DRINGEND – ':'')+'Bestellung von '+D.name+(S.ort?' (Objekt: '+S.ort+')':'')+':\n'+z.join('\n') }
+  $('#wa').onclick=function(){ var t=text(); if(t){ whatsapp(t); S.bestellung={}; S.frei=''; } };
+  $('#ml').onclick=function(){ var t=text(); if(t){ mail('Bestellung von '+D.name,t); S.bestellung={}; S.frei=''; } };
+}
+
+/* ---------- Kaputt / Melden ---------- */
+function melden(){
+  $('#main').innerHTML='<h1>Kaputt / Melden</h1><p class="muted">Etwas kaputt oder fällt dir etwas auf? Beschreiben, Foto machen, an Robert schicken.</p>'+
+    '<div class="card"><label for="art">Art</label><select id="art"><option>Kaputt</option><option>Schaden beim Kunden</option><option>Material fehlt</option><option>Sonstiges</option></select>'+
+    '<label for="wo">Wo? (Objekt / Raum)</label><input id="wo" placeholder="z. B. Büro Schmidt, Damen-WC 1. OG">'+
+    '<label for="was">Was ist los?</label><textarea id="was" rows="3"></textarea>'+
+    '<label for="foto">Foto</label><input id="foto" type="file" accept="image/*" capture="environment"><img id="fv" class="vorschau" hidden alt="Vorschau">'+
+    '<button class="btn" id="send">📤 An Robert senden</button><p class="muted" style="margin-top:8px">Mit Foto öffnet sich „Teilen“ – dort WhatsApp oder Mail wählen.</p></div>';
+  $('#foto').onchange=function(){ var f=this.files[0]; if(f){ $('#fv').src=URL.createObjectURL(f); $('#fv').hidden=false } };
+  $('#send').onclick=function(){
+    var was=$('#was').value.trim(); if(!was)return toast('Bitte kurz beschreiben, was los ist.');
+    var t=$('#art').value+' – gemeldet von '+D.name+' am '+new Date().toLocaleString('de-DE')+'\nOrt: '+($('#wo').value||'–')+'\n'+was;
+    var f=$('#foto').files[0];
+    if(f && navigator.canShare && navigator.canShare({files:[f]})){ navigator.share({files:[f],title:'Meldung',text:t}).then(function(){toast('Gesendet ✓');melden()}).catch(function(){}) }
+    else { if(f)toast('Foto bitte in WhatsApp selbst anhängen.'); whatsapp(t) }
+  };
+}
+
+/* ---------- Mehr ---------- */
+function mehr(){
+  var anz=Object.keys(D.eintraege).length;
+  $('#main').innerHTML='<h1>Mehr</h1>'+
+    '<div class="card"><label for="nm">Dein Name</label><input id="nm" value="'+esc(D.name)+'"><button class="btn zweit" id="nmok">Namen speichern</button></div>'+
+    '<div class="card"><h2 style="margin-top:0">Datensicherung</h2><p class="muted">Deine Einträge ('+anz+' Tage) liegen nur auf diesem Handy. Wenn du das Handy wechselst oder den Browser-Verlauf löschst, sind sie weg – sichere sie vorher.</p>'+
+    '<button class="btn zweit" id="exp">💾 Sicherung speichern / teilen</button><label class="btn zweit" style="cursor:pointer">📂 Sicherung laden<input type="file" id="imp" accept=".json,application/json" hidden></label></div>'+
+    '<div class="card"><h2 style="margin-top:0">Kontakt</h2><p class="muted">'+CHEF.name+'<br>0172 108 3808<br>'+CHEF.mail+'</p><a class="btn wa" href="https://wa.me/'+CHEF.wa+'">WhatsApp an Robert</a></div>'+
+    '<div class="hinweis">Datenschutz: Diese App speichert deine Arbeitszeiten nur auf deinem Gerät. Nichts wird an einen Server übertragen. Erst wenn du den Stundenzettel oder eine Meldung sendest, geht sie über WhatsApp bzw. E-Mail an Robert.</div>'+
+    '<button class="btn rot" id="reset">Alle Daten auf diesem Handy löschen</button>';
+  $('#nmok').onclick=function(){ var n=$('#nm').value.trim(); if(n.length<3)return toast('Bitte Namen eintragen.'); D.name=n; speichern(); render(); toast('Gespeichert ✓') };
+  $('#exp').onclick=function(){ teilen(new Blob([JSON.stringify(D,null,1)],{type:'application/json'}),'Koenigbauer_Sicherung_'+D.name.replace(/\s+/g,'_')+'_'+heuteIso()+'.json','Sicherung','Sicherung Team-App') };
+  $('#imp').onchange=function(){ var f=this.files[0]; if(!f)return; f.text().then(function(t){ var n=JSON.parse(t); if(!n||!n.eintraege)throw 0; D=n; D.signaturen=D.signaturen||{}; D.objekte=D.objekte||[]; speichern(); render(); toast('Sicherung geladen ✓') }).catch(function(){ toast('Diese Datei ist keine gültige Sicherung.') }) };
+  $('#reset').onclick=function(){ modal('<h2>Wirklich alles löschen?</h2><p class="muted">Alle Stunden und Unterschriften auf diesem Handy werden gelöscht. Das kann nicht rückgängig gemacht werden.</p><div class="reihe"><button class="btn zweit" id="nein">Abbrechen</button><button class="btn rot" id="ja">Löschen</button></div>'); $('#nein').onclick=zu; $('#ja').onclick=function(){ D={eintraege:{},signaturen:{},objekte:[]}; speichern(); zu(); render() } };
+}
+
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}) }
+render();
+</script>
+</body>
+</html>
