@@ -29,12 +29,17 @@ function buildTimesheetPdf(sheet, companyName) {
 
     const L = 40;
     const W = doc.page.width - 80;
-    const green = '#1f6f5c';
+    const green = '#0B1322'; // Nachtblau wie die Website
+    const yellow = '#F7C531';
 
-    doc.fillColor(green).font('Helvetica-Bold').fontSize(16).text(companyName, L, 40);
-    doc.fillColor('#000').fontSize(13).text('Stundenzettel', L, 62);
+    // Logo: gelbes Quadrat mit K
+    doc.roundedRect(L, 38, 40, 40, 9).fill(yellow);
+    doc.fillColor(green).font('Helvetica-Bold').fontSize(26).text('K', L, 46, { width: 40, align: 'center' });
+    doc.fillColor(green).font('Helvetica-Bold').fontSize(16).text(companyName, L + 52, 40);
+    doc.fillColor('#000').fontSize(13).text('Stundenzettel', L + 52, 60);
+    doc.rect(L, 112, W, 3).fill(yellow);
     doc.font('Helvetica').fontSize(10);
-    doc.text(`Mitarbeiter/in: ${sheet.user.name}`, L, 86);
+    doc.fillColor('#000').text(`Mitarbeiter/in: ${sheet.user.name}`, L, 86);
     doc.text(`Monat: ${monthLabel(sheet.month)}`, L, 100);
     doc.text(`Erstellt: ${new Date().toLocaleString('de-DE')}`, L, 86, { width: W, align: 'right' });
 
@@ -47,7 +52,7 @@ function buildTimesheetPdf(sheet, companyName) {
       { t: 'Stunden', w: 55 },
       { t: 'Objekt / Bemerkung', w: W - 285 },
     ];
-    let y = 125;
+    let y = 124;
     const rowH = 17;
     function header() {
       doc.rect(L, y, W, rowH).fill(green);
@@ -71,7 +76,7 @@ function buildTimesheetPdf(sheet, companyName) {
         y = 40;
         header();
       }
-      if (i % 2 === 1) doc.rect(L, y, W, rowH).fill('#eef5f2').fillColor('#000');
+      if (i % 2 === 1) doc.rect(L, y, W, rowH).fill('#f1f3f7').fillColor('#000');
       const vals = [fmtDate(e.date), e.start, e.end, e.pause ? `${e.pause} min` : '–', fmtH(e.minutes), [e.object, e.note].filter(Boolean).join(' – ')];
       let x = L;
       doc.fontSize(9);

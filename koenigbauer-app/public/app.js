@@ -98,7 +98,7 @@ function renderLogin() {
   $('#who').textContent = '';
   main.innerHTML = `
   <div class="login card">
-    <img src="icon.svg" class="logo-big" alt="">
+    <div class="mark-k big" aria-hidden="true">K</div>
     <h1 class="center">Anmelden</h1>
     <form id="f">
       <label>Benutzername</label><input name="username" autocomplete="username" autocapitalize="none" required>
@@ -119,7 +119,7 @@ function renderLogin() {
 function renderSetup() {
   main.innerHTML = `
   <div class="login card">
-    <img src="icon.svg" class="logo-big" alt="">
+    <div class="mark-k big" aria-hidden="true">K</div>
     <h1 class="center">Ersteinrichtung</h1>
     <p class="muted">Lege zuerst dein Chef-Konto an. Danach kannst du deine Mitarbeiterinnen hinzufügen.</p>
     <form id="f">
@@ -158,7 +158,7 @@ function isAdmin() {
   return S.me?.role === 'admin';
 }
 function startApp() {
-  $('#who').innerHTML = `${esc(S.me.name)}<br><span style="opacity:.8">${isAdmin() ? 'Chef' : 'Mitarbeiter/in'}</span>`;
+  $('#who').innerHTML = `<b>${esc(S.me.name)}</b><br>${isAdmin() ? 'Chef' : 'Mitarbeiter/in'}`;
   const tabs = isAdmin() ? TABS_ADMIN : TABS_MA;
   const nav = $('#nav');
   nav.innerHTML = tabs.map(([k, ic, l]) => `<button data-tab="${k}"><span class="ic">${ic}</span>${l}</button>`).join('');
@@ -586,16 +586,19 @@ async function viewHours() {
 }
 
 function hoursTable(ov, m) {
-  return `<div class="tablewrap"><table><thead><tr><th>Name</th><th class="num">Std.</th><th class="num">Tage</th><th>Status</th><th></th></tr></thead><tbody>${ov
-    .filter((o) => o.user.active || o.totalMinutes)
+  const rows = ov.filter((o) => o.user.active || o.totalMinutes);
+  return rows
     .map(
-      (o) => `<tr><td><b>${esc(o.user.name)}</b></td><td class="num">${hours(o.totalMinutes)}</td><td class="num">${o.workDays}</td>
-      <td>${o.approvedAt ? '<span class="pill">✓ gegengezeichnet</span>' : o.signedAt ? '<span class="pill orange">unterschrieben</span>' : '<span class="pill gray">offen</span>'}</td>
-      <td class="num"><button class="btn-sm btn-light" data-pdf="${o.user.id}" data-m="${m}">PDF</button>
-      ${o.signedAt && !o.approvedAt ? `<button class="btn-sm" data-appr="${o.user.id}" data-m="${m}">Gegenzeichnen</button>` : ''}
-      ${o.signedAt ? `<button class="btn-sm btn-light" data-unl="${o.user.id}" data-m="${m}" title="Sperre aufheben">🔓</button>` : ''}</td></tr>`
+      (o) => `<div class="list-item">
+      <div class="mat" style="cursor:default"><div><b>${esc(o.user.name)}</b>
+        <div class="muted small">${o.workDays} Tage · ${o.approvedAt ? '<span class="pill">✓ gegengezeichnet</span>' : o.signedAt ? '<span class="pill orange">unterschrieben</span>' : '<span class="pill gray">offen</span>'}</div></div>
+        <div class="price"><b>${hours(o.totalMinutes)} h</b></div></div>
+      <div class="row" style="margin-top:8px"><button class="btn-sm btn-light" data-pdf="${o.user.id}" data-m="${m}">🖨️ PDF</button>
+      ${o.signedAt && !o.approvedAt ? `<button class="btn-sm" data-appr="${o.user.id}" data-m="${m}">✍️ Gegenzeichnen</button>` : ''}
+      ${o.signedAt ? `<button class="btn-sm btn-light" data-unl="${o.user.id}" data-m="${m}">🔓 Freigeben</button>` : ''}</div>
+    </div>`
     )
-    .join('')}</tbody></table></div>`;
+    .join('') || '<span class="muted">Noch keine Stunden.</span>';
 }
 function bindHoursTable() {
   $$('[data-pdf]').forEach((b) => (b.onclick = () => window.open(`/api/timesheet/${b.dataset.m}/pdf?userId=${b.dataset.pdf}`, '_blank')));
