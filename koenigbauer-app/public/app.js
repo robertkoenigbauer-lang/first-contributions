@@ -98,7 +98,7 @@ function renderLogin() {
   $('#who').textContent = '';
   main.innerHTML = `
   <div class="login card">
-    <div class="mark-k big" aria-hidden="true">K</div>
+    <div class="login-logo"><span class="rk" aria-hidden="true"><span class="r">R</span><span class="k">K</span></span><div class="logo-text"><b>Königbauer</b><span>GEBÄUDEREINIGUNG</span></div></div>
     <h1 class="center">Anmelden</h1>
     <form id="f">
       <label>Benutzername</label><input name="username" autocomplete="username" autocapitalize="none" required>
@@ -119,7 +119,7 @@ function renderLogin() {
 function renderSetup() {
   main.innerHTML = `
   <div class="login card">
-    <div class="mark-k big" aria-hidden="true">K</div>
+    <div class="login-logo"><span class="rk" aria-hidden="true"><span class="r">R</span><span class="k">K</span></span><div class="logo-text"><b>Königbauer</b><span>GEBÄUDEREINIGUNG</span></div></div>
     <h1 class="center">Ersteinrichtung</h1>
     <p class="muted">Lege zuerst dein Chef-Konto an. Danach kannst du deine Mitarbeiterinnen hinzufügen.</p>
     <form id="f">
@@ -450,8 +450,8 @@ async function viewOrder() {
     <h1>Bestellen</h1>
     <p class="muted">Etwas wird leer? Einfach antippen, Menge wählen und abschicken. Der Chef bekommt die Bestellung sofort.</p>
     <div class="card">
-      ${mats.map((m, i) => `<div class="list-item row">
-        <div class="grow"><b>${esc(m.name)}</b></div>
+      ${mats.map((m, i) => `<div class="list-item row" style="flex-wrap:nowrap">
+        <div class="grow" style="min-width:0"><b>${esc(m.name)}</b></div>
         <button type="button" class="btn-light btn-sm" data-minus="${i}">−</button>
         <span id="q${i}" style="min-width:28px;text-align:center;font-weight:700">0</span>
         <button type="button" class="btn-sm" data-plus="${i}">＋</button>

@@ -29,15 +29,19 @@ function buildTimesheetPdf(sheet, companyName) {
 
     const L = 40;
     const W = doc.page.width - 80;
-    const green = '#0B1322'; // Nachtblau wie die Website
-    const yellow = '#F7C531';
+    const green = '#008DD2'; // Königbauer-Blau wie die Website
+    const dark = '#0E141D';
 
-    // Logo: gelbes Quadrat mit K
-    doc.roundedRect(L, 38, 40, 40, 9).fill(yellow);
-    doc.fillColor(green).font('Helvetica-Bold').fontSize(26).text('K', L, 46, { width: 40, align: 'center' });
-    doc.fillColor(green).font('Helvetica-Bold').fontSize(16).text(companyName, L + 52, 40);
-    doc.fillColor('#000').fontSize(13).text('Stundenzettel', L + 52, 60);
-    doc.rect(L, 112, W, 3).fill(yellow);
+    // Logo wie auf der Website: dunkles Feld, gespiegeltes R (weiß) und blaues K
+    doc.roundedRect(L, 38, 52, 40, 8).fill(dark);
+    doc.save();
+    doc.translate(L + 26, 0).scale(-1, 1);
+    doc.fillColor('#FFFFFF').font('Helvetica-Bold').fontSize(28).text('R', 0, 45, { lineBreak: false });
+    doc.restore();
+    doc.fillColor(green).font('Helvetica-Bold').fontSize(28).text('K', L + 25, 45, { lineBreak: false });
+    doc.fillColor(dark).font('Helvetica-Bold').fontSize(16).text(companyName, L + 64, 40);
+    doc.fillColor('#000').fontSize(13).text('Stundenzettel', L + 64, 60);
+    doc.rect(L, 112, W, 3).fill(green);
     doc.font('Helvetica').fontSize(10);
     doc.fillColor('#000').text(`Mitarbeiter/in: ${sheet.user.name}`, L, 86);
     doc.text(`Monat: ${monthLabel(sheet.month)}`, L, 100);
@@ -76,7 +80,7 @@ function buildTimesheetPdf(sheet, companyName) {
         y = 40;
         header();
       }
-      if (i % 2 === 1) doc.rect(L, y, W, rowH).fill('#f1f3f7').fillColor('#000');
+      if (i % 2 === 1) doc.rect(L, y, W, rowH).fill('#F4F6F8').fillColor('#000');
       const vals = [fmtDate(e.date), e.start, e.end, e.pause ? `${e.pause} min` : '–', fmtH(e.minutes), [e.object, e.note].filter(Boolean).join(' – ')];
       let x = L;
       doc.fontSize(9);
