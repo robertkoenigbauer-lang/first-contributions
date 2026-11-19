@@ -2,25 +2,27 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Büroreinigung &amp; Gebäudereinigung Neufahrn, Freising | Königbauer Gebäudereinigung</title>
-<meta name="description" content="Königbauer Gebäudereinigung aus Neufahrn bei Freising: Büroreinigung, Praxisreinigung, Treppenhausreinigung und Gewerbereinigung im Landkreis Freising und Münchner Norden. Inhabergeführt, Festpreis in 24 Stunden.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gebäudereinigung Neufahrn &amp; Freising | Königbauer Gebäudereinigung</title>
+<meta name="description" content="Königbauer Gebäudereinigung aus Neufahrn bei Freising: Büroreinigung, Praxisreinigung, Treppenhausreinigung, Teppich- und Glasreinigung. Handwerksbetrieb seit 2011. Preis online berechnen, Festpreis in 24 Stunden.">
 <link rel="canonical" href="https://www.koenigbauer-gebaeudereinigung.de/">
 <link rel="icon" href="img/logo-rk.png">
-<meta name="theme-color" content="#121214">
+<meta name="theme-color" content="#0c0d10">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Königbauer Gebäudereinigung – Neufahrn &amp; Freising">
-<meta property="og:description" content="Büro- und Gewerbereinigung vom Inhaber. Ein fester Ansprechpartner. Festpreis in 24 Stunden.">
-<meta property="og:image" content="https://www.koenigbauer-gebaeudereinigung.de/img/robert-koenigbauer.jpg">
+<meta property="og:description" content="Büro-, Praxis- und Objektreinigung vom Handwerksbetrieb. Preis in 60 Sekunden online berechnen.">
+<meta property="og:image" content="https://www.koenigbauer-gebaeudereinigung.de/img/galerie/3.jpg">
+<link rel="preload" href="fonts/archivo-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/manrope-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "Königbauer Gebäudereinigung",
-  "description": "Gebäudereinigung, Büroreinigung, Praxisreinigung und Treppenhausreinigung in Neufahrn bei Freising und Umgebung.",
+  "description": "Gebäudereinigung, Büroreinigung, Praxisreinigung, Treppenhausreinigung, Teppich- und Glasreinigung in Neufahrn bei Freising und Umgebung.",
   "url": "https://www.koenigbauer-gebaeudereinigung.de/",
   "logo": "https://www.koenigbauer-gebaeudereinigung.de/img/logo-rk.png",
-  "image": "https://www.koenigbauer-gebaeudereinigung.de/img/robert-koenigbauer.jpg",
+  "image": "https://www.koenigbauer-gebaeudereinigung.de/img/galerie/3.jpg",
   "telephone": "+49 172 1083808",
   "email": "info@koenigbauer-gebaeudereinigung.de",
   "founder": {"@type": "Person", "name": "Robert Königbauer"},
@@ -29,232 +31,339 @@
   "geo": {"@type": "GeoCoordinates", "latitude": 48.3156, "longitude": 11.6650},
   "areaServed": ["Neufahrn bei Freising","Freising","Eching","Hallbergmoos","Unterschleißheim","Garching bei München","Oberschleißheim","Moosburg an der Isar","Erding","Allershausen","Kranzberg","Ismaning"],
   "openingHoursSpecification": [{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:00","closes":"18:00"}],
-  "knowsAbout": ["Büroreinigung","Unterhaltsreinigung","Praxisreinigung","Treppenhausreinigung","Glasreinigung","Grundreinigung"]
+  "knowsAbout": ["Büroreinigung","Unterhaltsreinigung","Praxisreinigung","Treppenhausreinigung","Glasreinigung","Teppichreinigung","Grundreinigung"]
 }
 </script>
 <style>
+/* ---------- Schriften (lokal, keine Google-Server) ---------- */
+@font-face{font-family:"Archivo";src:url(fonts/archivo-latin-800-normal.woff2) format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"Archivo";src:url(fonts/archivo-latin-900-normal.woff2) format("woff2");font-weight:900;font-display:swap}
+@font-face{font-family:"Manrope";src:url(fonts/manrope-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Manrope";src:url(fonts/manrope-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"Manrope";src:url(fonts/manrope-latin-800-normal.woff2) format("woff2");font-weight:800;font-display:swap}
+
+/* ---------- Design-Tokens: Logo-Farben Schwarz / Blau / Weiß ---------- */
 :root{
-  --schwarz:#121214; --anthrazit:#2a2a2b; --blau:#008dd2; --blau-dunkel:#006ba1; --blau-hell:#e6f4fb;
-  --weiss:#fff; --grau:#5f6670; --linie:#e4e7eb; --flaeche:#f5f7f9;
-  --radius:18px; --schatten:0 18px 50px rgba(18,18,20,.12);
+  --nacht:#0c0d10; --nacht2:#15171c; --anthrazit:#2a2a2b; --blau:#008dd2; --blau-hell:#3bb4f0; --blau-tief:#00609a;
+  --eis:#e7f4fb; --weiss:#fff; --papier:#f4f6f8; --grau:#5d6672; --grau-hell:#9aa4b1; --linie:#e2e6eb; --linie-dunkel:rgba(255,255,255,.12);
+  --display:"Archivo","Arial Black",system-ui,sans-serif; --text:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --r:20px; --schatten:0 24px 60px -20px rgba(12,13,16,.35);
+  --gutter:max(20px,env(safe-area-inset-left,0px));
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--anthrazit);background:var(--weiss);line-height:1.65;overflow-x:hidden}
+body{margin:0;font-family:var(--text);color:var(--anthrazit);background:var(--weiss);line-height:1.65;font-size:17px;overflow-x:hidden}
 img{max-width:100%;display:block}
-a{color:var(--blau-dunkel)}
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
-h1,h2,h3{line-height:1.12;letter-spacing:-.02em;margin:0}
-h2{font-size:clamp(1.8rem,4vw,2.8rem);color:var(--schwarz)}
-.kicker{display:inline-block;font-size:.78rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--blau);margin-bottom:12px}
-.lead{color:var(--grau);font-size:1.1rem;max-width:680px;margin:14px 0 40px}
-.btn{display:inline-flex;align-items:center;gap:10px;background:var(--blau);color:#fff;padding:15px 26px;border-radius:999px;text-decoration:none;font-weight:700;border:0;cursor:pointer;font-size:1rem;transition:transform .2s,box-shadow .2s,background .2s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,141,210,.35);background:var(--blau-dunkel)}
-.btn.ghost{background:transparent;border:2px solid rgba(255,255,255,.35)}
-.btn.ghost:hover{border-color:#fff;box-shadow:none;background:rgba(255,255,255,.06)}
-.btn svg{width:18px;height:18px}
+a{color:var(--blau-tief)}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--gutter);padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.02;letter-spacing:-.025em;margin:0;text-wrap:balance}
+h2{font-size:clamp(2.1rem,5vw,3.6rem);font-weight:900;color:var(--nacht)}
+.dunkel h2{color:#fff}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;color:var(--blau);margin-bottom:16px}
+.kicker::before{content:"";width:28px;height:2px;background:currentColor}
+.lead{font-size:1.15rem;color:var(--grau);max-width:640px;margin:18px 0 0}
+.dunkel .lead{color:#b9c1cc}
+section{padding:120px 0;position:relative}
+.dunkel{background:var(--nacht);color:#d9dee5}
 
-/* Header */
-header{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,box-shadow .3s}
-header.fest{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--linie)}
-.nav{display:flex;align-items:center;justify-content:space-between;height:76px;gap:18px}
-.marke{display:flex;align-items:center;gap:12px;text-decoration:none}
-.marke img{height:38px;width:auto}
-.marke span{font-weight:800;color:#fff;line-height:1.05;font-size:1.02rem;transition:color .3s}
-.marke small{display:block;font-weight:600;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;opacity:.75}
-header.fest .marke span{color:var(--schwarz)}
-.logo-hell{display:block}.logo-dunkel{display:none}
-header.fest .logo-hell{display:none}header.fest .logo-dunkel{display:block}
-.menu{display:flex;align-items:center;gap:26px}
-.menu a{color:rgba(255,255,255,.85);text-decoration:none;font-weight:600;font-size:.95rem;transition:color .2s}
-.menu a:hover{color:#fff}
-header.fest .menu a{color:var(--anthrazit)}header.fest .menu a:hover{color:var(--blau)}
-.menu .btn{color:#fff!important;padding:11px 20px}
+/* Knöpfe mit Glanz-Effekt */
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:10px;font:800 1rem var(--text);padding:17px 28px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;color:#fff;background:var(--blau);transition:transform .25s,box-shadow .25s,background .25s;isolation:isolate}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s;z-index:-1}
+.btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px -10px rgba(0,141,210,.7)}
+.btn:hover::after{transform:translateX(120%)}
+.btn:focus-visible{outline:3px solid var(--blau-hell);outline-offset:3px}
+.btn.hell{background:#fff;color:var(--nacht)}
+.btn.rand{background:transparent;color:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.3)}
+.btn.rand:hover{box-shadow:inset 0 0 0 2px #fff}
+.btn svg{width:18px;height:18px;flex:none}
 
-/* Hero */
-.hero{position:relative;background:var(--schwarz);color:#fff;padding:150px 0 90px;overflow:hidden;isolation:isolate}
-.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(80px);z-index:-1;animation:schweben 14s ease-in-out infinite alternate}
-.hero::before{width:520px;height:520px;background:rgba(0,141,210,.45);top:-160px;right:-120px}
-.hero::after{width:420px;height:420px;background:rgba(0,141,210,.22);bottom:-200px;left:-120px;animation-delay:-7s}
-@keyframes schweben{to{transform:translate(-60px,50px) scale(1.12)}}
-.hero-raster{position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse at 70% 30%,#000 10%,transparent 70%)}
-.hero .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
-.hero h1{font-size:clamp(2.3rem,5.6vw,4.1rem);font-weight:850}
-.hero h1 em{font-style:normal;color:var(--blau)}
-.hero p.sub{font-size:1.18rem;color:rgba(255,255,255,.8);max-width:560px;margin:22px 0 30px}
-.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
-.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);padding:8px 14px;border-radius:999px;font-size:.88rem;font-weight:600}
-.chip i{width:8px;height:8px;border-radius:50%;background:var(--blau);box-shadow:0 0 0 4px rgba(0,141,210,.25)}
-.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+/* Scroll-Fortschritt */
+.fortschritt{position:fixed;inset:0 0 auto 0;height:3px;z-index:100;background:linear-gradient(90deg,var(--blau),var(--blau-hell));transform-origin:0 50%;transform:scaleX(0)}
 
-.portrait{position:relative}
-.portrait .rahmen{border-radius:26px;overflow:hidden;aspect-ratio:4/5;background:linear-gradient(160deg,#1d1f23,#0d0e10);border:1px solid rgba(255,255,255,.1);box-shadow:0 30px 80px rgba(0,0,0,.5);position:relative}
-.portrait .rahmen img{width:100%;height:100%;object-fit:cover}
-.portrait .rahmen.leer{display:grid;place-items:center}
-.portrait .rahmen.leer img{width:62%;height:auto;object-fit:contain;opacity:.95}
-.portrait .karte{position:absolute;left:-28px;bottom:28px;background:#fff;color:var(--schwarz);border-radius:16px;padding:14px 18px;box-shadow:var(--schatten);display:flex;align-items:center;gap:12px;animation:auf 1s .4s both}
-.portrait .karte b{display:block;font-size:1rem}
-.portrait .karte span{font-size:.83rem;color:var(--grau)}
-.portrait .punkt{width:12px;height:12px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 5px rgba(34,197,94,.2);animation:puls 2s infinite}
-.portrait .badge{position:absolute;right:-16px;top:26px;background:var(--blau);color:#fff;border-radius:14px;padding:12px 16px;font-weight:800;box-shadow:var(--schatten);animation:auf 1s .6s both;text-align:center;line-height:1.1}
-.portrait .badge small{display:block;font-weight:600;font-size:.72rem;opacity:.9}
-@keyframes puls{50%{box-shadow:0 0 0 9px rgba(34,197,94,0)}}
-@keyframes auf{from{opacity:0;transform:translateY(18px)}}
+/* ---------- Kopfzeile ---------- */
+header{position:fixed;inset:0 0 auto 0;z-index:60;transition:background .35s,box-shadow .35s}
+header.fest{background:rgba(12,13,16,.86);backdrop-filter:saturate(140%) blur(14px);-webkit-backdrop-filter:saturate(140%) blur(14px);box-shadow:0 1px 0 var(--linie-dunkel)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:20px;height:84px;transition:height .35s}
+header.fest .nav{height:68px}
+.marke{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+.marke img{height:40px;width:auto}
+.marke b{font-family:var(--display);font-weight:900;font-size:1.05rem;letter-spacing:.01em;line-height:1;display:block}
+.marke small{display:block;font-weight:600;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--blau-hell);margin-top:3px}
+.menu{display:flex;align-items:center;gap:28px}
+.menu a{color:rgba(255,255,255,.82);text-decoration:none;font-weight:600;font-size:.95rem;position:relative}
+.menu a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--blau);transform:scaleX(0);transition:transform .3s}
+.menu a:not(.btn):hover{color:#fff}.menu a:not(.btn):hover::after{transform:scaleX(1)}
+.menu .btn{padding:12px 20px;font-size:.92rem;color:#fff}
 
-/* Laufband */
-.band{background:var(--blau);color:#fff;overflow:hidden;white-space:nowrap;padding:16px 0;font-weight:700;letter-spacing:.02em}
-.band .spur{display:inline-flex;gap:44px;animation:lauf 38s linear infinite;padding-left:44px}
-.band span::after{content:"✦";margin-left:44px;opacity:.6}
+/* ---------- Hero ---------- */
+.hero{min-height:min(100svh,980px);display:flex;align-items:center;background:var(--nacht);color:#fff;overflow:hidden;padding:140px 0 90px;isolation:isolate}
+.hero-bild{position:absolute;inset:0;z-index:-3;background:url(img/galerie/5.jpg) center/cover;opacity:.32;animation:kenburns 26s ease-in-out infinite alternate}
+@keyframes kenburns{from{transform:scale(1.04)}to{transform:scale(1.16) translate(-1.5%,1%)}}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(1200px 700px at 78% 20%,rgba(0,141,210,.35),transparent 60%),linear-gradient(180deg,rgba(12,13,16,.55),rgba(12,13,16,.96) 82%)}
+#funken{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:center;width:100%}
+.hero h1{font-weight:900;font-size:clamp(2.8rem,7.4vw,6.2rem);line-height:.95}
+.hero h1 .zeile{display:block;overflow:hidden;padding-bottom:.06em}
+.hero h1 .zeile>span{display:inline-block;transform:translateY(105%);animation:hoch .9s cubic-bezier(.2,.8,.2,1) forwards}
+.hero h1 .zeile:nth-child(2)>span{animation-delay:.12s}
+@keyframes hoch{to{transform:none}}
+.glanz{background:linear-gradient(100deg,var(--blau) 0%,var(--blau) 38%,#e9f7ff 50%,var(--blau) 62%,var(--blau) 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hoch .9s cubic-bezier(.2,.8,.2,1) .24s forwards,glanz 4.5s ease-in-out 1.3s infinite!important}
+@keyframes glanz{0%{background-position:100% 0}55%,100%{background-position:0 0}}
+.hero p.sub{font-size:clamp(1.05rem,1.6vw,1.25rem);color:#c6ccd5;max-width:560px;margin:28px 0 36px;opacity:0;animation:auf .8s .5s forwards}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;opacity:0;animation:auf .8s .65s forwards}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px;opacity:0;animation:auf .8s .8s forwards}
+.chip{display:inline-flex;align-items:center;gap:9px;font-size:.86rem;font-weight:600;padding:9px 15px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--linie-dunkel);color:#e3e7ec}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--blau-hell);box-shadow:0 0 0 4px rgba(59,180,240,.18)}
+@keyframes auf{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+.hero-karten{position:relative;height:540px}
+.hk{position:absolute;border-radius:24px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.1);opacity:0;animation:auf 1s forwards}
+.hk img{width:100%;height:100%;object-fit:cover;transform:scale(1.08)}
+.hk1{width:68%;height:78%;right:0;top:0;animation-delay:.35s}
+.hk2{width:52%;height:46%;left:0;bottom:0;animation-delay:.55s}
+.badge{position:absolute;left:4%;top:12%;background:#fff;color:var(--nacht);border-radius:18px;padding:16px 18px;box-shadow:var(--schatten);display:flex;gap:14px;align-items:center;opacity:0;animation:auf .9s .9s forwards}
+.badge .punkt{width:12px;height:12px;border-radius:50%;background:#1fb26b;flex:none;animation:puls 2s infinite}
+@keyframes puls{0%{box-shadow:0 0 0 0 rgba(31,178,107,.6)}70%{box-shadow:0 0 0 12px rgba(31,178,107,0)}100%{box-shadow:0 0 0 0 rgba(31,178,107,0)}}
+.badge b{display:block;font-family:var(--display);font-weight:900;line-height:1.1}
+.badge span{font-size:.82rem;color:var(--grau)}
+.scroll-hinweis{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);width:26px;height:42px;border:2px solid rgba(255,255,255,.35);border-radius:14px}
+.scroll-hinweis::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:#fff;animation:scrollen 1.8s infinite}
+@keyframes scrollen{0%{opacity:0;transform:translateY(0)}40%{opacity:1}100%{opacity:0;transform:translateY(14px)}}
+
+/* ---------- Laufband ---------- */
+.band{background:var(--blau);color:#fff;overflow:hidden;white-space:nowrap;padding:18px 0;font-family:var(--display);font-weight:800;font-size:1.05rem;letter-spacing:.02em}
+.band .spur{display:inline-flex;gap:48px;animation:lauf 40s linear infinite;padding-left:48px}
+.band span::after{content:"✦";margin-left:48px;opacity:.55}
 @keyframes lauf{to{transform:translateX(-50%)}}
 
-section{padding:110px 0}
-.flaeche{background:var(--flaeche)}
+/* ---------- Zahlen ---------- */
+.zahlen{padding:90px 0;background:var(--papier)}
+.zahlen .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.zahl{border-left:2px solid var(--linie);padding-left:22px}
+.zahl b{display:block;font-family:var(--display);font-weight:900;font-size:clamp(2.6rem,5vw,4rem);line-height:1;color:var(--nacht);font-variant-numeric:tabular-nums}
+.zahl b em{font-style:normal;color:var(--blau)}
+.zahl span{display:block;margin-top:8px;color:var(--grau);font-weight:600}
 
-/* Leistungen */
-.leistungen{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.leistung{position:relative;background:#fff;border:1px solid var(--linie);border-radius:var(--radius);padding:30px;transition:transform .3s,box-shadow .3s,border-color .3s;overflow:hidden}
-.leistung::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:var(--blau);transform:scaleX(0);transform-origin:left;transition:transform .35s}
-.leistung:hover{transform:translateY(-6px);box-shadow:var(--schatten);border-color:transparent}
-.leistung:hover::after{transform:scaleX(1)}
-.leistung .icon{width:54px;height:54px;border-radius:14px;background:var(--blau-hell);display:grid;place-items:center;margin-bottom:20px;color:var(--blau)}
-.leistung .icon svg{width:28px;height:28px}
-.leistung h3{font-size:1.25rem;margin-bottom:8px;color:var(--schwarz)}
-.leistung p{margin:0;color:var(--grau)}
-.leistung.top{background:var(--schwarz);color:#fff;border-color:var(--schwarz)}
-.leistung.top h3{color:#fff}.leistung.top p{color:rgba(255,255,255,.75)}
-.leistung.top .icon{background:rgba(0,141,210,.2)}
-.leistung .tag{position:absolute;top:22px;right:22px;font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:var(--blau);color:#fff;padding:5px 10px;border-radius:999px}
+/* ---------- Leistungen ---------- */
+.leist-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:20px;margin-top:56px}
+.leist{grid-column:span 2;position:relative;min-height:340px;border-radius:var(--r);overflow:hidden;background:var(--nacht2);color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:28px;isolation:isolate;transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,opacity .9s}
+.leist.gross{grid-column:span 3;min-height:400px}
+.leist img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.leist::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(12,13,16,.05) 20%,rgba(12,13,16,.92))}
+.leist.ohne::before{background:radial-gradient(500px 300px at 85% 0%,rgba(0,141,210,.45),transparent 70%)}
+.leist:hover{box-shadow:var(--schatten)}
+.leist:hover img{transform:scale(1.07)}
+.leist .nr{position:absolute;top:22px;left:28px;font-family:var(--display);font-weight:900;font-size:.85rem;letter-spacing:.2em;color:var(--blau-hell)}
+.leist .ico{position:absolute;top:22px;right:24px;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.1);display:grid;place-items:center}
+.leist .ico svg{width:24px;height:24px}
+.leist h3{font-size:1.65rem;font-weight:900;margin-bottom:8px}
+.leist p{margin:0;color:#cfd5dd;font-size:.98rem;max-width:42ch}
 
-/* Qualität */
-.split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.liste{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:16px}
-.liste li{display:flex;gap:14px;align-items:flex-start}
-.liste li b{display:block;color:var(--schwarz)}
-.liste li span{color:var(--grau)}
-.haken{flex:0 0 28px;height:28px;border-radius:50%;background:var(--blau);display:grid;place-items:center;color:#fff;margin-top:2px}
-.haken svg{width:15px;height:15px}
-.foto-panel{position:relative;margin:0;border-radius:26px;overflow:hidden;min-height:420px;box-shadow:var(--schatten);background:var(--schwarz)}
-.foto-panel img{width:100%;height:100%;min-height:420px;object-fit:cover}
-.foto-panel figcaption{position:absolute;left:18px;bottom:18px;background:#fff;border-radius:14px;padding:12px 16px;box-shadow:var(--schatten)}
-.foto-panel b{display:block;color:var(--schwarz)}.foto-panel span{color:var(--grau);font-size:.9rem}
+/* ---------- Wisch-Statement (Text wird beim Scrollen "sauber") ---------- */
+.wisch{padding:150px 0;background:var(--weiss);overflow:hidden}
+.wisch p.satz{font-family:var(--display);font-weight:900;font-size:clamp(2.2rem,6.2vw,5.4rem);line-height:1.02;letter-spacing:-.03em;margin:0;max-width:16ch;
+  background:linear-gradient(90deg,var(--nacht) 0 var(--sauber,100%),#cdd2d9 var(--sauber,100%) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wisch .unter{margin-top:30px;color:var(--grau);font-size:1.1rem;max-width:520px}
 
-/* Ablauf */
-.schritte{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;counter-reset:s}
-.schritt{position:relative;padding:28px 24px;border-radius:var(--radius);background:#fff;border:1px solid var(--linie)}
-.schritt::before{counter-increment:s;content:"0" counter(s);font-size:2.6rem;font-weight:900;color:var(--blau);opacity:.18;position:absolute;top:12px;right:18px}
-.schritt h3{font-size:1.1rem;margin:0 0 8px;color:var(--schwarz)}
-.schritt p{margin:0;color:var(--grau);font-size:.96rem}
+/* ---------- Preisrechner ---------- */
+.rechner{background:var(--nacht);color:#e2e6eb;overflow:hidden}
+.rechner::before{content:"";position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(0,141,210,.28),transparent 65%);right:-300px;top:-200px;pointer-events:none}
+.r-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:40px;margin-top:56px;align-items:start;position:relative}
+.r-form{display:grid;gap:22px;min-width:0}
+.schritt-r{background:var(--nacht2);border:1px solid var(--linie-dunkel);border-radius:var(--r);padding:26px;min-width:0}
+.label{font-family:var(--display);font-weight:800;color:#fff;font-size:1.1rem;display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:0}
+.label i{font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--blau);color:#fff;display:grid;place-items:center;font-size:.85rem;flex:none}
+.label .zusatz{font-family:var(--text);font-weight:600;font-size:.85rem;color:var(--grau-hell)}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+fieldset.schritt-r{border:1px solid var(--linie-dunkel);padding:26px}
+fieldset.schritt-r>legend{float:left;width:100%}
+fieldset.schritt-r>legend+*{clear:both}
+.opt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.opt.drei{grid-template-columns:repeat(3,minmax(0,1fr))}
+.opt label{position:relative;cursor:pointer;min-width:0}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt .kachel{display:flex;flex-direction:column;gap:6px;height:100%;padding:16px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1.5px solid var(--linie-dunkel);transition:border-color .2s,background .2s,transform .2s}
+.opt .kachel b{color:#fff;font-weight:800;font-size:.98rem;line-height:1.2}
+.opt .kachel small{color:var(--grau-hell);font-size:.8rem;line-height:1.35}
+.opt .kachel svg{width:26px;height:26px;color:var(--blau-hell)}
+.opt label:hover .kachel{border-color:rgba(59,180,240,.6)}
+.opt input:checked+.kachel{border-color:var(--blau);background:rgba(0,141,210,.16);transform:translateY(-2px)}
+.opt input:focus-visible+.kachel{outline:3px solid var(--blau-hell);outline-offset:2px}
+.regler{display:grid;gap:12px}
+.regler .wert{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.regler .wert output{font-family:var(--display);font-weight:900;font-size:2rem;color:#fff;font-variant-numeric:tabular-nums}
+.regler .wert span{color:var(--grau-hell);font-size:.9rem}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;background:linear-gradient(90deg,var(--blau) 0 var(--p,30%),rgba(255,255,255,.12) var(--p,30%));outline:none;margin:10px 0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;border:6px solid var(--blau);cursor:grab;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:6px solid var(--blau);cursor:grab}
+input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(59,180,240,.5)}
+.zwei-regler{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.umfang-liste{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.umfang-liste span{font-size:.82rem;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.06);color:#cfd5dd;border:1px solid var(--linie-dunkel)}
+.umfang-liste span.neu{background:rgba(0,141,210,.18);border-color:rgba(0,141,210,.5);color:#fff}
+.extras{display:flex;flex-wrap:wrap;gap:10px}
+.extras label{display:inline-flex;align-items:center;gap:10px;padding:11px 15px;border-radius:999px;border:1.5px solid var(--linie-dunkel);cursor:pointer;font-weight:600;font-size:.92rem;color:#e2e6eb;transition:border-color .2s,background .2s}
+.extras input{accent-color:var(--blau);width:17px;height:17px}
+.extras label.an{border-color:var(--blau);background:rgba(0,141,210,.14)}
 
-/* Galerie-Slider */
-.slider-kopf{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:34px}
+.ergebnis{position:sticky;top:96px;border-radius:24px;background:linear-gradient(160deg,#fff,#eef7fc);color:var(--nacht);padding:30px;box-shadow:0 40px 80px -30px rgba(0,0,0,.6);min-width:0}
+.ergebnis .klein{font-size:.78rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--blau)}
+.ergebnis .preis{font-family:var(--display);font-weight:900;font-size:clamp(2.4rem,4vw,3.4rem);line-height:1;margin:12px 0 6px;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.ergebnis .preis small{font-size:.4em;font-family:var(--text);font-weight:800;color:var(--grau);letter-spacing:0}
+.ergebnis .netto{color:var(--grau);font-size:.9rem}
+.ergebnis dl{display:grid;grid-template-columns:1fr auto;gap:10px 16px;margin:24px 0;padding:20px 0;border-top:1px solid var(--linie);border-bottom:1px solid var(--linie)}
+.ergebnis dt{color:var(--grau);font-size:.95rem}
+.ergebnis dd{margin:0;font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+.ergebnis .btn{width:100%}
+.ergebnis .hinweis{font-size:.8rem;color:var(--grau);margin:16px 0 0;line-height:1.5}
+.ergebnis .extra-info{background:var(--eis);border-radius:12px;padding:12px 14px;font-size:.88rem;margin:-8px 0 20px}
+
+/* ---------- Galerie ---------- */
+.slider-kopf{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
 .pfeile{display:flex;gap:10px}
-.pfeile button{width:52px;height:52px;border-radius:50%;border:1px solid var(--linie);background:#fff;cursor:pointer;display:grid;place-items:center;transition:background .2s,color .2s}
-.pfeile button:hover{background:var(--schwarz);color:#fff}
+.pfeile button{width:56px;height:56px;border-radius:50%;border:1.5px solid var(--linie);background:#fff;color:var(--nacht);cursor:pointer;display:grid;place-items:center;transition:background .2s,color .2s,border-color .2s}
+.pfeile button:hover{background:var(--nacht);color:#fff;border-color:var(--nacht)}
 .pfeile svg{width:20px;height:20px}
-.slider{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:6px;scrollbar-width:none}
+.slider{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:48px 0 10px;scrollbar-width:none}
 .slider::-webkit-scrollbar{display:none}
-.slide{flex:0 0 min(420px,82%);scroll-snap-align:start;border-radius:22px;overflow:hidden;position:relative;aspect-ratio:4/3;background:var(--schwarz)}
-.slide img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
-.slide:hover img{transform:scale(1.05)}
-.slide figcaption{position:absolute;left:0;right:0;bottom:0;padding:50px 22px 20px;color:#fff;font-weight:700;background:linear-gradient(transparent,rgba(0,0,0,.75))}
-.slide figcaption small{display:block;font-weight:500;opacity:.8}
-.slide.leer{background:linear-gradient(140deg,var(--blau) 0%,#004f78 100%)}
-.slide.leer img{display:none}
-.slide.leer::before{content:"";position:absolute;inset:0;background:url(img/logo-rk-weiss.png) center 40%/38% no-repeat;opacity:.18}
-.slide.leer:nth-child(even){background:linear-gradient(140deg,#2a2a2b,#121214)}
-.punkte{display:flex;gap:8px;justify-content:center;margin-top:22px}
-.punkte button{width:9px;height:9px;border-radius:999px;border:0;background:#cfd5db;cursor:pointer;padding:0;transition:width .3s,background .3s}
-.punkte button.an{width:28px;background:var(--blau)}
+.slide{flex:0 0 min(460px,84%);scroll-snap-align:start;border-radius:24px;overflow:hidden;position:relative;aspect-ratio:4/3;background:var(--nacht);margin:0}
+.slide img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.slide:hover img{transform:scale(1.06)}
+.slide figcaption{position:absolute;inset:auto 0 0 0;padding:70px 24px 22px;color:#fff;font-family:var(--display);font-weight:800;font-size:1.2rem;background:linear-gradient(transparent,rgba(12,13,16,.85))}
+.slide figcaption small{display:block;font-family:var(--text);font-weight:600;font-size:.88rem;opacity:.85;margin-top:2px}
+.punkte{display:flex;gap:8px;justify-content:center;margin-top:24px}
+.punkte button{width:9px;height:9px;border-radius:99px;border:0;background:#cfd5db;cursor:pointer;padding:0;transition:width .3s,background .3s}
+.punkte button.an{width:30px;background:var(--blau)}
 
-/* Hausverwaltung */
-.hv{border-radius:28px;background:var(--schwarz);color:#fff;padding:60px;display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;position:relative;overflow:hidden}
-.hv::after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;background:rgba(0,141,210,.35);filter:blur(80px);right:-120px;top:-120px}
-.hv h2{color:#fff}.hv p{color:rgba(255,255,255,.78)}
-.hv .werte{display:grid;gap:14px;position:relative;z-index:1}
-.hv .werte div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:16px 18px}
-.hv .werte b{color:var(--blau)}
+/* ---------- Ablauf mit Linie ---------- */
+.ablauf{background:var(--papier)}
+.ablauf-liste{position:relative;margin-top:60px;display:grid;gap:26px;padding-left:76px;max-width:820px}
+.ablauf-liste::before{content:"";position:absolute;left:27px;top:8px;bottom:8px;width:2px;background:var(--linie)}
+.ablauf-liste .linie{position:absolute;left:27px;top:8px;width:2px;height:var(--h,0%);max-height:calc(100% - 16px);background:var(--blau)}
+.station{position:relative;background:#fff;border-radius:var(--r);padding:26px 28px;box-shadow:0 1px 0 var(--linie)}
+.station::before{content:attr(data-nr);position:absolute;left:-76px;top:20px;width:56px;height:56px;border-radius:50%;background:#fff;border:2px solid var(--linie);display:grid;place-items:center;font-family:var(--display);font-weight:900;color:var(--grau-hell);transition:all .4s}
+.station.aktiv::before{background:var(--blau);border-color:var(--blau);color:#fff;box-shadow:0 0 0 8px rgba(0,141,210,.15)}
+.station h3{font-size:1.35rem;font-weight:900;color:var(--nacht);margin-bottom:6px}
+.station p{margin:0;color:var(--grau)}
 
-/* Bewertungen-CTA */
-.google{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;background:#fff;border:1px solid var(--linie);border-radius:var(--radius);padding:28px 32px}
-.sterne{color:#f5b301;font-size:1.4rem;letter-spacing:3px}
+/* ---------- Qualität & Hausverwaltung ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.split>*{min-width:0}
+.haken-liste{list-style:none;padding:0;margin:34px 0 0;display:grid;gap:20px}
+.haken-liste li{display:grid;grid-template-columns:34px 1fr;gap:14px}
+.haken-liste .h{width:34px;height:34px;border-radius:50%;background:var(--eis);color:var(--blau);display:grid;place-items:center}
+.dunkel .haken-liste .h{background:rgba(0,141,210,.18);color:var(--blau-hell)}
+.haken-liste .h svg{width:16px;height:16px}
+.haken-liste b{display:block;color:var(--nacht);font-size:1.05rem}
+.dunkel .haken-liste b{color:#fff}
+.haken-liste span{color:var(--grau)}
+.dunkel .haken-liste span{color:#aeb6c1}
+.foto-stapel{position:relative;aspect-ratio:1/1.05;max-width:100%}
+.foto-stapel figure{position:absolute;margin:0;border-radius:24px;overflow:hidden;box-shadow:var(--schatten)}
+.foto-stapel figure img{width:100%;height:100%;object-fit:cover}
+.fs1{inset:0 18% 22% 0}
+.fs2{inset:42% 0 0 34%;border:8px solid #fff}
+.dunkel .fs2{border-color:var(--nacht)}
+.stempel{position:absolute;right:4%;top:4%;width:132px;height:132px;border-radius:50%;background:var(--blau);color:#fff;display:grid;place-items:center;text-align:center;font-family:var(--display);font-weight:900;line-height:1.05;box-shadow:var(--schatten);animation:wippen 6s ease-in-out infinite}
+.stempel span{display:block;font-size:2rem}
+@keyframes wippen{50%{transform:rotate(8deg) scale(1.04)}}
 
-/* Region */
-.orte{display:flex;flex-wrap:wrap;gap:10px;list-style:none;padding:0;margin:0}
-.orte li{background:#fff;border:1px solid var(--linie);border-radius:999px;padding:9px 18px;font-weight:600;transition:all .2s}
-.orte li:hover{background:var(--blau);color:#fff;border-color:var(--blau)}
-
-/* FAQ */
-.faq{max-width:820px}
-details{border-bottom:1px solid var(--linie);padding:20px 0}
-summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;font-size:1.08rem;color:var(--schwarz)}
+/* ---------- Bewertungen, Region, FAQ ---------- */
+.google-karte{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;background:var(--nacht);color:#fff;border-radius:24px;padding:34px 38px}
+.sterne{color:#ffc93c;font-size:1.5rem;letter-spacing:4px}
+.orte{display:flex;flex-wrap:wrap;gap:10px;list-style:none;padding:0;margin:34px 0 0}
+.orte li{padding:10px 18px;border-radius:999px;border:1.5px solid var(--linie);font-weight:600;transition:all .2s}
+.orte li:hover{background:var(--blau);border-color:var(--blau);color:#fff;transform:translateY(-2px)}
+.faq{max-width:860px}
+details{border-bottom:1px solid var(--linie);padding:22px 0}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;font-family:var(--display);font-weight:800;font-size:1.2rem;color:var(--nacht)}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-size:1.6rem;line-height:1;color:var(--blau);transition:transform .3s}
+summary::after{content:"+";font-size:1.7rem;line-height:1;color:var(--blau);transition:transform .3s}
 details[open] summary::after{transform:rotate(45deg)}
-details p{color:var(--grau);margin:12px 0 0}
+details p{margin:12px 0 0;color:var(--grau)}
 
-/* Kontakt */
-.kontakt{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px}
-.kanal{display:flex;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--linie);text-decoration:none;color:var(--anthrazit)}
-.kanal .icon{width:50px;height:50px;border-radius:14px;background:var(--blau-hell);display:grid;place-items:center;color:var(--blau)}
-.kanal .icon svg{width:22px;height:22px}
-.kanal b{display:block;color:var(--schwarz)}
-form{background:#fff;border-radius:24px;padding:34px;box-shadow:var(--schatten);display:grid;gap:16px}
+/* ---------- Kontakt ---------- */
+.kontakt-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px}
+.kontakt-grid>*{min-width:0}
+.kanal{display:flex;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--linie-dunkel);text-decoration:none;color:#d9dee5;overflow-wrap:anywhere}
+.kanal .ico{width:52px;height:52px;border-radius:16px;background:rgba(0,141,210,.16);color:var(--blau-hell);display:grid;place-items:center;flex:none}
+.kanal .ico svg{width:22px;height:22px}
+.kanal b{display:block;color:#fff}
+form.anfrage{background:#fff;color:var(--anthrazit);border-radius:26px;padding:34px;display:grid;gap:16px;box-shadow:0 40px 80px -30px rgba(0,0,0,.6)}
 .zwei{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-label{font-weight:700;font-size:.88rem;display:block;margin-bottom:6px;color:var(--schwarz)}
-input,select,textarea{width:100%;padding:13px 14px;border:1.5px solid var(--linie);border-radius:12px;font:inherit;background:var(--flaeche);transition:border-color .2s,background .2s}
-input:focus,select:focus,textarea:focus{outline:0;border-color:var(--blau);background:#fff}
-.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:.88rem;color:var(--grau)}
-.check input{width:18px;height:18px;margin-top:3px;flex:0 0 auto}
+.zwei>*{min-width:0}
+form.anfrage label.f{font-weight:800;font-size:.86rem;display:block;margin-bottom:6px;color:var(--nacht)}
+form.anfrage input:not([type=checkbox]),form.anfrage select,form.anfrage textarea{width:100%;padding:14px 15px;border:1.5px solid var(--linie);border-radius:12px;font:inherit;font-size:1rem;background:var(--papier);color:var(--anthrazit);transition:border-color .2s,background .2s}
+form.anfrage input:focus,form.anfrage select:focus,form.anfrage textarea:focus{outline:0;border-color:var(--blau);background:#fff}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:var(--grau)}
+.check input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--blau)}
+.rechner-uebernahme{display:none;background:var(--eis);border-radius:12px;padding:12px 14px;font-size:.9rem;color:var(--nacht)}
+.rechner-uebernahme.da{display:block}
 .hp{position:absolute;left:-9999px}
 
-footer{background:var(--schwarz);color:rgba(255,255,255,.65);padding:60px 0 30px;font-size:.93rem}
-footer .grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:40px}
-footer img{height:46px;margin-bottom:14px}
-footer b{color:#fff;display:block;margin-bottom:10px}
-footer a{color:rgba(255,255,255,.8);text-decoration:none}footer a:hover{color:#fff}
-footer .unten{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
-
+footer{background:var(--nacht);color:#9aa4b1;padding:70px 0 34px;font-size:.94rem;border-top:1px solid var(--linie-dunkel)}
+footer .fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:46px}
+footer img{height:50px;margin-bottom:16px}
+footer b{color:#fff;display:block;margin-bottom:12px;font-family:var(--display)}
+footer a{color:#cfd5dd;text-decoration:none;overflow-wrap:anywhere}footer a:hover{color:#fff}
+footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .mobil-leiste{display:none}
 
-/* Scroll-Animationen */
-.rein{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
-.rein.sichtbar{opacity:1;transform:none}
-.verz1{transition-delay:.1s}.verz2{transition-delay:.2s}.verz3{transition-delay:.3s}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rein{opacity:1;transform:none}}
+/* ---------- Einblenden beim Scrollen (ohne JS sofort sichtbar) ---------- */
+.js .rein{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.js .rein.sichtbar{opacity:1;transform:none}
+.js .v1{transition-delay:.1s}.js .v2{transition-delay:.2s}.js .v3{transition-delay:.3s}
 
-@media (max-width:980px){
-  .leistungen{grid-template-columns:1fr 1fr}.schritte{grid-template-columns:1fr 1fr}
-  .hero .grid,.split,.kontakt,.hv{grid-template-columns:1fr}
-  .portrait{max-width:420px;margin:0 auto}
-  footer .grid{grid-template-columns:1fr}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .hero h1 .zeile>span{transform:none}.hero p.sub,.hero-cta,.chips,.hk,.badge{opacity:1}
+  .js .rein{opacity:1;transform:none}
+  .glanz{background:none;color:var(--blau)}
+}
+@media (max-width:1020px){
+  .hero .wrap,.split,.kontakt-grid,.r-grid{grid-template-columns:minmax(0,1fr)}
+  .hero-karten{height:420px;max-width:560px;width:100%}
+  .leist,.leist.gross{grid-column:span 3}
+  .zahlen .wrap{grid-template-columns:repeat(2,1fr);row-gap:40px}
+  .ergebnis{position:relative;top:0}
+  footer .fgrid{grid-template-columns:1fr 1fr}
 }
 @media (max-width:720px){
-  section{padding:76px 0}
-  .menu a:not(.btn){display:none}
-  .menu .btn{display:none}
-  .hero{padding:120px 0 70px}
-  .leistungen,.schritte,.zwei{grid-template-columns:1fr}
-  .portrait .karte{left:10px}.portrait .badge{right:10px}
-  .hv{padding:36px 24px}
-  form{padding:24px}
-  .slider-kopf .pfeile{display:none}
-  .mobil-leiste{display:flex;position:fixed;inset:auto 0 0 0;z-index:60;background:#fff;box-shadow:0 -6px 20px rgba(0,0,0,.08);padding:10px;gap:10px}
-  .mobil-leiste a{flex:1;justify-content:center}
-  body{padding-bottom:74px}
+  body{font-size:16px}
+  section{padding:84px 0}
+  .menu a:not(.btn),.menu .btn{display:none}
+  .hero{padding:118px 0 80px}
+  .hero-karten{height:340px}
+  .scroll-hinweis{display:none}
+  .leist,.leist.gross{grid-column:span 6;min-height:300px}
+  .opt{grid-template-columns:repeat(2,minmax(0,1fr))}.opt.drei{grid-template-columns:minmax(0,1fr)}
+  .zwei-regler,.zwei{grid-template-columns:minmax(0,1fr)}
+  .schritt-r,fieldset.schritt-r{padding:20px}
+  .ablauf-liste{padding-left:60px}.station::before{left:-60px;width:46px;height:46px}.ablauf-liste::before,.ablauf-liste .linie{left:22px}
+  .stempel{width:104px;height:104px;font-size:.85rem}
+  form.anfrage{padding:24px}
+  footer .fgrid{grid-template-columns:1fr}
+  .pfeile{display:none}
+  .google-karte{padding:28px 24px}
+  .mobil-leiste{display:flex;position:fixed;inset:auto 0 0 0;z-index:70;gap:10px;padding:10px max(12px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));background:rgba(12,13,16,.92);backdrop-filter:blur(12px)}
+  .mobil-leiste .btn{flex:1;padding:14px}
+  body{padding-bottom:80px}
 }
 </style>
 </head>
 <body>
+<script>document.documentElement.classList.add('js')</script>
+<div class="fortschritt" id="fortschritt"></div>
 
 <header id="kopf"><div class="wrap nav">
-  <a class="marke" href="#">
-    <img class="logo-hell" src="img/logo-rk-dunkel.png" alt="">
-    <img class="logo-dunkel" src="img/logo-rk.png" alt="">
-    <span>Königbauer<small>Gebäudereinigung</small></span>
+  <a class="marke" href="#" aria-label="Königbauer Gebäudereinigung – Startseite">
+    <img src="img/logo-rk-dunkel.png" alt="">
+    <span><b>Königbauer</b><small>Gebäudereinigung</small></span>
   </a>
-  <nav class="menu">
+  <nav class="menu" aria-label="Hauptmenü">
     <a href="#leistungen">Leistungen</a>
-    <a href="#qualitaet">Qualität</a>
+    <a href="#rechner">Preisrechner</a>
     <a href="#ablauf">Ablauf</a>
     <a href="#hausverwaltungen">Hausverwaltungen</a>
     <a href="#kontakt">Kontakt</a>
@@ -262,37 +371,39 @@ footer .unten{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display
   </nav>
 </div></header>
 
-<section class="hero">
-  <div class="hero-raster"></div>
-  <div class="wrap grid">
+<!-- ================= HERO ================= -->
+<section class="hero" aria-labelledby="titel">
+  <div class="hero-bild" aria-hidden="true"></div>
+  <canvas id="funken" aria-hidden="true"></canvas>
+  <div class="wrap">
     <div>
-      <div class="kicker rein">Gebäudereinigung · Neufahrn &amp; Freising</div>
-      <h1 class="rein verz1">Saubere Büros. <em>Ein</em> Ansprechpartner.</h1>
-      <p class="sub rein verz2">Büro-, Praxis- und Gewerbereinigung im Landkreis Freising und Münchner Norden – mit festen Reinigungskräften, Profi-Technik und dem Inhaber als direktem Ansprechpartner.</p>
-      <div class="hero-cta rein verz3">
-        <a class="btn" href="#kontakt">Kostenloses Angebot
+      <div class="kicker">Handwerksbetrieb seit 2011 · Neufahrn &amp; Freising</div>
+      <h1 id="titel">
+        <span class="zeile"><span>Räume, die man</span></span>
+        <span class="zeile"><span class="glanz">sauber sieht.</span></span>
+      </h1>
+      <p class="sub">Büro-, Praxis- und Objektreinigung für Unternehmen und Hausverwaltungen im Landkreis Freising und Münchner Norden. Mit Profi-Technik, festen Reinigungskräften – und dem Inhaber als direktem Ansprechpartner.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#rechner">Preis in 60 Sekunden berechnen
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a class="btn ghost" href="tel:+491721083808">
+        <a class="btn rand" href="tel:+491721083808">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
           Direkt anrufen</a>
       </div>
-      <div class="chips rein verz3">
-        <span class="chip"><i></i>Handwerksbetrieb seit 2011</span>
+      <div class="chips">
         <span class="chip"><i></i>Inhabergeführt</span>
         <span class="chip"><i></i>Festpreis in 24 h</span>
         <span class="chip"><i></i>Haftpflichtversichert</span>
         <span class="chip"><i></i>ista Servicepartner</span>
       </div>
     </div>
-    <div class="portrait rein verz2">
-      <div class="rahmen" id="portraitRahmen">
-        <img src="img/robert-koenigbauer.jpg" alt="Robert Königbauer, Inhaber der Königbauer Gebäudereinigung"
-             onerror="this.onerror=null;this.src='img/logo-rk-dunkel.png';this.parentNode.classList.add('leer')">
-      </div>
-      <div class="badge">24 h<small>Festpreis-Angebot</small></div>
-      <div class="karte"><div class="punkt"></div><div><b>Robert Königbauer</b><span>Inhaber · Ihr Ansprechpartner</span></div></div>
+    <div class="hero-karten" aria-hidden="true">
+      <div class="hk hk1"><img class="hk-schwebe" data-tiefe="14" src="img/galerie/3.jpg" alt=""></div>
+      <div class="hk hk2"><img class="hk-schwebe" data-tiefe="-10" src="img/galerie/1.jpg" alt=""></div>
+      <div class="badge"><span class="punkt"></span><div><b>Robert Königbauer</b><span>Inhaber · antwortet persönlich</span></div></div>
     </div>
   </div>
+  <div class="scroll-hinweis" aria-hidden="true"></div>
 </section>
 
 <div class="band" aria-hidden="true"><div class="spur">
@@ -300,194 +411,429 @@ footer .unten{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display
   <span>Neufahrn</span><span>Freising</span><span>Eching</span><span>Hallbergmoos</span><span>Unterschleißheim</span><span>Garching</span><span>Oberschleißheim</span><span>Ismaning</span><span>Erding</span><span>Moosburg</span><span>Allershausen</span><span>Flughafen München</span>
 </div></div>
 
+<!-- ================= ZAHLEN ================= -->
+<section class="zahlen" aria-label="Königbauer in Zahlen"><div class="wrap">
+  <div class="zahl rein"><b data-zaehle="2011">2011</b><span>eingetragener Handwerksbetrieb</span></div>
+  <div class="zahl rein v1"><b><span data-zaehle="15">15</span><em>+</em></b><span>Jahre Erfahrung</span></div>
+  <div class="zahl rein v2"><b><span data-zaehle="24">24</span><em> h</em></b><span>bis zum Festpreis-Angebot</span></div>
+  <div class="zahl rein v3"><b><span data-zaehle="20">20</span><em> km</em></b><span>Einsatzgebiet um Neufahrn</span></div>
+</div></section>
+
+<!-- ================= LEISTUNGEN ================= -->
 <section id="leistungen"><div class="wrap">
   <div class="kicker rein">Leistungen</div>
-  <h2 class="rein">Alles, was in Ihrem Objekt sauber sein muss.</h2>
-  <p class="lead rein">Wir erstellen für jedes Objekt einen eigenen Reinigungsplan – abgestimmt auf Fläche, Nutzung und Budget. Täglich, mehrmals pro Woche oder nach Bedarf.</p>
-  <div class="leistungen">
-    <article class="leistung top rein">
-      <span class="tag">Schwerpunkt</span>
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
-      <h3>Büroreinigung</h3>
-      <p>Unterhaltsreinigung von Büros, Bürokomplexen und Coworking-Flächen – außerhalb Ihrer Arbeitszeiten, mit festen Teams.</p>
-    </article>
-    <article class="leistung rein verz1">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 20 3M17 6l3 3M15 8l2 2"/></svg></div>
-      <h3>Teppich- &amp; Bodenpflege</h3>
-      <p>Teppich-Tiefenreinigung mit Profi-Geräten, Einscheibenmaschine, Grundreinigung und Pflege von Hartböden.</p>
-    </article>
-    <article class="leistung rein verz2">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg></div>
-      <h3>Praxen &amp; Kanzleien</h3>
-      <p>Arzt-, Zahnarzt- und Physiopraxen, Kanzleien, Steuerbüros und Versicherungsagenturen – hygienisch und diskret.</p>
-    </article>
-    <article class="leistung rein">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6M4 12h16"/></svg></div>
-      <h3>Treppenhausreinigung</h3>
-      <p>Treppenhäuser, Eingänge, Keller und Aufzüge für Hausverwaltungen und Eigentümergemeinschaften – mit Nachweis.</p>
-    </article>
-    <article class="leistung rein verz1">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18M7 7l3 3"/></svg></div>
-      <h3>Glas- &amp; Fensterreinigung</h3>
-      <p>Fenster, Rahmen, Glastrennwände und Schaufenster – streifenfrei, auch als festes Intervall.</p>
-    </article>
-    <article class="leistung rein verz2">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
-      <h3>Grund- &amp; Sonderreinigung</h3>
-      <p>Grundreinigung, Bauendreinigung, Umzugsreinigung – einmalig oder regelmäßig.</p>
-    </article>
+  <h2 class="rein">Alles, was in Ihrem Objekt glänzen soll.</h2>
+  <p class="lead rein">Ein Reinigungsplan pro Objekt – abgestimmt auf Fläche, Nutzung und Budget. Täglich, mehrmals pro Woche oder einmalig.</p>
+  <div class="leist-grid">
+    <article class="leist gross rein"><img loading="lazy" src="img/galerie/4.jpg" alt="Büroteppich wird mit Profi-Gerät gereinigt"><span class="nr">01</span>
+      <h3>Büroreinigung</h3><p>Unterhaltsreinigung für Büros und Bürokomplexe – feste Teams, feste Zeiten, ein Ansprechpartner.</p></article>
+    <article class="leist gross rein v1"><img loading="lazy" src="img/galerie/1.jpg" alt="Teppich vorher und nachher"><span class="nr">02</span>
+      <h3>Teppich-Tiefenreinigung</h3><p>Sprühextraktion mit Profi-Geräten. Der Unterschied ist auf den ersten Blick zu sehen.</p></article>
+    <article class="leist rein"><img loading="lazy" src="img/galerie/2.jpg" alt="Glasreinigung von der Arbeitsbühne"><span class="nr">03</span>
+      <h3>Glas &amp; Höhe</h3><p>Fenster, Glasdächer, Oberlichter – mit Arbeitsbühne und Sicherung.</p></article>
+    <article class="leist ohne rein v1"><span class="nr">04</span>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6M4 12h16"/></svg></span>
+      <h3>Treppenhäuser</h3><p>Für Hausverwaltungen und WEGs – feste Intervalle, Reinigungsnachweis.</p></article>
+    <article class="leist ohne rein v2"><span class="nr">05</span>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 7v10M7 12h10"/></svg></span>
+      <h3>Praxen &amp; Kanzleien</h3><p>Hygienisch, diskret und zuverlässig – nach Ihren Abläufen.</p></article>
+    <article class="leist gross rein"><img loading="lazy" src="img/galerie/6.jpg" alt="Bodenpflege mit der Einscheibenmaschine"><span class="nr">06</span>
+      <h3>Böden &amp; Grundreinigung</h3><p>Einscheibenmaschine, Grundreinigung, Bauend- und Umzugsreinigung.</p></article>
+    <article class="leist gross rein v1"><img loading="lazy" src="img/galerie/5.jpg" alt="Glasdach einer Halle"><span class="nr">07</span>
+      <h3>Läden &amp; Gewerbe</h3><p>Ein sauberer erster Eindruck für Ihre Kunden – Verkaufsflächen, Schaufenster, Sozialräume.</p></article>
   </div>
 </div></section>
 
-<section id="qualitaet" class="flaeche"><div class="wrap split">
-  <div>
-    <div class="kicker rein">Qualität</div>
-    <h2 class="rein">Sauber. Zuverlässig.<br>Persönlich.</h2>
-    <p class="lead rein" style="margin-bottom:0">Bei uns sprechen Sie mit dem Inhaber – nicht mit einem Callcenter. Und Sie bekommen Profi-Technik statt Haushaltsgeräten.</p>
-    <ul class="liste">
-      <li class="rein"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Ein fester Ansprechpartner</b><span>Robert Königbauer kümmert sich persönlich – vom Angebot bis zur Reklamation.</span></div></li>
-      <li class="rein verz1"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Feste Reinigungskräfte</b><span>Immer dieselben Gesichter in Ihrem Objekt – keine wechselnden Aushilfen.</span></div></li>
-      <li class="rein verz2"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Profi-Technik</b><span>Teppich-Tiefenreinigung, Einscheibenmaschine und Arbeitsbühne für Glasflächen in großer Höhe.</span></div></li>
-      <li class="rein verz3"><span class="haken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Betriebshaftpflichtversichert</b><span>Ihr Objekt ist bei uns abgesichert.</span></div></li>
-    </ul>
-  </div>
-  <figure class="foto-panel rein verz1">
-    <img loading="lazy" src="img/galerie/3.jpg" alt="Glasreinigung mit Arbeitsbühne in einer Lichthalle">
-    <figcaption><b>Profi-Technik bis unters Dach</b><span>Glasreinigung mit Arbeitsbühne</span></figcaption>
-  </figure>
+<!-- ================= WISCH-STATEMENT ================= -->
+<section class="wisch" id="wisch" aria-label="Unser Versprechen"><div class="wrap">
+  <p class="satz">Wir machen sauber. Sie machen Ihr Geschäft.</p>
+  <div class="unter">Kein Callcenter, keine wechselnden Aushilfen. Sie haben eine Telefonnummer – und die gehört dem Chef.</div>
 </div></section>
 
-<section id="ablauf"><div class="wrap">
-  <div class="kicker rein">So einfach geht's</div>
-  <h2 class="rein">In vier Schritten zum sauberen Objekt.</h2>
-  <p class="lead rein">Kein langes Hin und Her. Sie haben von Anfang an einen festen Ansprechpartner.</p>
-  <div class="schritte">
-    <div class="schritt rein"><h3>Anfrage</h3><p>Kurz anrufen, WhatsApp oder Formular – Sie hören innerhalb eines Werktags von uns.</p></div>
-    <div class="schritt rein verz1"><h3>Besichtigung</h3><p>Ich komme persönlich vorbei und schaue mir Ihr Objekt an. Kostenlos und unverbindlich.</p></div>
-    <div class="schritt rein verz2"><h3>Festpreis in 24 h</h3><p>Sie erhalten ein klares Angebot mit Leistungsverzeichnis – ohne versteckte Kosten.</p></div>
-    <div class="schritt rein verz3"><h3>Start</h3><p>Ihr festes Team startet in der Regel innerhalb von 1–2 Wochen.</p></div>
+<!-- ================= PREISRECHNER ================= -->
+<section class="rechner dunkel" id="rechner" aria-labelledby="rechner-titel"><div class="wrap">
+  <div class="kicker rein">Preisrechner</div>
+  <h2 class="rein" id="rechner-titel">Was kostet Ihre Reinigung? In 60 Sekunden wissen Sie es.</h2>
+  <p class="lead rein">Stellen Sie Ihr Paket selbst zusammen. Sie sehen sofort einen Richtpreis – den verbindlichen Festpreis bekommen Sie nach einer kostenlosen Besichtigung.</p>
+
+  <div class="r-grid">
+    <form class="r-form" id="rform" onsubmit="return false">
+      <fieldset class="schritt-r">
+        <legend class="label"><i>1</i>Was sollen wir reinigen?</legend>
+        <div class="opt">
+          <label><input type="radio" name="art" value="buero" checked><span class="kachel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><b>Büro</b><small>Büros, Besprechung, Küche</small></span></label>
+          <label><input type="radio" name="art" value="praxis"><span class="kachel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 7v10M7 12h10"/></svg><b>Praxis &amp; Kanzlei</b><small>höhere Hygiene</small></span></label>
+          <label><input type="radio" name="art" value="laden"><span class="kachel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l2-5h14l2 5M4 9v11h16V9M9 20v-6h6v6"/></svg><b>Laden &amp; Gewerbe</b><small>Verkaufs- und Sozialräume</small></span></label>
+          <label><input type="radio" name="art" value="treppe"><span class="kachel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h4v-4h4v-4h4V8h4"/></svg><b>Treppenhaus</b><small>Wohnanlagen, WEG</small></span></label>
+        </div>
+      </fieldset>
+
+      <div class="schritt-r">
+        <div class="label"><i>2</i><span id="groesse-titel">Wie groß ist die Fläche?</span></div>
+        <div class="regler" id="regler-flaeche">
+          <div class="wert"><output id="flaeche-out" for="flaeche">250 m²</output><span>Reinigungsfläche</span></div>
+          <input type="range" id="flaeche" min="30" max="1500" step="10" value="250" aria-labelledby="groesse-titel">
+        </div>
+        <div class="zwei-regler" id="regler-treppe" hidden>
+          <div class="regler"><div class="wert"><output id="etagen-out" for="etagen">4</output><span>Etagen</span></div>
+            <input type="range" id="etagen" min="1" max="10" step="1" value="4" aria-label="Anzahl Etagen"></div>
+          <div class="regler"><div class="wert"><output id="haeuser-out" for="haeuser">1</output><span>Treppenhäuser</span></div>
+            <input type="range" id="haeuser" min="1" max="8" step="1" value="1" aria-label="Anzahl Treppenhäuser"></div>
+        </div>
+      </div>
+
+      <fieldset class="schritt-r">
+        <legend class="label"><i>3</i>Wie oft?</legend>
+        <div class="opt" id="haeufigkeit"></div>
+      </fieldset>
+
+      <fieldset class="schritt-r">
+        <legend class="label"><i>4</i>Wie gründlich?</legend>
+        <div class="opt drei">
+          <label><input type="radio" name="umfang" value="basis"><span class="kachel"><b>Basis</b><small>Böden &amp; Müll</small></span></label>
+          <label><input type="radio" name="umfang" value="standard" checked><span class="kachel"><b>Standard</b><small>+ Sanitär, Küche, Oberflächen</small></span></label>
+          <label><input type="radio" name="umfang" value="komfort"><span class="kachel"><b>Komfort</b><small>+ Glastüren, Kontaktflächen, Nachfüllen</small></span></label>
+        </div>
+        <div class="umfang-liste" id="umfang-liste" aria-live="polite"></div>
+      </fieldset>
+
+      <fieldset class="schritt-r">
+        <legend class="label"><i>5</i>Zusätzlich interessant? <span class="zusatz">(Preis nach Besichtigung)</span></legend>
+        <div class="extras">
+          <label><input type="checkbox" name="extra" value="Fensterreinigung"> Fensterreinigung</label>
+          <label><input type="checkbox" name="extra" value="Teppich-Tiefenreinigung"> Teppich-Tiefenreinigung</label>
+          <label><input type="checkbox" name="extra" value="Grundreinigung"> Grundreinigung</label>
+          <label><input type="checkbox" name="extra" value="Glas in der Höhe"> Glas in der Höhe</label>
+        </div>
+      </fieldset>
+    </form>
+
+    <aside class="ergebnis" aria-live="polite">
+      <div class="klein">Ihr Richtpreis</div>
+      <div class="preis"><span id="preis">0 €</span> <small>/ Monat netto</small></div>
+      <div class="netto" id="preis-brutto">zzgl. 19 % MwSt.</div>
+      <dl>
+        <dt>Einsätze pro Monat</dt><dd id="r-einsaetze">–</dd>
+        <dt>Zeit pro Einsatz</dt><dd id="r-zeit">–</dd>
+        <dt>Preis pro Einsatz</dt><dd id="r-einsatz">–</dd>
+      </dl>
+      <div class="extra-info" id="r-extras" hidden></div>
+      <a class="btn" href="#kontakt" id="r-anfragen">Dieses Paket anfragen
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <p class="hinweis">Unverbindliche Orientierung auf Basis von Erfahrungswerten. Der tatsächliche Aufwand hängt von Bodenbelägen, Ausstattung und Verschmutzung ab. Ihren verbindlichen Festpreis erhalten Sie nach einer kostenlosen Besichtigung innerhalb von 24 Stunden.</p>
+    </aside>
   </div>
 </div></section>
 
-<section class="flaeche" id="einblicke"><div class="wrap">
+<!-- ================= GALERIE ================= -->
+<section id="einblicke"><div class="wrap">
   <div class="slider-kopf">
-    <div><div class="kicker rein">Einblicke</div><h2 class="rein">Unsere Arbeit.</h2></div>
-    <div class="pfeile"><button type="button" aria-label="Zurück" data-richtung="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" aria-label="Weiter" data-richtung="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></button></div>
+    <div><div class="kicker rein">Einblicke</div><h2 class="rein">Echte Arbeit. Echte Ergebnisse.</h2></div>
+    <div class="pfeile"><button type="button" aria-label="Vorheriges Bild" data-richtung="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" aria-label="Nächstes Bild" data-richtung="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></button></div>
   </div>
-  <!-- Fotos ablegen unter website/img/galerie/1.jpg … 6.jpg (Querformat, ca. 1600 px breit). Fehlt ein Foto, erscheint eine Grafik-Kachel. -->
   <div class="slider" id="slider">
-    <figure class="slide"><img loading="lazy" src="img/galerie/1.jpg" alt="Teppichreinigung vorher und nachher" onerror="this.parentNode.classList.add('leer')"><figcaption>Teppich-Tiefenreinigung<small>Vorher / nachher – der Unterschied ist sichtbar</small></figcaption></figure>
-    <figure class="slide"><img loading="lazy" src="img/galerie/2.jpg" alt="Glasreinigung von der Arbeitsbühne" onerror="this.parentNode.classList.add('leer')"><figcaption>Glasreinigung in der Höhe<small>Mit Arbeitsbühne und Sicherung</small></figcaption></figure>
-    <figure class="slide"><img loading="lazy" src="img/galerie/3.jpg" alt="Arbeitsbühne in einer Lichthalle" onerror="this.parentNode.classList.add('leer')"><figcaption>Lichtdächer &amp; Oberlichter<small>Auch dort, wo Leitern nicht hinkommen</small></figcaption></figure>
-    <figure class="slide"><img loading="lazy" src="img/galerie/4.jpg" alt="Sprühextraktionsgerät auf Büroteppich" onerror="this.parentNode.classList.add('leer')"><figcaption>Teppichpflege im Büro<small>Profi-Geräte statt Haushaltssauger</small></figcaption></figure>
-    <figure class="slide"><img loading="lazy" src="img/galerie/5.jpg" alt="Glasdach einer Halle nach der Reinigung" onerror="this.parentNode.classList.add('leer')"><figcaption>Glasflächen bis unters Dach<small>Klare Sicht, auch in großer Höhe</small></figcaption></figure>
-    <figure class="slide"><img loading="lazy" src="img/galerie/6.jpg" alt="Robert Königbauer bei der Bodenpflege" onerror="this.parentNode.classList.add('leer')"><figcaption>Bodenpflege<small>Der Chef packt selbst mit an</small></figcaption></figure>
+    <figure class="slide"><img loading="lazy" src="img/galerie/1.jpg" alt="Teppichreinigung vorher und nachher"><figcaption>Teppich-Tiefenreinigung<small>Vorher / nachher – der Unterschied ist sichtbar</small></figcaption></figure>
+    <figure class="slide"><img loading="lazy" src="img/galerie/2.jpg" alt="Glasreinigung von der Arbeitsbühne"><figcaption>Glasreinigung in der Höhe<small>Mit Arbeitsbühne und Sicherung</small></figcaption></figure>
+    <figure class="slide"><img loading="lazy" src="img/galerie/3.jpg" alt="Arbeitsbühne in einer Lichthalle"><figcaption>Lichtdächer &amp; Oberlichter<small>Auch dort, wo Leitern nicht hinkommen</small></figcaption></figure>
+    <figure class="slide"><img loading="lazy" src="img/galerie/4.jpg" alt="Sprühextraktionsgerät auf Büroteppich"><figcaption>Teppichpflege im Büro<small>Profi-Geräte statt Haushaltssauger</small></figcaption></figure>
+    <figure class="slide"><img loading="lazy" src="img/galerie/5.jpg" alt="Glasdach einer Halle nach der Reinigung"><figcaption>Glasflächen bis unters Dach<small>Klare Sicht, auch in großer Höhe</small></figcaption></figure>
+    <figure class="slide"><img loading="lazy" src="img/galerie/6.jpg" alt="Robert Königbauer bei der Bodenpflege"><figcaption>Bodenpflege<small>Der Chef packt selbst mit an</small></figcaption></figure>
   </div>
   <div class="punkte" id="punkte"></div>
 </div></section>
 
-<section id="hausverwaltungen"><div class="wrap">
-  <div class="hv rein">
-    <div>
-      <div class="kicker">Für Hausverwaltungen</div>
-      <h2>Treppenhäuser, Zähler, Objekte – aus einer Hand.</h2>
-      <p>Als <strong>ista Servicepartner</strong> sind wir ohnehin regelmäßig in Wohnanlagen im Landkreis unterwegs. Für Hausverwaltungen und WEGs übernehmen wir die Treppenhaus- und Objektreinigung – zuverlässig, mit Reinigungsnachweis und einem Ansprechpartner, der ans Telefon geht.</p>
-      <a class="btn" href="#kontakt" style="margin-top:12px">Objekte anfragen</a>
-    </div>
-    <div class="werte">
-      <div><b>Reinigungsnachweis</b><br>Dokumentation für Eigentümer und Beirat</div>
-      <div><b>Feste Intervalle</b><br>Wöchentlich, 14-tägig oder nach Plan</div>
-      <div><b>Schnelle Reaktion</b><br>Sonderreinigung nach Umzug oder Wasserschaden</div>
-    </div>
+<!-- ================= ABLAUF ================= -->
+<section class="ablauf" id="ablauf"><div class="wrap">
+  <div class="kicker rein">So einfach geht's</div>
+  <h2 class="rein">Von der Anfrage zum sauberen Objekt.</h2>
+  <div class="ablauf-liste" id="ablauf-liste">
+    <i class="linie" id="ablauf-linie"></i>
+    <div class="station rein" data-nr="1"><h3>Anfrage</h3><p>Preis im Rechner zusammenstellen, anrufen oder per WhatsApp schreiben. Sie hören innerhalb eines Werktags von uns.</p></div>
+    <div class="station rein" data-nr="2"><h3>Kostenlose Besichtigung</h3><p>Robert Königbauer kommt persönlich vorbei und schaut sich Ihr Objekt an – unverbindlich.</p></div>
+    <div class="station rein" data-nr="3"><h3>Festpreis in 24 Stunden</h3><p>Klares Angebot mit Leistungsverzeichnis. Keine versteckten Kosten, keine Überraschungen.</p></div>
+    <div class="station rein" data-nr="4"><h3>Start mit festem Team</h3><p>In der Regel innerhalb von 1–2 Wochen. Immer dieselben Gesichter in Ihrem Objekt.</p></div>
   </div>
 </div></section>
 
-<section class="flaeche"><div class="wrap">
-  <div class="google rein">
-    <div><div class="sterne">★★★★★</div><b style="font-size:1.2rem;color:var(--schwarz)">Was unsere Kunden sagen</b><br><span style="color:var(--grau)">Lesen Sie die Bewertungen unserer Kunden auf Google.</span></div>
-    <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=K%C3%B6nigbauer+Geb%C3%A4udereinigung+Neufahrn" target="_blank" rel="noopener">Bewertungen ansehen</a>
+<!-- ================= QUALITÄT ================= -->
+<section id="qualitaet"><div class="wrap split">
+  <div>
+    <div class="kicker rein">Qualität</div>
+    <h2 class="rein">Sauber. Zuverlässig. Persönlich.</h2>
+    <ul class="haken-liste">
+      <li class="rein"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Ein fester Ansprechpartner</b><span>Robert Königbauer kümmert sich persönlich – vom Angebot bis zur Reklamation.</span></div></li>
+      <li class="rein v1"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Feste Reinigungskräfte</b><span>Immer dieselben Gesichter in Ihrem Objekt – keine wechselnden Aushilfen.</span></div></li>
+      <li class="rein v2"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Profi-Technik</b><span>Teppich-Tiefenreinigung, Einscheibenmaschine und Arbeitsbühne für Glasflächen in großer Höhe.</span></div></li>
+      <li class="rein v3"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Betriebshaftpflichtversichert</b><span>Ihr Objekt ist bei uns abgesichert.</span></div></li>
+    </ul>
   </div>
-  <div style="margin-top:80px">
+  <div class="foto-stapel rein v1" aria-hidden="true">
+    <figure class="fs1"><img loading="lazy" src="img/galerie/6.jpg" alt=""></figure>
+    <figure class="fs2"><img loading="lazy" src="img/galerie/2.jpg" alt=""></figure>
+    <div class="stempel"><div><span>2011</span>Handwerks&shy;betrieb</div></div>
+  </div>
+</div></section>
+
+<!-- ================= HAUSVERWALTUNGEN ================= -->
+<section class="dunkel" id="hausverwaltungen"><div class="wrap split">
+  <div class="foto-stapel rein" aria-hidden="true">
+    <figure class="fs1"><img loading="lazy" src="img/galerie/5.jpg" alt=""></figure>
+    <figure class="fs2"><img loading="lazy" src="img/galerie/3.jpg" alt=""></figure>
+  </div>
+  <div>
+    <div class="kicker rein">Für Hausverwaltungen</div>
+    <h2 class="rein">Treppenhäuser, Zähler, Objekte – aus einer Hand.</h2>
+    <p class="lead rein">Als <strong style="color:#fff">ista Servicepartner</strong> sind wir ohnehin regelmäßig in Wohnanlagen im Landkreis unterwegs. Für Hausverwaltungen und WEGs übernehmen wir die Treppenhaus- und Objektreinigung.</p>
+    <ul class="haken-liste">
+      <li class="rein"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Reinigungsnachweis</b><span>Dokumentation für Eigentümer und Beirat.</span></div></li>
+      <li class="rein v1"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Feste Intervalle</b><span>Wöchentlich, 14-tägig oder nach Ihrem Plan.</span></div></li>
+      <li class="rein v2"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Schnelle Sonderreinigung</b><span>Nach Umzug, Renovierung oder Wasserschaden.</span></div></li>
+    </ul>
+    <a class="btn rein" href="#rechner" data-art="treppe" style="margin-top:34px">Treppenhaus-Preis berechnen</a>
+  </div>
+</div></section>
+
+<!-- ================= BEWERTUNGEN + REGION ================= -->
+<section><div class="wrap">
+  <div class="google-karte rein">
+    <div><div class="sterne" aria-hidden="true">★★★★★</div><b style="font-family:var(--display);font-size:1.5rem">Was unsere Kunden sagen</b><br><span style="color:#aeb6c1">Lesen Sie die Bewertungen unserer Kunden auf Google.</span></div>
+    <a class="btn hell" href="https://www.google.com/maps/search/?api=1&amp;query=K%C3%B6nigbauer+Geb%C3%A4udereinigung+Neufahrn" target="_blank" rel="noopener">Bewertungen ansehen</a>
+  </div>
+  <div style="margin-top:110px">
     <div class="kicker rein">Einsatzgebiet</div>
     <h2 class="rein">Gebäudereinigung im Landkreis Freising &amp; Münchner Norden</h2>
-    <p class="lead rein">Von Neufahrn aus sind wir schnell bei Ihnen – auch kurzfristig.</p>
     <ul class="orte rein">
       <li>Neufahrn bei Freising</li><li>Freising</li><li>Eching</li><li>Hallbergmoos</li><li>Unterschleißheim</li><li>Garching</li><li>Oberschleißheim</li><li>Ismaning</li><li>Erding</li><li>Moosburg</li><li>Allershausen</li><li>Kranzberg</li><li>Flughafen München</li>
     </ul>
   </div>
 </div></section>
 
-<section id="faq"><div class="wrap faq">
+<!-- ================= FAQ ================= -->
+<section id="faq" style="padding-top:0"><div class="wrap faq">
   <div class="kicker rein">FAQ</div>
   <h2 class="rein" style="margin-bottom:24px">Häufige Fragen</h2>
-  <details class="rein"><summary>Was kostet eine Büroreinigung?</summary><p>Das hängt von Fläche, Reinigungsintervall und Bodenbelägen ab. Nach einer kostenlosen Besichtigung erhalten Sie innerhalb von 24 Stunden einen verbindlichen Festpreis.</p></details>
-  <details class="rein"><summary>Reinigen Sie auch früh morgens, abends oder am Wochenende?</summary><p>Nach Absprache ja – wir stimmen die Reinigungszeiten mit Ihnen ab, damit Ihr Betrieb möglichst wenig gestört wird.</p></details>
+  <details class="rein"><summary>Wie genau ist der Preisrechner?</summary><p>Er zeigt einen Richtpreis auf Basis von Erfahrungswerten für Fläche, Häufigkeit und Leistungsumfang. Der tatsächliche Aufwand hängt von Bodenbelägen, Möblierung und Verschmutzung ab – deshalb erhalten Sie nach der kostenlosen Besichtigung einen verbindlichen Festpreis.</p></details>
+  <details class="rein"><summary>Reinigen Sie auch früh morgens oder abends?</summary><p>Nach Absprache ja – wir stimmen die Reinigungszeiten mit Ihnen ab, damit Ihr Betrieb möglichst wenig gestört wird.</p></details>
   <details class="rein"><summary>Arbeiten Sie auch für Hausverwaltungen?</summary><p>Ja – Treppenhaus- und Objektreinigung für Hausverwaltungen und WEGs, inklusive Reinigungsnachweis.</p></details>
   <details class="rein"><summary>Wie schnell können Sie starten?</summary><p>In der Regel innerhalb von 1–2 Wochen nach Auftragserteilung, bei Sonderreinigungen oft schneller.</p></details>
+  <details class="rein"><summary>Sind Sie versichert?</summary><p>Ja, wir haben eine Betriebshaftpflichtversicherung.</p></details>
 </div></section>
 
-<section id="kontakt" class="flaeche"><div class="wrap kontakt">
+<!-- ================= KONTAKT ================= -->
+<section class="dunkel" id="kontakt"><div class="wrap kontakt-grid">
   <div>
     <div class="kicker rein">Kontakt</div>
     <h2 class="rein">Lassen Sie uns über Ihr Objekt sprechen.</h2>
-    <p class="lead rein" style="margin-bottom:20px">Ich melde mich innerhalb eines Werktags persönlich bei Ihnen.</p>
-    <a class="kanal rein" href="tel:+491721083808"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><div><b>0172 108 3808</b>Mo–Fr 7–18 Uhr</div></a>
-    <a class="kanal rein" href="https://wa.me/491721083808" target="_blank" rel="noopener"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></span><div><b>WhatsApp</b>Fotos vom Objekt einfach schicken</div></a>
-    <a class="kanal rein" href="mailto:info@koenigbauer-gebaeudereinigung.de"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg></span><div><b>info@koenigbauer-gebaeudereinigung.de</b>Antwort innerhalb eines Werktags</div></a>
-    <div class="kanal rein" style="border:0"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-7.6 8-13a8 8 0 0 0-16 0c0 5.4 8 13 8 13z"/><circle cx="12" cy="9" r="3"/></svg></span><div><b>Georg-Stegschuster-Straße 18</b>85375 Neufahrn bei Freising</div></div>
+    <p class="lead rein" style="margin-bottom:24px">Robert Königbauer meldet sich innerhalb eines Werktags persönlich bei Ihnen.</p>
+    <a class="kanal rein" href="tel:+491721083808"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><div><b>0172 108 3808</b>Mo–Fr 7–18 Uhr</div></a>
+    <a class="kanal rein" href="https://wa.me/491721083808" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></span><div><b>WhatsApp</b>Fotos vom Objekt einfach schicken</div></a>
+    <a class="kanal rein" href="mailto:info@koenigbauer-gebaeudereinigung.de"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg></span><div><b>info@koenigbauer-gebaeudereinigung.de</b>Antwort innerhalb eines Werktags</div></a>
+    <div class="kanal rein" style="border:0"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-7.6 8-13a8 8 0 0 0-16 0c0 5.4 8 13 8 13z"/><circle cx="12" cy="9" r="3"/></svg></span><div><b>Georg-Stegschuster-Straße 18</b>85375 Neufahrn bei Freising</div></div>
   </div>
-  <form class="rein verz1" action="kontakt.php" method="post">
+  <form class="anfrage rein v1" action="kontakt.php" method="post">
+    <div class="rechner-uebernahme" id="uebernahme"></div>
+    <input type="hidden" name="rechner" id="rechner-feld">
     <div class="zwei">
-      <div><label for="name">Name *</label><input id="name" name="name" required autocomplete="name"></div>
-      <div><label for="firma">Firma</label><input id="firma" name="firma" autocomplete="organization"></div>
+      <div><label class="f" for="name">Name *</label><input id="name" name="name" required autocomplete="name"></div>
+      <div><label class="f" for="firma">Firma / Hausverwaltung</label><input id="firma" name="firma" autocomplete="organization"></div>
     </div>
     <div class="zwei">
-      <div><label for="email">E-Mail *</label><input id="email" type="email" name="email" required autocomplete="email"></div>
-      <div><label for="tel">Telefon</label><input id="tel" type="tel" name="telefon" autocomplete="tel"></div>
+      <div><label class="f" for="email">E-Mail *</label><input id="email" type="email" name="email" required autocomplete="email"></div>
+      <div><label class="f" for="tel">Telefon</label><input id="tel" type="tel" name="telefon" autocomplete="tel"></div>
     </div>
     <div class="zwei">
-      <div><label for="art">Objektart</label><select id="art" name="objektart"><option>Büro / Bürokomplex</option><option>Praxis / Kanzlei</option><option>Treppenhaus / Wohnanlage</option><option>Laden / Gewerbe</option><option>Glasreinigung</option><option>Grund- / Sonderreinigung</option></select></div>
-      <div><label for="ort">Ort</label><input id="ort" name="ort" placeholder="z. B. Freising"></div>
+      <div><label class="f" for="art">Objektart</label><select id="art" name="objektart"><option>Büro / Bürokomplex</option><option>Praxis / Kanzlei</option><option>Laden / Gewerbe</option><option>Treppenhaus / Wohnanlage</option><option>Glas- / Höhenreinigung</option><option>Teppich- / Grundreinigung</option></select></div>
+      <div><label class="f" for="ort">Ort</label><input id="ort" name="ort" placeholder="z. B. Freising"></div>
     </div>
-    <div><label for="msg">Ihre Nachricht</label><textarea id="msg" name="nachricht" rows="4" placeholder="Fläche ca. … m², gewünschtes Intervall …"></textarea></div>
+    <div><label class="f" for="msg">Ihre Nachricht</label><textarea id="msg" name="nachricht" rows="4" placeholder="Fläche, gewünschtes Intervall, Besonderheiten …"></textarea></div>
     <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <label class="check"><input type="checkbox" name="datenschutz" value="ja" required> <span>Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen. Meine Angaben werden zur Bearbeitung meiner Anfrage verwendet. *</span></label>
     <label class="check"><input type="checkbox" name="info_einwilligung" value="ja"> <span>Ich möchte gelegentlich Informationen der Königbauer Gebäudereinigung per E-Mail erhalten. Widerruf jederzeit möglich.</span></label>
-    <button class="btn" type="submit" style="justify-content:center">Anfrage senden</button>
+    <button class="btn" type="submit">Anfrage senden</button>
   </form>
 </div></section>
 
 <footer><div class="wrap">
-  <div class="grid">
-    <div><img src="img/logo-rk-dunkel.png" alt="Königbauer Gebäudereinigung"><p>Gebäudereinigung aus Neufahrn bei Freising – für Büros, Praxen, Gewerbe und Hausverwaltungen.</p></div>
+  <div class="fgrid">
+    <div><img src="img/logo-rk-dunkel.png" alt="Königbauer Gebäudereinigung"><p>Gebäudereinigung aus Neufahrn bei Freising – für Unternehmen, Praxen und Hausverwaltungen. Eingetragener Handwerksbetrieb seit 2011.</p></div>
     <div><b>Kontakt</b>Robert Königbauer<br>Georg-Stegschuster-Straße 18<br>85375 Neufahrn bei Freising<br><a href="tel:+491721083808">0172 108 3808</a><br><a href="mailto:info@koenigbauer-gebaeudereinigung.de">info@koenigbauer-gebaeudereinigung.de</a></div>
-    <div><b>Leistungen</b><a href="#leistungen">Büroreinigung</a><br><a href="#qualitaet">Qualität</a><br><a href="#leistungen">Praxisreinigung</a><br><a href="#hausverwaltungen">Treppenhausreinigung</a><br><a href="#leistungen">Glasreinigung</a></div>
+    <div><b>Leistungen</b><a href="#leistungen">Büroreinigung</a><br><a href="#leistungen">Teppich-Tiefenreinigung</a><br><a href="#leistungen">Glas &amp; Höhe</a><br><a href="#hausverwaltungen">Treppenhausreinigung</a><br><a href="#rechner">Preisrechner</a></div>
   </div>
   <div class="unten"><span>© <span id="jahr">2026</span> Königbauer Gebäudereinigung</span><span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></span></div>
 </div></footer>
 
-<div class="mobil-leiste"><a class="btn ghost" style="color:var(--schwarz);border-color:var(--linie)" href="tel:+491721083808">Anrufen</a><a class="btn" href="#kontakt">Angebot</a></div>
+<div class="mobil-leiste"><a class="btn rand" href="tel:+491721083808">Anrufen</a><a class="btn" href="#rechner">Preis berechnen</a></div>
 
 <script>
-// Header beim Scrollen
-const kopf=document.getElementById('kopf');
-const kopfPruefen=()=>kopf.classList.toggle('fest',scrollY>40);
-addEventListener('scroll',kopfPruefen,{passive:true});kopfPruefen();
-// Elemente beim Scrollen einblenden
-const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('sichtbar');io.unobserve(x.target)}}),{threshold:.12});
-document.querySelectorAll('.rein').forEach(el=>io.observe(el));
-// Slider: Pfeile, Punkte, Autoplay
-const slider=document.getElementById('slider'),slides=[...slider.children],punkte=document.getElementById('punkte');
-slides.forEach((_,i)=>{const b=document.createElement('button');b.type='button';b.ariaLabel='Bild '+(i+1);b.onclick=()=>gehe(i);punkte.appendChild(b)});
-const schritt=()=>slides[0].getBoundingClientRect().width+20;
-const aktiv=()=>Math.round(slider.scrollLeft/schritt());
-function gehe(i){slider.scrollTo({left:i*schritt()})}
-function markieren(){[...punkte.children].forEach((b,i)=>b.classList.toggle('an',i===aktiv()))}
-slider.addEventListener('scroll',markieren,{passive:true});markieren();
-document.querySelectorAll('.pfeile button').forEach(b=>b.onclick=()=>gehe(Math.max(0,Math.min(slides.length-1,aktiv()+ +b.dataset.richtung))));
-let auto=setInterval(()=>{const ende=slider.scrollLeft+slider.clientWidth>=slider.scrollWidth-5;gehe(ende?0:aktiv()+1)},4500);
-['pointerdown','wheel','touchstart'].forEach(ev=>slider.addEventListener(ev,()=>clearInterval(auto),{once:true,passive:true}));
-document.getElementById('jahr').textContent=new Date().getFullYear();
+/* =====================================================================
+   PREISRECHNER – EINSTELLUNGEN (hier passt Robert seine Preise an)
+   ===================================================================== */
+var PREISE = {
+  stundensatz: 35,            // € netto pro Arbeitsstunde (Lohn + Lohnnebenkosten + Material + Anfahrt + Verwaltung + Gewinn)
+  spanne: 0.12,               // ± 12 % Richtpreis-Spanne
+  mindestStundenEinsatz: 1.0, // Mindestzeit pro Einsatz (Büro, Praxis, Laden)
+  leistung: { buero: 150, praxis: 110, laden: 170 },   // gereinigte m² pro Stunde im Standard-Umfang
+  treppe: { minutenProEtage: 10, ruestMinuten: 15, mindestStundenEinsatz: 0.5 },
+  umfang: { basis: 0.8, standard: 1.0, komfort: 1.25 },
+  wochenProMonat: 4.33,
+  mwst: 0.19
+};
+var HAEUFIGKEIT = {
+  flaeche: [ {w:1,t:'1× pro Woche',s:'z. B. Freitag'}, {w:2,t:'2× pro Woche',s:'beliebt'}, {w:3,t:'3× pro Woche',s:'Mo · Mi · Fr'}, {w:5,t:'Täglich',s:'Mo – Fr'} ],
+  treppe:  [ {w:0.5,t:'Alle 2 Wochen',s:'14-tägig'}, {w:1,t:'1× pro Woche',s:'Standard'}, {w:2,t:'2× pro Woche',s:'stark genutzt'} ]
+};
+var UMFANG = {
+  flaeche: {
+    basis: ['Böden saugen & wischen','Papierkörbe & Müll'],
+    standard: ['Böden saugen & wischen','Papierkörbe & Müll','Sanitärräume','Teeküche','Tische & Oberflächen'],
+    komfort: ['Böden saugen & wischen','Papierkörbe & Müll','Sanitärräume','Teeküche','Tische & Oberflächen','Glastüren & Spiegel','Kontaktflächen desinfizieren','Verbrauchsmaterial auffüllen']
+  },
+  treppe: {
+    basis: ['Stufen kehren','Podeste wischen'],
+    standard: ['Stufen kehren & wischen','Handläufe & Geländer','Eingangsbereich','Briefkastenanlage'],
+    komfort: ['Stufen kehren & wischen','Handläufe & Geländer','Eingangsbereich','Briefkastenanlage','Glas der Haustür','Kellerflur','Aufzugskabine']
+  }
+};
+
+(function(){
+  var $=function(s){return document.querySelector(s)}, $$=function(s){return [].slice.call(document.querySelectorAll(s))};
+  var ruhig=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var eur=function(x){return Math.round(x).toLocaleString('de-DE')+' €'};
+  var eur2=function(x){return x.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'};
+  var zeitFmt=function(h){var m=Math.round(h*60/5)*5,hh=Math.floor(m/60),mm=m%60;return ((hh?hh+' Std. ':'')+(mm?mm+' Min.':'')).trim()||'–'};
+  var wert=function(n){var e=$('input[name="'+n+'"]:checked');return e?e.value:null};
+  var aktuellerPreis=0, letzterText='';
+
+  /* ---------- Preisrechner ---------- */
+  function haeufigkeitAufbauen(art){
+    var liste=art==='treppe'?HAEUFIGKEIT.treppe:HAEUFIGKEIT.flaeche, box=$('#haeufigkeit');
+    box.innerHTML=''; box.className='opt'+(liste.length===3?' drei':'');
+    liste.forEach(function(o){
+      var l=document.createElement('label');
+      l.innerHTML='<input type="radio" name="freq" value="'+o.w+'"><span class="kachel"><b>'+o.t+'</b><small>'+o.s+'</small></span>';
+      box.appendChild(l);
+    });
+    box.querySelectorAll('input')[1].checked=true;
+    box.querySelectorAll('input').forEach(function(i){i.addEventListener('change',rechnen)});
+  }
+  function reglerFarbe(r){r.style.setProperty('--p',((r.value-r.min)/(r.max-r.min)*100)+'%')}
+  function zaehleAuf(el,ziel){
+    var start=aktuellerPreis,t0=performance.now(); aktuellerPreis=ziel;
+    if(ruhig){el.textContent=eur(ziel);return}
+    (function f(t){var k=Math.min(1,(t-t0)/600);k=1-Math.pow(1-k,3);el.textContent=eur(start+(ziel-start)*k);if(k<1)requestAnimationFrame(f)})(t0);
+  }
+  function rechnen(){
+    var art=wert('art'), umfang=wert('umfang'), freq=parseFloat(wert('freq'))||1, P=PREISE, stunden, beschreibung, treppe=art==='treppe';
+    $('#regler-flaeche').hidden=treppe; $('#regler-treppe').hidden=!treppe;
+    $('#groesse-titel').textContent=treppe?'Wie groß ist die Anlage?':'Wie groß ist die Fläche?';
+    if(treppe){
+      var et=+$('#etagen').value, hs=+$('#haeuser').value;
+      $('#etagen-out').textContent=et; $('#haeuser-out').textContent=hs;
+      stunden=Math.max((et*P.treppe.minutenProEtage*hs*P.umfang[umfang]+P.treppe.ruestMinuten)/60,P.treppe.mindestStundenEinsatz);
+      beschreibung=hs+(hs>1?' Treppenhäuser':' Treppenhaus')+' mit je '+et+(et>1?' Etagen':' Etage');
+    }else{
+      var qm=+$('#flaeche').value; $('#flaeche-out').textContent=qm.toLocaleString('de-DE')+' m²';
+      stunden=Math.max(qm/P.leistung[art]*P.umfang[umfang],P.mindestStundenEinsatz);
+      beschreibung=qm+' m² '+({buero:'Büro',praxis:'Praxis/Kanzlei',laden:'Laden/Gewerbe'})[art];
+    }
+    var einsaetze=freq*P.wochenProMonat, proEinsatz=stunden*P.stundensatz, monat=proEinsatz*einsaetze, lo=monat*(1-P.spanne), hi=monat*(1+P.spanne);
+    zaehleAuf($('#preis'),monat);
+    $('#preis-brutto').textContent='Spanne ca. '+eur(lo)+' – '+eur(hi)+' · zzgl. 19 % MwSt. (ca. '+eur(monat*(1+P.mwst))+' brutto)';
+    $('#r-einsaetze').textContent=(Math.round(einsaetze*10)/10).toLocaleString('de-DE');
+    $('#r-zeit').textContent=zeitFmt(stunden);
+    $('#r-einsatz').textContent='ca. '+eur2(proEinsatz);
+    var tab=UMFANG[treppe?'treppe':'flaeche'];
+    $('#umfang-liste').innerHTML=tab[umfang].map(function(x){return '<span'+(tab.basis.indexOf(x)<0?' class="neu"':'')+'>✓ '+x+'</span>'}).join('');
+    var extras=$$('input[name="extra"]:checked').map(function(e){return e.value});
+    $$('.extras label').forEach(function(l){l.classList.toggle('an',l.querySelector('input').checked)});
+    var ex=$('#r-extras'); ex.hidden=!extras.length; ex.textContent=extras.length?'Zusätzlich: '+extras.join(', ')+' – Preis nach Besichtigung.':'';
+    var fText=$('input[name="freq"]:checked').parentNode.querySelector('b').textContent;
+    letzterText=beschreibung+', '+fText+', Umfang '+umfang.charAt(0).toUpperCase()+umfang.slice(1)+' – Richtpreis ca. '+eur(lo)+' bis '+eur(hi)+' netto pro Monat'+(extras.length?'. Zusätzlich: '+extras.join(', '):'');
+    $$('input[type=range]').forEach(reglerFarbe);
+  }
+  $$('input[name="art"]').forEach(function(i){i.addEventListener('change',function(){haeufigkeitAufbauen(wert('art'));rechnen()})});
+  $$('input[name="umfang"],input[name="extra"]').forEach(function(i){i.addEventListener('change',rechnen)});
+  $$('input[type=range]').forEach(function(i){i.addEventListener('input',rechnen)});
+  haeufigkeitAufbauen('buero'); rechnen();
+  // "Treppenhaus-Preis berechnen" wählt direkt Treppenhaus
+  $$('[data-art]').forEach(function(a){a.addEventListener('click',function(){var r=$('input[name="art"][value="'+a.dataset.art+'"]');r.checked=true;haeufigkeitAufbauen(a.dataset.art);rechnen()})});
+  // Paket ins Kontaktformular übernehmen
+  $('#r-anfragen').addEventListener('click',function(){
+    $('#rechner-feld').value=letzterText;
+    var u=$('#uebernahme'); u.textContent='✓ Aus dem Preisrechner übernommen: '+letzterText; u.classList.add('da');
+    $('#art').selectedIndex={buero:0,praxis:1,laden:2,treppe:3}[wert('art')];
+  });
+
+  /* ---------- Kopfzeile, Fortschritt, Parallax, Wisch-Effekt, Ablauf-Linie ---------- */
+  var kopf=$('#kopf'), balken=$('#fortschritt'), satz=$('#wisch .satz'), wischSek=$('#wisch'), al=$('#ablauf-liste'), linie=$('#ablauf-linie'), stationen=$$('.station'), bilder=$$('.hk-schwebe');
+  if(!ruhig) satz.style.setProperty('--sauber','0%');
+  function scroll(){
+    var y=scrollY, h=document.documentElement.scrollHeight-innerHeight;
+    kopf.classList.toggle('fest',y>40);
+    balken.style.transform='scaleX('+(h>0?y/h:0)+')';
+    if(!ruhig){
+      bilder.forEach(function(b){b.style.transform='translateY('+(y*b.dataset.tiefe/100)+'px) scale(1.08)'});
+      var r=wischSek.getBoundingClientRect(), p=Math.min(1,Math.max(0,(innerHeight*.9-r.top)/(r.height*.75)));
+      satz.style.setProperty('--sauber',(p*100)+'%');
+    }
+    var a=al.getBoundingClientRect(), q=Math.min(1,Math.max(0,(innerHeight*.6-a.top)/a.height));
+    linie.style.setProperty('--h',(q*100)+'%');
+    stationen.forEach(function(s){s.classList.toggle('aktiv',s.getBoundingClientRect().top<innerHeight*.6)});
+  }
+  addEventListener('scroll',scroll,{passive:true}); addEventListener('resize',scroll); scroll();
+
+  // Einblenden
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('sichtbar');io.unobserve(x.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+    $$('.rein').forEach(function(el){io.observe(el)});
+    var zio=new IntersectionObserver(function(e){e.forEach(function(x){if(!x.isIntersecting)return;zio.unobserve(x.target);
+      var el=x.target, ziel=+el.dataset.zaehle, von=ziel>1000?ziel-40:0, t0=performance.now();
+      if(ruhig)return;
+      (function f(t){var k=Math.min(1,(t-t0)/1400);k=1-Math.pow(1-k,4);el.textContent=Math.round(von+(ziel-von)*k);if(k<1)requestAnimationFrame(f)})(t0);
+    })},{threshold:.6});
+    $$('[data-zaehle]').forEach(function(el){zio.observe(el)});
+  }else{$$('.rein').forEach(function(el){el.classList.add('sichtbar')})}
+
+  // Leistungs-Karten leicht kippen
+  if(!ruhig && matchMedia('(hover:hover)').matches) $$('.leist').forEach(function(k){
+    k.addEventListener('mousemove',function(ev){var r=k.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width-.5,y=(ev.clientY-r.top)/r.height-.5;k.style.transform='perspective(900px) rotateY('+(x*6)+'deg) rotateX('+(-y*6)+'deg) translateY(-4px)'});
+    k.addEventListener('mouseleave',function(){k.style.transform=''});
+  });
+
+  // Galerie
+  var slider=$('#slider'), slides=[].slice.call(slider.children), punkte=$('#punkte');
+  slides.forEach(function(_,i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Bild '+(i+1));b.onclick=function(){gehe(i)};punkte.appendChild(b)});
+  function schritt(){return slides[0].getBoundingClientRect().width+22}
+  function aktiv(){return Math.round(slider.scrollLeft/schritt())}
+  function gehe(i){slider.scrollTo({left:i*schritt()})}
+  function markieren(){[].slice.call(punkte.children).forEach(function(b,i){b.classList.toggle('an',i===aktiv())})}
+  slider.addEventListener('scroll',markieren,{passive:true}); markieren();
+  $$('.pfeile button').forEach(function(b){b.onclick=function(){gehe(Math.max(0,Math.min(slides.length-1,aktiv()+ +b.dataset.richtung)))}});
+  var auto=ruhig?null:setInterval(function(){var ende=slider.scrollLeft+slider.clientWidth>=slider.scrollWidth-5;gehe(ende?0:aktiv()+1)},4800);
+  ['pointerdown','wheel','touchstart'].forEach(function(ev){slider.addEventListener(ev,function(){clearInterval(auto)},{once:true,passive:true})});
+
+  // Funkeln im Hero
+  var cv=$('#funken'), ctx=cv.getContext('2d'), teile=[], dpr=Math.min(2,window.devicePixelRatio||1);
+  function groesse(){cv.width=cv.offsetWidth*dpr;cv.height=cv.offsetHeight*dpr}
+  groesse(); addEventListener('resize',groesse);
+  for(var i=0;i<46;i++)teile.push({x:Math.random(),y:Math.random(),r:Math.random()*1.8+.4,v:Math.random()*.00035+.0001,p:Math.random()*6.28});
+  function malen(t){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    teile.forEach(function(s){s.y-=s.v;if(s.y<-.02){s.y=1.02;s.x=Math.random()}
+      var a=.25+.55*Math.abs(Math.sin(t/900+s.p)), x=s.x*cv.width, y=s.y*cv.height, r=s.r*dpr;
+      ctx.fillStyle='rgba(180,228,255,'+a+')';ctx.beginPath();ctx.arc(x,y,r,0,6.28);ctx.fill();
+      if(s.r>1.6){ctx.strokeStyle='rgba(220,244,255,'+(a*.6)+')';ctx.lineWidth=dpr;ctx.beginPath();ctx.moveTo(x-r*3,y);ctx.lineTo(x+r*3,y);ctx.moveTo(x,y-r*3);ctx.lineTo(x,y+r*3);ctx.stroke()}
+    });
+    requestAnimationFrame(malen);
+  }
+  if(!ruhig)requestAnimationFrame(malen);
+
+  document.getElementById('jahr').textContent=new Date().getFullYear();
+})();
 </script>
 </body>
 </html>

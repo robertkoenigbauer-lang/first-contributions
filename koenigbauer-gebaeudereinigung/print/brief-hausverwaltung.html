@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<title>Brief an Hausverwaltungen – Königbauer</title>
+<!-- A4-Brief für Fensterumschlag DIN lang (Anschriftfeld nach DIN 5008, Form B).
+     Empfänger unten im Anschriftfeld eintragen. Drucken → Als PDF speichern, Ränder keine, Hintergrundgrafiken an. -->
+<style>
+@font-face{font-family:"Archivo";src:url(../website/fonts/archivo-latin-900-normal.woff2) format("woff2");font-weight:900}
+@font-face{font-family:"Manrope";src:url(../website/fonts/manrope-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Manrope";src:url(../website/fonts/manrope-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:"Manrope";src:url(../website/fonts/manrope-latin-800-normal.woff2) format("woff2");font-weight:800}
+@page{size:A4;margin:0}
+:root{--nacht:#0c0d10;--blau:#008dd2;--blau-hell:#3bb4f0;--eis:#e7f4fb;--anthrazit:#2a2a2b;--grau:#5d6672;--linie:#e2e6eb}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Manrope",Arial,sans-serif;color:var(--anthrazit);background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.seite{width:210mm;height:297mm;position:relative;overflow:hidden;background:#fff}
+/* Kopf */
+.kopf{position:absolute;inset:0 0 auto 0;height:38mm;background:var(--nacht);color:#fff;padding:0 20mm 0 25mm;display:flex;align-items:center;justify-content:space-between;overflow:hidden}
+.kopf::after{content:"";position:absolute;width:120mm;height:120mm;border-radius:50%;background:radial-gradient(circle,rgba(0,141,210,.45),transparent 65%);right:-40mm;top:-55mm}
+.kopf img{height:17mm;position:relative;z-index:1}
+.kopf .claim{position:relative;z-index:1;text-align:right;font-family:"Archivo",Arial Black,sans-serif;font-weight:900;font-size:15pt;line-height:1.05;letter-spacing:-.02em}
+.kopf .claim em{font-style:normal;color:var(--blau-hell)}
+.kopf .claim small{display:block;font-family:"Manrope",sans-serif;font-weight:800;font-size:6.5pt;letter-spacing:.26em;text-transform:uppercase;color:#bfe6fa;margin-top:2mm}
+.linie{position:absolute;top:38mm;left:0;right:0;height:1.4mm;background:linear-gradient(90deg,var(--anthrazit) 50%,var(--blau) 50%)}
+/* Anschriftfeld DIN 5008 B: 20 mm links, 45 mm oben, 85 x 45 mm */
+.absender{position:absolute;left:25mm;top:47mm;width:85mm;font-size:6.5pt;color:var(--grau);text-decoration:underline}
+.anschrift{position:absolute;left:25mm;top:53mm;width:85mm;height:35mm;font-size:10.5pt;line-height:1.45}
+.anschrift .platz{color:#b2bac4}
+/* Infoblock rechts */
+.info{position:absolute;left:118mm;top:50mm;width:72mm;font-size:8.1pt;line-height:1.55}
+.info .zeile span:last-child{white-space:nowrap}
+.info b{display:block;color:var(--nacht);font-size:9pt}
+.info .zeile{display:flex;justify-content:space-between;gap:4mm;border-bottom:1px solid var(--linie);padding:1.2mm 0}
+.info .zeile span:first-child{color:var(--grau)}
+/* Text */
+.text{position:absolute;left:25mm;right:20mm;top:100mm;font-size:10.2pt;line-height:1.55}
+.betreff{font-family:"Archivo",Arial Black,sans-serif;font-weight:900;font-size:13pt;line-height:1.15;color:var(--nacht);margin:0 0 6mm;letter-spacing:-.01em}
+.text p{margin:0 0 3.6mm}
+.punkte{list-style:none;padding:0;margin:0 0 4mm;display:grid;grid-template-columns:1fr 1fr;gap:2mm 6mm}
+.punkte li{display:grid;grid-template-columns:5mm 1fr;gap:2mm;font-size:9.4pt;line-height:1.35}
+.punkte li::before{content:"✓";width:5mm;height:5mm;border-radius:50%;background:var(--eis);color:var(--blau);font-weight:800;font-size:7.5pt;display:grid;place-items:center}
+.punkte b{color:var(--nacht)}
+.gruss{margin-top:5mm}
+.gruss .name{font-family:"Archivo",Arial Black,sans-serif;font-weight:900;font-size:12pt;color:var(--nacht);margin-top:9mm}
+/* Fotos + QR */
+.band{position:absolute;left:25mm;right:20mm;bottom:27mm;height:36mm;display:grid;grid-template-columns:1fr 1fr 1fr 58mm;gap:3mm}
+.band img{width:100%;height:100%;object-fit:cover;border-radius:3mm}
+.qrbox{background:var(--nacht);color:#fff;border-radius:3mm;padding:3.5mm;display:grid;grid-template-columns:22mm 1fr;gap:3mm;align-items:center}
+.qrbox .qr{background:#fff;border-radius:1.5mm;padding:1.2mm}
+.qrbox .qr img{width:100%;height:auto;display:block;border-radius:0}
+.qrbox b{font-family:"Archivo",Arial Black,sans-serif;font-weight:900;font-size:9.5pt;line-height:1.1;display:block}
+.qrbox span{font-size:6.8pt;color:#c6ccd5;line-height:1.35;display:block;margin-top:1.5mm}
+/* Fuß */
+.fuss{position:absolute;left:25mm;right:20mm;bottom:8mm;font-size:6.6pt;color:var(--grau);line-height:1.5;border-top:1px solid var(--linie);padding-top:2.5mm;display:flex;justify-content:space-between;gap:6mm}
+.fuss b{color:var(--nacht)}
+.widerspruch{position:absolute;left:25mm;right:20mm;bottom:21mm;font-size:6.2pt;color:#8a939e}
+@media screen{body{background:#dfe4ea;padding:20px}.seite{margin:0 auto;box-shadow:0 10px 30px rgba(0,0,0,.2)}}
+</style></head>
+<body><div class="seite">
+  <div class="kopf">
+    <img src="../website/img/logo-rk-dunkel.png" alt="RK – Königbauer Gebäudereinigung">
+    <div class="claim">Räume, die man<br><em>sauber sieht.</em><small>Königbauer Gebäudereinigung</small></div>
+  </div>
+  <div class="linie"></div>
+
+  <div class="absender">Königbauer Gebäudereinigung · Georg-Stegschuster-Straße 18 · 85375 Neufahrn</div>
+  <div class="anschrift"><span class="platz">[Name der Hausverwaltung]<br>[z. Hd. Ansprechpartner/in]<br>[Straße Hausnummer]<br>[PLZ Ort]</span></div>
+
+  <div class="info">
+    <b>Ihr Ansprechpartner</b>
+    <div class="zeile"><span>Name</span><span>Robert Königbauer</span></div>
+    <div class="zeile"><span>Telefon</span><span>0172 108 3808</span></div>
+    <div class="zeile"><span>Mail</span><span>info@koenigbauer-gebaeudereinigung.de</span></div>
+    <div class="zeile"><span>Web</span><span>koenigbauer-gebaeudereinigung.de</span></div>
+    <div class="zeile"><span>Datum</span><span id="datum">19.11.2026</span></div>
+  </div>
+
+  <div class="text">
+    <h1 class="betreff">Saubere Treppenhäuser für Ihre Wohnanlagen – vom Handwerksbetrieb aus Neufahrn</h1>
+    <p>Sehr geehrte Damen und Herren,</p>
+    <p>als <b>ista Servicepartner</b> bin ich mit meinem Team regelmäßig in Wohnanlagen im Landkreis Freising unterwegs. Dabei sehe ich, wie unterschiedlich Treppenhäuser gepflegt werden – und wie sehr ein sauberer Eingang das Bild einer ganzen Anlage prägt.</p>
+    <p>Die Königbauer Gebäudereinigung ist seit 2011 ein eingetragener Handwerksbetrieb. Für Hausverwaltungen und Eigentümergemeinschaften übernehmen wir:</p>
+    <ul class="punkte">
+      <li><span><b>Treppenhausreinigung</b> in festen Intervallen – wöchentlich oder 14-tägig</span></li>
+      <li><span><b>Reinigungsnachweis</b> für Eigentümer und Beirat</span></li>
+      <li><span><b>Sonderreinigung</b> nach Umzug, Renovierung oder Wasserschaden</span></li>
+      <li><span><b>Glas &amp; Höhe</b> – Fenster und Glasdächer, auch mit Arbeitsbühne</span></li>
+    </ul>
+    <p>Sie haben dabei einen festen Ansprechpartner: mich. Gern schaue ich mir Ihre Objekte kostenlos an – innerhalb von 24 Stunden erhalten Sie einen verbindlichen Festpreis.</p>
+    <div class="gruss">Mit freundlichen Grüßen
+      <div class="name">Robert Königbauer</div>
+      <div style="font-size:8.5pt;color:var(--grau)">Inhaber, Königbauer Gebäudereinigung</div>
+    </div>
+  </div>
+
+  <div class="band">
+    <img src="../website/img/galerie/3.jpg" alt="Glasreinigung mit Arbeitsbühne">
+    <img src="../website/img/galerie/1.jpg" alt="Teppichreinigung vorher und nachher">
+    <img src="../website/img/galerie/6.jpg" alt="Bodenpflege">
+    <div class="qrbox">
+      <div class="qr"><img src="img/qr-rechner.svg" alt="QR-Code zum Preisrechner"></div>
+      <div><b>Was kostet Ihr Treppenhaus?</b><span>Scannen und in 60 Sekunden einen Richtpreis online berechnen.</span></div>
+    </div>
+  </div>
+
+  <div class="widerspruch">Ihre Anschrift stammt aus öffentlich zugänglichen Verzeichnissen. Sie können der Nutzung Ihrer Daten für Werbung jederzeit formlos widersprechen (Art. 21 DSGVO) – eine kurze Nachricht genügt.</div>
+  <div class="fuss">
+    <div><b>Königbauer Gebäudereinigung</b> · Inhaber Robert Königbauer<br>Georg-Stegschuster-Straße 18 · 85375 Neufahrn bei Freising</div>
+    <div>Handwerkskammer für München und Oberbayern<br>Betriebsnr. 7089619 · USt-ID DE275077767</div>
+  </div>
+</div>
+<script>try{document.getElementById('datum').textContent=new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})}catch(e){}</script>
+</body></html>

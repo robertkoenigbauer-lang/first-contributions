@@ -13,6 +13,9 @@ DATEI = Path(__file__).resolve().parent.parent / "daten" / "personal.json"
 MINDESTLOHN = {2026: 13.90, 2027: 14.60}
 MINIJOB_GRENZE = {2026: 603, 2027: 633}
 MIDIJOB_OBERGRENZE = 2000
+# Branchen-Mindestlohn Gebäudereinigung, Lohngruppe 1 (Innen- und Unterhaltsreinigung), allgemeinverbindlich.
+# Gilt für alle, die im Bereich "gebaeudereinigung" arbeiten. Neue Werte nach Tarifabschluss hier ergänzen.
+BRANCHENMINDESTLOHN_REINIGUNG = {2026: 15.00}
 
 
 def _jahr_wert(tabelle, jahr):
@@ -51,8 +54,11 @@ def auswerten(d):
         naechstes = int(letzte[:4]) + 1
         ml, gr = _jahr_wert(MINDESTLOHN, naechstes), _jahr_wert(MINIJOB_GRENZE, naechstes)
         for m in d["mitarbeiter"]:
-            if m.get("stundenlohn") and m["stundenlohn"] < ml:
-                warnungen.append(f"Ab 01.01.{naechstes}: {m['name']} verdient {m['stundenlohn']:.2f} €/Std. – unter dem Mindestlohn von {ml:.2f} €!")
+            reinigung = m.get("bereich") == "gebaeudereinigung"
+            ml_m = max(ml, _jahr_wert(BRANCHENMINDESTLOHN_REINIGUNG, naechstes)) if reinigung else ml
+            if m.get("stundenlohn") and m["stundenlohn"] < ml_m:
+                art = "Branchen-Mindestlohn Gebäudereinigung" if reinigung else "gesetzlicher Mindestlohn"
+                warnungen.append(f"Ab 01.01.{naechstes}: {m['name']} verdient {m['stundenlohn']:.2f} €/Std. – unter dem {art} von {ml_m:.2f} €!")
             if m["art"] == "minijob" and m.get("stundenlohn"):
                 warnungen.append(f"Ab 01.01.{naechstes}: {m['name']} darf als Minijob max. {gr / m['stundenlohn']:.1f} Std./Monat arbeiten ({gr} € ÷ {m['stundenlohn']:.2f} €).")
     # Jahresprognose: Durchschnitt der vorhandenen Monate x 12

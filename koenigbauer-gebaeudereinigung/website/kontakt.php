@@ -16,6 +16,7 @@ $text = "Neue Anfrage über die Website\n\n"
   . "Name: $name\nFirma: " . feld('firma') . "\nE-Mail: $email\nTelefon: " . feld('telefon')
   . "\nObjektart: " . feld('objektart') . "\nOrt: " . feld('ort')
   . "\nE-Mail-Infos erwünscht (Einwilligung): " . (($_POST['info_einwilligung'] ?? '') === 'ja' ? 'JA – ' . date('d.m.Y H:i') : 'nein')
+  . "\nPreisrechner: " . (feld('rechner') ?: '–')
   . "\n\nNachricht:\n" . trim(strip_tags($_POST['nachricht'] ?? ''));
 $kopf = "From: Website Königbauer <$absender>\r\nReply-To: $email\r\nContent-Type: text/plain; charset=UTF-8";
 mail($empfaenger, '=?UTF-8?B?' . base64_encode("Anfrage: $name") . '?=', $text, $kopf);

@@ -37,6 +37,20 @@ Das Skript schneidet zu, hellt dezent auf und entfernt GPS-Daten – kein KI-Fil
 
 ---
 
+### Preisrechner einstellen
+Ganz unten in `website/index.html` steht der Block `PREISE`. Dort änderst du:
+- `stundensatz` – dein Netto-Preis pro Arbeitsstunde (Start: 35 €; enthält Lohn, Lohnnebenkosten, Material, Anfahrt, Verwaltung, Gewinn)
+- `leistung` – wie viele m² pro Stunde ihr im Standard-Umfang schafft (Büro 150, Praxis 110, Laden 170)
+- `treppe.minutenProEtage` – Minuten pro Etage im Treppenhaus (Start: 10)
+- `spanne` – wie breit die angezeigte Preisspanne ist (Start: ± 12 %)
+Tipp: Rechne zwei, drei deiner bestehenden Objekte im Rechner nach. Liegt der Richtpreis nah an deinem echten Preis, passen die Werte.
+
+### Druckvorlagen
+- `print/visitenkarte.html` – Vorderseite Arbeitsfoto + Claim, Rückseite Kontakt + QR-Code zum Preisrechner
+- `print/brief-hausverwaltung.html` – Werbebrief für Hausverwaltungen (Fensterumschlag DIN lang), Empfänger im Anschriftfeld eintragen
+- `print/flyer-a4.html` – Infoblatt A4
+- QR-Codes in `print/img/` (Homepage und direkt Preisrechner)
+
 ## 2. Vertriebs-Agenten (`agents/`)
 ```bash
 cd agents
