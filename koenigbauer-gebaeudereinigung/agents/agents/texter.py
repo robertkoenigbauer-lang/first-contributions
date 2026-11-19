@@ -9,7 +9,7 @@ import os
 MODELL = os.environ.get("KOENIGBAUER_MODELL", "claude-sonnet-5-5")
 
 SEGMENT_AUFHAENGER = {
-    "hausverwaltung": "Treppenhaus- und Objektreinigung für Ihre verwalteten Wohnanlagen – mit Reinigungsnachweis und festen Intervallen. Als ista Servicepartner sind wir ohnehin regelmäßig in Wohnanlagen im Landkreis unterwegs",
+    "hausverwaltung": "Treppenhaus- und Objektreinigung für Ihre verwalteten Wohnanlagen – mit Reinigungsnachweis und festen Intervallen.",
     "versicherung": "eine saubere, gepflegte Agentur, in der sich Ihre Kunden wohlfühlen",
     "steuer_recht": "diskrete, zuverlässige Büroreinigung außerhalb Ihrer Mandantenzeiten",
     "firma_buero": "zuverlässige Büroreinigung mit festen Reinigungskräften und dem Inhaber als direktem Ansprechpartner – Sie müssen sich um nichts kümmern",
@@ -31,7 +31,7 @@ Regeln:
 - Nenne niemals Mitarbeiter- oder Kundenzahlen und keine Namen von Bestandskunden.
 - Biete keinen Schlüsselservice und keine Reinigung ohne Anwesenheit des Kunden an – das gibt es nicht.
 - Bei Büros und Gewerbe den festen Ansprechpartner, feste Reinigungskräfte und Profi-Technik betonen.
-- Den Hinweis "ista Servicepartner" nur bei Hausverwaltungen verwenden.
+- Erwähne niemals ista oder eine ista-Partnerschaft.
 - Am Ende ein Satz: Wer keine weiteren Informationen wünscht, genügt eine kurze Nachricht.
 Antworte ausschließlich als JSON."""
 

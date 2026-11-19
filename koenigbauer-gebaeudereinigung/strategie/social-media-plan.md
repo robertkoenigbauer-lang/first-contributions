@@ -35,7 +35,7 @@
 ## Woche 4 – Team & Vertrauen
 | Mo | Foto | Team (mit Einverständnis) oder Hände mit Mikrofasertuch | „Feste Gesichter in Ihrem Objekt – keine wechselnden Aushilfen.“ |
 | Mi | **Reel** | „Ein Tag bei Königbauer“ – 5 Clips à 2 Sek.: Auto, Schlüssel, Maschine, Glas, Feierabend | |
-| Fr | Foto | Treppenhaus nach der Reinigung | „Hausverwaltungen im Landkreis Freising: Wir übernehmen Ihre Treppenhäuser. Als ista Servicepartner sind wir eh vor Ort.“ |
+| Fr | Foto | Treppenhaus nach der Reinigung | „Hausverwaltungen im Landkreis Freising: Wir übernehmen Ihre Treppenhäuser.“ |
 
 **Hashtags (5–8 pro Post, mischen):** `#gebäudereinigung #reinigungsfirma #neufahrn #freising #landkreisfreising #münchen #büroreinigung #teppichreinigung #glasreinigung #vorhernachher #cleaningtiktok #satisfying #handwerk`
 

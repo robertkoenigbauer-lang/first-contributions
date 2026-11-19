@@ -31,16 +31,15 @@
     "Regional aus Neufahrn, schnell vor Ort",
     "Profi-Technik: Teppich-Tiefenreinigung, Einscheibenmaschine, Arbeitsbühne für Glasflächen in großer Höhe"
   ],
-  "besonderheiten": {
-    "hausverwaltung": "ista Servicepartner – regelmäßig in Wohnanlagen im Landkreis unterwegs"
-  },
+  "besonderheiten": {},
   "angebot_neukunden": "Kostenlose Besichtigung und Festpreis-Angebot innerhalb von 24 Stunden",
   "tonalitaet": "freundlich, direkt, bodenständig-bayerisch, per Sie, kurz, keine Floskeln, kein Marketing-Sprech",
   "nicht_erwaehnen": [
     "Anzahl der Mitarbeiter",
     "Anzahl der Kunden",
     "Namen von Bestandskunden",
-    "Schlüsselservice / Reinigung ohne Anwesenheit des Kunden (wird nicht angeboten)"
+    "Schlüsselservice / Reinigung ohne Anwesenheit des Kunden (wird nicht angeboten)",
+    "ista / ista Servicepartner"
   ],
   "referenzen": []
 }
