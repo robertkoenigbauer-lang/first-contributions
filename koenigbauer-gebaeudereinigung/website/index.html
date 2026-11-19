@@ -217,6 +217,7 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(
 .ergebnis dd{margin:0;font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
 .ergebnis .btn{width:100%}
 .ergebnis .hinweis{font-size:.8rem;color:var(--grau);margin:16px 0 0;line-height:1.5}
+.ergebnis .extra-info.pauschal{background:#0c0d10;color:#e3e7ec}.ergebnis .extra-info.pauschal b{color:#fff}
 .ergebnis .extra-info{background:var(--eis);border-radius:12px;padding:12px 14px;font-size:.88rem;margin:-8px 0 20px}
 
 /* ---------- Galerie ---------- */
@@ -307,6 +308,7 @@ footer .fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-b
 footer img{height:50px;margin-bottom:16px}
 footer b{color:#fff;display:block;margin-bottom:12px;font-family:var(--display)}
 footer a{color:#cfd5dd;text-decoration:none;overflow-wrap:anywhere}footer a:hover{color:#fff}
+footer .social{display:flex;gap:12px;margin:-20px 0 30px}footer .social a{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center}footer .social a:hover{background:var(--blau)}footer .social svg{width:20px;height:20px}
 footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .mobil-leiste{display:none}
 
@@ -392,7 +394,8 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
       </div>
       <div class="chips">
         <span class="chip"><i></i>Inhabergeführt</span>
-        <span class="chip"><i></i>Festpreis in 24 h</span>
+        <span class="chip"><i></i>Fester Monatspreis</span>
+        <span class="chip"><i></i>Markenprodukte</span>
         <span class="chip"><i></i>Haftpflichtversichert</span>
         <span class="chip"><i></i>ista Servicepartner</span>
       </div>
@@ -454,7 +457,7 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
 <section class="rechner dunkel" id="rechner" aria-labelledby="rechner-titel"><div class="wrap">
   <div class="kicker rein">Preisrechner</div>
   <h2 class="rein" id="rechner-titel">Was kostet Ihre Reinigung? In 60 Sekunden wissen Sie es.</h2>
-  <p class="lead rein">Stellen Sie Ihr Paket selbst zusammen. Sie sehen sofort einen Richtpreis – den verbindlichen Festpreis bekommen Sie nach einer kostenlosen Besichtigung.</p>
+  <p class="lead rein">Stellen Sie Ihr Paket selbst zusammen und sehen Sie sofort Ihren monatlichen Pauschalpreis. Transparent, inklusive Material und Anfahrt – verbindlich nach einer kostenlosen Besichtigung.</p>
 
   <div class="r-grid">
     <form class="r-form" id="rform" onsubmit="return false">
@@ -513,18 +516,19 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
     </form>
 
     <aside class="ergebnis" aria-live="polite">
-      <div class="klein">Ihr Richtpreis</div>
+      <div class="klein">Ihr Pauschalpreis (Richtwert)</div>
       <div class="preis"><span id="preis">0 €</span> <small>/ Monat netto</small></div>
       <div class="netto" id="preis-brutto">zzgl. 19 % MwSt.</div>
       <dl>
         <dt>Einsätze pro Monat</dt><dd id="r-einsaetze">–</dd>
-        <dt>Zeit pro Einsatz</dt><dd id="r-zeit">–</dd>
         <dt>Preis pro Einsatz</dt><dd id="r-einsatz">–</dd>
+        <dt>Pro Jahr</dt><dd id="r-jahr">–</dd>
       </dl>
+      <div class="extra-info pauschal"><b>Fester Monatspreis.</b> Egal, wie lange wir brauchen – kleine Sonderwünsche inklusive. Sie wissen jeden Monat und für das ganze Jahr genau, was Sie zahlen.</div>
       <div class="extra-info" id="r-extras" hidden></div>
       <a class="btn" href="#kontakt" id="r-anfragen">Dieses Paket anfragen
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <p class="hinweis">Unverbindliche Orientierung auf Basis von Erfahrungswerten. Der tatsächliche Aufwand hängt von Bodenbelägen, Ausstattung und Verschmutzung ab. Ihren verbindlichen Festpreis erhalten Sie nach einer kostenlosen Besichtigung innerhalb von 24 Stunden.</p>
+      <p class="hinweis">Unverbindlicher Richtwert inkl. Material und Anfahrt. Der tatsächliche Aufwand hängt von Bodenbelägen, Ausstattung und Verschmutzung ab. Ihren verbindlichen Pauschalpreis erhalten Sie nach einer kostenlosen Besichtigung innerhalb von 24 Stunden.</p>
     </aside>
   </div>
 </div></section>
@@ -568,7 +572,9 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
       <li class="rein"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Ein fester Ansprechpartner</b><span>Robert Königbauer kümmert sich persönlich – vom Angebot bis zur Reklamation.</span></div></li>
       <li class="rein v1"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Feste Reinigungskräfte</b><span>Immer dieselben Gesichter in Ihrem Objekt – keine wechselnden Aushilfen.</span></div></li>
       <li class="rein v2"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Profi-Technik</b><span>Teppich-Tiefenreinigung, Einscheibenmaschine und Arbeitsbühne für Glasflächen in großer Höhe.</span></div></li>
-      <li class="rein v3"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Betriebshaftpflichtversichert</b><span>Ihr Objekt ist bei uns abgesichert.</span></div></li>
+      <li class="rein v3"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Markenprodukte</b><span>Wir arbeiten mit Markenherstellern wie TASKI und Dr. Schnell – für saubere Ergebnisse und schonende Pflege Ihrer Oberflächen.</span></div></li>
+      <li class="rein"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Alle Mitarbeiter angemeldet</b><span>Ordnungsgemäß beschäftigt und versichert – keine Schwarzarbeit, keine Subunternehmer-Ketten.</span></div></li>
+      <li class="rein v1"><span class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5L20 7"/></svg></span><div><b>Betriebshaftpflichtversichert</b><span>Ihr Objekt ist bei uns abgesichert.</span></div></li>
     </ul>
   </div>
   <div class="foto-stapel rein v1" aria-hidden="true">
@@ -616,7 +622,9 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
 <section id="faq" style="padding-top:0"><div class="wrap faq">
   <div class="kicker rein">FAQ</div>
   <h2 class="rein" style="margin-bottom:24px">Häufige Fragen</h2>
-  <details class="rein"><summary>Wie genau ist der Preisrechner?</summary><p>Er zeigt einen Richtpreis auf Basis von Erfahrungswerten für Fläche, Häufigkeit und Leistungsumfang. Der tatsächliche Aufwand hängt von Bodenbelägen, Möblierung und Verschmutzung ab – deshalb erhalten Sie nach der kostenlosen Besichtigung einen verbindlichen Festpreis.</p></details>
+  <details class="rein"><summary>Wie genau ist der Preisrechner?</summary><p>Er zeigt einen Richtwert für Ihren monatlichen Pauschalpreis auf Basis von Erfahrungswerten für Fläche, Häufigkeit und Leistungsumfang. Der tatsächliche Aufwand hängt von Bodenbelägen, Möblierung und Verschmutzung ab – deshalb erhalten Sie nach der kostenlosen Besichtigung einen verbindlichen Festpreis.</p></details>
+  <details class="rein"><summary>Was bedeutet Pauschalpreis?</summary><p>Sie zahlen jeden Monat denselben festen Betrag – egal, ob wir mal länger brauchen. Kleine Sonderwünsche sind inklusive, Material und Anfahrt ebenfalls. So wissen Sie schon zu Beginn, was die Reinigung im ganzen Jahr kostet.</p></details>
+  <details class="rein"><summary>Welche Reinigungsmittel und Geräte verwenden Sie?</summary><p>Wir arbeiten mit Markenprodukten, zum Beispiel von TASKI und Dr. Schnell, und mit Profi-Geräten wie Sprühextraktion, Einscheibenmaschine und Arbeitsbühne.</p></details>
   <details class="rein"><summary>Reinigen Sie auch früh morgens oder abends?</summary><p>Nach Absprache ja – wir stimmen die Reinigungszeiten mit Ihnen ab, damit Ihr Betrieb möglichst wenig gestört wird.</p></details>
   <details class="rein"><summary>Arbeiten Sie auch für Hausverwaltungen?</summary><p>Ja – Treppenhaus- und Objektreinigung für Hausverwaltungen und WEGs, inklusive Reinigungsnachweis.</p></details>
   <details class="rein"><summary>Wie schnell können Sie starten?</summary><p>In der Regel innerhalb von 1–2 Wochen nach Auftragserteilung, bei Sonderreinigungen oft schneller.</p></details>
@@ -663,6 +671,7 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
     <div><b>Kontakt</b>Robert Königbauer<br>Georg-Stegschuster-Straße 18<br>85375 Neufahrn bei Freising<br><a href="tel:+491721083808">0172 108 3808</a><br><a href="mailto:info@koenigbauer-gebaeudereinigung.de">info@koenigbauer-gebaeudereinigung.de</a></div>
     <div><b>Leistungen</b><a href="#leistungen">Büroreinigung</a><br><a href="#leistungen">Teppich-Tiefenreinigung</a><br><a href="#leistungen">Glas &amp; Höhe</a><br><a href="#hausverwaltungen">Treppenhausreinigung</a><br><a href="#rechner">Preisrechner</a></div>
   </div>
+  <div class="social" id="social"></div>
   <div class="unten"><span>© <span id="jahr">2026</span> Königbauer Gebäudereinigung</span><span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></span></div>
 </div></footer>
 
@@ -673,7 +682,8 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
    PREISRECHNER – EINSTELLUNGEN (hier passt Robert seine Preise an)
    ===================================================================== */
 var PREISE = {
-  stundensatz: 35,            // € netto pro Arbeitsstunde (Lohn + Lohnnebenkosten + Material + Anfahrt + Verwaltung + Gewinn)
+  stundensatz: 36,            // € netto pro Arbeitsstunde (Lohn + Lohnnebenkosten + Material + Verwaltung + Gewinn) – wird dem Kunden NICHT angezeigt
+  anfahrtProEinsatz: 6,       // € intern pro Einsatz für Fahrzeit/Fahrtkosten – steckt unsichtbar im Pauschalpreis
   spanne: 0.12,               // ± 12 % Richtpreis-Spanne
   mindestStundenEinsatz: 1.0, // Mindestzeit pro Einsatz (Büro, Praxis, Laden)
   leistung: { buero: 150, praxis: 110, laden: 170 },   // gereinigte m² pro Stunde im Standard-Umfang
@@ -682,6 +692,8 @@ var PREISE = {
   wochenProMonat: 4.33,
   mwst: 0.19
 };
+/* Social-Media-Profile: Adresse eintragen, dann erscheint das Symbol unten auf der Seite. Leer lassen = ausgeblendet. */
+var SOCIAL = { instagram: '', tiktok: '', facebook: '' };
 var HAEUFIGKEIT = {
   flaeche: [ {w:1,t:'1× pro Woche',s:'z. B. Freitag'}, {w:2,t:'2× pro Woche',s:'beliebt'}, {w:3,t:'3× pro Woche',s:'Mo · Mi · Fr'}, {w:5,t:'Täglich',s:'Mo – Fr'} ],
   treppe:  [ {w:0.5,t:'Alle 2 Wochen',s:'14-tägig'}, {w:1,t:'1× pro Woche',s:'Standard'}, {w:2,t:'2× pro Woche',s:'stark genutzt'} ]
@@ -740,11 +752,11 @@ var UMFANG = {
       stunden=Math.max(qm/P.leistung[art]*P.umfang[umfang],P.mindestStundenEinsatz);
       beschreibung=qm+' m² '+({buero:'Büro',praxis:'Praxis/Kanzlei',laden:'Laden/Gewerbe'})[art];
     }
-    var einsaetze=freq*P.wochenProMonat, proEinsatz=stunden*P.stundensatz, monat=proEinsatz*einsaetze, lo=monat*(1-P.spanne), hi=monat*(1+P.spanne);
+    var einsaetze=freq*P.wochenProMonat, proEinsatz=stunden*P.stundensatz+P.anfahrtProEinsatz, monat=proEinsatz*einsaetze, lo=monat*(1-P.spanne), hi=monat*(1+P.spanne);
     zaehleAuf($('#preis'),monat);
     $('#preis-brutto').textContent='Spanne ca. '+eur(lo)+' – '+eur(hi)+' · zzgl. 19 % MwSt. (ca. '+eur(monat*(1+P.mwst))+' brutto)';
     $('#r-einsaetze').textContent=(Math.round(einsaetze*10)/10).toLocaleString('de-DE');
-    $('#r-zeit').textContent=zeitFmt(stunden);
+    $('#r-jahr').textContent='ca. '+eur(monat*12);
     $('#r-einsatz').textContent='ca. '+eur2(proEinsatz);
     var tab=UMFANG[treppe?'treppe':'flaeche'];
     $('#umfang-liste').innerHTML=tab[umfang].map(function(x){return '<span'+(tab.basis.indexOf(x)<0?' class="neu"':'')+'>✓ '+x+'</span>'}).join('');
@@ -752,7 +764,7 @@ var UMFANG = {
     $$('.extras label').forEach(function(l){l.classList.toggle('an',l.querySelector('input').checked)});
     var ex=$('#r-extras'); ex.hidden=!extras.length; ex.textContent=extras.length?'Zusätzlich: '+extras.join(', ')+' – Preis nach Besichtigung.':'';
     var fText=$('input[name="freq"]:checked').parentNode.querySelector('b').textContent;
-    letzterText=beschreibung+', '+fText+', Umfang '+umfang.charAt(0).toUpperCase()+umfang.slice(1)+' – Richtpreis ca. '+eur(lo)+' bis '+eur(hi)+' netto pro Monat'+(extras.length?'. Zusätzlich: '+extras.join(', '):'');
+    letzterText=beschreibung+', '+fText+', Umfang '+umfang.charAt(0).toUpperCase()+umfang.slice(1)+' – Pauschalpreis-Richtwert ca. '+eur(monat)+' netto pro Monat (Spanne '+eur(lo)+' bis '+eur(hi)+')'+(extras.length?'. Zusätzlich: '+extras.join(', '):'');
     $$('input[type=range]').forEach(reglerFarbe);
   }
   $$('input[name="art"]').forEach(function(i){i.addEventListener('change',function(){haeufigkeitAufbauen(wert('art'));rechnen()})});
@@ -832,6 +844,8 @@ var UMFANG = {
   }
   if(!ruhig)requestAnimationFrame(malen);
 
+  var ICON={instagram:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/>',tiktok:'<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.5 2.8 2.4 4.6 5 5"/>',facebook:'<path d="M15 3h-2.5A3.5 3.5 0 0 0 9 6.5V10H6v4h3v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h2z"/>'};
+  Object.keys(SOCIAL).forEach(function(k){if(!SOCIAL[k])return;var a=document.createElement('a');a.href=SOCIAL[k];a.target='_blank';a.rel='noopener';a.setAttribute('aria-label',k);a.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">'+ICON[k]+'</svg>';$('#social').appendChild(a)});
   document.getElementById('jahr').textContent=new Date().getFullYear();
 })();
 </script>

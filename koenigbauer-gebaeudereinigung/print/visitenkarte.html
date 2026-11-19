@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8">
 <title>Visitenkarte Königbauer</title>
-<!-- Druck: Browser → Drucken → "Als PDF speichern", Ränder: keine, Hintergrundgrafiken: an.
+<!-- Vier Vorderseiten zur Auswahl (A–D) + Rückseite. Für den Druck die nicht gewählten Varianten löschen.
+     Druck: Browser → Drucken → "Als PDF speichern", Ränder: keine, Hintergrundgrafiken: an.
      Format 85 x 55 mm + 3 mm Beschnitt rundum (= 91 x 61 mm). Seite 1 = Vorderseite, Seite 2 = Rückseite.
      Texte halten mind. 3 mm Abstand zum Endformat (Sicherheitsabstand). -->
 <style>
@@ -37,10 +38,14 @@ body{margin:0;font-family:"Manrope",Arial,sans-serif;background:#fff;-webkit-pri
 .qr span{display:block;font-size:5.2pt;font-weight:800;line-height:1.2;margin-top:1.2mm;color:var(--nacht)}
 .hinten .unten{position:absolute;left:0;right:0;bottom:0;height:3.2mm;background:linear-gradient(90deg,var(--nacht) 55%,var(--blau) 55%)}
 
-@media screen{body{background:#dfe4ea;padding:24px;display:flex;flex-wrap:wrap;gap:24px;justify-content:center}.karte{box-shadow:0 10px 30px rgba(0,0,0,.25);zoom:1.5;border-radius:1mm}}
+figure.variante{margin:0}
+figure.variante figcaption{display:none}
+@media screen{figure.variante figcaption{display:block;font:800 13px Manrope,sans-serif;color:#2a2a2b;margin:0 0 8px}body{background:#dfe4ea;padding:24px;display:flex;flex-wrap:wrap;gap:24px;justify-content:center}.karte{box-shadow:0 10px 30px rgba(0,0,0,.25);zoom:1.5;border-radius:1mm}}
 </style></head>
 <body>
-<div class="karte vorne">
+<!-- Variante A – Laden mit Einscheibenmaschine -->
+<figure class="variante"><figcaption>Vorderseite A – Laden mit Einscheibenmaschine</figcaption>
+<div class="karte vorne" style="background-image:url(../website/img/robert-laden.jpg);background-position:55% 30%">
   <div class="inhalt">
     <img class="logo" src="../website/img/logo-rk-dunkel.png" alt="RK Logo">
     <div>
@@ -50,7 +55,47 @@ body{margin:0;font-family:"Manrope",Arial,sans-serif;background:#fff;-webkit-pri
   </div>
   <div class="streifen"></div>
 </div>
-
+</figure>
+<!-- Variante B – Arbeitsbühne in der Lichthalle -->
+<figure class="variante"><figcaption>Vorderseite B – Arbeitsbühne in der Lichthalle</figcaption>
+<div class="karte vorne" style="background-image:url(../website/img/galerie/3.jpg);background-position:60% 40%">
+  <div class="inhalt">
+    <img class="logo" src="../website/img/logo-rk-dunkel.png" alt="RK Logo">
+    <div>
+      <div class="claim">Räume, die man<br><em>sauber sieht.</em></div>
+      <div class="firma">Königbauer Gebäudereinigung</div>
+    </div>
+  </div>
+  <div class="streifen"></div>
+</div>
+</figure>
+<!-- Variante C – Teppich vorher/nachher -->
+<figure class="variante"><figcaption>Vorderseite C – Teppich vorher/nachher</figcaption>
+<div class="karte vorne" style="background-image:url(../website/img/galerie/1.jpg);background-position:50% 50%">
+  <div class="inhalt">
+    <img class="logo" src="../website/img/logo-rk-dunkel.png" alt="RK Logo">
+    <div>
+      <div class="claim">Räume, die man<br><em>sauber sieht.</em></div>
+      <div class="firma">Königbauer Gebäudereinigung</div>
+    </div>
+  </div>
+  <div class="streifen"></div>
+</div>
+</figure>
+<!-- Variante D – Glasdach von unten -->
+<figure class="variante"><figcaption>Vorderseite D – Glasdach von unten</figcaption>
+<div class="karte vorne" style="background-image:url(../website/img/galerie/5.jpg);background-position:50% 50%">
+  <div class="inhalt">
+    <img class="logo" src="../website/img/logo-rk-dunkel.png" alt="RK Logo">
+    <div>
+      <div class="claim">Räume, die man<br><em>sauber sieht.</em></div>
+      <div class="firma">Königbauer Gebäudereinigung</div>
+    </div>
+  </div>
+  <div class="streifen"></div>
+</div>
+</figure>
+<figure class="variante"><figcaption>Rückseite</figcaption>
 <div class="karte hinten">
   <div class="inhalt">
     <div>
@@ -65,4 +110,5 @@ body{margin:0;font-family:"Manrope",Arial,sans-serif;background:#fff;-webkit-pri
   </div>
   <div class="unten"></div>
 </div>
+</figure>
 </body></html>
