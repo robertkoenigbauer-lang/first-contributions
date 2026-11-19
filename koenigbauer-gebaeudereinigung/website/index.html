@@ -615,7 +615,7 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
 <section><div class="wrap">
   <div class="google-karte rein">
     <div><div class="sterne" aria-hidden="true">★★★★★</div><b style="font-family:var(--display);font-size:1.5rem">Was unsere Kunden sagen</b><br><span style="color:#aeb6c1">Lesen Sie die Bewertungen unserer Kunden auf Google.</span></div>
-    <a class="btn hell" href="https://www.google.com/maps/search/?api=1&amp;query=K%C3%B6nigbauer+Geb%C3%A4udereinigung+Neufahrn" target="_blank" rel="noopener">Bewertungen ansehen</a>
+    <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn hell" href="https://www.google.com/maps/search/?api=1&amp;query=K%C3%B6nigbauer+Geb%C3%A4udereinigung+Neufahrn" target="_blank" rel="noopener">Bewertungen ansehen</a><a class="btn" href="https://g.page/r/CRmHq6pgwM9uEBM/review" target="_blank" rel="noopener">Bewertung schreiben</a></div>
   </div>
   <div style="margin-top:110px">
     <div class="kicker rein">Einsatzgebiet</div>
@@ -665,6 +665,11 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
       <div><label class="f" for="art">Objektart</label><select id="art" name="objektart"><option>Büro / Bürokomplex</option><option>Praxis / Kanzlei</option><option>Laden / Gewerbe</option><option>Treppenhaus / Wohnanlage</option><option>Glas- / Höhenreinigung</option><option>Teppich- / Grundreinigung</option></select></div>
       <div><label class="f" for="ort">Ort</label><input id="ort" name="ort" placeholder="z. B. Freising"></div>
     </div>
+    <div class="zwei">
+      <div><label class="f" for="termin">Wunschtermin für die Besichtigung</label><input id="termin" type="date" name="wunschtermin"></div>
+      <div><label class="f" for="zeit">Uhrzeit</label><select id="zeit" name="uhrzeit"><option value="">egal</option><option>vormittags (8–12 Uhr)</option><option>mittags (12–14 Uhr)</option><option>nachmittags (14–18 Uhr)</option></select></div>
+    </div>
+    <div><label class="f" for="rueck">Wie sollen wir uns melden?</label><select id="rueck" name="rueckmeldung"><option>Anruf</option><option>WhatsApp</option><option>E-Mail</option></select></div>
     <div><label class="f" for="msg">Ihre Nachricht</label><textarea id="msg" name="nachricht" rows="4" placeholder="Fläche, gewünschtes Intervall, Besonderheiten …"></textarea></div>
     <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <label class="check"><input type="checkbox" name="datenschutz" value="ja" required> <span>Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen. Meine Angaben werden zur Bearbeitung meiner Anfrage verwendet. *</span></label>
@@ -850,6 +855,7 @@ var UMFANG = {
 
   var ICON={instagram:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/>',tiktok:'<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.5 2.8 2.4 4.6 5 5"/>',facebook:'<path d="M15 3h-2.5A3.5 3.5 0 0 0 9 6.5V10H6v4h3v7h4v-7h3l1-4h-4V7a1 1 0 0 1 1-1h2z"/>'};
   Object.keys(SOCIAL).forEach(function(k){if(!SOCIAL[k])return;var a=document.createElement('a');a.href=SOCIAL[k];a.target='_blank';a.rel='noopener';a.setAttribute('aria-label',k);a.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">'+ICON[k]+'</svg>';$('#social').appendChild(a)});
+  try{var m=new Date();m.setDate(m.getDate()+1);$('#termin').min=m.toISOString().slice(0,10)}catch(e){}
   document.getElementById('jahr').textContent=new Date().getFullYear();
 })();
 </script>
