@@ -12,6 +12,20 @@ Dauer: ca. 30–45 Minuten. Du brauchst: deine IONOS-Zugangsdaten und die Datei 
 3. Prüfe unter **„Menü“ → „Domains & SSL“**, dass **koenigbauer-gebaeudereinigung.de** dort steht und **nicht gekündigt** ist. Steht dort ein Kündigungsdatum, Kündigung der Domain zurücknehmen – sonst ist sie weg.
 4. Prüfe unter **„Menü“ → „E-Mail“**, ob das Postfach **info@koenigbauer-gebaeudereinigung.de** noch existiert. Wenn du die E-Mail gekündigt hast, Claude Bescheid geben: Dann ändern wir die Adresse auf der Website und im Kontaktformular.
 
+### Stand 19.11.2026 (laut Screenshot)
+| Domain | Status | Läuft ab |
+|---|---|---|
+| königbauer-gebäudereinigung.de | Inklusiv-Domain im **Website Builder** (MyWebsite) | 04.09.2027 |
+| koenigbauer-gebaeudereinigung.de | Zusatz-Domain, Weiterleitung auf die ö-Domain | 01.10.2027 |
+
+Der Website Builder kann keine eigenen Dateien aufnehmen. Deshalb vorher **Schritt 0b**:
+
+## Schritt 0b – Webhosting dazu buchen und Domains umhängen
+1. Bei IONOS das kleinste **Webhosting**-Paket buchen (nicht „MyWebsite“, nicht „Website-Baukasten“). Wichtig: mit PHP und SSL.
+2. **Website Builder noch nicht kündigen.** Die ö-Domain hängt als Inklusiv-Domain daran. Erst die Domain dem neuen Webhosting-Vertrag zuordnen (in der Domain-Übersicht: ⋮ → „Domain einem anderen Vertrag zuordnen“ bzw. IONOS-Support: „Inklusiv-Domain in Webhosting-Vertrag umziehen“), **danach** den Builder kündigen.
+3. Beide Domains auf den **Webspace** zeigen lassen (⋮ → „Verwendungsart ändern“ → Webspace → Ordner). Die Weiterleitung bei der oe-Domain dabei ersetzen.
+4. Weiter mit Schritt 1.
+
 ## Schritt 1 – Alte Website sichern (5 Min.)
 1. **„Menü“ → „Hosting“** → beim Webhosting-Paket auf **„Webspace“** bzw. **„Webspace-Explorer“** klicken.
 2. Den Ordner, in dem die alte Seite liegt (meist das Hauptverzeichnis `/` oder ein Ordner wie `/koenigbauer`), anhaken → **„Herunterladen“**. Damit hast du eine Sicherung.
