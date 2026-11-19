@@ -217,6 +217,11 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px rgba(
 .ergebnis dt{color:var(--grau);font-size:.95rem}
 .ergebnis dd{margin:0;font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
 .ergebnis .btn{width:100%}
+.ergebnis .bestaetigen{list-style:none;counter-reset:b;padding:0;margin:18px 0 0;display:grid;gap:10px}
+.ergebnis .bestaetigen li{counter-increment:b;display:grid;grid-template-columns:26px 1fr;gap:10px;font-size:.88rem;color:var(--grau);line-height:1.45}
+.ergebnis .bestaetigen li::before{content:counter(b);width:26px;height:26px;border-radius:50%;background:var(--eis);color:var(--blau);font-weight:800;display:grid;place-items:center;font-size:.8rem}
+.ergebnis .bestaetigen b{color:var(--nacht)}
+.ergebnis .hinweis b{color:var(--nacht)}
 .ergebnis .hinweis{font-size:.8rem;color:var(--grau);margin:16px 0 0;line-height:1.5}
 .ergebnis .extra-info.pauschal{background:#0c0d10;color:#e3e7ec}.ergebnis .extra-info.pauschal b{color:#fff}
 .ergebnis .extra-info{background:var(--eis);border-radius:12px;padding:12px 14px;font-size:.88rem;margin:-8px 0 20px}
@@ -396,6 +401,7 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
       <div class="chips">
         <span class="chip"><i></i>Inhabergeführt</span>
         <span class="chip"><i></i>Fester Monatspreis</span>
+        <span class="chip"><i></i>Keine versteckten Kosten</span>
         <span class="chip"><i></i>Markenprodukte</span>
         <span class="chip"><i></i>Haftpflichtversichert</span>
         <span class="chip"><i></i>ista Servicepartner</span>
@@ -458,7 +464,7 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
 <section class="rechner dunkel" id="rechner" aria-labelledby="rechner-titel"><div class="wrap">
   <div class="kicker rein">Preisrechner</div>
   <h2 class="rein" id="rechner-titel">Was kostet Ihre Reinigung? In 60 Sekunden wissen Sie es.</h2>
-  <p class="lead rein">Stellen Sie Ihr Paket selbst zusammen und sehen Sie sofort Ihren monatlichen Pauschalpreis. Transparent, inklusive Material und Anfahrt – verbindlich nach einer kostenlosen Besichtigung.</p>
+  <p class="lead rein">Stellen Sie Ihr Paket selbst zusammen und sehen Sie sofort Ihren monatlichen Pauschalpreis. Transparent, inklusive Material und Anfahrt, ohne versteckte Kosten. Nach einer kostenlosen Besichtigung bestätigen wir Ihnen den Preis.</p>
 
   <div class="r-grid">
     <form class="r-form" id="rform" onsubmit="return false">
@@ -525,7 +531,12 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
       <div class="extra-info" id="r-extras" hidden></div>
       <a class="btn" href="#kontakt" id="r-anfragen">Dieses Paket anfragen
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <p class="hinweis">Unverbindlicher Richtwert inkl. Material und Anfahrt. Der tatsächliche Aufwand hängt von Bodenbelägen, Ausstattung und Verschmutzung ab. Ihren verbindlichen Pauschalpreis erhalten Sie nach einer kostenlosen Besichtigung innerhalb von 24 Stunden.</p>
+      <ol class="bestaetigen">
+        <li><span><b>Preis berechnet</b> – Ihr Richtwert inkl. Material und Anfahrt.</span></li>
+        <li><span><b>Kostenlose Besichtigung</b> – wir schauen uns Ihr Objekt kurz vor Ort an.</span></li>
+        <li><span><b>Preis bestätigt</b> – passt alles, bestätigen wir Ihren Preis schriftlich. Weicht etwas ab, sagen wir Ihnen offen, warum.</span></li>
+      </ol>
+      <p class="hinweis"><b>Keine versteckten Kosten.</b> Was im Angebot steht, zahlen Sie – jeden Monat gleich. Einen Preis „blind“ zuzusagen wäre unseriös; deshalb sehen wir uns jedes Objekt vorher an.</p>
     </aside>
   </div>
 </div></section>
@@ -555,7 +566,7 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
     <i class="linie" id="ablauf-linie"></i>
     <div class="station rein" data-nr="1"><h3>Anfrage</h3><p>Preis im Rechner zusammenstellen, anrufen oder per WhatsApp schreiben. Sie hören innerhalb eines Werktags von uns.</p></div>
     <div class="station rein" data-nr="2"><h3>Kostenlose Besichtigung</h3><p>Robert Königbauer kommt persönlich vorbei und schaut sich Ihr Objekt an – unverbindlich.</p></div>
-    <div class="station rein" data-nr="3"><h3>Festpreis in 24 Stunden</h3><p>Klares Angebot mit Leistungsverzeichnis. Keine versteckten Kosten, keine Überraschungen.</p></div>
+    <div class="station rein" data-nr="3"><h3>Preis bestätigt – in 24 Stunden</h3><p>Wir bestätigen Ihren Preis aus dem Rechner oder sagen Ihnen offen, wenn vor Ort etwas anders ist. Klares Angebot mit Leistungsverzeichnis – keine versteckten Kosten, keine Überraschungen.</p></div>
     <div class="station rein" data-nr="4"><h3>Start mit festem Team</h3><p>In der Regel innerhalb von 1–2 Wochen. Immer dieselben Gesichter in Ihrem Objekt.</p></div>
   </div>
 </div></section>
@@ -619,7 +630,7 @@ footer .unten{border-top:1px solid var(--linie-dunkel);padding-top:24px;display:
 <section id="faq" style="padding-top:0"><div class="wrap faq">
   <div class="kicker rein">FAQ</div>
   <h2 class="rein" style="margin-bottom:24px">Häufige Fragen</h2>
-  <details class="rein"><summary>Wie genau ist der Preisrechner?</summary><p>Er zeigt einen Richtwert für Ihren monatlichen Pauschalpreis auf Basis von Erfahrungswerten für Fläche, Häufigkeit und Leistungsumfang. Der tatsächliche Aufwand hängt von Bodenbelägen, Möblierung und Verschmutzung ab – deshalb erhalten Sie nach der kostenlosen Besichtigung einen verbindlichen Festpreis.</p></details>
+  <details class="rein"><summary>Gilt der Preis aus dem Rechner?</summary><p>Er ist ein ehrlicher Richtwert für Ihren monatlichen Pauschalpreis. Weil Bodenbeläge, Möblierung und Verschmutzung jedes Objekt anders machen, schauen wir es uns vorher kostenlos an und bestätigen dann Ihren Preis. Weicht etwas ab, erklären wir Ihnen genau, warum. Versteckte Kosten gibt es bei uns nicht.</p></details>
   <details class="rein"><summary>Was bedeutet Pauschalpreis?</summary><p>Sie zahlen jeden Monat denselben festen Betrag – egal, ob wir mal länger brauchen. Kleine Sonderwünsche sind inklusive, Material und Anfahrt ebenfalls. So wissen Sie schon zu Beginn, was die Reinigung im ganzen Jahr kostet.</p></details>
   <details class="rein"><summary>Welche Reinigungsmittel und Geräte verwenden Sie?</summary><p>Wir arbeiten mit Markenprodukten, zum Beispiel von TASKI, BISSELL BigGreen und Dr. Schnell, und mit Profi-Geräten wie Sprühextraktion, Einscheibenmaschine und Arbeitsbühne.</p></details>
   <details class="rein"><summary>Reinigen Sie auch früh morgens oder abends?</summary><p>Nach Absprache ja – wir stimmen die Reinigungszeiten mit Ihnen ab, damit Ihr Betrieb möglichst wenig gestört wird.</p></details>
