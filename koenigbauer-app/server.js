@@ -64,6 +64,20 @@ function saveDb() {
 }
 loadDb();
 
+// Automatische Datensicherung: einmal täglich eine Kopie, die letzten 60 Tage bleiben erhalten.
+const BACKUP_DIR = path.join(DATA_DIR, 'backups');
+function dailyBackup() {
+  try {
+    fs.mkdirSync(BACKUP_DIR, { recursive: true });
+    const target = path.join(BACKUP_DIR, `db-${today()}.json`);
+    if (!fs.existsSync(target)) fs.copyFileSync(DB_FILE, target);
+    const old = fs.readdirSync(BACKUP_DIR).filter((f) => /^db-\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().slice(0, -60);
+    old.forEach((f) => fs.rmSync(path.join(BACKUP_DIR, f), { force: true }));
+  } catch (e) {
+    console.error('Sicherung fehlgeschlagen:', e.message);
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Passwörter & Sitzungen                                              */
 /* ------------------------------------------------------------------ */
@@ -633,6 +647,8 @@ app.use((err, req, res, next) => {
 });
 
 if (require.main === module) {
+  dailyBackup();
+  setInterval(dailyBackup, 60 * 60 * 1000).unref();
   app.listen(PORT, () => console.log(`Königbauer App läuft auf http://localhost:${PORT}`));
 }
 module.exports = app;
