@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /app/
+Disallow: /danke.html
+
+Sitemap: https://www.koenigbauer-gebaeudereinigung.de/sitemap.xml
