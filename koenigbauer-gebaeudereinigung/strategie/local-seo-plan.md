@@ -17,13 +17,13 @@ Diese Methode stammt aus dem TikTok-Video (Unternehmensprofil + Konkurrenz-Kateg
 
 | Produkt | Preis-Feld | Text |
 |---|---|---|
-| Büroreinigung im Abo | leer lassen oder „ab 36 €/Std. netto“ | Regelmäßige Unterhaltsreinigung für Büros, feste Teams, monatlicher Pauschalpreis. Preis in 60 Sekunden online berechnen. |
+| Büroreinigung im Abo | leer lassen | Regelmäßige Unterhaltsreinigung für Büros, feste Teams, monatlicher Pauschalpreis. Preis in 60 Sekunden online berechnen. |
 | Praxisreinigung | leer lassen | Hygienische Reinigung von Arzt- und Therapiepraxen mit geeigneten Desinfektionsmitteln, außerhalb der Sprechzeiten. |
 | Treppenhausreinigung | leer lassen | Regelmäßige Treppenhausreinigung für Hausverwaltungen und Eigentümer, Pauschalpreis pro Monat. |
 | Teppich-Tiefenreinigung | leer lassen | Sprühextraktion mit Profi-Gerät (BISSELL BigGreen), entfernt Flecken und Gerüche aus Teppichen und Polstern. |
 | Glasreinigung | leer lassen | Fenster, Rahmen und Glasflächen streifenfrei, einmalig oder im Intervall. |
 
-Ein Preis darf nur dort stehen, wo er wirklich gilt (36 €/Std. netto). Lieber leer lassen als ungenau, sonst droht § 5 UWG.
+Preisfeld leer lassen: Der Preis kommt aus dem Rechner und wird nach Besichtigung bestätigt. Ungenaue Preisangaben wären ein Risiko nach § 5 UWG.
 
 ## Schritt 3: Jede Woche ein Beitrag (5 Min./Woche)
 Profil → **Beitrag hinzufügen → Neuigkeiten**, immer mit **eigenem Foto** und Button **„Weitere Infos“** → Website. Das signalisiert Google: Hier ist jemand aktiv.
