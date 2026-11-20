@@ -177,7 +177,7 @@ function startseite(){
   $('#main').innerHTML='<div class="start"><img src="../img/rk-badge.png" alt=""><b>Königbauer</b><span>GEBÄUDEREINIGUNG</span></div>'+
     '<div class="card"><h2 style="margin-top:0">Willkommen!</h2><label for="n">Dein Vor- und Nachname</label><input id="n" autocomplete="name" placeholder="z. B. Anna Beispiel">'+
     '<div class="hinweis">Deine Stunden werden <b>nur auf diesem Handy</b> gespeichert – niemand sonst sieht sie. Am Monatsende schickst du den Stundenzettel an Robert.<br><br>Tipp: Über „Teilen“ → <b>„Zum Startbildschirm“</b> wird die Seite zur App.</div>'+
-    '<button class="btn" id="los">Los geht\'s</button></div>';
+    '<button class="btn" id="los">Los geht\'s</button></div><p class="muted" style="text-align:center"><a class="link" href="../impressum.html">Impressum</a> · <a class="link" href="../datenschutz.html#team-app">Datenschutz</a></p>';
   $('#los').onclick=function(){ var n=$('#n').value.trim(); if(n.length<3)return toast('Bitte deinen Namen eintragen.'); D.name=n; speichern(); render() };
 }
 
@@ -379,7 +379,8 @@ function konto(){
     '<button class="btn zweit" id="exp">💾 Sicherung speichern</button><label class="btn zweit" style="cursor:pointer" for="imp">📂 Sicherung laden</label><input type="file" id="imp" accept=".json,application/json" hidden></div>'+
     '<div class="card"><h2 style="margin-top:0">Kontakt</h2><p class="muted">'+CHEF.name+'<br>0172 108 3808<br>'+CHEF.mail+'</p><a class="btn wa" href="https://wa.me/'+CHEF.wa+'">WhatsApp an Robert</a></div>'+
     '<div class="hinweis">🔒 Datenschutz: Deine Daten werden nur auf diesem Gerät gespeichert. Kolleginnen und Kollegen sehen nichts davon. Erst wenn du etwas sendest, geht es per WhatsApp oder E-Mail an Robert.</div>'+
-    '<button class="btn rot" id="reset">Alle Daten auf diesem Handy löschen</button>';
+    '<button class="btn rot" id="reset">Alle Daten auf diesem Handy löschen</button>'+
+    '<p class="muted" style="text-align:center;margin-top:18px"><a class="link" href="../impressum.html">Impressum</a> · <a class="link" href="../datenschutz.html#team-app">Datenschutz</a></p>';
   $('#nmok').onclick=function(){ var n=$('#nm').value.trim(); if(n.length<3)return toast('Bitte Namen eintragen.'); D.name=n; speichern(); render(); toast('Gespeichert ✓') };
   $('#exp').onclick=function(){ var blob=new Blob([JSON.stringify(D)],{type:'application/json'}), name='Koenigbauer_Sicherung_'+D.name.replace(/\s+/g,'_')+'_'+heuteIso()+'.json';
     teilenDateien([new File([blob],name,{type:'application/json'})],'Sicherung','').then(function(r){ if(r==='fehler'){ herunterladen(blob,name); toast('Sicherung gespeichert ✓') } }) };
