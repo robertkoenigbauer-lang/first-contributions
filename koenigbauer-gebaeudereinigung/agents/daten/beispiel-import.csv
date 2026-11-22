@@ -1,0 +1,3 @@
+name;segment;strasse;plz;ort;telefon;email;email_einwilligung;ansprechpartner
+Musterverwaltung GmbH (Beispiel);hausverwaltung;Bahnhofstraße 1;85354;Freising;08161 000000;;;Frau Beispiel
+Zahnarztpraxis Dr. Muster (Beispiel);praxis;Marktplatz 2;85375;Neufahrn;08165 000000;praxis@example.de;ja;

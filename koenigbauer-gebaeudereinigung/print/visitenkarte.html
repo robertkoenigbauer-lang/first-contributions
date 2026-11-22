@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<title>Visitenkarte Königbauer</title>
+<!-- Gewählte Vorderseite (Laden mit Einscheibenmaschine) + Rückseite.
+     Druck: Browser → Drucken → "Als PDF speichern", Ränder: keine, Hintergrundgrafiken: an.
+     Format 85 x 55 mm + 3 mm Beschnitt rundum (= 91 x 61 mm). Seite 1 = Vorderseite, Seite 2 = Rückseite.
+     Texte halten mind. 3 mm Abstand zum Endformat (Sicherheitsabstand). -->
+<style>
+@font-face{font-family:"Archivo";src:url(../website/fonts/archivo-latin-900-normal.woff2) format("woff2");font-weight:900}
+@font-face{font-family:"Manrope";src:url(../website/fonts/manrope-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:"Manrope";src:url(../website/fonts/manrope-latin-800-normal.woff2) format("woff2");font-weight:800}
+@page{size:91mm 61mm;margin:0}
+:root{--nacht:#0c0d10;--blau:#008dd2;--blau-hell:#3bb4f0;--anthrazit:#2a2a2b;--grau:#5d6672}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Manrope",Arial,sans-serif;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.karte{width:91mm;height:61mm;page-break-after:always;position:relative;overflow:hidden}
+
+/* Vorderseite: Foto bei der Arbeit, dunkel überlagert */
+.vorne{background:var(--nacht) url(../website/img/galerie/6.jpg) 62% 40%/cover;color:#fff}
+.vorne::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(12,13,16,.96) 30%,rgba(12,13,16,.55) 70%,rgba(0,96,154,.45))}
+.vorne .inhalt{position:absolute;left:9mm;top:9mm;bottom:9mm;right:30mm;display:flex;flex-direction:column;justify-content:space-between}
+.vorne img.logo{height:13mm;width:auto;align-self:flex-start}
+.vorne .claim{font-family:"Archivo",Arial Black,sans-serif;font-weight:900;font-size:13pt;line-height:1.02;letter-spacing:-.02em}
+.vorne .claim em{font-style:normal;color:var(--blau-hell)}
+.vorne .firma{font-weight:800;font-size:6.2pt;letter-spacing:.28em;text-transform:uppercase;color:#bfe6fa;margin-top:2mm}
+.vorne .streifen{position:absolute;right:3mm;top:3mm;bottom:3mm;width:1.4mm;background:var(--blau);border-radius:1mm}
+
+/* Rückseite */
+.hinten{background:#fff;color:var(--anthrazit)}
+.hinten .inhalt{position:absolute;left:9mm;right:7mm;top:8mm;bottom:9mm;display:grid;grid-template-columns:1fr 20mm;gap:4mm;align-items:center}
+.hinten h2{font-family:"Archivo",Arial Black,sans-serif;font-weight:900;font-size:12.5pt;margin:0;color:var(--nacht);letter-spacing:-.01em}
+.hinten .rolle{font-size:6.3pt;color:var(--blau);font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin:.8mm 0 3mm}
+.hinten p{font-size:6.9pt;margin:.9mm 0;display:flex;gap:1.8mm;align-items:flex-start;line-height:1.25;font-weight:600}
+.hinten p svg{width:2.8mm;height:2.8mm;flex:0 0 auto;color:var(--blau);margin-top:.2mm}
+.hinten .web{font-weight:800;color:var(--nacht)}
+.qr{text-align:center}
+.qr img{width:20mm;height:20mm;display:block}
+.qr span{display:block;font-size:5.2pt;font-weight:800;line-height:1.2;margin-top:1.2mm;color:var(--nacht)}
+.hinten .unten{position:absolute;left:0;right:0;bottom:0;height:3.2mm;background:linear-gradient(90deg,var(--nacht) 55%,var(--blau) 55%)}
+
+figure.variante{margin:0}
+figure.variante figcaption{display:none}
+@media screen{figure.variante figcaption{display:block;font:800 13px Manrope,sans-serif;color:#2a2a2b;margin:0 0 8px}body{background:#dfe4ea;padding:24px;display:flex;flex-wrap:wrap;gap:24px;justify-content:center}.karte{box-shadow:0 10px 30px rgba(0,0,0,.25);zoom:1.5;border-radius:1mm}}
+</style></head>
+<body>
+<!-- Variante A – Laden mit Einscheibenmaschine -->
+<figure class="variante"><figcaption>Vorderseite</figcaption>
+<div class="karte vorne" style="background-image:url(../website/img/robert-laden.jpg);background-position:55% 30%">
+  <div class="inhalt">
+    <img class="logo" src="../website/img/logo-rk-dunkel.png" alt="RK Logo">
+    <div>
+      <div class="claim">Räume, die man<br><em>sauber sieht.</em></div>
+      <div class="firma">Königbauer Gebäudereinigung</div>
+    </div>
+  </div>
+  <div class="streifen"></div>
+</div>
+</figure>
+<figure class="variante"><figcaption>Rückseite</figcaption>
+<div class="karte hinten">
+  <div class="inhalt">
+    <div>
+      <h2>Robert Königbauer</h2>
+      <div class="rolle">Inhaber · seit 2011</div>
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>0172 108 3808</p>
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>info@koenigbauer-gebaeudereinigung.de</p>
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 22s8-7.6 8-13a8 8 0 0 0-16 0c0 5.4 8 13 8 13z"/><circle cx="12" cy="9" r="3"/></svg><span>Georg-Stegschuster-Str. 18<br>85375 Neufahrn bei Freising</span></p>
+      <p class="web"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg>koenigbauer-gebaeudereinigung.de</p>
+    </div>
+    <div class="qr"><img src="img/qr-rechner.svg" alt="QR-Code zum Preisrechner"><span>Preis in 60 Sek.<br>berechnen</span></div>
+  </div>
+  <div class="unten"></div>
+</div>
+</figure>
+</body></html>

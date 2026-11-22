@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<title>Bewertungskarte Königbauer</title>
+<!-- Visitenkartenformat 85 x 55 mm + 3 mm Beschnitt (91 x 61 mm). Seite 1 vorne, Seite 2 hinten.
+     Nach jedem Auftrag / mit der ersten Rechnung dem Kunden geben. QR-Code führt direkt zur Google-Bewertung. -->
+<style>
+@font-face{font-family:"Archivo";src:url(../website/fonts/archivo-latin-900-normal.woff2) format("woff2");font-weight:900}
+@font-face{font-family:"Manrope";src:url(../website/fonts/manrope-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:"Manrope";src:url(../website/fonts/manrope-latin-800-normal.woff2) format("woff2");font-weight:800}
+@page{size:91mm 61mm;margin:0}
+:root{--nacht:#0c0d10;--blau:#008dd2;--blau-hell:#3bb4f0;--grau:#5d6672}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Manrope",Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#fff}
+.karte{width:91mm;height:61mm;page-break-after:always;position:relative;overflow:hidden}
+.vorne{background:var(--nacht);color:#fff}
+.vorne::before{content:"";position:absolute;width:70mm;height:70mm;border-radius:50%;background:rgba(0,141,210,.35);filter:blur(14mm);right:-25mm;top:-30mm}
+.vorne .inhalt{position:absolute;inset:8mm 8mm 8mm 9mm;display:grid;grid-template-columns:1fr 25mm;gap:5mm;align-items:center}
+.vorne h1{font-family:"Archivo",Arial Black,sans-serif;font-weight:900;font-size:14pt;line-height:1.05;margin:0 0 2.5mm;letter-spacing:-.02em}
+.vorne h1 em{font-style:normal;color:var(--blau-hell)}
+.vorne p{margin:0;font-size:7pt;line-height:1.4;color:#c9ced5}
+.vorne .sterne{color:#ffc93c;font-size:11pt;letter-spacing:1.5mm;margin-bottom:2mm}
+.qr{background:#fff;border-radius:2mm;padding:2mm;text-align:center}
+.qr img{width:21mm;height:21mm;display:block}
+.qr span{display:block;font-size:5pt;font-weight:800;color:var(--nacht);margin-top:1mm}
+.hinten{background:#fff;color:var(--nacht)}
+.hinten .inhalt{position:absolute;inset:9mm 9mm 10mm 9mm;display:flex;flex-direction:column;justify-content:center;gap:3mm}
+.hinten img.logo{height:12mm;width:auto;align-self:flex-start}
+.hinten b{font-family:"Archivo",Arial Black,sans-serif;font-weight:900;font-size:10.5pt}
+.hinten p{margin:0;font-size:7pt;line-height:1.45;color:var(--grau)}
+.hinten .unten{position:absolute;left:0;right:0;bottom:0;height:3.2mm;background:linear-gradient(90deg,var(--nacht) 55%,var(--blau) 55%)}
+@media screen{body{background:#dfe4ea;padding:24px;display:flex;gap:24px;flex-wrap:wrap;justify-content:center}.karte{zoom:1.5;box-shadow:0 10px 30px rgba(0,0,0,.25);border-radius:1mm}}
+</style></head>
+<body>
+<div class="karte vorne"><div class="inhalt">
+  <div>
+    <div class="sterne">★★★★★</div>
+    <h1>Zufrieden mit<br><em>unserer Arbeit?</em></h1>
+    <p>Wir freuen uns sehr über Ihre kurze Bewertung bei Google – das dauert nur eine Minute und hilft uns als Handwerksbetrieb enorm.</p>
+  </div>
+  <div class="qr"><img src="img/qr-bewertung.svg" alt="QR-Code zur Google-Bewertung"><span>Jetzt scannen</span></div>
+</div></div>
+<div class="karte hinten"><div class="inhalt">
+  <img class="logo" src="../website/img/logo-rk.png" alt="RK Logo">
+  <b>Vielen Dank für Ihr Vertrauen!</b>
+  <p>Robert Königbauer · Königbauer Gebäudereinigung<br>0172 108 3808 · koenigbauer-gebaeudereinigung.de</p>
+</div><div class="unten"></div></div>
+</body></html>
