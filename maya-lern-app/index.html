@@ -795,6 +795,20 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .fr-eingabe input{width:70px;font:inherit;font-size:1.6rem;font-weight:800;text-align:center;padding:4px;border-radius:10px;border:2px solid var(--line);background:var(--surface);color:var(--fg)}
 .fr-strich{width:90px;height:5px;background:var(--fg);border-radius:3px;margin-left:58px}
 @media (prefers-reduced-motion:reduce){.frosch{animation:none}}
+/* Mikrofon */
+.hoer.mikro.hoert{background:var(--rose);color:#fff;animation:mikropuls 1s ease-in-out infinite}
+@keyframes mikropuls{50%{transform:scale(1.12)}}
+.nach-erg{font-weight:700;line-height:1.5;min-height:0}
+.nach-erg:not(:empty){padding:8px 12px;border-radius:12px;background:var(--surface);border:2px solid var(--line)}
+.nach-erg.ok{border-color:var(--ok)}.nach-erg.no{border-color:var(--rose)}
+@media (prefers-reduced-motion:reduce){.hoer.mikro.hoert{animation:none}}
+/* Eigene Noten */
+.noteneingabe{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;align-items:end}
+.noteneingabe label{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:.9rem}
+.noteneingabe select,.noteneingabe input{font:inherit;padding:8px 10px;border-radius:10px;border:2px solid var(--line);background:var(--surface);color:var(--fg);min-width:0}
+.nz-weg{border:none;background:none;cursor:pointer;font-size:1.1rem;padding:2px 6px;border-radius:8px}
+.nz-weg:hover{background:var(--line)}
+.ne-msg{font-weight:700;color:var(--ok)}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -1018,9 +1032,59 @@ const U2=[
 ];
 // Aussprache: Englisch vorlesen lassen (Sprachausgabe des Geräts)
 function hoer(q,wort,vorher){return Object.assign(q,{sprich:wort,sprichVorher:!!vorher})}
-function sprich(t,langsam){try{const u=new SpeechSynthesisUtterance(t);u.lang="en-GB";u.rate=langsam?.6:.85;
-  const v=speechSynthesis.getVoices().find(v=>/^en(-|_)GB/i.test(v.lang))||speechSynthesis.getVoices().find(v=>/^en/i.test(v.lang));if(v)u.voice=v;
-  speechSynthesis.cancel();speechSynthesis.speak(u);return true}catch(e){return false}}
+/* Sprachausgabe: zuerst die Claude-Stimme (klingt echt englisch), sonst die Stimme des Geräts */
+let TTS=null,TTS_AUS=false,DICT=null;
+try{if(window.claude&&claude.use){claude.use("tts").then(t=>{TTS=t}).catch(()=>{});claude.use("dictation").then(d=>{DICT=d;diktatEinrichten(d);try{if(Q)render()}catch(e){}}).catch(()=>{})}}catch(e){}
+let STIMMEN=[];
+function stimmenLaden(){try{STIMMEN=speechSynthesis.getVoices()||[]}catch(e){}}
+try{stimmenLaden();speechSynthesis.addEventListener("voiceschanged",stimmenLaden)}catch(e){}
+function englischeStimme(){const en=STIMMEN.filter(v=>/^en/i.test(v.lang));
+  const gut=v=>/google|natural|online|siri|daniel|serena|kate|arthur|martha|libby|sonia|ryan/i.test(v.name);
+  return en.find(v=>/^en(-|_)GB/i.test(v.lang)&&gut(v))||en.find(v=>/^en(-|_)GB/i.test(v.lang))||en.find(gut)||en[0]||null}
+function geraetSprich(t,langsam){try{if(!window.speechSynthesis)return false;stimmenLaden();
+    const los=()=>{const u=new SpeechSynthesisUtterance(t);u.lang="en-GB";u.rate=langsam?.6:.85;const v=englischeStimme();if(v){u.voice=v;u.lang=v.lang}
+      speechSynthesis.cancel();setTimeout(()=>{try{speechSynthesis.resume();speechSynthesis.speak(u)}catch(e){}},60)};
+    if(STIMMEN.length)los();else{let fertig=false;const f=()=>{if(fertig)return;fertig=true;stimmenLaden();los()};
+      try{speechSynthesis.addEventListener("voiceschanged",f,{once:true})}catch(e){}setTimeout(f,700)}
+    return true}catch(e){return false}}
+function sprich(t,langsam){
+  if(TTS&&!TTS_AUS){TTS.speak(t,{language:"en",rate:langsam?.7:.95,voice:"airy"}).catch(e=>{const c=e&&e.code;
+      if(c==="not_granted"){TTS_AUS=true;return}           // Vorlesen wurde ausgeschaltet – dann nicht anders vorlesen
+      if(c==="stopped"||c==="invalid_argument")return;
+      geraetSprich(t,langsam)});return true}
+  if(TTS_AUS)return false;
+  return geraetSprich(t,langsam)}
+const hatEnglischeStimme=()=>!!(TTS&&!TTS_AUS)||!!englischeStimme();
+
+/* Spracheingabe (Mikrofon): sprechen statt tippen, und Aussprache prüfen */
+let DZ=null; // aktuelles Ziel: {art:"feld",basis} oder {art:"nach",wort,gehoert}
+function diktatEinrichten(d){
+  d.onPartial(({text})=>{if(!DZ)return;if(DZ.art==="feld"){const i=document.getElementById("antwort");if(i)i.value=(DZ.basis+" "+text).trim()}
+    else{DZ.teil=text;nachAnzeigen("👂 "+esc((DZ.gehoert+" "+text).trim())+" …","")}});
+  d.onFinal(({text})=>{if(!DZ)return;if(DZ.art==="feld"){DZ.basis=(DZ.basis+" "+text).trim().replace(/[.!?]+$/,"");const i=document.getElementById("antwort");if(i)i.value=DZ.basis}
+    else{DZ.gehoert=(DZ.gehoert+" "+text).trim();DZ.teil="";if(DZ.gehoert)d.stop().catch(()=>{})}});
+  d.onState(({state,reason})=>{document.querySelectorAll("[data-act=mikro],[data-act=nachsprechen]").forEach(b=>b.classList.toggle("hoert",state!=="idle"));
+    if(state==="listening"&&DZ&&DZ.art==="nach"){nachAnzeigen("🎤 Ich höre zu … sag: <b>"+esc(DZ.wort)+"</b>","");clearTimeout(DZ.timer);DZ.timer=setTimeout(()=>d.stop().catch(()=>{}),6000)}
+    if(state==="idle"&&DZ){clearTimeout(DZ.timer);const z=DZ;DZ=null;
+      if(z.art==="nach")nachAuswerten(z,reason);
+      if(reason==="not_granted"||reason==="unavailable"){DICT_AUS=true;document.querySelectorAll("[data-act=mikro],[data-act=nachsprechen]").forEach(b=>b.remove())}}})}
+let DICT_AUS=false;
+const mikroDa=()=>!!DICT&&!DICT_AUS;
+function nachAnzeigen(html,klasse){const el=document.getElementById("nacherg");if(el){el.className="nach-erg "+klasse;el.innerHTML=html}}
+const sprechNorm=x=>String(x).toLowerCase().replace(/[’']/g,"'").replace(/[^a-zäöüß' ]/g," ").replace(/^to /,"").replace(/\s+/g," ").trim();
+function nachAuswerten(z,reason){const h=sprechNorm((z.gehoert+" "+(z.teil||"")).trim()),w=sprechNorm(z.wort);
+  if(!h){nachAnzeigen(reason==="not_granted"?"Das Mikrofon ist ausgeschaltet. Du kannst es im Menü „Berechtigungen“ der App wieder erlauben.":"Ich habe nichts gehört. Tippe nochmal auf 🎤 und sprich deutlich ins Mikrofon.","");return}
+  const ok=h===w||(" "+h+" ").includes(" "+w+" ")||(w.length>=4&&lev(h,w)<=1)||h.split(" ").some(x=>x.length>=4&&lev(x,w)<=1&&w.indexOf(" ")<0);
+  nachAnzeigen(ok?`✅ <b>${pick(["Super ausgesprochen!","Klingt richtig gut!","Perfekt – so sagt man das!","Toll, verstanden!"])}</b> Ich habe „${esc(h)}“ gehört.`
+    :`🔁 Ich habe „${esc(h)}“ verstanden – gemeint war <b>${esc(z.wort)}</b>. Hör es dir nochmal mit 🔊 an und probier's nochmal.`,ok?"ok":"no")}
+function mikroStart(art,wort){if(!mikroDa())return;
+  const englisch=art==="nach"||(Q&&thema(Q.fragen[Q.i].themaId).fach==="englisch"&&!/auf Deutsch|ins Deutsche|in German/i.test(Q.fragen[Q.i].frage));
+  if(DZ){DICT.stop().catch(()=>{});return}
+  const i=document.getElementById("antwort");
+  DZ=art==="nach"?{art,wort,gehoert:"",teil:""}:{art:"feld",basis:i?i.value.trim():""};
+  DICT.start(englisch?{language:"en"}:{language:"de"}).catch(e=>{const c=e&&e.code;DZ=null;
+    if(c==="not_granted"||c==="unavailable"){DICT_AUS=true;document.querySelectorAll("[data-act=mikro],[data-act=nachsprechen]").forEach(b=>b.remove())}
+    if(art==="nach")nachAnzeigen(c==="not_granted"?"Das Mikrofon ist nicht erlaubt – du kannst es im Menü „Berechtigungen“ der App erlauben.":c==="busy"||c==="rate_limited"?"Das Mikrofon ist gerade beschäftigt – versuch es gleich nochmal.":"Das Mikrofon geht hier leider nicht.","")})}
 const hoerKnopf=(t,klein)=>`<button class="hoer ${klein?"klein":""}" type="button" data-act="sprich" data-t="${esc(t)}" aria-label="${esc(t)} anhören">🔊</button>`;
 function u2Karten(){
   const k=[],n=U2.length,ohneTo=e=>e.replace(/^to /,"");
@@ -1089,6 +1153,46 @@ function strahlSVG(z,n){const w=300,x0=20,e=(w-40)/2,step=e/n;let t=`<line x1="$
   return `<svg viewBox="0 0 ${w} 86" width="${w}" height="86" role="img" aria-label="Zahlenstrahl">${t}</svg>`}
 function feldSVG(){let t="";for(let r=0;r<6;r++)for(let c=0;c<10;c++){const f=r===0?"#d64545":(r<=3&&c<2)?"#2e9e5b":(r<=3&&c<6)?"#2f6fd6":"var(--surface)";t+=`<rect x="${4+c*24}" y="${4+r*20}" width="24" height="20" fill="${f}" stroke="var(--fg)" stroke-width="1"/>`}
   return `<svg viewBox="0 0 248 128" width="248" height="128" role="img" aria-label="Erdbeerfeld">${t}</svg>`}
+
+/* Englisch Unit 2 – Topic 3 – Vokabelblatt S. 36/37 (Sätze vom Blatt; ergänzte Sätze für Wörter ohne Satz) */
+const U2T3=[
+ {en:"trainer",de:"der Turnschuh",e:"👟",satz:"I need new ___ for P.E.",form:"trainers",alt:["trainers"],tipp:"Meistens Mehrzahl: trainers"},
+ {en:"size",de:"die Größe",e:"📏👕",satz:"What ___ do you need?",form:"size"},
+ {en:"foot",de:"der Fuß",e:"🦶",satz:"My left ___ hurts.",form:"foot",tipp:"Mehrzahl: feet"},
+ {en:"feet",de:"die Füße",e:"🦶🦶",satz:"I have got two ___.",form:"feet"},
+ {en:"these",de:"diese (hier)",e:"👉👟👟",satz:"I like ___ trainers here best.",form:"these"},
+ {en:"large",de:"groß",e:"👕XL",satz:"This T-shirt is too small. I need a ___ one.",form:"large"},
+ {en:"cheap",de:"günstig, billig",e:"🏷️💰",satz:"The trainers are only five pounds. They are very ___.",form:"cheap"},
+ {en:"than",de:"als",e:"⚖️",satz:"The red coat is cheaper ___ the blue coat.",form:"than"},
+ {en:"those",de:"jene (dort)",e:"👉 … 👟👟",satz:"These are nice, ___ are nicer.",form:"those"},
+ {en:"to try on",de:"anprobieren",e:"👗🪞",satz:"Can I ___ the red trainers on, please?",form:"try",luecke:true},
+ {en:"next",de:"als Nächstes",e:"➡️",satz:"___ they went to the bag shop.",form:"Next"},
+ {en:"T-shirt",de:"das T-Shirt",e:"👕",satz:"I wear a red ___ today.",form:"T-shirt",alt:["tshirt","t shirt"]},
+ {en:"pretty",de:"hübsch",e:"🌸👕",satz:"That's a ___ T-shirt.",form:"pretty"},
+ {en:"short",de:"kurz",e:"🩳",satz:"This T-shirt is too ___.",form:"short"},
+ {en:"worse",de:"schlechter, schlimmer",e:"👎👎",satz:"These are bad, but those are ___.",form:"worse"},
+ {en:"UK",de:"Vereinigtes Königreich von Großbritannien und Nordirland",e:"🇬🇧",satz:"London is the capital of the ___.",form:"UK",alt:["United Kingdom","the UK","the United Kingdom"],tipp:"UK = United Kingdom"}];
+function u2t3Karten(){
+  const k=[],n=U2T3.length,ohneTo=e=>e.replace(/^to /,""),bild=w=>`<span class="emo">${w.e}</span>`;
+  U2T3.forEach(w=>k.push(hoer(text(`Wie heißt das auf Englisch?<div class="bild">${bild(w)}</div><div style="margin-top:8px">„${w.de}“</div>`,[w.en,ohneTo(w.en),...(w.alt||[])],`${w.de} = <b>${w.en}</b>${w.tipp?` · ${w.tipp}`:""}`,"Achte auf die Schreibweise!"),w.en)));
+  U2T3.forEach((w,i)=>k.push(hoer(mc(`Was passt zum Bild?<div class="bild">${bild(w)}</div><div class="tipp">(${w.de})</div>`,w.en,[1,2,3].map(d=>U2T3[(i+d*5)%n].en),`${w.en} = ${w.de}`),w.en)));
+  U2T3.forEach((w,i)=>k.push(hoer(mc(`Was heißt <b>„${w.en}“</b> auf Deutsch?`,w.de,[1,2,3].map(d=>U2T3[(i+d*4)%n].de),`${w.en} = ${w.de}`),w.en,true)));
+  U2T3.filter(w=>!w.luecke).forEach(w=>k.push(hoer(text(`Setze ein:<br>${w.satz.replace("___",L)}<div class="tipp">(${w.de})</div>`,[w.form,...(w.alt||[])],`${w.satz.replace("___","<b>"+w.form+"</b>")}`),w.satz.replace("___",w.form))));
+  k.push(hoer(mc(`Setze ein:<br>Can I ${L} the red trainers ${L}, please?<div class="tipp">(anprobieren)</div>`,"try … on",["take … in","put … up","try … in"],"to <b>try</b> something <b>on</b> = etwas anprobieren. Das „on“ steht hinten!"),"Can I try the red trainers on, please?"));
+  k.push(paare("Ordne zu: Kleidung & Schuhe",[["trainer","Turnschuh"],["T-shirt","T-Shirt"],["size","Größe"],["to try on","anprobieren"],["foot","Fuß"]]));
+  k.push(paare("Ordne zu: Wie ist es?",[["cheap","günstig"],["large","groß"],["short","kurz"],["pretty","hübsch"],["worse","schlechter"]]));
+  k.push(paare("Ordne zu",[["these","diese (hier)"],["those","jene (dort)"],["than","als"],["next","als Nächstes"],["UK","Vereinigtes Königreich"]]));
+  k.push(mc("Was ist die Mehrzahl von <b>foot</b>?","feet",["foots","feets","footes"],"one foot → two <b>feet</b> (unregelmäßig!)"));
+  k.push(mc(`bad – <b>${L}</b> – worst`,"worse",["badder","more bad","worst"],"bad – <b>worse</b> – worst (unregelmäßig)"));
+  k.push(mc(`cheap – <b>${L}</b> – cheapest`,"cheaper",["more cheap","cheapper","cheapest"],"cheap – <b>cheaper</b> – cheapest"));
+  k.push(mc(`Die Turnschuhe sind <b>hier bei mir</b>: I like ${L} trainers.`,"these",["those","this","that"],"nah (hier) und Mehrzahl → <b>these</b>. Weit weg (dort) → those."));
+  k.push(mc(`Die Turnschuhe sind <b>dort drüben</b>: Look at ${L} trainers!`,"those",["these","this","than"],"weit weg (dort) und Mehrzahl → <b>those</b>."));
+  k.push(mc(`this → Mehrzahl?`,"these",["those","thises","that"],"this (eins, nah) → <b>these</b> (mehrere, nah) · that (eins, fern) → those"));
+  k.push(mc(`The blue coat is cheaper ${L} the red coat.`,"than",["then","as","that"],"Beim Vergleichen: cheaper <b>than</b> = billiger <b>als</b>. Nicht verwechseln mit „then“ (dann)!"));
+  k.push(satz("Put the words in the correct order:<br><span class=\"muted\">need / do / what / you / size</span>","What size do you need?",""));
+  k.push(satz("Put the words in the correct order:<br><span class=\"muted\">short / T-shirt / too / this / is</span>","This T-shirt is too short.",""));
+  U2T3.forEach(w=>k.push(hoer(text(`🎧 <b>Hör gut zu</b> und schreib das englische Wort auf.<div class="tipp">Tippe auf 🔊 – so oft du willst. Mit 🐢 hörst du es langsam.</div>`,[w.en,ohneTo(w.en),...(w.alt||[])],`Du hast gehört: <b>${w.en}</b> = ${w.de}`,"Achte auf jeden Buchstaben!"),w.en,true)));
+  return k}
 
 /* Englisch Unit 2 – Topic 2 – Vokabelblatt S. 33 (Sätze vom Blatt; ergänzte Sätze für Wörter ohne Satz) */
 const T2SVG={
@@ -1277,6 +1381,11 @@ const THEMEN=[
  ]},
 
 /* ---------------------------------------------------------------- ENGLISCH */
+{id:"e-u2-t3",fach:"englisch",titel:"Unit 2, Topic 3 – Vokabeln (S. 36/37)",quelle:"Vokabelblatt S. 36/37",probe:null,
+ merke:`<h2>Unit 2 – Topic 3 · Seite 36/37</h2>
+ <div class="tabwrap"><table class="vokabeln">${U2T3.map(w=>`<tr><td><span class="mini"><span class="emo">${w.e}</span></span></td><td>${hoerKnopf(w.en,true)} <b>${w.en}</b><span class="satz">${w.satz.replace("___","<b>"+w.form+"</b>").replace("___","")}</span></td><td>${w.de}</td></tr>`).join("")}</table></div>
+ <div class="merk">one <b>foot</b> → two <b>feet</b> · bad → <b>worse</b> · cheap → <b>cheaper than</b> (billiger als)<br><b>these</b> = diese hier (nah) · <b>those</b> = jene dort (weit weg) · to <b>try</b> sth <b>on</b> = anprobieren</div>`,
+ karten:u2t3Karten()},
 {id:"e-u2-t2",fach:"englisch",titel:"Unit 2, Topic 2 – Vokabeln (S. 33)",quelle:"Vokabelblatt S. 33",probe:null,
  merke:`<h2>Unit 2 – Topic 2 · Seite 33</h2>
  <div class="tabwrap"><table class="vokabeln">${U2T2.map(w=>`<tr><td><span class="mini">${t2Bild(w)}</span></td><td>${hoerKnopf(w.en,true)} <b>${w.en}</b><span class="satz">${w.satz.replace("___","<b>"+w.form+"</b>")}</span></td><td>${w.de}</td></tr>`).join("")}</table></div>
@@ -2013,6 +2122,23 @@ THEMEN.splice(THEMEN.findIndex(t=>t.id==="m-heftfehler"),0,
  <ol><li><b>Zweimal lesen</b> – langsam!</li><li><b>Zahlen markieren</b> (anmalen oder unterstreichen)</li><li><b>Frage unterstreichen</b>: Was will man wissen?</li>
  <li><b>Bild malen</b> (Streifen, Pizza, Kästchen …)</li><li><b>Rechnen</b></li><li><b>Antwortsatz</b> schreiben – mit der Frage im Satz!</li></ol>
  <div class="merk"><b>Signalwörter:</b><br>„zusammen, insgesamt, dazu“ → <b>+</b><br>„übrig, weniger, ausgeben, verlieren“ → <b>−</b><br>„je, jeder, pro, … mal“ → <b>·</b><br>„verteilen, aufteilen, gleichmäßig“ → <b>:</b></div>`,
+ slots:8,
+ gen(){const n=pick(["Maja","Nila","Lena","Emma","Mia","Ben","Paul","Tom"]),sie=["Ben","Paul","Tom"].includes(n)?"er":"sie",Sie=sie==="er"?"Er":"Sie",ihr=sie==="er"?"ihm":"ihr",art=R(0,7);
+  if(art===0){const b=R(5,15),c=R(2,9),a=b+c+R(3,25);const [x,y]=pick([["ein Buch","Stifte"],["ein Spiel","Süßigkeiten"],["ein T-Shirt","Socken"],["eine Kinokarte","Popcorn"]]);
+    return zahl(`${n} hat ${a} € gespart. ${Sie} kauft ${x} für ${b} € und ${y} für ${c} €. Wie viel Geld bleibt ${ihr} übrig?`,a-b-c,`„übrig“ → minus: ${a} − ${b} − ${c} = <b>${a-b-c} €</b>`,"€")}
+  if(art===1){const g=R(3,6),k=g*R(4,8);return zahl(pick([`In ${n}s Klasse sind ${k} Kinder. Für ein Projekt werden Gruppen mit je ${g} Kindern gebildet. Wie viele Gruppen gibt es?`,`${k} Kinder fahren ins Schullandheim. In jedes Zimmer passen ${g} Kinder. Wie viele Zimmer braucht man?`,`Beim Sportfest werden ${k} Kinder auf Teams mit je ${g} Kindern verteilt. Wie viele Teams gibt es?`]),k/g,`„aufteilen“ → geteilt: ${k} : ${g} = <b>${k/g}</b>`)}
+  if(art===2){const p=R(4,12),f=R(2,5);const [ort,was]=pick([["ins Kino","Ein Kinoticket"],["ins Schwimmbad","Eine Eintrittskarte"],["in den Freizeitpark","Ein Ticket"],["zum Minigolf","Eine Runde"]]);
+    return zahl(`${was} kostet ${p} €. ${n} geht mit ${f} Freundinnen und Freunden ${ort}. Wie viel kosten die Karten für alle zusammen?`,(f+1)*p,`${n} + ${f} = <b>${f+1} Kinder</b> (${n} nicht vergessen!) → ${f+1} · ${p} = <b>${(f+1)*p} €</b>`,"€")}
+  if(art===3){const m=pick([45,60,75,90]),w=R(2,6);const [was]=pick([["Das Wasserwacht-Training"],["Das Volleyballtraining"],["Die Gitarrenstunde"],["Das Schwimmtraining"]]);
+    return zahl(`${was} dauert jede Woche ${m} Minuten. Wie viele Minuten sind das in ${w} Wochen?`,m*w,`„jede Woche … in ${w} Wochen“ → mal: ${w} · ${m} = <b>${m*w} Minuten</b>`,"min")}
+  if(art===4){const t=R(3,8),w=R(4,12),pr=t*w;const ding=pick(["Kopfhörer","Ein neuer Ball","Ein Puzzle","Eine Trinkflasche","Ein Buch-Set"]);
+    return zahl(`${n} bekommt jede Woche ${t} € Taschengeld. ${ding} kostet ${pr} €. Wie viele Wochen muss ${sie} sparen?`,w,`${pr} : ${t} = <b>${w} Wochen</b>`)}
+  if(art===5){const pro=pick([8,10,12,15,20,25]),tage=R(5,12),ges=pro*tage;
+    return zahl(`Ein Buch hat ${ges} Seiten. ${n} liest jeden Tag ${pro} Seiten. Nach wie vielen Tagen ist ${sie} fertig?`,tage,`${ges} : ${pro} = <b>${tage} Tage</b>`)}
+  if(art===6){const te=R(2,5),sp=R(5,7),er=R(1,3);
+    return zahl(`Im Sportverein gibt es ${te} Mannschaften. Jede hat ${sp} Spielerinnen und ${er} Ersatzspielerinnen. Wie viele sind es insgesamt?`,te*(sp+er),`Eine Mannschaft: ${sp} + ${er} = ${sp+er} → ${te} · ${sp+er} = <b>${te*(sp+er)}</b>`)}
+  const k=R(18,28),pp=R(3,9),bus=k*pp;
+  return zahl(`Der Bus für den Klassenausflug kostet ${bus} €. ${k} Kinder fahren mit und teilen die Kosten gerecht. Wie viel muss jedes Kind zahlen?`,pp,`„gerecht teilen“ → geteilt: ${bus} : ${k} = <b>${pp} €</b>`,"€")},
  karten:[
   zahl("Maja hat 24 € gespart. Sie kauft ein Buch für 9 € und Stifte für 4 €. Wie viel Geld bleibt ihr übrig?",11,"„übrig“ → minus: 24 − 9 − 4 = <b>11 €</b>","€"),
   zahl("In Majas Klasse sind 28 Kinder. Für den Ausflug werden Gruppen mit je 4 Kindern gebildet. Wie viele Gruppen gibt es?",7,"„aufteilen in Gruppen“ → geteilt: 28 : 4 = <b>7 Gruppen</b>"),
@@ -2029,6 +2155,22 @@ THEMEN.splice(THEMEN.findIndex(t=>t.id==="m-heftfehler"),0,
  <li>Ist nur ein <b>Teil</b> gegeben und das <b>Ganze</b> gesucht? → Erst <b>: Zähler</b> (ein Teil), dann <b>· Nenner</b> (alle Teile)</li>
  <li>Fragt man nach dem <b>Rest</b>? → Ganzes minus Teil</li><li><b>Bild malen</b> – Streifen oder Pizza!</li><li><b>Antwortsatz</b> schreiben</li></ol>
  <div class="merk">${F(3,4)} von 24 → 24 : 4 = 6 → 6 · 3 = <b>18</b><br>15 sind ${F(3,5)} → 15 : 3 = 5 → 5 · 5 = <b>25</b> (das Ganze ist größer!)</div>`,
+ slots:8,
+ gen(){const n=pick(["Maja","Nila","Lena","Emma","Mia","Ben","Paul","Tom"]),art=R(0,5);
+  if(art===0){const st=pick([6,8,10,12]),z=R(1,st-1);const [ding,teile]=pick([["Eine Pizza","Stücke"],["Ein Kuchen","Stücke"],["Eine Tafel Schokolade","Stückchen"]]);
+    return pick([0,1])?bruch(`${ding} ist in ${st} gleiche ${teile} geteilt. ${n} isst ${z} ${teile}. Welchen Bruchteil hat ${n} gegessen?`,z,st,"gleich",`${z} von ${st} ${teile}n → <b>${z}/${st}</b>`)
+      :bruch(`${ding} hat ${st} ${teile}. ${n} isst ${z} ${teile}. Welcher Bruchteil ist noch übrig?`,st-z,st,"gleich",`${st} − ${z} = ${st-z} übrig → <b>${st-z}/${st}</b>`)}
+  if(art===1){const nn=pick([2,3,4,5,6,8]),zz=R(1,nn-1),x=nn*R(3,8);const [satz,einh]=pick([[`In ${n}s Klasse sind ${x} Kinder. ${F(zz,nn)} der Kinder kommen mit dem Fahrrad. Wie viele Kinder sind das?`,""],[`${n} hat ${x} € gespart. ${F(zz,nn)} davon gibt ${n} für Geschenke aus. Wie viel Euro sind das?`,"€"],[`Im Verein sind ${x} Kinder. ${F(zz,nn)} davon sind Mädchen. Wie viele Mädchen sind es?`,""],[`Eine Tüte hat ${x} Gummibärchen. ${n} isst ${F(zz,nn)} davon. Wie viele Gummibärchen sind das?`,""]]);
+    return M(zahl(satz,x/nn*zz,`${x} : ${nn} = ${x/nn} → ${x/nn} · ${zz} = <b>${x/nn*zz}</b>`,einh),{art:"von",z:zz,n:nn,x})}
+  if(art===2){const [g,k,x,nl]=pick([["h","min",60,[2,3,4,5,6,10,12]],["km","m",1000,[2,4,5,8,10]],["kg","g",1000,[2,4,5,8,10]],["m","cm",100,[2,4,5,10]],["€","ct",100,[2,4,5,10]]]);const nn=pick(nl),zz=R(1,nn-1);
+    const satz=pick([`Wie viele ${k} sind ${F(zz,nn)} ${g}?`,`${n}s Weg ist ${F(zz,nn)} ${g} lang. Wie viele ${k} sind das?`,`Rechne um: ${F(zz,nn)} ${g} = ? ${k}`]);
+    return M(zahl(satz,x/nn*zz,`1 ${g} = ${x} ${k} → ${x} : ${nn} = ${x/nn} → ${x/nn} · ${zz} = <b>${x/nn*zz} ${k}</b>`,k),{art:"groesse",z:zz,n:nn,x,g,k})}
+  if(art===3){const nn=pick([3,4,5,6,8]),zz=R(1,nn-1),e=R(2,7),teil=zz*e;
+    return M(zahl(`${teil} Kinder aus ${n}s Klasse haben ein Haustier. Das sind ${F(zz,nn)} der Klasse. Wie viele Kinder sind in der Klasse?`,e*nn,`${teil} : ${zz} = ${e} (das ist ${F(1,nn)}) → ${e} · ${nn} = <b>${e*nn} Kinder</b>`),{art:"ganzes",z:zz,n:nn,teil})}
+  if(art===4){const nn=pick([2,3,4,5]),zz=R(1,nn-1),x=nn*R(4,10),aus=x/nn*zz;
+    return zahl(`${n} hat ${x} € und gibt ${F(zz,nn)} davon aus. Wie viel Euro bleiben übrig?`,x-aus,`${F(zz,nn)} von ${x} = ${aus} € ausgegeben → ${x} − ${aus} = <b>${x-aus} €</b> übrig`,"€")}
+  const nn=pick([6,8,10,12]),a=R(1,Math.floor(nn/2)-1),b=R(1,nn-a-1);
+  return bruch(`Ein Kuchen hat ${nn} Stücke. ${n} isst ${a}, ${pick(["Nila","Oma","Papa","die Freundin"])} isst ${b} Stücke. Welcher Bruchteil ist noch übrig?`,nn-a-b,nn,"gleich",`${nn} − ${a} − ${b} = ${nn-a-b} übrig → <b>${nn-a-b}/${nn}</b>`)},
  karten:[
   bruch("Eine Pizza ist in 8 gleiche Stücke geschnitten. Maja isst 3 Stücke. Welchen Bruchteil der Pizza hat sie gegessen?",3,8,"gleich","3 von 8 Stücken → <b>3/8</b>"),
   bruch("Eine Pizza hat 8 Stücke. Maja isst 3 Stücke. Welcher Bruchteil der Pizza ist noch übrig?",5,8,"gleich","8 − 3 = 5 Stücke übrig → <b>5/8</b>"),
@@ -2142,6 +2284,11 @@ let S={karten:{},heute:{datum:"",anzahl:0},serie:{letzter:"",tage:0},plan:{},ueb
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
 if(!S.spar||!Array.isArray(S.spar.buchungen))S.spar={buchungen:[],ziel:null};
 S.spar.notenGebucht=S.spar.notenGebucht||[];
+if(!Array.isArray(S.eigeneNoten))S.eigeneNoten=[];
+// selbst eingetragene Noten kommen zu den festen Noten dazu
+function confirmSicher(b){if(b.dataset.sicher)return true;b.dataset.sicher="1";b.textContent="Wirklich löschen?";b.style.fontSize=".8rem";return false}
+function notenSync(){for(let i=NOTEN.length-1;i>=0;i--)if(NOTEN[i].eigen)NOTEN.splice(i,1);S.eigeneNoten.forEach(n=>NOTEN.push(Object.assign({},n,{eigen:true})))}
+notenSync();
 const speichern=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const tag=(plus=0)=>{const d=new Date();d.setDate(d.getDate()+plus);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 if(S.heute.datum!==tag())S.heute={datum:tag(),anzahl:0};
@@ -2348,7 +2495,21 @@ function bildHTML(e){const s=e.schritte[e.i];
    <div class="row">${e.i>0?`<button class="btn ghost small" data-act="ekzurueck">← Zurück</button>`:""}${e.i<e.schritte.length-1?`<button class="btn" data-act="ekweiter" id="ekweiter">Weiter →</button>`:`<button class="btn" data-act="ekzu" id="ekweiter">Verstanden! Jetzt probiere ich es 💪</button>`}</div></div></div>`}
 
 const KEINE_HILFE=["karte","paare"];
-function frageAus(k){const q=Object.assign({},k.make(),{kid:k.id,themaId:k.t.id});return mischen(q)}
+const VARIANTEN=[
+ [/^Wie heißt das auf Englisch\?/,()=>pick(["Wie heißt das auf Englisch?","Wie sagt man das auf Englisch?","Übersetze ins Englische:","Schreib das englische Wort:","What's this in English?","Kennst du das englische Wort?"])],
+ [/^Was passt zum Bild\?/,()=>pick(["Was passt zum Bild?","Welches Wort zeigt das Bild?","What can you see in the picture?","Was ist auf dem Bild?","Look at the picture – which word is it?"])],
+ [/^Was heißt <b>„(.+?)“<\/b> auf Deutsch\?/,(m)=>pick([`Was heißt <b>„${m[1]}“</b> auf Deutsch?`,`Übersetze ins Deutsche: <b>„${m[1]}“</b>`,`What does <b>„${m[1]}“</b> mean in German?`,`<b>„${m[1]}“</b> – was bedeutet das?`])],
+ [/^Setze ein:/,()=>pick(["Setze ein:","Fill in the gap:","Ergänze das fehlende Wort:","Welches Wort fehlt?","Complete the sentence:"])],
+ [/^Put the words in the correct order:/,()=>pick(["Put the words in the correct order:","Bring die Wörter in die richtige Reihenfolge:","Build the sentence:","Bau den richtigen Satz:"])],
+ [/^Welcher Satz ist richtig\?/,()=>pick(["Welcher Satz ist richtig?","Which sentence is correct?","Welcher Satz stimmt?","Finde den richtigen Satz:"])],
+ [/^Ordne zu(?=[:<]|$)/,()=>pick(["Ordne zu","Finde die Paare","Match the words","Was gehört zusammen?"])],
+ [/^Welcher Bruchteil ist gefärbt\?/,()=>pick(["Welcher Bruchteil ist gefärbt?","Welcher Anteil ist angemalt?","Schreib den gefärbten Teil als Bruch:","Wie viel ist eingefärbt? Gib den Bruch an."])],
+ [/^Auf welchen Bruch zeigt der Pfeil\?/,()=>pick(["Auf welchen Bruch zeigt der Pfeil?","Welcher Bruch gehört an den Pfeil?","Lies am Zahlenstrahl ab: Wo zeigt der Pfeil hin?"])],
+ [/^Welcher Bruch ist größer\?/,()=>pick(["Welcher Bruch ist größer?","Welcher Bruch ist mehr wert?","Was ist mehr?"])],
+ [/^Stimmt das\?/,()=>pick(["Stimmt das?","Richtig oder falsch?","Ist das wahr?"])],
+];
+function variiere(q){if(typeof q.frage!=="string")return q;for(const [re,f] of VARIANTEN){const m=q.frage.match(re);if(m){q.frage=q.frage.replace(re,f(m));break}}return q}
+function frageAus(k){const q=Object.assign({},k.make(),{kid:k.id,themaId:k.t.id});return mischen(variiere(q))}
 function mischen(q){if(q.typ==="mc")q.optionen=shuffle(q.optionen);
   if(q.typ==="paare"){q.links=shuffle(q.paare.map((_,i)=>i));q.rechts=shuffle(q.paare.map((_,i)=>i))}
   if(q.typ==="satz"){q.woerter=q.loesung.split(" ");let o;do{o=shuffle(q.woerter.map((_,i)=>i))}while(q.woerter.length>2&&o.every((x,i)=>x===i));q.reihe=o}
@@ -3062,12 +3223,13 @@ function druckKarten(fid){
   const out=[],gesehen=new Set();
   const add=(v,r,klein)=>{const k=plain(v)+"|"+plain(r);if(gesehen.has(k)||!plain(r))return;gesehen.add(k);out.push({v,r,klein})};
   if(fid==="englisch"){
+    U2T3.forEach(w=>add(`<div class="dk-bild"><span class="emo">${w.e}</span></div><b class="dk-wort">${w.en}</b>`,`<b class="dk-wort">${w.de}</b><span class="dk-satz">${w.satz.replace("___","<u>"+w.form+"</u>").replace("___","")}</span>`));
     U2T2.forEach(w=>add(`<div class="dk-bild">${t2Bild(w)}</div><b class="dk-wort">${w.en}</b>`,`<b class="dk-wort">${w.de}</b><span class="dk-satz">${w.satz.replace("___","<u>"+w.form+"</u>")}</span>`));
     U2.forEach(w=>add(`<div class="dk-bild">${BILD[w.bild]()}</div><b class="dk-wort">${w.en}</b>`,`<b class="dk-wort">${w.de}</b><span class="dk-satz">${w.satz.replace("___","<u>"+w.form+"</u>")}</span>`));
     CHORES.forEach(c=>add(`<div class="dk-bild">${BILD[c.bild]()}</div><b class="dk-wort">${c.en}</b>`,`<b class="dk-wort">${c.de}</b>`));
     HAEUFIG.forEach(([en,de,n])=>add(`<div class="dk-bild">${oftSVG(n)}</div><b class="dk-wort">${en}</b>`,`<b class="dk-wort">${de}</b>`));
   }
-  themenVon(fid).filter(t=>t.quelle!=="Beispiel"&&!(fid==="englisch"&&["e-u2-vokabeln","e-chores","e-u2-t2"].includes(t.id))).forEach(t=>{
+  themenVon(fid).filter(t=>t.quelle!=="Beispiel"&&!(fid==="englisch"&&["e-u2-vokabeln","e-chores","e-u2-t2","e-u2-t3"].includes(t.id))).forEach(t=>{
     (t.karten||[]).forEach(q=>{
       if(q.typ==="karte")add(druckSauber(q.frage),q.antwort);
       else if(q.typ==="paare")q.paare.forEach(([a,b])=>add(`<b class="dk-wort">${a}</b>`,`<b class="dk-wort">${b}</b>`));
@@ -3171,7 +3333,7 @@ function vNoten(){
       ${p?`<p class="muted">Nächste Probe: ${datumKurz(p.datum)} · ${lerntageText(p)}</p>`:""}</section>`;
     return `<section class="notenfach" style="--fach:${f.farbe}">
      <div class="nf-kopf"><h3>${f.name}</h3><div class="nf-schnitt"><span class="gross">${komma(x)}</span><span>steht auf <b>${stehtAuf(x)}</b></span></div></div>
-     <div class="notenliste">${ns.map(n=>`<div class="notenzeile"><span class="nz-note">${esc(n.note)}</span><span class="nz-text"><b>${esc(n.art||"Note")}</b>${n.thema?` · ${esc(n.thema)}`:""}${(n.gewicht||1)!==1?` · zählt ${String(n.gewicht).replace(".",",")}-fach`:""}</span><span class="muted nz-datum">${n.datum?datumDE(n.datum):""}</span>${n.datum&&n.datum>=BELOHNUNG_AB&&notenGeld(n.note)?`<span class="nz-geld">+${euro(notenGeld(n.note))}</span>`:""}</div>`).join("")}</div>
+     <div class="notenliste">${ns.map(n=>`<div class="notenzeile"><span class="nz-note">${esc(n.note)}</span><span class="nz-text"><b>${esc(n.art||"Note")}</b>${n.thema?` · ${esc(n.thema)}`:""}${(n.gewicht||1)!==1?` · zählt ${String(n.gewicht).replace(".",",")}-fach`:""}</span><span class="muted nz-datum">${n.datum?datumDE(n.datum):""}</span>${n.datum&&n.datum>=BELOHNUNG_AB&&notenGeld(n.note)?`<span class="nz-geld">+${euro(notenGeld(n.note))}</span>`:""}${n.eigen?`<button class="nz-weg" type="button" data-act="noteweg" data-id="${esc(n.id)}" aria-label="Note löschen" title="Note löschen">🗑️</button>`:""}</div>`).join("")}</div>
      <div class="wenn"><p><b>Was wäre, wenn${p?` du in der Probe am ${datumKurz(p.datum)}`:" du in der nächsten Probe"} eine … schreibst?</b></p>
       <div class="wenn-grid">${[1,2,3,4,5,6].map(g=>{const y=schnitt(f.id,g),d=y-x;return `<div class="wenn-zelle"><span class="wz-note">${g}</span><span>Ø ${komma(y)}</span><span class="muted">steht auf ${stehtAuf(y)}</span><span class="wz-pfeil ${d<-0.005?"besser":d>0.005?"schlechter":""}">${d<-0.005?"▲ besser":d>0.005?"▼ schlechter":"= gleich"}</span><span class="wz-geld">${NOTENGELD[g]?"💶 +"+euro(NOTENGELD[g]):"💶 –"}</span></div>`}).join("")}</div></div>
     </section>`};
@@ -3180,6 +3342,18 @@ function vNoten(){
    <button class="back wr-back" data-go="start">← Startseite</button>
    <div class="wr-kopf-zeile"><div class="kopf" style="flex:1"><div><p class="eyebrow">🌟 Deine Noten im Weltall</p><h1>Noten</h1><p class="muted">Alle eingetragenen Noten, der Durchschnitt pro Fach und was eine neue Note verändern würde.</p></div>
     ${gesamt!==null?`<div class="stat"><b>${komma(gesamt)}</b><span>Ø aller Fächer</span></div>`:""}</div></div>
+   <section class="probe" style="--fach:var(--englisch)"><h2>➕ Neue Note eintragen</h2>
+    <p class="muted">Einfach Fach und Note auswählen – kein Foto nötig. Die Note zählt sofort im Durchschnitt mit${""} und die Belohnung kommt automatisch ins Sparbuch.</p>
+    <form id="noteform" class="noteneingabe" autocomplete="off">
+     <label>Fach<select id="ne-fach">${FAECHER.map(f=>`<option value="${f.id}">${f.name}</option>`).join("")}</select></label>
+     <label>Note<select id="ne-note">${["1","1-","2+","2","2-","3+","3","3-","4+","4","4-","5+","5","5-","6"].map(n=>`<option ${n==="2"?"selected":""}>${n}</option>`).join("")}</select></label>
+     <label>Art<select id="ne-art">${["Kleiner Leistungsnachweis","Großer Leistungsnachweis","Vokabeltest","Stegreifaufgabe (Ex)","Referat","Mündliche Note","Hausaufgabe","Sonstiges"].map(a=>`<option>${a}</option>`).join("")}</select></label>
+     <label>Datum<input type="date" id="ne-datum" value="${tag()}"></label>
+     <label>Thema (freiwillig)<input id="ne-thema" maxlength="60" placeholder="z. B. Brüche"></label>
+     <button class="btn" type="submit">Note speichern</button>
+    </form>${V.neMsg?`<p class="ne-msg" role="status">${V.neMsg}</p>`:""}
+    <p class="muted" style="font-size:.85rem">Selbst eingetragene Noten haben ein 🗑️ zum Löschen. Sie werden auf diesem Gerät gespeichert.</p>
+   </section>
    ${NOTEN.length?"":`<section class="leerhinweis"><h3>Noch keine Noten eingetragen.</h3><p class="muted">Sobald Noten da sind, siehst du hier den Durchschnitt in jedem Fach, auf welcher Note du stehst und was die nächste Probe verändern kann.</p></section>`}
    ${mitNoten.map(fachKarte).join("")}${FAECHER.filter(f=>!notenVon(f.id).length&&(!f.neben||naechsteProbe(f.id))).map(fachKarte).join("")}
    <section class="probe" style="--fach:var(--deutsch)"><h2>Wo du üben solltest</h2>
@@ -3256,7 +3430,7 @@ function vQuiz(){
      return `<button class="${c}" data-opt="${i}" ${fertig?"disabled":""}>${o}</button>`}).join("")}</div>`}
   else{const tipp=q.typ==="bruch"?(q.modus==="gemischt"?"Gemischte Zahl mit Leerzeichen eingeben, z. B. 2 3/4":"Bruch so eingeben: 3/4"):q.typ==="zahl"?"Nur die Zahl eingeben":q.tipp||"";
     feld=`<form class="eingabe" id="eform" autocomplete="off"><input id="antwort" autocapitalize="off" autocorrect="off" spellcheck="false" ${fertig?"disabled":""} value="${fertig?esc(Q.auswahl):""}" aria-label="Antwort">
-     ${q.einheit?`<span class="einheit">${q.einheit}</span>`:""}${fertig?"":`<button class="btn" type="submit">Prüfen</button>`}</form>${tipp&&!fertig?`<p class="tipp">${tipp}</p>`:""}`}
+     ${q.einheit?`<span class="einheit">${q.einheit}</span>`:""}${!fertig&&mikroDa()&&q.typ==="text"&&Q.modus!=="probe"&&!/Hör gut zu/.test(q.frage)?`<button class="hoer mikro" type="button" data-act="mikro" aria-label="Antwort sprechen statt tippen" title="Sprechen statt tippen">🎤</button>`:""}${fertig?"":`<button class="btn" type="submit">Prüfen</button>`}</form>${tipp&&!fertig?`<p class="tipp">${tipp}</p>`:""}`}
   const lob=letzte&&letzte.ok?pick(LOB)+(Q.serie>=3?` 🔥 ${Q.serie} richtig hintereinander!`:""):"";
   const rueck=fertig&&q.typ!=="karte"&&!Q.helfer?`<div class="rueck ${letzte.ok?"ok":"no"} pop"><strong>${letzte.ok?lob:q.typ==="paare"?`${Q.pf} Fehlversuche – das üben wir nochmal.`:"Leider falsch."}</strong>
      ${letzte.ok?"":`<span>Richtig ist: <b>${loesungText(q)}</b></span>`}${q.erkl?`<span>${q.erkl}</span>`:""}</div>
@@ -3270,7 +3444,7 @@ function vQuiz(){
     <span class="fb-rakete" style="left:calc(20px + (100% - 56px) * ${(Q.i/Q.fragen.length).toFixed(3)})"><span>🚀</span></span><span class="fb-ziel" aria-hidden="true">🪐</span>
     <span class="fb-text">${Q.i} von ${Q.fragen.length} geschafft</span></div>
    ${Q.modus==="probe"?`<p class="tipp">Probe-Modus: keine Hilfe, keine Lösungen. Am Ende bekommst du eine Note wie von deiner Lehrkraft.</p>`:""}
-   <section class="karte"><div class="row" style="justify-content:space-between"><span class="fachzeile">${f.name} · ${t.titel}</span>${marke}</div><div class="frage">${q.frage}</div>${Q.modus!=="probe"&&!fertig&&bildErklaerung(q)?`<div><button class="btn small ek-knopf" data-act="ekauf">🎬 Zeig's mir als Bild</button></div>`:""}${q.sprich&&(q.sprichVorher||fertig)?`<div class="row hoerzeile">${hoerKnopf(q.sprich)}<button class="hoer" type="button" data-act="sprich" data-langsam="1" data-t="${esc(q.sprich)}" aria-label="Langsam anhören">🐢</button><span class="tipp">${fertig?"So spricht man es aus – sprich es laut nach!":"Anhören"}</span></div>`:""}${feld}${rueck}</section>
+   <section class="karte"><div class="row" style="justify-content:space-between"><span class="fachzeile">${f.name} · ${t.titel}</span>${marke}</div><div class="frage">${q.frage}</div>${Q.modus!=="probe"&&!fertig&&bildErklaerung(q)?`<div><button class="btn small ek-knopf" data-act="ekauf">🎬 Zeig's mir als Bild</button></div>`:""}${q.sprich&&(q.sprichVorher||fertig)?`<div class="row hoerzeile">${hoerKnopf(q.sprich)}<button class="hoer" type="button" data-act="sprich" data-langsam="1" data-t="${esc(q.sprich)}" aria-label="Langsam anhören">🐢</button>${fertig&&mikroDa()?`<button class="hoer mikro" type="button" data-act="nachsprechen" data-t="${esc(q.sprich)}" aria-label="Nachsprechen und Aussprache prüfen">🎤</button>`:""}<span class="tipp">${fertig?(mikroDa()?"Hör zu, dann tippe auf 🎤 und sprich es nach – ich sage dir, ob man dich versteht!":"So spricht man es aus – sprich es laut nach!"):"Anhören"}</span></div><div id="nacherg" class="nach-erg" aria-live="polite"></div>`:""}${feld}${rueck}</section>
    ${Q.helfer?tutorHTML(Q.helfer):""}${Q.bildEk?bildHTML(Q.bildEk):""}</div>`}
 
 const KOMMENTAR={1:"Hervorragend! So kannst du in die Probe gehen.",2:"Sehr ordentlich! Mit ein bisschen Wiederholung wird es eine Eins.",3:"Solide Arbeit. Einige Dinge sitzen noch nicht ganz – schau sie dir nochmal an.",4:"Da fehlt noch einiges. Übe die markierten Themen nochmal Schritt für Schritt.",5:"Hier musst du noch viel üben. Fang mit den Hefteinträgen an und mach dann die leichteren Übungen.",6:"Nicht aufgeben! Wir gehen alles nochmal in Ruhe durch."};
@@ -3320,6 +3494,11 @@ function render(){
     S.spar.buchungen.push({id:"s"+Date.now().toString(36),datum:document.getElementById("sdatum").value||tag(),betrag:art==="ausgabe"?-v:v,art,text:document.getElementById("stext").value.trim()});speichern();render()});
   const zf=document.getElementById("zform");if(zf)zf.addEventListener("submit",e=>{e.preventDefault();const n=document.getElementById("zname").value.trim(),v=parseZahl(document.getElementById("zbetrag").value);
     S.spar.ziel=n&&v>0?{name:n,betrag:v}:null;speichern();render()});
+  const nef=document.getElementById("noteform");if(nef)nef.addEventListener("submit",e=>{e.preventDefault();
+    const n={id:"e"+Date.now().toString(36),fach:document.getElementById("ne-fach").value,note:document.getElementById("ne-note").value,
+      art:document.getElementById("ne-art").value,datum:document.getElementById("ne-datum").value||tag()};const th=document.getElementById("ne-thema").value.trim();if(th)n.thema=th;
+    if(notenWert(n.note)===null)return;S.eigeneNoten.push(n);notenSync();notenBuchen();speichern();
+    const g=n.datum>=BELOHNUNG_AB?notenGeld(n.note):0;V.neMsg=`✅ Note ${esc(n.note)} in ${fach(n.fach).name} gespeichert.${g?` +${euro(g)} ins Sparbuch! 💶`:""}`;render();V.neMsg=""});
   const nf=document.getElementById("nform");if(nf)nf.addEventListener("submit",e=>{e.preventDefault();const t=document.getElementById("ntext").value.trim();if(!t)return;
     S.notizen.push({id:Date.now().toString(36),text:t,datum:document.getElementById("ndatum").value||"",erledigt:false});speichern();render();const n2=document.getElementById("ntext");if(n2)n2.focus()});
   const inp=document.getElementById("antwort");if(inp&&!inp.disabled)inp.focus({preventScroll:true});
@@ -3358,7 +3537,14 @@ app.addEventListener("click",e=>{
    case"druckart":V.art=d.art;render();break;
    case"tgheute":{const an=!S.spar.buchungen.some(b=>b.id==="tg-"+tag());taschengeldBuchen(an);const f=S.erledigt[tag()]||(S.erledigt[tag()]={});f.taschengeld=an;speichern();render();break}
    case"sloeschen":{S.spar.buchungen=S.spar.buchungen.filter(b=>b.id!==d.s);const m=String(d.s).match(/^tg-(.+)$/);if(m&&S.erledigt[m[1]])S.erledigt[m[1]].taschengeld=false;speichern();render();break}
-   case"sprich":if(!sprich(d.t,d.langsam))b.title="Vorlesen geht auf diesem Gerät leider nicht";break;
+   case"noteweg":{const n=S.eigeneNoten.find(x=>x.id===d.id);if(!n||!confirmSicher(b))break;
+     const nid=noteId(n);S.eigeneNoten=S.eigeneNoten.filter(x=>x!==n);notenSync();
+     if(!NOTEN.some(x=>noteId(x)===nid)){S.spar.notenGebucht=S.spar.notenGebucht.filter(x=>x!==nid);S.spar.buchungen=S.spar.buchungen.filter(x=>x.id!==nid)}
+     speichern();render();break}
+   case"sprich":if(!sprich(d.t,d.langsam)){b.title="Vorlesen geht auf diesem Gerät leider nicht";b.textContent="🔇"}
+     else if(!hatEnglischeStimme()&&!TTS){const h=document.getElementById("nacherg");if(h&&!h.textContent)h.innerHTML="Hinweis: Auf diesem Gerät ist keine englische Stimme installiert – das Vorlesen klingt dann deutsch."}break;
+   case"mikro":mikroStart("feld");break;
+   case"nachsprechen":mikroStart("nach",d.t);break;
    case"ellaweiter":ellaZeige(ellaIdx+1);break;
    case"aufgabe":{if(d.a.startsWith("todo-")){const id=d.a.slice(5);S.todo[id]=!S.todo[id];speichern();render();break}
      const iso=tag();const f=S.erledigt[iso]||(S.erledigt[iso]={});f[d.a]=!f[d.a];if(d.a==="taschengeld")taschengeldBuchen(f[d.a]);
