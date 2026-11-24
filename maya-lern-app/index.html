@@ -809,6 +809,12 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid va
 .nz-weg{border:none;background:none;cursor:pointer;font-size:1.1rem;padding:2px 6px;border-radius:8px}
 .nz-weg:hover{background:var(--line)}
 .ne-msg{font-weight:700;color:var(--ok)}
+/* Dezimal-Stellenwerttafel */
+.dez-tafel{border-collapse:collapse;margin:8px auto;font-weight:700;font-size:.95rem}
+.dez-tafel th,.dez-tafel td{border:1.5px solid var(--line);padding:4px 7px;text-align:center;min-width:24px}
+.dez-tafel th.dz-vor{background:color-mix(in srgb,#5fb8c9 35%,transparent)}
+.dez-tafel th.dz-nach{background:color-mix(in srgb,#e8807a 35%,transparent)}
+.dez-tafel td.dz-komma,.dez-tafel th.dz-komma{border-left:4px solid var(--fg)}
 /* Kunst: bunt */
 .bunt{background:linear-gradient(90deg,#ff8fab,#ffc56e,#fff27a,#8ee6a0,#7cc8ff,#c39bff)!important;color:#2e2035!important;border-left-color:#ff6fa0!important}
 .stdplan td.bunt{font-weight:800}
@@ -864,7 +870,7 @@ const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(M
 const ggT=(a,b)=>b?ggT(b,a%b):Math.abs(a);
 const kgV=(a,b)=>a*b/ggT(a,b);
 const F=(z,n)=>`<span class="frac"><span>${z}</span><span>${n}</span></span>`;
-const Z=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g," ");
+const Z=n=>String(n).replace(/^-?\d+/,m=>m.replace(/\B(?=(\d{3})+$)/g," "));
 const L=`<span class="lueck">&nbsp;</span>`;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
@@ -2191,6 +2197,105 @@ THEMEN.splice(THEMEN.findIndex(t=>t.id==="m-heftfehler"),0,
   M(zahl(`Von 32 Kindern im Volleyballverein sind ${F(5,8)} Mädchen. Wie viele Mädchen sind es?`,20,"32 : 8 = 4 → 4 · 5 = <b>20 Mädchen</b>"),{art:"von",z:5,n:8,x:32}),
  ]});
 
+/* ---- Mathe: Dezimalzahlen (Hefteintrag + Arbeitsblatt 23.11.) ---- */
+const DEZ_ST=[["T","Tausender",1000],["H","Hunderter",100],["Z","Zehner",10],["E","Einer",1],["z","Zehntel",.1],["h","Hundertstel",.01],["t","Tausendstel",.001],["zt","Zehntausendstel",.0001],["ht","Hunderttausendstel",.00001],["m","Millionstel",.000001]];
+const dzR=x=>Math.round(x*1e7)/1e7,dzK=x=>String(dzR(x)).replace(".",",");
+function dezAus(teile){return {teile,wert:dzR(teile.reduce((a,[i,d])=>a+d*DEZ_ST[i][2],0)),text:teile.map(([i,d])=>d+DEZ_ST[i][0]).join(" ")}}
+function dezStellen(max=6){const k=R(2,4);let pos=shuffle([0,1,2,3,4,5,6,7,8,9].slice(0,max+1).filter(i=>i>0||Math.random()<.25)).slice(0,k);
+  if(!pos.some(i=>i>=4))pos[0]=R(4,Math.min(6,max));pos=[...new Set(pos)].sort((a,b)=>a-b);return dezAus(pos.map(i=>[i,R(1,9)]))}
+function dezStellenTafel(wert){const [g,n=""]=dzK(wert).split(","),ga=g.padStart(4," ").slice(-4).split(""),na=n.padEnd(6," ").split("");
+  return `<div class="tabwrap"><table class="dez-tafel"><tr>${DEZ_ST.map(([k],i)=>`<th class="${i>=4?"dz-nach":"dz-vor"} ${i===4?"dz-komma":""}">${k}</th>`).join("")}</tr><tr>${ga.map(c=>`<td>${c.trim()}</td>`).join("")}${na.map((c,i)=>`<td class="${i===0?"dz-komma":""}">${c.trim()}</td>`).join("")}</tr></table></div>`}
+function dezStrahlSVG(a,k,schritt){
+  const x0=20,st=30,y=50,W=x0*2+10*st+20,T=v=>`<text x="${x0+v*st}" y="${y+32}" text-anchor="middle" font-size="15" font-weight="800" fill="var(--fg)">${dzK(a+v*schritt)}</text>`;
+  let t=`<line x1="${x0-8}" y1="${y}" x2="${x0+10*st+14}" y2="${y}" stroke="var(--fg)" stroke-width="2.5"/><path d="M${x0+10*st+8} ${y-6} L${x0+10*st+16} ${y} L${x0+10*st+8} ${y+6}" fill="none" stroke="var(--fg)" stroke-width="2.5"/>`;
+  for(let i=0;i<=10;i++){const gr=i===0||i===10,mi=i===5;t+=`<line x1="${x0+i*st}" y1="${y-(gr?12:mi?9:7)}" x2="${x0+i*st}" y2="${y+(gr?12:mi?9:7)}" stroke="var(--fg)" stroke-width="${gr?3:mi?2.2:1.6}"/>`}
+  t+=T(0)+T(10);
+  if(k!==null)t+=`<path d="M${x0+k*st} ${y-40} V${y-14} M${x0+k*st-7} ${y-21} L${x0+k*st} ${y-14} L${x0+k*st+7} ${y-21}" stroke="var(--rose)" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+  return `<svg viewBox="0 0 ${W} 95" width="${W}" style="max-width:100%;height:auto" role="img" aria-label="Zahlenstrahl mit Pfeil">${t}</svg>`}
+// Arbeitsblatt 1 „Dezimalzahlen“ (mit Majas Lösungen)
+const DEZ_AB=[["3Z 2z 5h",30.25],["1H 9E 8z 6t",109.806],["1h 3t 7zt 5m",0.013705],["4T 9h",4000.09],["2H 2Z 6z",220.6],["9z 9h",0.99],["8E 4t 1zt 1ht 1m",8.004111],
+  ["3T 7Z 5h",3070.05],["1Z 6E 2z 9h",16.29],["2Z 9ht",20.00009],["8H 4z 3t",800.403],["2T 2H 2E 1z",2202.1],["6z 6h 6t 6ht 7m",0.666067]];
+THEMEN.splice(THEMEN.findIndex(t=>t.id==="m-bruchteile"),0,
+{id:"m-dezimal",fach:"mathe",titel:"Die Dezimalzahlen",quelle:"Hefteintrag + Arbeitsblatt 23.11.",probe:null,
+ merke:`<h2>Die Dezimalzahlen</h2>
+ <p>Zahlen mit einem Komma nennt man <b>Dezimalzahlen</b> oder auch <b>Kommazahlen</b>.</p>
+ <div class="merk"><b>Vor dem Komma (links)</b> stehen die <b>dekadischen Einheiten</b>: Einer (E), Zehner (Z), Hunderter (H), Tausender (T) …<br>
+ <b>Nach dem Komma (rechts)</b> stehen die <b>dezimalen Einheiten</b>: Zehntel (z), Hundertstel (h), Tausendstel (t), Zehntausendstel (zt), Hunderttausendstel (ht), Millionstel (m) …<br>
+ Die dezimalen Einheiten nennt man auch <b>Dezimalstellen</b> oder <b>Nachkommastellen</b>.</div>
+ <h3>Stellenwerttafel</h3>
+ <div class="tabwrap"><table class="dez-tafel"><tr><th>Stellenwert</th>${DEZ_ST.map(([k],i)=>`<th class="${i>=4?"dz-nach":"dz-vor"} ${i===4?"dz-komma":""}">${k}</th>`).join("")}<th>Zahl</th></tr>
+ ${[["2Z 3E 8z",23.8],["5H 6h 9t",500.069],["1z 4h",0.14]].map(([st,w])=>{const [g,n=""]=dzK(w).split(",");return `<tr><td>${st}</td>${g.padStart(4," ").split("").map(c=>`<td>${c.trim()}</td>`).join("")}${n.padEnd(6," ").split("").map((c,i)=>`<td class="${i===0?"dz-komma":""}">${c.trim()}</td>`).join("")}<td><b>${dzK(w)}</b></td></tr>`}).join("")}</table></div>
+ <p><b>Großbuchstaben</b> (T, H, Z, E) = vor dem Komma · <b>kleine Buchstaben</b> (z, h, t, zt, ht, m) = nach dem Komma.<br>Leere Stellen füllst du mit <b>0</b> auf: 5H 6h 9t = 5<b>00</b>,<b>0</b>69 · 4T 9h = 4<b>000</b>,<b>0</b>9</p>
+ <h3>Zahlenstrahl</h3>
+ <p>Man kann jede Dezimalzahl auf dem Zahlenstrahl darstellen. Je mehr Nachkommastellen eine Dezimalzahl hat, desto kleiner werden die Markierungen.</p>
+ <div class="bild">${dezStrahlSVG(0,7,.1)}</div><p class="muted" style="text-align:center">Von 0 bis 1 sind es 10 Schritte → jeder Strich ist <b>0,1</b> (ein Zehntel). Der Pfeil zeigt auf <b>0,7</b>.</p>
+ <div class="merk">Zwischen zwei natürlichen Zahlen gibt es <b>unendlich viele</b> Dezimalzahlen.</div>`,
+ slots:10,
+ gen(){const art=R(0,7);
+  if(art===0){const d=dezStellen(R(0,1)?6:9);return zahl(pick([`Schreib als Dezimalzahl: <b>${d.text}</b>`,`Welche Zahl ist das? <b>${d.text}</b>`,`Stellenwert → Zahl: <b>${d.text}</b>`,`Trag in Gedanken in die Stellenwerttafel ein: <b>${d.text}</b> = ?`]),d.wert,`${d.text} = <b>${dzK(d.wert)}</b> (leere Stellen mit 0 füllen)${dezStellenTafel(d.wert)}`)}
+  if(art===1){const d=dezStellen(),r=d.text,schieb=f=>d.teile.map(([i,z])=>z+DEZ_ST[f(i)][0]).join(" ");
+    const falsch=[...new Set([schieb(i=>i===3?4:i===4?3:i),schieb(i=>Math.min(9,i+1)),schieb(i=>Math.max(0,i-1))])].filter(x=>x!==r);
+    return mc(pick([`Wie schreibt man <b>${dzK(d.wert)}</b> mit Stellenwerten?`,`Zerlege <b>${dzK(d.wert)}</b> in Stellenwerte:`,`Welche Stellenwerte hat <b>${dzK(d.wert)}</b>?`]),r,falsch.slice(0,3),`${dzK(d.wert)} = <b>${r}</b>${dezStellenTafel(d.wert)}`)}
+  if(art===2){let w,n;do{w=dzR(R(0,99)+R(1,999)/1000);n=dzK(w).split(",")[1]||""}while(n.length<3);const i=R(0,2),st=DEZ_ST[4+i];
+    return zahl(pick([`Welche Ziffer steht in <b>${dzK(w)}</b> an der <b>${st[1]}</b>-Stelle?`,`${dzK(w)}: Welche Ziffer ist das <b>${st[1]}</b>?`]),+n[i],`Nach dem Komma: 1. Stelle Zehntel, 2. Stelle Hundertstel, 3. Stelle Tausendstel → bei den ${st[1]}n steht die <b>${n[i]}</b>.${dezStellenTafel(w)}`)}
+  if(art===3){let w,n;do{w=dzR(R(1,99)+R(1,999)/1000);n=dzK(w).split(",")[1]||""}while(n.length<3||new Set(n).size<3);const i=R(0,2),zf=n[i];
+    return mc(pick([`An welcher Stelle steht die <b>${zf}</b> in ${dzK(w)}?`,`Die Ziffer <b>${zf}</b> in ${dzK(w)} – welcher Stellenwert ist das?`]),DEZ_ST[4+i][1],["Zehntel","Hundertstel","Tausendstel","Einer","Zehner"].filter(x=>x!==DEZ_ST[4+i][1]).slice(0,3),`Nach dem Komma zählt man: <b>Zehntel – Hundertstel – Tausendstel</b>. Die ${zf} ist die ${i+1}. Stelle nach dem Komma → <b>${DEZ_ST[4+i][1]}</b>.`)}
+  if(art===4){const a=R(0,4),k=R(1,9);return zahl(pick(["Auf welche Zahl zeigt der Pfeil?","Lies am Zahlenstrahl ab:","Welche Dezimalzahl gehört an den Pfeil?"])+`<div class="bild">${dezStrahlSVG(a,k,.1)}</div>`,dzR(a+k/10),`Von ${a} bis ${a+1} sind es 10 Schritte → jeder Strich = 0,1. ${k} Striche nach ${a} → <b>${dzK(a+k/10)}</b>`)}
+  if(art===5){const a=dzR(R(0,19)/10),k=R(1,9);return zahl(`Jetzt ganz fein – wie mit der Lupe 🔍. Auf welche Zahl zeigt der Pfeil?<div class="bild">${dezStrahlSVG(a,k,.01)}</div>`,dzR(a+k/100),`Von ${dzK(a)} bis ${dzK(a+.1)} sind es 10 Schritte → jeder Strich = 0,01 (ein Hundertstel) → <b>${dzK(a+k/100)}</b>`)}
+  if(art===6){const [f,r,fa,e]=pick([["Wie nennt man die Stellen <b>nach</b> dem Komma?","dezimale Einheiten",["dekadische Einheiten","Vorkommastellen","Bruchstellen"],"Nach dem Komma: <b>dezimale Einheiten</b> (= Dezimalstellen, Nachkommastellen)."],
+    ["Wie nennt man die Stellen <b>vor</b> dem Komma (Einer, Zehner, Hunderter …)?","dekadische Einheiten",["dezimale Einheiten","Nachkommastellen","Zehntel"],"Vor dem Komma: <b>dekadische Einheiten</b>."],
+    ["Wie nennt man Zahlen mit Komma noch?","Dezimalzahlen",["Bruchzahlen","Stellenzahlen","Ganze Zahlen"],"Kommazahlen = <b>Dezimalzahlen</b>"],
+    ["Wie viele Dezimalzahlen gibt es zwischen 1 und 2?","unendlich viele",["9","10","100"],"Zwischen zwei natürlichen Zahlen gibt es <b>unendlich viele</b> Dezimalzahlen (1,1 · 1,15 · 1,151 …)."],
+    ["Was bedeutet das kleine <b>h</b> in der Stellenwerttafel?","Hundertstel",["Hunderter","Hälfte","Zehntel"],"<b>Groß H</b> = Hunderter (vor dem Komma), <b>klein h</b> = Hundertstel (nach dem Komma)."],
+    ["Was bedeutet das kleine <b>z</b> in der Stellenwerttafel?","Zehntel",["Zehner","Zahl","Hundertstel"],"<b>Groß Z</b> = Zehner, <b>klein z</b> = Zehntel."],
+    ["Was bedeutet das kleine <b>t</b> in der Stellenwerttafel?","Tausendstel",["Tausender","Zehntel","Teil"],"<b>Groß T</b> = Tausender, <b>klein t</b> = Tausendstel."],
+    ["Was bedeutet <b>zt</b>?","Zehntausendstel",["Zehntel","Zehntausender","Zentimeter"],"zt = <b>Zehntausendstel</b> – die 4. Stelle nach dem Komma."],
+    ["Was bedeutet das kleine <b>m</b> in der Stellenwerttafel?","Millionstel",["Meter","Millionen","Minuten"],"m = <b>Millionstel</b> – die 6. Stelle nach dem Komma."],
+    ["Die wievielte Stelle nach dem Komma sind die <b>Tausendstel</b>?","die 3.",["die 1.","die 2.","die 4."],"Zehntel (1.) – Hundertstel (2.) – <b>Tausendstel (3.)</b>"]]);return mc(f,r,fa,e)}
+  const d=dezStellen();return mc(`Welche Zahl ist <b>${d.text}</b>?`,dzK(d.wert),[...new Set([dzK(d.wert*10),dzK(d.wert/10),dzK(d.wert*100)])].filter(x=>x!==dzK(d.wert)).slice(0,3),`${d.text} = <b>${dzK(d.wert)}</b>. Leere Stellen mit 0 füllen!${dezStellenTafel(d.wert)}`)},
+ karten:[
+  ...DEZ_AB.map(([st,w])=>zahl(`Arbeitsblatt: Schreib als Dezimalzahl: <b>${st}</b>`,w,`${st} = <b>${dzK(w)}</b>${dezStellenTafel(w)}`)),
+  karte("Was steht vor dem Komma, was nach dem Komma?","<b>Vor</b> dem Komma: dekadische Einheiten (E, Z, H, T)<br><b>Nach</b> dem Komma: dezimale Einheiten (z, h, t, zt, ht, m)"),
+  karte("Zähl die Stellen nach dem Komma auf!","Zehntel (z) – Hundertstel (h) – Tausendstel (t) – Zehntausendstel (zt) – Hunderttausendstel (ht) – Millionstel (m)"),
+ ]});
+
+/* ---- Deutsch: Plusquamperfekt (Heft 23.11.) ---- */
+const PQ_PERS=[["ich","hatte","war"],["du","hattest","warst"],["er","hatte","war"],["sie","hatte","war"],["wir","hatten","waren"],["ihr","hattet","wart"],["sie (Mehrzahl)","hatten","waren"]];
+const PQ_VERB=[["lachen","gelacht",0],["spielen","gespielt",0],["essen","gegessen",0],["lesen","gelesen",0],["schreiben","geschrieben",0],["machen","gemacht",0],["kaufen","gekauft",0],["sehen","gesehen",0],["lernen","gelernt",0],["trinken","getrunken",0],
+  ["gehen","gegangen",1],["laufen","gelaufen",1],["fahren","gefahren",1],["kommen","gekommen",1],["schwimmen","geschwommen",1],["fliegen","geflogen",1],["bleiben","geblieben",1],["springen","gesprungen",1]];
+const PQ_SATZ_X=[["Nachdem","die Hausaufgaben gemacht","machen","ging Maja zum Volleyball."],["Nachdem","nach Hause gegangen","gehen","aß sie Abendbrot."],["Bevor ich ins Kino ging,","eine Pizza gegessen","essen",""],
+  ["Nachdem","ins Schwimmbad gefahren","fahren","waren wir müde."],["Als ich ankam,","schon den Film gesehen","sehen",""]];
+THEMEN.splice(THEMEN.findIndex(t=>t.id==="d-zeiten")+1,0,
+{id:"d-plusquam",fach:"deutsch",titel:"Das Plusquamperfekt",quelle:"Heft 23.11.",probe:null,
+ merke:`<h2>Plusquamperfekt</h2>
+ <p><b>Verwendung:</b> Das Plusquamperfekt wird verwendet, wenn wir eine vergangene abgeschlossene Handlung beschreiben wollen, die zeitlich <b>noch vor</b> einer anderen vergangenen Handlung liegt.</p>
+ <div class="merk"><b>Bildung:</b> Hilfsverb <b>haben</b> oder <b>sein</b> (im <b>Präteritum</b>) + <b>Partizip</b><br>
+ <b>Signalwörter:</b> nachdem, bevor, als</div>
+ <h3>Merke dir:</h3>
+ <div class="tabwrap"><table class="vokabeln">${PQ_PERS.filter((_,i)=>i!==3).map(([p,h,s])=>`<tr><td>${p==="er"?"er/sie/es":p==="sie (Mehrzahl)"?"sie":p} <b>${h}</b> gelacht</td><td>${p==="er"?"er/sie/es":p==="sie (Mehrzahl)"?"sie":p} <b>${s}</b> gegangen</td></tr>`).join("")}</table></div>
+ <h3>Anwendung</h3>
+ <p>➕ Ihr <b>hattet</b> über den Witz von Lisa <b>gelacht</b>.<br>➖ Ihr <b>hattet nicht</b> über den Witz von Lisa <b>gelacht</b>.<br>❓ <b>Hattet</b> ihr über den Witz von Lisa <b>gelacht</b>?</p>
+ <div class="merk">Tipp: Bei <b>Bewegung</b> (gehen, fahren, laufen, schwimmen …) und bei <b>bleiben</b> nimmt man <b>sein</b> → war gegangen. Sonst meistens <b>haben</b> → hatte gelacht.</div>`,
+ slots:10,
+ gen(){const art=R(0,6),[p,h,s]=pick(PQ_PERS),[inf,part,sein]=pick(PQ_VERB),hv=sein?s:h,pp=p.replace(" (Mehrzahl)","");
+  if(art===0||art===1)return text(pick([`Bilde das Plusquamperfekt: <b>${p}</b> (${inf})`,`Setze ins Plusquamperfekt: ${pp} … (${inf})`,`Plusquamperfekt von „${inf}“ mit <b>${p}</b>:`]),[`${hv} ${part}`,`${pp} ${hv} ${part}`],`${pp} <b>${hv} ${part}</b> – ${sein?"Bewegung/bleiben → <b>sein</b>":"→ <b>haben</b>"} im Präteritum + Partizip`,"Hilfsverb + Partizip, z. B. hatte gelacht");
+  if(art===2)return mc(pick([`${pp[0].toUpperCase()+pp.slice(1)} ${L} ${part}.`,`Setze ein: ${pp[0].toUpperCase()+pp.slice(1)} ${L} ${part}.`]),hv,[...new Set([sein?h:s,sein?"ist":"hat",sein?"wurde":"habe"])].filter(x=>x!==hv).slice(0,3),`${pp} <b>${hv}</b> ${part} – ${sein?"bei Bewegung nimmt man <b>sein</b>":"hier nimmt man <b>haben</b>"}.`);
+  if(art===3){const [z,f,fa]=pick([[`Ich war gegangen.`,"Plusquamperfekt",["Perfekt","Präteritum","Präsens"]],[`Ich bin gegangen.`,"Perfekt",["Plusquamperfekt","Präteritum","Präsens"]],[`Ich ging.`,"Präteritum",["Plusquamperfekt","Perfekt","Präsens"]],[`Wir hatten gespielt.`,"Plusquamperfekt",["Perfekt","Präteritum","Futur"]],[`Wir haben gespielt.`,"Perfekt",["Plusquamperfekt","Präteritum","Futur"]],[`Du hattest gelesen.`,"Plusquamperfekt",["Perfekt","Präteritum","Präsens"]]]);
+    return mc(pick([`Welche Zeitform ist das? <b>${z}</b>`,`Bestimme die Zeit: <b>${z}</b>`]),f,fa,f==="Plusquamperfekt"?"<b>hatte/war</b> (Präteritum) + Partizip = Plusquamperfekt":f==="Perfekt"?"<b>habe/bin</b> (Präsens) + Partizip = Perfekt":"nur ein Verb in der Vergangenheit = Präteritum")}
+  if(art===4){const [w,r,fa]=pick([["Was passiert <b>zuerst</b>? „Nachdem Maja gegessen hatte, ging sie zum Training.“","Maja isst",["Maja geht zum Training","beides gleichzeitig"]],["Was passiert <b>zuerst</b>? „Bevor wir losfuhren, hatten wir die Koffer gepackt.“","Koffer packen",["losfahren","beides gleichzeitig"]],["Was passiert <b>zuerst</b>? „Als ich ankam, war der Bus schon abgefahren.“","der Bus fährt ab",["ich komme an","beides gleichzeitig"]]]);
+    return mc(w,r,fa,"Das <b>Plusquamperfekt</b> zeigt immer, was <b>zuerst</b> (noch früher) passiert ist.")}
+  if(art===5){const [a,b]=pick([["Ihr hattet über den Witz gelacht.","Ihr hattet nicht über den Witz gelacht."],["Ich war nach Hause gegangen.","Ich war nicht nach Hause gegangen."],["Wir hatten Pizza gegessen.","Wir hatten keine Pizza gegessen."],["Sie war geschwommen.","Sie war nicht geschwommen."]]);
+    return pick([0,1])?satz(`Verneine den Satz: „${a}“<br><span class="muted">Bau den verneinten Satz:</span>`,b,"Das <b>nicht</b> (oder kein) kommt vor das Partizip am Ende."):satz(`Mach eine Frage daraus: „${a}“`,a.replace(/^(\S+) (hattet|hatte|hatten|war|waren|wart|warst|hattest) (.*)\.$/,(m,x,y,z)=>`${y[0].toUpperCase()+y.slice(1)} ${x.toLowerCase()==="ich"?"ich":x.toLowerCase()} ${z}?`),"Bei der Frage steht das Hilfsverb <b>vorne</b>.")}
+  return mc(pick(["Welches Wort ist ein Signalwort für das Plusquamperfekt?","Welches Wort deutet auf das Plusquamperfekt hin?"]),pick(["nachdem","bevor","als"]),["morgen","jetzt","gerade"],"Signalwörter: <b>nachdem, bevor, als</b>")},
+ karten:[
+  mc("Wie bildet man das Plusquamperfekt?","haben oder sein im Präteritum + Partizip",["haben oder sein im Präsens + Partizip","nur das Verb im Präteritum","werden + Infinitiv"],"<b>hatte/war</b> + Partizip (z. B. hatte gelacht, war gegangen)"),
+  mc("Wann benutzt man das Plusquamperfekt?","für etwas, das noch vor einer anderen vergangenen Handlung passiert ist",["für etwas, das gerade passiert","für die Zukunft","für etwas, das jeden Tag passiert"],"Es ist die „Vor-Vergangenheit“."),
+  paare("Ordne zu: haben im Präteritum",[["ich","hatte"],["du","hattest"],["wir","hatten"],["ihr","hattet"]]),
+  paare("Ordne zu: sein im Präteritum",[["ich","war"],["du","warst"],["wir","waren"],["ihr","wart"]]),
+  karte("Sag alle Formen auf: lachen im Plusquamperfekt","ich hatte gelacht · du hattest gelacht · er/sie/es hatte gelacht · wir hatten gelacht · ihr hattet gelacht · sie hatten gelacht"),
+  karte("Sag alle Formen auf: gehen im Plusquamperfekt","ich war gegangen · du warst gegangen · er/sie/es war gegangen · wir waren gegangen · ihr wart gegangen · sie waren gegangen"),
+ ]});
+
 /* ================================================================
    PROBENPLAN (aus dem Schulmanager bzw. von den Eltern)
    themen: welche App-Themen in der Probe drankommen
@@ -2357,7 +2462,7 @@ const tagesMenge=()=>THEMEN.some(t=>t.probe&&tageBis(t.probe)>=0&&tageBis(t.prob
 const norm=s=>String(s).toLowerCase().trim().replace(/[’`´]/g,"'").replace(/\s+/g," ").replace(/[.!?]+$/,"")
   .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss");
 const ohneArtikel=s=>s.replace(/^(the|a|an) /,"");
-function parseZahl(s){s=String(s).trim().replace(/\s| |\./g,"").replace(",",".");if(!/^-?\d+(\.\d+)?$/.test(s))return null;return parseFloat(s)}
+function parseZahl(s){s=String(s).trim();if(!s.includes(",")&&/^-?(0\.\d+|\d+\.(\d{1,2}|\d{4,}))$/.test(s))s=s.replace(".",",");s=s.replace(/\s| |\./g,"").replace(",",".");if(!/^-?\d+(\.\d+)?$/.test(s))return null;return parseFloat(s)}
 function parseBruch(s){s=String(s).trim();let g=s.match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/);if(g&&+g[3]>0)return[+g[1]*+g[3]+ +g[2],+g[3]];s=s.replace(/\s/g,"");let m=s.match(/^(\d+)\/(\d+)$/);if(m&&+m[2]>0)return[+m[1],+m[2]];m=s.match(/^(\d+)$/);if(m)return[+m[1],1];return null}
 function pruefe(q,antwort){
   if(q.typ==="karte")return antwort===true;
