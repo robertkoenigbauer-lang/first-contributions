@@ -2239,6 +2239,10 @@ const TODOS=[{id:"zahnarzt",text:"Mama an den Zahnarzttermin erinnern",icon:"�
 const IMMER_WIEDERHOLEN=["mathe","deutsch","englisch"];
 // Feste Erinnerungen (erscheinen im Notizblock und im Kalender)
 const ERINNERUNGEN=[
+ {datum:"2026-11-28",text:"Musik-Referat Gitarre vorbereiten: Infos sammeln 🎸",punkte:["Wie ist eine Gitarre aufgebaut? (Korpus, Hals, Saiten, Schallloch, Wirbel)","Welche Arten gibt es? (Konzertgitarre, Westerngitarre, E-Gitarre)","Wie entsteht der Ton?","Bilder aussuchen"]},
+ {datum:"2026-12-01",text:"Musik-Referat Gitarre: Karteikarten schreiben ✍️🎸"},
+ {datum:"2026-12-03",text:"Musik-Referat Gitarre: einmal laut vortragen üben 🗣️🎸"},
+ {datum:"2026-12-05",text:"Musik-Referat Gitarre: Generalprobe – vor Mama oder Papa vortragen 🎸",punkte:["Karteikarten einpacken","Gitarre mitnehmen?"]},
  {datum:"2026-11-14",text:"Vorlesetext üben: 3 Minuten laut vorlesen 📖"},
  {datum:"2026-11-14",text:"Nila anrufen: Referat Italien am Montag besprechen 📞🇮🇹",punkte:[
    "Wer von uns beiden trägt welchen Teil vor?",
@@ -2295,6 +2299,10 @@ if(!Array.isArray(S.eigeneNoten))S.eigeneNoten=[];
 function confirmSicher(b){if(b.dataset.sicher)return true;b.dataset.sicher="1";b.textContent="Wirklich löschen?";b.style.fontSize=".8rem";return false}
 function notenSync(){for(let i=NOTEN.length-1;i>=0;i--)if(NOTEN[i].eigen)NOTEN.splice(i,1);S.eigeneNoten.forEach(n=>NOTEN.push(Object.assign({},n,{eigen:true})))}
 notenSync();
+// feste Notizen (einmal in die Notizen auf der Übersicht eintragen)
+const FESTE_NOTIZEN=[{id:"fest-referat-gitarre",text:"🎸 Musik-Referat über die Gitarre vorbereiten (Termin 6.12.)",datum:"2026-12-06"}];
+S.notizenFest=S.notizenFest||[];
+FESTE_NOTIZEN.forEach(n=>{if(S.notizenFest.includes(n.id))return;S.notizenFest.push(n.id);if(!S.notizen.some(x=>x.id===n.id))S.notizen.push(Object.assign({erledigt:false},n))});
 const speichern=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const tag=(plus=0)=>{const d=new Date();d.setDate(d.getDate()+plus);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 if(S.heute.datum!==tag())S.heute={datum:tag(),anzahl:0};
