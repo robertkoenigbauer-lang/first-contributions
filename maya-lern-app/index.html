@@ -1041,15 +1041,20 @@ try{stimmenLaden();speechSynthesis.addEventListener("voiceschanged",stimmenLaden
 function englischeStimme(){const en=STIMMEN.filter(v=>/^en/i.test(v.lang));
   const gut=v=>/google|natural|online|siri|daniel|serena|kate|arthur|martha|libby|sonia|ryan/i.test(v.name);
   return en.find(v=>/^en(-|_)GB/i.test(v.lang)&&gut(v))||en.find(v=>/^en(-|_)GB/i.test(v.lang))||en.find(gut)||en[0]||null}
-function geraetSprich(t,langsam){try{if(!window.speechSynthesis)return false;stimmenLaden();
-    const los=()=>{const u=new SpeechSynthesisUtterance(t);u.lang="en-GB";u.rate=langsam?.6:.85;const v=englischeStimme();if(v){u.voice=v;u.lang=v.lang}
-      speechSynthesis.cancel();setTimeout(()=>{try{speechSynthesis.resume();speechSynthesis.speak(u)}catch(e){}},60)};
-    if(STIMMEN.length)los();else{let fertig=false;const f=()=>{if(fertig)return;fertig=true;stimmenLaden();los()};
-      try{speechSynthesis.addEventListener("voiceschanged",f,{once:true})}catch(e){}setTimeout(f,700)}
+function geraetSprich(t,langsam){try{if(!window.speechSynthesis||!window.SpeechSynthesisUtterance)return false;stimmenLaden();
+    // Direkt im Tipp sprechen (ohne Warten) – sonst blockt das Handy den Ton
+    const ss=speechSynthesis,u=new SpeechSynthesisUtterance(t);u.lang="en-GB";u.rate=langsam?.6:.85;u.volume=1;
+    const v=englischeStimme();if(v){u.voice=v;u.lang=v.lang}
+    if(ss.speaking||ss.pending)ss.cancel();try{ss.resume()}catch(e){}ss.speak(u);
+    setTimeout(()=>{try{if(ss.paused)ss.resume()}catch(e){}},250);
     return true}catch(e){return false}}
+// Ton auf dem Handy beim ersten Antippen freischalten
+(function(){const f=()=>{try{const u=new SpeechSynthesisUtterance(" ");u.volume=0;speechSynthesis.speak(u)}catch(e){}
+  document.removeEventListener("pointerdown",f,true);document.removeEventListener("touchstart",f,true)};
+  try{document.addEventListener("pointerdown",f,true);document.addEventListener("touchstart",f,true)}catch(e){}})();
 function sprich(t,langsam){
   if(TTS&&!TTS_AUS){TTS.speak(t,{language:"en",rate:langsam?.7:.95,voice:"airy"}).catch(e=>{const c=e&&e.code;
-      if(c==="not_granted"){TTS_AUS=true;return}           // Vorlesen wurde ausgeschaltet – dann nicht anders vorlesen
+      if(c==="not_granted"){TTS_AUS=true;geraetSprich(t,langsam);return}           // Vorlesen wurde ausgeschaltet – dann nicht anders vorlesen
       if(c==="stopped"||c==="invalid_argument")return;
       geraetSprich(t,langsam)});return true}
   if(TTS_AUS)return false;
@@ -2217,7 +2222,7 @@ const PLANFACH={Mathe:"mathe",Deutsch:"deutsch",Englisch:"englisch",NT:"nt",GPG:
 const STUNDENFARBE={Religion:"#9a96a3",Sport:"#14b8b0",Kunst:"#f472b6",Förderunterricht:"#b8a6c9",Mittagspause:"#d9cfe3",EBSU:"#b8a6c9"};
 const stdFarbe=f=>PLANFACH[f]&&fach(PLANFACH[f])?fach(PLANFACH[f]).farbe:STUNDENFARBE[f]||"var(--muted)";
 const stdKlasse=f=>f==="Kunst"?"bunt":"";
-const TERMINE=[{datum:"2026-11-16",text:"Vorlesewettbewerb beginnt 📖"},{datum:"2026-11-16",text:"Referat Italien mit Nila 🇮🇹"},{datum:"2026-11-17",text:"Elternsprechtag"}];
+const TERMINE=[{datum:"2026-11-16",text:"Vorlesewettbewerb beginnt 📖"},{datum:"2026-11-16",text:"Referat Italien mit Nila 🇮🇹"},{datum:"2026-11-17",text:"Elternsprechtag"},{datum:"2026-12-06",text:"Musik-Referat über die Gitarre 🎸"}];
 // Wiederkehrende Aufgaben zum Abhaken (tage: 0 = So … 6 = Sa; leer = jeden Tag)
 const AUFGABEN=[
  {id:"lernen",text:"Mindestens 30 Minuten lernen",icon:"📚",tage:[],lernen:true},
@@ -3452,7 +3457,7 @@ function vQuiz(){
     <span class="fb-rakete" style="left:calc(20px + (100% - 56px) * ${(Q.i/Q.fragen.length).toFixed(3)})"><span>🚀</span></span><span class="fb-ziel" aria-hidden="true">🪐</span>
     <span class="fb-text">${Q.i} von ${Q.fragen.length} geschafft</span></div>
    ${Q.modus==="probe"?`<p class="tipp">Probe-Modus: keine Hilfe, keine Lösungen. Am Ende bekommst du eine Note wie von deiner Lehrkraft.</p>`:""}
-   <section class="karte"><div class="row" style="justify-content:space-between"><span class="fachzeile">${f.name} · ${t.titel}</span>${marke}</div><div class="frage">${q.frage}</div>${Q.modus!=="probe"&&!fertig&&bildErklaerung(q)?`<div><button class="btn small ek-knopf" data-act="ekauf">🎬 Zeig's mir als Bild</button></div>`:""}${q.sprich&&(q.sprichVorher||fertig)?`<div class="row hoerzeile">${hoerKnopf(q.sprich)}<button class="hoer" type="button" data-act="sprich" data-langsam="1" data-t="${esc(q.sprich)}" aria-label="Langsam anhören">🐢</button>${fertig&&mikroDa()?`<button class="hoer mikro" type="button" data-act="nachsprechen" data-t="${esc(q.sprich)}" aria-label="Nachsprechen und Aussprache prüfen">🎤</button>`:""}<span class="tipp">${fertig?(mikroDa()?"Hör zu, dann tippe auf 🎤 und sprich es nach – ich sage dir, ob man dich versteht!":"So spricht man es aus – sprich es laut nach!"):"Anhören"}</span></div><div id="nacherg" class="nach-erg" aria-live="polite"></div>`:""}${feld}${rueck}</section>
+   <section class="karte"><div class="row" style="justify-content:space-between"><span class="fachzeile">${f.name} · ${t.titel}</span>${marke}</div><div class="frage">${q.frage}</div>${Q.modus!=="probe"&&!fertig&&bildErklaerung(q)?`<div><button class="btn small ek-knopf" data-act="ekauf">🎬 Zeig's mir als Bild</button></div>`:""}${q.sprich&&(q.sprichVorher||fertig)?`<div class="row hoerzeile">${hoerKnopf(q.sprich)}<button class="hoer" type="button" data-act="sprich" data-langsam="1" data-t="${esc(q.sprich)}" aria-label="Langsam anhören">🐢</button>${fertig&&mikroDa()?`<button class="hoer mikro" type="button" data-act="nachsprechen" data-t="${esc(q.sprich)}" aria-label="Nachsprechen und Aussprache prüfen">🎤</button>`:""}${!fertig?`<button class="btn small ghost" type="button" data-act="nichthoeren" data-t="${esc(q.sprich)}">🙉 Ich höre nichts</button>`:""}<span class="tipp">${fertig?(mikroDa()?"Hör zu, dann tippe auf 🎤 und sprich es nach – ich sage dir, ob man dich versteht!":"So spricht man es aus – sprich es laut nach!"):"Anhören"}</span></div><div id="nacherg" class="nach-erg" aria-live="polite"></div>`:""}${feld}${rueck}</section>
    ${Q.helfer?tutorHTML(Q.helfer):""}${Q.bildEk?bildHTML(Q.bildEk):""}</div>`}
 
 const KOMMENTAR={1:"Hervorragend! So kannst du in die Probe gehen.",2:"Sehr ordentlich! Mit ein bisschen Wiederholung wird es eine Eins.",3:"Solide Arbeit. Einige Dinge sitzen noch nicht ganz – schau sie dir nochmal an.",4:"Da fehlt noch einiges. Übe die markierten Themen nochmal Schritt für Schritt.",5:"Hier musst du noch viel üben. Fang mit den Hefteinträgen an und mach dann die leichteren Übungen.",6:"Nicht aufgeben! Wir gehen alles nochmal in Ruhe durch."};
@@ -3549,6 +3554,8 @@ app.addEventListener("click",e=>{
      const nid=noteId(n);S.eigeneNoten=S.eigeneNoten.filter(x=>x!==n);notenSync();
      if(!NOTEN.some(x=>noteId(x)===nid)){S.spar.notenGebucht=S.spar.notenGebucht.filter(x=>x!==nid);S.spar.buchungen=S.spar.buchungen.filter(x=>x.id!==nid)}
      speichern();render();break}
+   case"nichthoeren":{const w=[...U2,...U2T2,...U2T3,...CHORES].find(x=>x.en===d.t),h=document.getElementById("nacherg");
+     if(h)h.innerHTML=`🔈 Mach den Ton lauter und schalte den Stumm-Schalter am Handy aus. Dann nochmal auf 🔊 tippen.<br>Hilfe: Auf Deutsch heißt das Wort <b>${esc(w?w.de:"?")}</b> – schreib es auf Englisch.`;sprich(d.t,false);break}
    case"sprich":if(!sprich(d.t,d.langsam)){b.title="Vorlesen geht auf diesem Gerät leider nicht";b.textContent="🔇"}
      else if(!hatEnglischeStimme()&&!TTS){const h=document.getElementById("nacherg");if(h&&!h.textContent)h.innerHTML="Hinweis: Auf diesem Gerät ist keine englische Stimme installiert – das Vorlesen klingt dann deutsch."}break;
    case"mikro":mikroStart("feld");break;
